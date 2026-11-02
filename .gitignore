@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# Local-only project instructions and notes
+/AGENTS.md
+/README.md
+
 # Build output
 build/
 dist/
