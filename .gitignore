@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build output
+build/
+dist/
+.svelte-kit/
+.server/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Coverage reports
+coverage/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Temporary files
+*.local
