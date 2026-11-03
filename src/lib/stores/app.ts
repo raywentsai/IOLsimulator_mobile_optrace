@@ -73,6 +73,8 @@ export const masterDefocus = writable(DEFAULT_MASTER_DEFOCUS_D);
 // ========== IOL Mode Parameters ==========
 export const selectedLensId = writable('zcb00');
 export const selectedCompareLensId = writable('vivity');
+export type BlurEngine = 'gaussian' | 'psf';
+export const blurEngine = writable<BlurEngine>('gaussian');
 export const targetRefraction = writable(0.0);
 export const compareTargetRefraction = writable(0.0);
 

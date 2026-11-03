@@ -36,3 +36,9 @@ Thumbs.db
 
 # Temporary files
 *.local
+
+# Offline optical environment and reproducible large intermediates
+optics/.venv/
+optics/outputs/
+**/__pycache__/
+*.pyc

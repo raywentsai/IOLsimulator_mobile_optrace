@@ -1,9 +1,11 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import ImageCanvas from '../components/ImageCanvas.svelte';
+  import IolScene from '../components/IolScene.svelte';
   import SheetSelect from '../components/SheetSelect.svelte';
   import {
     simulationMode,
+    blurEngine,
     selectedLensId,
     selectedCompareLensId,
     presbyopiaProfile,
@@ -373,7 +375,11 @@
   </header>
 
   <main class="canvas-area">
-    <ImageCanvas />
+    {#if $simulationMode === 'IOL'}
+      <IolScene />
+    {:else}
+      <ImageCanvas />
+    {/if}
   </main>
 
   <section class="viewing-strip">
@@ -448,7 +454,8 @@
               </div>
 
               <div class="settings-section">
-                <h3 class="section-title">Defocus Curve Source</h3>
+                <h3 class="section-title">Gaussian Curve Sources</h3>
+                <p class="landing-disclaimer">Legacy commercial curves: enVista → Spherical, TECNIS ZCB00 → Aspheric, Vivity → Vivity-like. These curves do not clinically validate the physics models.</p>
                 <ul class="landing-reference-list">
                   {#each LANDING_REFERENCE_GROUPS as group}
                     <li>
@@ -459,10 +466,15 @@
                   {/each}
                 </ul>
               </div>
+              <div class="settings-section">
+                <h3 class="section-title">Physics Model Source</h3>
+                <p class="landing-disclaimer">OPTrace geometric ray tracing with frozen distance correction, 3 mm pupil and average cornea. Vivity-like EDOF is synthetic; the spherical control includes a quadratic correction. Monochrome photopic PSFs approximate local retinal image formation, not clinical acuity.</p>
+              </div>
             </div>
           {/if}
 
           {#if activePanel === 'settings'}
+            {#if $simulationMode === 'Presbyopia'}
             <div class="settings-section">
               <h3 class="section-title">Image</h3>
               <div class="segmented-control" role="radiogroup" aria-label="Display image">
@@ -484,10 +496,21 @@
                 </button>
               </div>
             </div>
+            {/if}
 
             {#if $simulationMode === 'IOL'}
               <div class="settings-section">
+                <h3 class="section-title">Blur Engine</h3>
+                <div class="segmented-control" role="radiogroup" aria-label="Blur Engine">
+                  <button class:active={$blurEngine==='gaussian'} aria-pressed={$blurEngine==='gaussian'} on:click={()=>blurEngine.set('gaussian')}>Acuity-based (Gaussian)</button>
+                  <button class:active={$blurEngine==='psf'} aria-pressed={$blurEngine==='psf'} on:click={()=>blurEngine.set('psf')}>Physics-based (OPTrace PSF)</button>
+                </div>
+              </div>
+              <div class="settings-section">
                 <h3 class="section-title">Vision</h3>
+                {#if $blurEngine === 'psf'}
+                  <p class="control-helper">Fixed distance-corrected models. Target refraction is not applied in physics mode.</p>
+                {:else}
                 {#if $splitViewEnabled}
                   <div class="control-block">
                     <div class="control-header">
@@ -538,6 +561,7 @@
                       on:input={onTargetRefractionInput}
                     />
                   </div>
+                {/if}
                 {/if}
               </div>
             {:else}

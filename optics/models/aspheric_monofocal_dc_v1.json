@@ -1,0 +1,55 @@
+{
+  "id": "aspheric_monofocal_dc_v1",
+  "label": "Patent-derived IQ-type aspheric 20 D / distance-corrected v1",
+  "evidence": "Frozen Monofocal Refraction Audit selected scalar; formal quadratic-sag wrapper; no new optimization.",
+  "optical_diameter_mm": 6.0,
+  "thickness_mm": 0.593,
+  "front": {
+    "type": "quadratic_sag_correction",
+    "base_surface": {
+      "type": "spherical",
+      "R_mm": 21.557
+    },
+    "quadratic_sag_coefficient_mm_inv": -0.0002850483930532997
+  },
+  "back": {
+    "type": "aspheric",
+    "R_mm": -22.0,
+    "k": -42.1929,
+    "coeff": [
+      -0.00023318,
+      -2.1144e-05,
+      8.9923e-06
+    ]
+  },
+  "material": {
+    "n": 1.554,
+    "V": 37.0,
+    "lines": "FdC"
+  },
+  "version": "distance_corrected_v1",
+  "base_model_id": "aspheric_monofocal",
+  "base_model_sha256": "8e5ece03bac25a3c083e0c1c2caec4f7129f02179d7adee43c23ff5cb5241225",
+  "reference_nominal_power_D": 20.0,
+  "nominal_power_note": "20 D is the baseline reference label. Added surface correction changes effective power; no new commercial nominal power is asserted.",
+  "distance_correction": {
+    "delta_anterior_surface_power_D": -0.125,
+    "reference_wavelength_nm": 546.0,
+    "n_lens_reference": 1.5575727837054785,
+    "n_aqueous_reference": 1.3383117686528048,
+    "delta_n_reference": 0.2192610150526737,
+    "quadratic_sag_coefficient_mm_inv": -0.0002850483930532997,
+    "equation": "delta_z_mm = quadratic_sag_coefficient_mm_inv * r_mm^2",
+    "reference": {
+      "physical_iris_diameter_mm": 3.0,
+      "cornea": "average",
+      "object_distance_mm": null,
+      "retina_z_mm": 24.0,
+      "criterion": "maximize integral(mean(MTF_x, MTF_y), 0..100 lp/mm)/100"
+    },
+    "source_audit": "outputs/monofocal_refraction_audit/calibration/selected.json",
+    "source_audit_sha256": "70785529feeb57556dae6ec0373a7ff10905db97f08ec0590546cd7d2829c93d",
+    "scope": "One scalar for all pupils/distances; physical sag adjustment, not spectacle refraction; no per-pupil refocus.",
+    "surface_note": "Quadratic addition retains the baseline higher-order sag; corrected spherical control is not an exact two-sphere lens."
+  }
+}

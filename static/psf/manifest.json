@@ -1,0 +1,2789 @@
+{
+  "version": 1,
+  "encoding": "gzip little-endian float32 integrated bin energy, row-major",
+  "orientation": "upright display x-right/y-down; optical inversion included; no centroid recentering",
+  "captureFractionDefinition": "radiant W in +/-0.25 mm divided by radiant W in the 4x4 mm reference detector; photopic Y is normalized separately within the exported window",
+  "pupilMm": 3.0,
+  "cornea": "average",
+  "spectrum": "D65 380-780 nm; photopic Y; dispersive FdC materials",
+  "rays": 1500000,
+  "seed": 28106701,
+  "diffraction": "OPTrace HURB approximation, not full wave optics",
+  "backendCommit": "adad608acedb08c2d99688613fa01034865c9d47",
+  "backendSources": {
+    "src/iol_sim/geometry.py": "dfb87acadd291b272ce65725481fd9268a56da74db95978eda1ada157cb87b85",
+    "src/iol_sim/eye.py": "91d68a5c994986902d2cf7dfdfef20bfcac5d7891855eb8e5428cdaf37ae208f",
+    "src/iol_sim/tracing.py": "d51104d550775edf50f18b062696ce8b6636d26cfc013828adbc0d3412364839",
+    "src/iol_sim/vivity_design.py": "3aabba014fa4a6992a0e6c51412b325a7ab2e58b0e0540f2e0c222ca914eb904",
+    "src/iol_sim/distance_correction.py": "2da7ae8fbee8af643e87a301f1330e8e06a27c8f2ff77ff17c1cf0ab4665173c",
+    "src/iol_sim/config.py": "237a6eb36841f4ab5f19470d4bf6bbdf77fa7b7b02438e36ee7b90402eb5fc57",
+    "src/iol_sim/psf.py": "7d42130b772a320956ccf25331eabb1e66dc5c3c77e9478b5989c29e5b14998e"
+  },
+  "software": {
+    "python": "3.12.14",
+    "optrace": "1.8.3",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1"
+  },
+  "models": {
+    "spherical_monofocal_dc_v1": {
+      "id": "spherical_monofocal_dc_v1",
+      "label": "Paraxially matched spherical control / distance-corrected v1",
+      "evidence": "Frozen Monofocal Refraction Audit selected scalar; formal quadratic-sag wrapper; no new optimization.",
+      "optical_diameter_mm": 6.0,
+      "thickness_mm": 0.593,
+      "front": {
+        "type": "quadratic_sag_correction",
+        "base_surface": {
+          "type": "spherical",
+          "R_mm": 21.557
+        },
+        "quadratic_sag_coefficient_mm_inv": -0.001026174214991879
+      },
+      "back": {
+        "type": "spherical",
+        "R_mm": -21.776574091942596
+      },
+      "material": {
+        "n": 1.554,
+        "V": 37.0,
+        "lines": "FdC"
+      },
+      "version": "distance_corrected_v1",
+      "base_model_id": "spherical_monofocal",
+      "base_model_sha256": "10d05cbfa15fb40e2739440f7cd09bf678a6f1de8100ad34c02d38e78167fda0",
+      "reference_nominal_power_D": 20.0,
+      "nominal_power_note": "20 D is the baseline reference label. Added surface correction changes effective power; no new commercial nominal power is asserted.",
+      "distance_correction": {
+        "delta_anterior_surface_power_D": -0.45,
+        "reference_wavelength_nm": 546.0,
+        "n_lens_reference": 1.5575727837054785,
+        "n_aqueous_reference": 1.3383117686528048,
+        "delta_n_reference": 0.2192610150526737,
+        "quadratic_sag_coefficient_mm_inv": -0.001026174214991879,
+        "equation": "delta_z_mm = quadratic_sag_coefficient_mm_inv * r_mm^2",
+        "reference": {
+          "physical_iris_diameter_mm": 3.0,
+          "cornea": "average",
+          "object_distance_mm": null,
+          "retina_z_mm": 24.0,
+          "criterion": "maximize integral(mean(MTF_x, MTF_y), 0..100 lp/mm)/100"
+        },
+        "source_audit": "outputs/monofocal_refraction_audit/calibration/selected.json",
+        "source_audit_sha256": "70785529feeb57556dae6ec0373a7ff10905db97f08ec0590546cd7d2829c93d",
+        "scope": "One scalar for all pupils/distances; physical sag adjustment, not spectacle refraction; no per-pupil refocus.",
+        "surface_note": "Quadratic addition retains the baseline higher-order sag; corrected spherical control is not an exact two-sphere lens."
+      }
+    },
+    "aspheric_monofocal_dc_v1": {
+      "id": "aspheric_monofocal_dc_v1",
+      "label": "Patent-derived IQ-type aspheric 20 D / distance-corrected v1",
+      "evidence": "Frozen Monofocal Refraction Audit selected scalar; formal quadratic-sag wrapper; no new optimization.",
+      "optical_diameter_mm": 6.0,
+      "thickness_mm": 0.593,
+      "front": {
+        "type": "quadratic_sag_correction",
+        "base_surface": {
+          "type": "spherical",
+          "R_mm": 21.557
+        },
+        "quadratic_sag_coefficient_mm_inv": -0.0002850483930532997
+      },
+      "back": {
+        "type": "aspheric",
+        "R_mm": -22.0,
+        "k": -42.1929,
+        "coeff": [
+          -0.00023318,
+          -2.1144e-05,
+          8.9923e-06
+        ]
+      },
+      "material": {
+        "n": 1.554,
+        "V": 37.0,
+        "lines": "FdC"
+      },
+      "version": "distance_corrected_v1",
+      "base_model_id": "aspheric_monofocal",
+      "base_model_sha256": "8e5ece03bac25a3c083e0c1c2caec4f7129f02179d7adee43c23ff5cb5241225",
+      "reference_nominal_power_D": 20.0,
+      "nominal_power_note": "20 D is the baseline reference label. Added surface correction changes effective power; no new commercial nominal power is asserted.",
+      "distance_correction": {
+        "delta_anterior_surface_power_D": -0.125,
+        "reference_wavelength_nm": 546.0,
+        "n_lens_reference": 1.5575727837054785,
+        "n_aqueous_reference": 1.3383117686528048,
+        "delta_n_reference": 0.2192610150526737,
+        "quadratic_sag_coefficient_mm_inv": -0.0002850483930532997,
+        "equation": "delta_z_mm = quadratic_sag_coefficient_mm_inv * r_mm^2",
+        "reference": {
+          "physical_iris_diameter_mm": 3.0,
+          "cornea": "average",
+          "object_distance_mm": null,
+          "retina_z_mm": 24.0,
+          "criterion": "maximize integral(mean(MTF_x, MTF_y), 0..100 lp/mm)/100"
+        },
+        "source_audit": "outputs/monofocal_refraction_audit/calibration/selected.json",
+        "source_audit_sha256": "70785529feeb57556dae6ec0373a7ff10905db97f08ec0590546cd7d2829c93d",
+        "scope": "One scalar for all pupils/distances; physical sag adjustment, not spectacle refraction; no per-pupil refocus.",
+        "surface_note": "Quadratic addition retains the baseline higher-order sag; corrected spherical control is not an exact two-sphere lens."
+      }
+    },
+    "vivity_inspired_v2_1_dc_v1": {
+      "id": "vivity_inspired_v2_1_dc_v1",
+      "label": "Vivity-inspired synthetic EDOF v2.1 / distance-corrected v1",
+      "evidence": "Frozen Monofocal Refraction Audit selected scalar; formal quadratic-sag wrapper; no new optimization.",
+      "optical_diameter_mm": 6.0,
+      "thickness_mm": 0.593,
+      "front": {
+        "type": "quadratic_sag_correction",
+        "base_surface": {
+          "type": "vivity_measured_profile",
+          "R_mm": 21.557,
+          "radius_mm": [
+            0.0,
+            0.02,
+            0.04,
+            0.06,
+            0.08,
+            0.1,
+            0.12,
+            0.14,
+            0.16,
+            0.18,
+            0.2,
+            0.22,
+            0.24,
+            0.26,
+            0.28,
+            0.3,
+            0.32,
+            0.34,
+            0.36,
+            0.38,
+            0.4,
+            0.42,
+            0.44,
+            0.46,
+            0.48,
+            0.5,
+            0.52,
+            0.54,
+            0.56,
+            0.58,
+            0.6,
+            0.62,
+            0.64,
+            0.66,
+            0.68,
+            0.7000000000000001,
+            0.72,
+            0.74,
+            0.76,
+            0.78,
+            0.8,
+            0.8200000000000001,
+            0.84,
+            0.86,
+            0.88,
+            0.9,
+            0.92,
+            0.9400000000000001,
+            0.96,
+            0.98,
+            1.0,
+            1.02,
+            1.04,
+            1.06,
+            1.08,
+            1.1,
+            1.12,
+            1.1400000000000001,
+            1.16,
+            1.18,
+            1.2,
+            1.22,
+            1.24,
+            1.26,
+            1.28,
+            1.3,
+            1.32,
+            1.34,
+            1.36,
+            1.3800000000000001,
+            1.4000000000000001,
+            1.42,
+            1.44,
+            1.46,
+            1.48,
+            1.5,
+            1.52,
+            1.54,
+            1.56,
+            1.58,
+            1.6,
+            1.62,
+            1.6400000000000001,
+            1.6600000000000001,
+            1.68,
+            1.7,
+            1.72,
+            1.74,
+            1.76,
+            1.78,
+            1.8,
+            1.82,
+            1.84,
+            1.86,
+            1.8800000000000001,
+            1.9000000000000001,
+            1.92,
+            1.94,
+            1.96,
+            1.98,
+            2.0,
+            2.02,
+            2.04,
+            2.06,
+            2.08,
+            2.1,
+            2.12,
+            2.14,
+            2.16,
+            2.18,
+            2.2,
+            2.22,
+            2.24,
+            2.2600000000000002,
+            2.2800000000000002,
+            2.3000000000000003,
+            2.32,
+            2.34,
+            2.36,
+            2.38,
+            2.4,
+            2.42,
+            2.44,
+            2.46,
+            2.48,
+            2.5,
+            2.52,
+            2.54,
+            2.56,
+            2.58,
+            2.6,
+            2.62,
+            2.64,
+            2.66,
+            2.68,
+            2.7,
+            2.72,
+            2.74,
+            2.7600000000000002,
+            2.7800000000000002,
+            2.8000000000000003,
+            2.82,
+            2.84,
+            2.86,
+            2.88,
+            2.9,
+            2.92,
+            2.94,
+            2.96,
+            2.98,
+            3.0
+          ],
+          "departure_power_D": [
+            0.9311597693787668,
+            0.9105981324159101,
+            0.8674810061880034,
+            0.7905861294163676,
+            0.6715616431884632,
+            0.5085356525124254,
+            0.30904874988811626,
+            0.09262897798671085,
+            -0.10927066748693656,
+            -0.259308798413735,
+            -0.32508907384956665,
+            -0.2894589673450547,
+            -0.15627228389109826,
+            0.049651700873727535,
+            0.2890785036054056,
+            0.5206539205761824,
+            0.7141354257937781,
+            0.8575771269871817,
+            0.9549589758121703,
+            1.0171083478047782,
+            1.0521187574035389,
+            1.059783869616717,
+            1.0308969696737513,
+            0.9505910715477698,
+            0.8051643910674631,
+            0.591115910329377,
+            0.3228168909623804,
+            0.03443771364651525,
+            -0.22571355668342716,
+            -0.4070170089495635,
+            -0.4712136090881994,
+            -0.40493324566945954,
+            -0.2241489082398514,
+            0.032126881101526124,
+            0.3154886753872156,
+            0.5827852274727481,
+            0.8068869597903952,
+            0.9807130515695636,
+            1.1136487297479662,
+            1.223009426283957,
+            1.3256848454275647,
+            1.433223179529862,
+            1.5499014431704503,
+            1.6724769717842636,
+            1.7916529211973493,
+            1.8952701500532676,
+            1.9717684899382828,
+            2.012152608624932,
+            2.010203354728191,
+            1.9620710157704553,
+            1.8663611648774459,
+            1.7247895904316854,
+            1.5426491428431746,
+            1.3285310283055318,
+            1.093839068183056,
+            0.852965956692188,
+            0.623334099980984,
+            0.42293717318503193,
+            0.26498389836204206,
+            0.15328996437579828,
+            0.08234024719389527,
+            0.0397614041040914,
+            0.01676158980025346,
+            0.006209493516273993,
+            0.0019589744003265146,
+            0.00047215152285893917,
+            7.669056324921745e-05,
+            7.323291463331159e-06,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "design_delta_n": 0.218,
+          "amplitude_scale": 1.0,
+          "base_power_offset_D": -0.37583134090270454,
+          "base_quartic_coefficient_mm_inv3": 0.0001343083535602649
+        },
+        "quadratic_sag_coefficient_mm_inv": -0.0006841161433279193
+      },
+      "back": {
+        "type": "aspheric",
+        "R_mm": -22.0,
+        "k": -42.1929,
+        "coeff": [
+          -0.00023318,
+          -2.1144e-05,
+          8.9923e-06
+        ]
+      },
+      "material": {
+        "n": 1.554,
+        "V": 37.0,
+        "lines": "FdC"
+      },
+      "version": "distance_corrected_v1",
+      "provenance": {
+        "dataset_doi": "10.5281/zenodo.18084296",
+        "article_doi": "10.1007/s00417-024-06469-y",
+        "dataset_sha256": "ec573fb636e79053aee3d88ee489adc943f6e10a8d1f455f0077ede565503635",
+        "measurement_wavelength_nm": 546.0,
+        "nominal_D": 20.0,
+        "replicates": 10,
+        "unique_nonnegative_radii": 58,
+        "outer_fit": {
+          "a_D": 20.211001778098847,
+          "b_D_per_mm2": -0.2230881336993595,
+          "r_min_mm": 1.3
+        },
+        "smoothing_sigma_mm": 0.04,
+        "taper_start_mm": 1.2,
+        "taper_end_mm": 1.35,
+        "allocation_assumption": "delta sag = integral[r * measured departure / (1000*0.218)] dr on anterior only; exact surface prediction must be verified by OPTrace",
+        "absolute_power_note": "NIMO absolute power/conjugate calibration not treated as exact thick-eye spectacle refraction. No mixing of Clareon numerical data into fit.",
+        "far_refraction_calibration": {
+          "method": "single bounded base-power scalar, maximize infinity MTF50 in 3mm-average Arizona; fixed retina/ACD",
+          "offset_D": -0.37583134090270454,
+          "bounds_D": [
+            -0.4,
+            0.4
+          ],
+          "rays": 400000,
+          "seed": 20271027,
+          "not_a_commercial_fit": "Finite-pupil simulation calibration, not an adjustment to Schmid/Clareon data or a recovered DFT015 base curvature."
+        },
+        "v2_1_refinement": {
+          "parent_sha256": "6ad282291a8cfdcf6c7831fcc2e1a8e9a746570c77bbffa7791b29757c9b6c7a",
+          "correction": "delta z_front = a4*r^4; analytic slope 4*a4*r^3, r/sag mm; unchanged paraxial curvature",
+          "a4_mm_inv3": 0.0001343083535602649,
+          "outer_fit_radius_mm": [
+            1.3,
+            2.24
+          ],
+          "target_b_D_per_mm2": -0.2230881336993595,
+          "forward_b_D_per_mm2": -0.22307457111273363,
+          "operator": "546nm; n_medium=1.336; isolated IOL; common exit plane z=.593mm; P=-1000*n*sin(theta)/r_exit",
+          "selection": "linear response from a4=0 and 1e-4, matched outer power slope only; optional one scalar correction; no Zernike/MTF fitting",
+          "central_departure_note": "radius_mm, departure_power_D, smoothing=.04 mm, taper, amplitude unchanged. Total central power can change because the base is corrected.",
+          "offset_note": "Original -0.37583134090270454 D retained; not refit to MTF.",
+          "wavefront_convention_status": "n,m and optical-zone diameter verified; export normalization/HOA sign/projection not fully specified; conditional W=-S, OSA unit RMS only."
+        }
+      },
+      "design_frozen": "2026-10-27; author-profile shape fixed, one bounded finite-pupil base-power calibration; no fitting to Schmid or Clareon ordinates",
+      "base_model_id": "vivity_inspired_v2_1",
+      "base_model_sha256": "591d3823fe7e9e4558b6f048160102a04ef06a71c6454652b5a179ea0e79e395",
+      "reference_nominal_power_D": 20.0,
+      "nominal_power_note": "20 D is the baseline reference label. Added surface correction changes effective power; no new commercial nominal power is asserted.",
+      "distance_correction": {
+        "delta_anterior_surface_power_D": -0.3,
+        "reference_wavelength_nm": 546.0,
+        "n_lens_reference": 1.5575727837054785,
+        "n_aqueous_reference": 1.3383117686528048,
+        "delta_n_reference": 0.2192610150526737,
+        "quadratic_sag_coefficient_mm_inv": -0.0006841161433279193,
+        "equation": "delta_z_mm = quadratic_sag_coefficient_mm_inv * r_mm^2",
+        "reference": {
+          "physical_iris_diameter_mm": 3.0,
+          "cornea": "average",
+          "object_distance_mm": null,
+          "retina_z_mm": 24.0,
+          "criterion": "maximize integral(mean(MTF_x, MTF_y), 0..100 lp/mm)/100"
+        },
+        "source_audit": "outputs/monofocal_refraction_audit/calibration/selected.json",
+        "source_audit_sha256": "70785529feeb57556dae6ec0373a7ff10905db97f08ec0590546cd7d2829c93d",
+        "scope": "One scalar for all pupils/distances; physical sag adjustment, not spectacle refraction; no per-pupil refocus.",
+        "surface_note": "Quadratic addition retains the baseline higher-order sag; corrected spherical control is not an exact two-sphere lens."
+      }
+    }
+  },
+  "eye": {
+    "backend_preset": "optrace.presets.geometry.arizona_eye(adaptation=0)",
+    "units": "geometry mm; wavelength nm; optical power dioptres; SA reference micrometres",
+    "corneal_vertex_z_mm": 0,
+    "corneal_thickness_mm": 0.55,
+    "cornea_anterior_R_mm": 7.8,
+    "cornea_posterior_R_mm": 6.5,
+    "cornea_posterior_k": -0.25,
+    "pupil_z_mm": 3.519999999,
+    "pupil_definition": "physical iris aperture diameter, not entrance pupil",
+    "iol_front_z_mm": 4.7,
+    "retina_z_mm": 24.0,
+    "retina_type": "fixed rectangular tangent plane",
+    "corneas": {
+      "arizona": {
+        "anterior_k": -0.25,
+        "source_SA_um": null
+      },
+      "low": {
+        "anterior_k": -0.384,
+        "source_SA_um": 0.155
+      },
+      "average": {
+        "anterior_k": -0.183,
+        "source_SA_um": 0.241
+      },
+      "high": {
+        "anterior_k": -0.059,
+        "source_SA_um": 0.327
+      }
+    },
+    "SA_caveat": "Patent Table 2 conics transferred to Arizona anterior cornea only; quoted SA values belong to Alcon-Navarro model, not measured here. Patent describes RMS SA at 6-mm pupil for IOL; Table 2 does not independently state full corneal Zernike normalization/reference pupil. No claim of exact OSA Z4^0 values in this hybrid eye."
+  },
+  "entries": [
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 0.0,
+      "file": "spherical_monofocal_dc_v1_00.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.86891067977092,
+      "sum": 0.9999999958045941,
+      "captureFraction": 0.9969013891366801,
+      "sha256": "4dcaa89ea3f5d64d498074272de69c4b43c856ed6d23d43025485d73d74fdda2",
+      "sourceSha256": "cb3b459413befb90dc2adb9145afc8a8573f5fca03fc56fe5f406961abfd64c0",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.0,
+      "file": "spherical_monofocal_dc_v1_10.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.81991913277064,
+      "sum": 1.0000000003577987,
+      "captureFraction": 0.996714821710016,
+      "sha256": "54b83b7b6b4c7fb5a4545af92277743ddea2caf4322c6117ae127d80022e3d52",
+      "sourceSha256": "87a766aa49ade224b414e94575fff9ef8e83a598e01a6feb6f83e2b62c1bf527",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.1,
+      "file": "spherical_monofocal_dc_v1_11.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.815035619812722,
+      "sum": 0.9999999995803356,
+      "captureFraction": 0.9966927312566427,
+      "sha256": "03a4e66081b5fb903b68b52caf9371b3c1ad4bfa5a1462e07e2eb49f969b672e",
+      "sourceSha256": "80870c0ffeea40ec718f9f7e6e390e95ff12e9d552aa100e197fe56b4861b0e7",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.2,
+      "file": "spherical_monofocal_dc_v1_12.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.810154941800246,
+      "sum": 1.0000000005676282,
+      "captureFraction": 0.9966878909261515,
+      "sha256": "8ebc678a19292b0fc71b108e482eb2ced75da8db3a394b037a1054a14a58ccf5",
+      "sourceSha256": "54908a4a664a02fe107d09d2d53e6d6d99e1b93dad33f1706d777463c2a667a1",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.3,
+      "file": "spherical_monofocal_dc_v1_13.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.80527709626535,
+      "sum": 0.9999999998232929,
+      "captureFraction": 0.9966452808311086,
+      "sha256": "41dc8226a411340c5980b1b7129e5d6e15be0baa9e3c80fcc164d8389de2d785",
+      "sourceSha256": "fd32c32d1129b3efb643fd43c49c052d508d4991d011f47463d88580832c64df",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.4,
+      "file": "spherical_monofocal_dc_v1_14.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.80040208074302,
+      "sum": 0.9999999997025447,
+      "captureFraction": 0.9966954599715089,
+      "sha256": "268e26fcf41beb64829bb89dafb524cce0e70e0041655610f56e63aadc92dd4a",
+      "sourceSha256": "364e98cf7b4afbc64ffe6dc37b762e0d91f6d22ef752e7b8de58673b7bcd20fc",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.5,
+      "file": "spherical_monofocal_dc_v1_15.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.79552989277111,
+      "sum": 0.9999999997450639,
+      "captureFraction": 0.9967253856643826,
+      "sha256": "0a63526dfe3576d393182dcd93c6ba2104e6b7deccc2c2c9b8933c51c8c69db9",
+      "sourceSha256": "014aeba336b3a6ef14d2ff040339c5a001328ee4af1db2e835d2fa064a0605bb",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.6,
+      "file": "spherical_monofocal_dc_v1_16.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.79066052989033,
+      "sum": 1.000000000149837,
+      "captureFraction": 0.9966857633742964,
+      "sha256": "75ece701af7dd7674aeadc413665a87c944af22bc67e67c30352e29ccc772c90",
+      "sourceSha256": "d1ad11fc000747cb56564cfd221085859a871959c70e2c0121f8751808727875",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.7,
+      "file": "spherical_monofocal_dc_v1_17.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.78579398964424,
+      "sum": 1.0000000000608176,
+      "captureFraction": 0.996614114670448,
+      "sha256": "fbefe3ffda0590c191151de99169223167e9c6c790e15ddd4c08af6e9d37e5f0",
+      "sourceSha256": "c2eedc3197f3534357a7f9e7c895d6f052610c6be512bdbc15f040a51e1c1ff0",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.8,
+      "file": "spherical_monofocal_dc_v1_18.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.780930269579247,
+      "sum": 0.9999999999812993,
+      "captureFraction": 0.9966062501069162,
+      "sha256": "98613d77ae86cb2aa85320f248f1b2428f6923e856bc6166cce2dab0e397a052",
+      "sourceSha256": "6c2f90220325dd782287325c457ada163cf12624240d12f95945e152c9865e67",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 1.9,
+      "file": "spherical_monofocal_dc_v1_19.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.7760693672446,
+      "sum": 1.0000000001564515,
+      "captureFraction": 0.9965868923434957,
+      "sha256": "0135ff63504b979ef7a668854e59a7d0d6f3314015d51e36ca1407128dea8b92",
+      "sourceSha256": "4c89d0d25f1c66d30a14834f8d9a519b579808ee6cd45eed068c1bfbab12f406",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.0,
+      "file": "spherical_monofocal_dc_v1_20.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.771211280192386,
+      "sum": 0.9999999996264802,
+      "captureFraction": 0.9965881290726681,
+      "sha256": "5b1eeee413f7ddb91326d30ee8a8fc13143386e1b16d1f1a7cbebe0117d48665",
+      "sourceSha256": "1f970b312c803eb3adcc47acdd4d8cd822dd24eb50a1d4b5b1a9abcb46a4af33",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.1,
+      "file": "spherical_monofocal_dc_v1_21.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.766356005977524,
+      "sum": 1.0000000000242775,
+      "captureFraction": 0.9965715285458193,
+      "sha256": "22f7bb78a212cc775166e8302514f9f60f32d15abdbb9e788a7ce92a20788b55",
+      "sourceSha256": "9d209d1f3ed31560390fed7385d4e40406f0697cec8cab55b2b869d15b7ad90c",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.2,
+      "file": "spherical_monofocal_dc_v1_22.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.761503542157772,
+      "sum": 0.9999999995887676,
+      "captureFraction": 0.9965491999785836,
+      "sha256": "0cd43e8b7415a577508c837e0bec89c16c2b2badbcecfe4f519ab1dd71a0ea90",
+      "sourceSha256": "53b33d47545877afecdb4ee5bcfacc86d44cbf79c6e7f608a742cef95c83b115",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.3,
+      "file": "spherical_monofocal_dc_v1_23.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.756653886293705,
+      "sum": 1.0000000003780514,
+      "captureFraction": 0.9965763658861987,
+      "sha256": "6a8dbfb2d8f6d1fe8a2747e9d37ed85bc43ca418c081e97fd4ad9ac1dba94eab",
+      "sourceSha256": "ea7bded04fe63039c89015581b713e321fd2addc29eb84d9fe603bd54f3dd8db",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.4,
+      "file": "spherical_monofocal_dc_v1_24.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.75180703594874,
+      "sum": 0.9999999996786755,
+      "captureFraction": 0.9965452896609915,
+      "sha256": "ce7deaa1f9fba2cd5b45791750aa1c834ce28b75894ed00bd6d14fac8c2ddf2a",
+      "sourceSha256": "8a3c2d5602864e5ecd81c75c72fddfe6da242ce099484a2e8a22eaae09e00d2d",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.5,
+      "file": "spherical_monofocal_dc_v1_25.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.746962988689084,
+      "sum": 0.9999999995522351,
+      "captureFraction": 0.9965050770296516,
+      "sha256": "5f70a1bfc5b17bfd7decf2556807078d037b766769c2cb06fcb410bbe0c7136e",
+      "sourceSha256": "9ff989dfb57b9a0f4fb43108b8641bab95fced015ebc33f4c135974004e27126",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.6,
+      "file": "spherical_monofocal_dc_v1_26.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.742121742083775,
+      "sum": 1.000000000009882,
+      "captureFraction": 0.9965963272928204,
+      "sha256": "dca701fd59b4a62220377caea451b70b67b6673c71a107565ddef6235f3981d9",
+      "sourceSha256": "0fd39da2b81043d57c2ec0b48597cbdd77e5861808b6d551dee120b2a9441b4c",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.7,
+      "file": "spherical_monofocal_dc_v1_27.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.73728329370466,
+      "sum": 0.9999999999692462,
+      "captureFraction": 0.9964716740114936,
+      "sha256": "b22149db567e6e0696107a92106597a4abcb47d834c6e2a42a4c96b319f01f76",
+      "sourceSha256": "85d85df5d9873ddaad7353925df61846dba09a60f4795bd877f8df0092bbaaf8",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.8,
+      "file": "spherical_monofocal_dc_v1_28.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.732447641126384,
+      "sum": 0.9999999995861025,
+      "captureFraction": 0.9964958603543846,
+      "sha256": "366a4a10d75ce95cb5b6e90b6e3792628c5753654ac802daa142301265ca3fda",
+      "sourceSha256": "74be379b01bf8da30ed5c3b5e78c0822d303b1bec90ec1e81b472fedbadc390f",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 2.9,
+      "file": "spherical_monofocal_dc_v1_29.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.72761478192641,
+      "sum": 0.9999999999612446,
+      "captureFraction": 0.9964734482015356,
+      "sha256": "edf888a84eea79b5ae3c92cd0eadc649fbda1eb6ccbd49145c2c626a921f6bea",
+      "sourceSha256": "af9a02e942e89751d34e0a749d74542f0f058171e56b0b34b849fb4636b8e52f",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.0,
+      "file": "spherical_monofocal_dc_v1_30.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.72278471368498,
+      "sum": 0.9999999998273615,
+      "captureFraction": 0.9965152983106917,
+      "sha256": "8a2b0a92487c4718090f2103bf4e682a76169a15c120de0135704a235a38debc",
+      "sourceSha256": "038ea8d83a6d76b4874acab288b76493ff8908f256f797ec7617697965e74c4f",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.1,
+      "file": "spherical_monofocal_dc_v1_31.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.717957433985156,
+      "sum": 0.9999999999735805,
+      "captureFraction": 0.9964314268457727,
+      "sha256": "b301c4a944e48cef22efa5f809f0468504f6c567e53c42598962582b94294fcb",
+      "sourceSha256": "ccc060be54aded7a4a1990e681b3e0c2f5c57f320d0a6986bddf8d323ca6264c",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.2,
+      "file": "spherical_monofocal_dc_v1_32.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.713132940412752,
+      "sum": 1.0000000002466893,
+      "captureFraction": 0.9963881411403602,
+      "sha256": "101c1b1bf750b76065c92a70090c5118f5b4276de3f19ae418428519905ae7f1",
+      "sourceSha256": "02a81514092975052292d0e17d0e265509897e31e1e396ceec3ef8a0ffee8933",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.3,
+      "file": "spherical_monofocal_dc_v1_33.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.708311230556397,
+      "sum": 0.9999999999160264,
+      "captureFraction": 0.9964268851962444,
+      "sha256": "b519470a1d6a7ea44deb93482fcf9a2c0ec101438d27ef1e312700151828b980",
+      "sourceSha256": "d421575577f46f031335ed1f38c72318a55f871420270e17c85ca5fd0d5661ae",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.4,
+      "file": "spherical_monofocal_dc_v1_34.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.703492302007497,
+      "sum": 1.0000000002254112,
+      "captureFraction": 0.9964396644768899,
+      "sha256": "834dcbce7fb9aaf71a9f21507dc368b062334bbe302af91eceae161b527704e4",
+      "sourceSha256": "6ca397dcaf8f7cf45e65e34f6bcf34bed2b13d7f1701d6f0b1ea16f42d682e39",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.5,
+      "file": "spherical_monofocal_dc_v1_35.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.698676152360235,
+      "sum": 0.9999999998574535,
+      "captureFraction": 0.996411322855048,
+      "sha256": "6adb88055e0717c52dd2b549b417356727f1f2cd9e3fb4508c7630364846ea24",
+      "sourceSha256": "a93ef290dfdee2a900739bb987475577c7a0fbb132d2b315aac3e48d4d3ba3c1",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.6,
+      "file": "spherical_monofocal_dc_v1_36.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.69386277921156,
+      "sum": 1.0000000003130045,
+      "captureFraction": 0.9963477285722223,
+      "sha256": "1553c990bc71ee2ffce3973e5fae1d8bfa9bc95494a7e0894c6ea85fcdb92eb0",
+      "sourceSha256": "cd3c1b80c352b9711c62be5c73490297f102e3094657c17421a640ddb64dd121",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.7,
+      "file": "spherical_monofocal_dc_v1_37.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.6890521801612,
+      "sum": 0.9999999999101993,
+      "captureFraction": 0.9962929064219935,
+      "sha256": "a60946cdef830e62f95db68fc853b760cda2d70a246d58d0938470f72f5bfb6c",
+      "sourceSha256": "a9225252a5dc25502752589321b421f1a69e0b380b88bb67ad32b8a3edc27286",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.8,
+      "file": "spherical_monofocal_dc_v1_38.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.68424435281164,
+      "sum": 0.9999999998967529,
+      "captureFraction": 0.9962261674519989,
+      "sha256": "e25ef9d5ef116fcbad59d23881fdd77614e151aeda9a987ad085128552c802ae",
+      "sourceSha256": "245858d8dee6a4b0f625f90d452e847d064dc526426b80aba6eab6dcb6f7d241",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 3.9,
+      "file": "spherical_monofocal_dc_v1_39.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.67943929476814,
+      "sum": 1.0000000001191363,
+      "captureFraction": 0.9960827899163603,
+      "sha256": "6a7c1220f10ca2b56e1d51f6cbb51c3badbf8b34ad6ffe4eeb3dc5d5b7141052",
+      "sourceSha256": "7e0d46b2aa78d22fbdfc5d051d5117d53859a081260d10fa592f4f1e35cda274",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "spherical_monofocal_dc_v1",
+      "objectVergenceD": 4.0,
+      "file": "spherical_monofocal_dc_v1_40.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.674637003638715,
+      "sum": 1.0000000001302571,
+      "captureFraction": 0.9960686898880313,
+      "sha256": "bfe9f60402cc945fd47300534ac292853b5ccc24971d0231ca1c8c9f70e53fe7",
+      "sourceSha256": "b39f01a7f75cb8e65c2bc7fe08619cb0a7e835af65acb5172f2387788cf14f7c",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 0.0,
+      "file": "aspheric_monofocal_dc_v1_00.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.864104711932058,
+      "sum": 0.9999999994688316,
+      "captureFraction": 0.996869700954759,
+      "sha256": "8be30f81b93afbff067997c40f627d167d88c8f666e8563f9f079199274525b5",
+      "sourceSha256": "38d7fd62a94a642858542f3b2f06ffc0ffdf6dc9b7671520cacc0a5d5ea3e0cf",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.0,
+      "file": "aspheric_monofocal_dc_v1_10.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.815121297998083,
+      "sum": 1.0000000002384755,
+      "captureFraction": 0.9966423874917378,
+      "sha256": "8d58cb71e7f214e9eedfd00128adccaf3535c570a3be86a1418202b5dc3d7a4a",
+      "sourceSha256": "f0185b35e1aa5f9a3c76be10fa5e08edc3dc3ece373bd275205131af1af51286",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.1,
+      "file": "aspheric_monofocal_dc_v1_11.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.810238597653598,
+      "sum": 0.9999999997080975,
+      "captureFraction": 0.9966840123941382,
+      "sha256": "44ec8c5ea45f59e8ce04349bfff8f3a56a65e3e5aa73f36fa57392aab2916160",
+      "sourceSha256": "69fb4ca4e56cc2e345c8782bc6358f403e0618b52ba92af33a54f1368139d767",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.2,
+      "file": "aspheric_monofocal_dc_v1_12.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.805358732119693,
+      "sum": 0.9999999998689794,
+      "captureFraction": 0.9966501640028945,
+      "sha256": "b4bb705b9b8b96ad78b6dfe8d0acd357b66dc203ab5a01ec87fd5c558e0c1a7f",
+      "sourceSha256": "c29587ee1be446c4bb0c5080cb19186962dac8950b480fb2872fbb42c8fae2ae",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.3,
+      "file": "aspheric_monofocal_dc_v1_13.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.80048169892832,
+      "sum": 0.9999999995889864,
+      "captureFraction": 0.9966016984806498,
+      "sha256": "a2af36854ddb35cc2b15f5f7f4617e831d1719ad1f8eb86b37548b4371e0173f",
+      "sourceSha256": "848e5ce9be03b9fa86c30dbc57d8718af81c533cce9ec83cc871cee88aa71ed8",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.4,
+      "file": "aspheric_monofocal_dc_v1_14.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.795607495614306,
+      "sum": 1.0000000000995959,
+      "captureFraction": 0.9966518902902364,
+      "sha256": "fb4189960411d5d671c44415ec52f712380dfb1d782033a375e1dfe59276780d",
+      "sourceSha256": "881362b933e43638a28068d6703da720817662af0527f13d6e29122dfcf94044",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.5,
+      "file": "aspheric_monofocal_dc_v1_15.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.79073611971532,
+      "sum": 0.9999999992389834,
+      "captureFraction": 0.9966934221514868,
+      "sha256": "586d7f6189658d884b2ea1d6b2772749737edb8a34d3d7d3f3a19f599336914b",
+      "sourceSha256": "029088f2d6fb9e2fee86cb5e0c4a6fbf62c1169710e819ce142801004fcb7ad2",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.6,
+      "file": "aspheric_monofocal_dc_v1_16.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.785867568771902,
+      "sum": 1.000000000329882,
+      "captureFraction": 0.9966363029471794,
+      "sha256": "854a169c63f31fff885083c9a9351c8d9e61e560788cccc9290e92b7827c8059",
+      "sourceSha256": "38604a98796e21850689d5e22e075a66caff09de92f05d26512102b00417a07c",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.7,
+      "file": "aspheric_monofocal_dc_v1_17.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.781001840327434,
+      "sum": 1.0000000002294755,
+      "captureFraction": 0.996573316114158,
+      "sha256": "869cbe5d8db5874522af559660447ad5901a6aa01bc9fe5834a14d08ac978b11",
+      "sourceSha256": "3590479a2ce179e4dbbb76876850169db26528019eb41d5ea77efd26f6312bcb",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.8,
+      "file": "aspheric_monofocal_dc_v1_18.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.77613893192815,
+      "sum": 0.9999999999087266,
+      "captureFraction": 0.9965247686564082,
+      "sha256": "56405ad86636930b4f06e8196fb7c9401ae751ac8a7812889710f6fe1ff0c95a",
+      "sourceSha256": "bcb7e795cc02cd3ad549943f095554af2247bd68a1797e54156d6cf46d2d29c7",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 1.9,
+      "file": "aspheric_monofocal_dc_v1_19.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.771278841123134,
+      "sum": 1.00000000047163,
+      "captureFraction": 0.9965373877666697,
+      "sha256": "e4fd2736e7f323ab1d13d0762076e31a3d00b2231b65b4cf209c18083cc70d63",
+      "sourceSha256": "7e316d09106f9e9daeab84605a8157d5e94530e8a71919c894a1d26bc50e8262",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.0,
+      "file": "aspheric_monofocal_dc_v1_20.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.76642156546429,
+      "sum": 1.0000000000207558,
+      "captureFraction": 0.9965036254612669,
+      "sha256": "b678a9efc63a81604f4b6415e616d1f1c14a56b21b9334f419976df9346e77ad",
+      "sourceSha256": "bee4f8c877e365b4d1ae63caa1c7dfdf04d74f74a44c0d1be168f4b5789e50ce",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.1,
+      "file": "aspheric_monofocal_dc_v1_21.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.761567102506376,
+      "sum": 0.9999999999141986,
+      "captureFraction": 0.996507329481692,
+      "sha256": "39d6c56bbfa169b5287d06fa4aae77f9b4c1f8e99f799013b2298dc6f3272503",
+      "sourceSha256": "31a4e2cf206a27dde96889098cc978eaa7a69dfb28da2102d92b7648f75f9000",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.2,
+      "file": "aspheric_monofocal_dc_v1_22.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.756715449806975,
+      "sum": 1.000000000075009,
+      "captureFraction": 0.9965258441129501,
+      "sha256": "35a2b491e976a36805a0d18b76f54551e91bfe956e46657c362eb707186297a2",
+      "sourceSha256": "199be26ccbe0f9aa4cc553a049f6a5b29348a1e4d1ddc3ad8a62bf61a4bffe05",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.3,
+      "file": "aspheric_monofocal_dc_v1_23.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.7518666049265,
+      "sum": 0.9999999997354359,
+      "captureFraction": 0.9965354617975596,
+      "sha256": "90f4d77f1d32009a21ec56e29787f67560dc9efe45f176f792237d25c2982a55",
+      "sourceSha256": "df63dfcf068c57da376ce4adfbc9dd78e54be866f508aa41bf209e7b81321dbe",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.4,
+      "file": "aspheric_monofocal_dc_v1_24.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.747020565428176,
+      "sum": 1.0000000001115512,
+      "captureFraction": 0.9964546872483725,
+      "sha256": "b6ba004933e048a808536d5fab865fc9ef179da0afc2eeb9b87507b993c45739",
+      "sourceSha256": "92a89457e3ed3cda400125ec523c0f4c2e14b87f48e2ce14ad877f5663322ee6",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.5,
+      "file": "aspheric_monofocal_dc_v1_25.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.742177328878054,
+      "sum": 1.0000000003993317,
+      "captureFraction": 0.9964671017396771,
+      "sha256": "b14761e61566c58425eac38fc96e6da1b00bf0576f7116801dbfceb446706c73",
+      "sourceSha256": "40d9e910e910d22380fec827604302e146276496fb7cacb5847c257c430fbcff",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.6,
+      "file": "aspheric_monofocal_dc_v1_26.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.73733689284501,
+      "sum": 0.9999999998915883,
+      "captureFraction": 0.9964998301916036,
+      "sha256": "96d74eea82e270c3cf371341eced004df86cb456988198186b8ae0ecb502a251",
+      "sourceSha256": "d3d4ec1c6d35e20dc7be5f91c01d4473b012e3828c8b659e0691f5ce594c9076",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.7,
+      "file": "aspheric_monofocal_dc_v1_27.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.732499254900713,
+      "sum": 1.0000000000755942,
+      "captureFraction": 0.9963838609437714,
+      "sha256": "a272f7811c3da2d7c1ebf9ad62f85a383a46924277b6b84fe13232dbf17eb7c8",
+      "sourceSha256": "c5394bb19d7194d21ecaf6c77ac201032e1a12da908cb6678adf414021442db2",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.8,
+      "file": "aspheric_monofocal_dc_v1_28.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.727664412619646,
+      "sum": 1.0000000000456408,
+      "captureFraction": 0.9964138900047923,
+      "sha256": "0da69eb5bde10a9d42d2fd2ef671a3f15cce4972f0135c984a4f5a334d9de385",
+      "sourceSha256": "95761efa796613d801d61febdae6f840ddb1feb792743580dda01a5daba19681",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 2.9,
+      "file": "aspheric_monofocal_dc_v1_29.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.722832363579098,
+      "sum": 0.9999999999472868,
+      "captureFraction": 0.9964001830578869,
+      "sha256": "0c74f0cdf9eee16a8d22e6e49b15db904741027999e2b4f900a416500f96a5ba",
+      "sourceSha256": "c4b07696242bc50110980f2708c650cd3637404a6f75cdc6b053cf01d80677b4",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.0,
+      "file": "aspheric_monofocal_dc_v1_30.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.718003105359152,
+      "sum": 0.999999999895671,
+      "captureFraction": 0.9964068193955673,
+      "sha256": "3d92e794d530c26e5f0112d323f4955d25acd564966201676e1b8299f58295ff",
+      "sourceSha256": "ff2b2d5e0fb019ab9d5debd8683732b2b45db103938efac0957052f99af76c0f",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.1,
+      "file": "aspheric_monofocal_dc_v1_31.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.71317663554269,
+      "sum": 1.0000000004279213,
+      "captureFraction": 0.9963346143299713,
+      "sha256": "cc44bd41d9a5da9fcb3413192c31fff030acd7eb1b11995b25b5214c3b9efc79",
+      "sourceSha256": "b6835ad7a590fb7a9c136ba82db290e3c2b80ff60886d6413bfa9c0fc84b395d",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.2,
+      "file": "aspheric_monofocal_dc_v1_32.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.70835295171538,
+      "sum": 1.0000000001154332,
+      "captureFraction": 0.9963001089240161,
+      "sha256": "49d344a1231338729e86339f5a5d2233e3e876f6251e9715b792620f73cc6546",
+      "sourceSha256": "bcf2565aee90e3339ab6412c97f60b6d2ff640e06ac4dbadb9594100abdc9797",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.3,
+      "file": "aspheric_monofocal_dc_v1_33.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.70353205146567,
+      "sum": 1.0000000002082639,
+      "captureFraction": 0.9962976601005342,
+      "sha256": "e269fadaafc2ba4bb3ba6eb2a615f42da25f07e54bccbb939beaf1c64442d170",
+      "sourceSha256": "e7b1d5a91572670a98b2bb392b9b1aedbccea95bd80ad230eb99e8017d7739e3",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.4,
+      "file": "aspheric_monofocal_dc_v1_34.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.698713932384816,
+      "sum": 1.0000000001973672,
+      "captureFraction": 0.996336859331706,
+      "sha256": "5379bd72eb63902667c54cb5b1ab539f0ae36b9b83df6d4ee3345d074d99071c",
+      "sourceSha256": "355f283dc5eb013172956cf722150c4526f06435e0cf09dc304510269a0e78ce",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.5,
+      "file": "aspheric_monofocal_dc_v1_35.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.69389859206682,
+      "sum": 0.999999999710296,
+      "captureFraction": 0.9962907624735405,
+      "sha256": "d5d9a620381eb824bf3abfe75ad05da6f4b4d90fc2030eeb7f7c904bfb23b246",
+      "sourceSha256": "d978f7212d12777e38dbdcd6de652e71d837814c390477249f26e9f1570dad7c",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.6,
+      "file": "aspheric_monofocal_dc_v1_36.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.68908602810848,
+      "sum": 1.0000000000915945,
+      "captureFraction": 0.9962506628195548,
+      "sha256": "f4b6b0af3fc5dab5109963227c9769144351a8cea6936c4ff9e5b8bae823d4f6",
+      "sourceSha256": "243900d0901dc0be7d15eee74d484435f298100785f9bf5e23c75247fd43b668",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.7,
+      "file": "aspheric_monofocal_dc_v1_37.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.68427623810935,
+      "sum": 1.0000000001204608,
+      "captureFraction": 0.99612221980266,
+      "sha256": "e372930874078c7e54b578dc030be80c9966cac58915ca36ce01d1f105bd53af",
+      "sourceSha256": "b3ef821429540d403d2dc2e01922ad41ae69e4f675b911cdc98234a879430737",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.8,
+      "file": "aspheric_monofocal_dc_v1_38.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.67946921967177,
+      "sum": 0.9999999999919521,
+      "captureFraction": 0.9960759526207832,
+      "sha256": "aad75ea1adc8bf0b0952c9dc42d69d40a3b3993de74e9f6528a58f7818430ff7",
+      "sourceSha256": "f2742a250bc183b5398733dc54da95cc24e2713ea90d9d7c403aadea2350c7c0",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 3.9,
+      "file": "aspheric_monofocal_dc_v1_39.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.674664970400823,
+      "sum": 1.0000000000270322,
+      "captureFraction": 0.9959561310785241,
+      "sha256": "1d775bf28abbc79a14c5e4f6f9664f31b3536dda0d60cd27eae002e9d1015291",
+      "sourceSha256": "fb1614ffc0f85046756b6f44bc496c7d13845f6a311af9b890b03182daabbb69",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "aspheric_monofocal_dc_v1",
+      "objectVergenceD": 4.0,
+      "file": "aspheric_monofocal_dc_v1_40.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.66986348790436,
+      "sum": 1.0000000000108937,
+      "captureFraction": 0.9959625956057334,
+      "sha256": "98544d75e83ab2a2bdaeb301127e4b98ef0029c6c2d42511f1e05de6cf1a72c4",
+      "sourceSha256": "69d37ca1f0c99e3710877f8aca1dbb94d697ef42fd8e9eb35e9ae894f88277ab",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 0.0,
+      "file": "vivity_inspired_v2_1_dc_v1_00.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.858436589425875,
+      "sum": 1.0000000011494465,
+      "captureFraction": 0.9968754050504794,
+      "sha256": "759bb1a1aa7d502a1b3be61211dac04b28a8d911491d0ec101ceb1908cd85022",
+      "sourceSha256": "239ccf06aba2708370f6b50968d87b7ab875b6761087d1360090ba037547adb6",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.0,
+      "file": "vivity_inspired_v2_1_dc_v1_10.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.80946277187097,
+      "sum": 1.000000000201997,
+      "captureFraction": 0.9966307901025785,
+      "sha256": "9f63fedab9ac8044588dbba69ac8a53d0bb0eb842f336bbafdfa81499b3c2df5",
+      "sourceSha256": "0ca1c48d1cb55350441291dd7a47bf58999f285d4a87fdce392eb75f4d5dc0b1",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.1,
+      "file": "vivity_inspired_v2_1_dc_v1_11.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.804581030341662,
+      "sum": 0.9999999981667599,
+      "captureFraction": 0.9966724130222252,
+      "sha256": "268d8997968280d071a08bd95398c2b56b600e46bc9d8843ef87989c8b4d8b36",
+      "sourceSha256": "8cfbd854edac9df958c279e9262d78b9da0843484b2a60c754cb8572c8168706",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.2,
+      "file": "vivity_inspired_v2_1_dc_v1_12.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.79970212346349,
+      "sum": 0.999999999031808,
+      "captureFraction": 0.9966385370414826,
+      "sha256": "d90e19111ab1a03bbe607fa9800996047550992256b83e76a00deede82b60c17",
+      "sourceSha256": "5cdb3fc32dc4fa721b416f5d6e343936bea59588204e9bbf9c87196e691613a6",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.3,
+      "file": "vivity_inspired_v2_1_dc_v1_13.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.7948260487682,
+      "sum": 0.9999999996990713,
+      "captureFraction": 0.9965813278036012,
+      "sha256": "2093e884ec9f579103ac51d5e42b61eee8c971dcbfac7b09247a2901d6ac93a3",
+      "sourceSha256": "d54b9c064d97483eb6b58f4a11a481e363da42e50dac5e49f4003244e6d0ed07",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.4,
+      "file": "vivity_inspired_v2_1_dc_v1_14.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.789952803790403,
+      "sum": 1.0000000001370517,
+      "captureFraction": 0.9966373414101602,
+      "sha256": "423a50e10d0313287fd0aebad834196f50c88f4aabb415ec9de98a2cff6d8d51",
+      "sourceSha256": "675a88aeed4bc3e909dabdd1774265b561cbfafdd39e1360e62cfd3c06642ecc",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.5,
+      "file": "vivity_inspired_v2_1_dc_v1_15.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.785082386067565,
+      "sum": 1.0000000004765508,
+      "captureFraction": 0.9966788928699457,
+      "sha256": "1fc793b0e65a6583bf098a66e20a4af1e34bad7a13a9ad0b7a6df53a486c266c",
+      "sourceSha256": "380be684983ad00c4cadc56d13f3e654e0dc697e7939925f9e669cef606dd84b",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.6,
+      "file": "vivity_inspired_v2_1_dc_v1_16.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.78021479314002,
+      "sum": 0.9999999998190039,
+      "captureFraction": 0.9966014368707181,
+      "sha256": "1c5708c1b12f891c9800c3f4c356b73391e4a891fd8eae1a32de18842d5b5fe3",
+      "sourceSha256": "81c7d5b7bb5e0f4aa452d22d50af83f29395a8874631526b1ef2069621435111",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.7,
+      "file": "vivity_inspired_v2_1_dc_v1_17.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.775350022550953,
+      "sum": 1.0000000002406702,
+      "captureFraction": 0.9965471125551151,
+      "sha256": "6e36446248be66876fe4a2288193bb611fdbe80452f65c5d6191cc4d5e35d65f",
+      "sourceSha256": "21f050aa4ec0dc8cf19bc938e31d4e2d49a283d2f1a3a7f6a72b840d22b5c7d8",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.8,
+      "file": "vivity_inspired_v2_1_dc_v1_18.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.77048807184639,
+      "sum": 1.0000000002669995,
+      "captureFraction": 0.9965159904749178,
+      "sha256": "26e7d516fef4fb5485d4be4ccb34673fe049bfe2cef58ea82b2699d066a78a03",
+      "sourceSha256": "b80aa3506ce270e2397eb374dcf25569bce7e0d17ab14f3970b18cef3aedbef3",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 1.9,
+      "file": "vivity_inspired_v2_1_dc_v1_19.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.7656289385752,
+      "sum": 0.9999999997275348,
+      "captureFraction": 0.9964791260983545,
+      "sha256": "c6275cc591f72f90177f2c7d32a335d000dc98ce3e66109ffba2fc27a153efde",
+      "sourceSha256": "8c754f151d81b564a213e4170109d1a78c15fd1a76547408f6e985f4085cea9e",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.0,
+      "file": "vivity_inspired_v2_1_dc_v1_20.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.760772620289114,
+      "sum": 1.0000000001578568,
+      "captureFraction": 0.9964686237981353,
+      "sha256": "7ff0c537f203fdfb17fed35ddcc75ace482eb1c25028e98bb10078bfb0c66e4a",
+      "sourceSha256": "092cf25cc2324be23dc4218a763604873b73e4df0358a21b750c2f11ea8fd042",
+      "origin": "authenticated_reference"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.1,
+      "file": "vivity_inspired_v2_1_dc_v1_21.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.75591911454266,
+      "sum": 1.00000000033664,
+      "captureFraction": 0.9964694123788131,
+      "sha256": "8ef71ab4e0e0784101735a80ddb85421eafea89b1a0847803968180ad18790f4",
+      "sourceSha256": "e1b1dddd84536ac863e53392844590e30f9fed2d43d71567d0447d446058d2f6",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.2,
+      "file": "vivity_inspired_v2_1_dc_v1_22.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.75106841889323,
+      "sum": 1.0000000000630265,
+      "captureFraction": 0.9964499485488978,
+      "sha256": "32620d984f07f11c2a50334574ed01f3b73d17e1bd05baa7917471833728eddb",
+      "sourceSha256": "f9e57e459eb1035a07a93429639a132394bed10dd481c19ffb8d61e428929f3a",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.3,
+      "file": "vivity_inspired_v2_1_dc_v1_23.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.74622053090103,
+      "sum": 0.9999999999174243,
+      "captureFraction": 0.9964770746842871,
+      "sha256": "fcad660d1c0308d1c540b503e3c957464608f936386d2ff72308a32b2f06b9dc",
+      "sourceSha256": "edc0ca365b91c1020727f5cf397fe17c8c483ee67116498f8cca67f9e94500ac",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.4,
+      "file": "vivity_inspired_v2_1_dc_v1_24.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.741375448129098,
+      "sum": 1.0000000000535119,
+      "captureFraction": 0.9963728908179974,
+      "sha256": "f6c14b57dae63dab37f317f927943322fecc2f171cb674106c8e862b28a61902",
+      "sourceSha256": "9ed999dd406d16ebf1f53ebde15890d064baacf58deeeef8dc03504cb0906f60",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.5,
+      "file": "vivity_inspired_v2_1_dc_v1_25.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.736533168143282,
+      "sum": 1.0000000001856706,
+      "captureFraction": 0.996423250572751,
+      "sha256": "1f5de30a49e78865a3e758883862398298ecb3d0df027b72340305f788fcbea1",
+      "sourceSha256": "292ef33c1e588add65f20a1d3ac7dd5412a1db447915adc6c5baf77874731fbf",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.6,
+      "file": "vivity_inspired_v2_1_dc_v1_26.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.73169368851225,
+      "sum": 0.999999999856451,
+      "captureFraction": 0.9964149905682032,
+      "sha256": "1d02c2c34b91250b292ef2d5109bc2a2ff97d26303eb65e4fdddc5c17e7924d5",
+      "sourceSha256": "ab4661f47e878e8c9654b8b8385accdf133479560f46217c74ed41257c696694",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.7,
+      "file": "vivity_inspired_v2_1_dc_v1_27.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.726857006807478,
+      "sum": 0.9999999999163476,
+      "captureFraction": 0.9963282978052543,
+      "sha256": "175fe67aeeb1a8bf12cd57c7d45636957a9bd7dc086777a3dc7664337a157b33",
+      "sourceSha256": "d773b97567a54dca5f59dbda672bbbbeda472b2ad38ecb815557f907e60069da",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.8,
+      "file": "vivity_inspired_v2_1_dc_v1_28.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.72202312060326,
+      "sum": 1.000000000172506,
+      "captureFraction": 0.9963523828006592,
+      "sha256": "e09926fa996c6a138433e9eab575e10ca70d03c5c9389ad70773cc9e0211dfb8",
+      "sourceSha256": "ba0d576e7322822f7fdd9278a5bc665ef1b7eb9493022f2865c337ac45178207",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 2.9,
+      "file": "vivity_inspired_v2_1_dc_v1_29.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.71719202747667,
+      "sum": 1.0000000003836709,
+      "captureFraction": 0.9963239537952052,
+      "sha256": "1a5e5848e16d6f124ce01adec37dce703d5468f2c2942de2c0cb3f646bb40723",
+      "sourceSha256": "baf0e935480a739f3a783dad5158edc77b760d99d771de029c183e077859367e",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.0,
+      "file": "vivity_inspired_v2_1_dc_v1_30.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.712363725007613,
+      "sum": 0.9999999998802322,
+      "captureFraction": 0.9963071735205082,
+      "sha256": "3e7836c91399e20e1413cb89558e800fa9662174afcd02e6c9bd2d1a1765c49c",
+      "sourceSha256": "f3ae2ce8cce5ea42fb5cb169a7d871995de3007daf93e9d4ede5829719cb8f95",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.1,
+      "file": "vivity_inspired_v2_1_dc_v1_31.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.70753821077876,
+      "sum": 1.0000000000768985,
+      "captureFraction": 0.9962642564707366,
+      "sha256": "1d396a065011ce9a757edb53731f78cf2c4a71ae1170d804ad4d598eaf952c9d",
+      "sourceSha256": "6633d412d85fabb7dfa27d737a845a4a5efb2b62e5721393c6ae07c2fb6b153f",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.2,
+      "file": "vivity_inspired_v2_1_dc_v1_32.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.702715482375595,
+      "sum": 1.0000000001231095,
+      "captureFraction": 0.9961915647835723,
+      "sha256": "c541a1204f692e8692bd09254a9f681b6ffaf7f8536ea87be4e0a19d5cccc2be",
+      "sourceSha256": "683cdea85faaea1e00ee107b8053b3c2dcb6e245a6d4507f3e797f9a5da90c0b",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.3,
+      "file": "vivity_inspired_v2_1_dc_v1_33.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.697895537386376,
+      "sum": 0.9999999999682727,
+      "captureFraction": 0.9962477565813331,
+      "sha256": "82badda172382a3f9eec9210004d811fad0ea2f960376afaaf2884086f4859c4",
+      "sourceSha256": "d817e2e14f1809ba6ee1ad95186ea94700415f1a3994c7c757a216d950eff14b",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.4,
+      "file": "vivity_inspired_v2_1_dc_v1_34.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.693078373402148,
+      "sum": 0.9999999997202569,
+      "captureFraction": 0.9962546028077812,
+      "sha256": "80696d8bd9b43daf2a16bca79c31560d17ad20685abf3955dce653a45a5dcfd7",
+      "sourceSha256": "62ab7f0bad91dc33d1474a925fd4315260d479893ae4eb609bfbe55f6a1eafc3",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.5,
+      "file": "vivity_inspired_v2_1_dc_v1_35.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.688263988016732,
+      "sum": 1.0000000000726272,
+      "captureFraction": 0.9962201846376709,
+      "sha256": "4c1e976e7d720f994868ecac14dc41daa5518e948843b16b132854ff93231aa7",
+      "sourceSha256": "786adadcd4c8bec583155fbe6ca1c86fea6a48d3becda316b46c37350c329350",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.6,
+      "file": "vivity_inspired_v2_1_dc_v1_36.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.683452378826725,
+      "sum": 0.9999999998966462,
+      "captureFraction": 0.9961447194850376,
+      "sha256": "087a5995045596dab0b4f697aa0f68690eb2ac48bb9c807ae3bca5b43a9ea82a",
+      "sourceSha256": "78bac07ea0b468f13cbfdd453189f066a297c84c564e35679ed7b881d7913c6a",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.7,
+      "file": "vivity_inspired_v2_1_dc_v1_37.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.678643543431505,
+      "sum": 1.0000000000321512,
+      "captureFraction": 0.9959956366234731,
+      "sha256": "5e5f29d9e09374b32032d903af7fc8d1d1f23f514dabf60345ffb155361f6216",
+      "sourceSha256": "d53e1e864d66dfc856d120355d3913b5943c11c1efd3de65ffc03155b0500a01",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.8,
+      "file": "vivity_inspired_v2_1_dc_v1_38.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.673837479433203,
+      "sum": 1.0000000000155131,
+      "captureFraction": 0.9959964369533029,
+      "sha256": "60cd87973ec6298b680b1a225eb5dc7f2f7a7a80fff60806e36bb2d4e99bd788",
+      "sourceSha256": "0cd39f2f735bab1ec36f0a60ee5d52a0fa11037bb82bb23792b6e8ca4ae97a17",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 3.9,
+      "file": "vivity_inspired_v2_1_dc_v1_39.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.669034184436725,
+      "sum": 0.9999999995608655,
+      "captureFraction": 0.9958854207679965,
+      "sha256": "a03477540b664b50b2495ce077072d750b5009803bde3b8f5ab20f612ce52ebf",
+      "sourceSha256": "1b6f2f1d285e271700c93e7c123d233aaebfd3f68c18fc2ac7a948bc79da5e55",
+      "origin": "direct_trace"
+    },
+    {
+      "model": "vivity_inspired_v2_1_dc_v1",
+      "objectVergenceD": 4.0,
+      "file": "vivity_inspired_v2_1_dc_v1_40.psf",
+      "width": 513,
+      "height": 513,
+      "center": [
+        256.0,
+        256.0
+      ],
+      "retinalExtentMm": [
+        -0.25,
+        0.25,
+        -0.25,
+        0.25
+      ],
+      "retinalMmPerTanTheta": 16.664233656049717,
+      "sum": 0.9999999999554935,
+      "captureFraction": 0.9958004663277524,
+      "sha256": "7d2336bab82412f8ecf843fa1e3cb1c2ec2f744721838cd4b346320a88786336",
+      "sourceSha256": "741c3964b1f849d2f310da9815942ed63e933d0c6153e0466d22d4a186a5d924",
+      "origin": "direct_trace"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "backend_preset": "optrace.presets.geometry.arizona_eye(adaptation=0)",
+  "units": "geometry mm; wavelength nm; optical power dioptres; SA reference micrometres",
+  "corneal_vertex_z_mm": 0, "corneal_thickness_mm": 0.55,
+  "cornea_anterior_R_mm": 7.8, "cornea_posterior_R_mm": 6.5, "cornea_posterior_k": -0.25,
+  "pupil_z_mm": 3.519999999, "pupil_definition": "physical iris aperture diameter, not entrance pupil",
+  "iol_front_z_mm": 4.7, "retina_z_mm": 24.0, "retina_type": "fixed rectangular tangent plane",
+  "corneas": {
+    "arizona": {"anterior_k": -0.25, "source_SA_um": null},
+    "low": {"anterior_k": -0.384, "source_SA_um": 0.155},
+    "average": {"anterior_k": -0.183, "source_SA_um": 0.241},
+    "high": {"anterior_k": -0.059, "source_SA_um": 0.327}
+  },
+  "SA_caveat": "Patent Table 2 conics transferred to Arizona anterior cornea only; quoted SA values belong to Alcon-Navarro model, not measured here. Patent describes RMS SA at 6-mm pupil for IOL; Table 2 does not independently state full corneal Zernike normalization/reference pupil. No claim of exact OSA Z4^0 values in this hybrid eye."
+}

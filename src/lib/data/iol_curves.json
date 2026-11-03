@@ -1,7 +1,7 @@
 [
   {
     "id": "envista",
-    "label": "enVista Monofocal",
+    "label": "Spherical Monofocal",
     "type": "IOL",
     "manufacturer": "Bausch & Lomb",
     "model": "enVista",
@@ -41,7 +41,7 @@
   },
   {
     "id": "zcb00",
-    "label": "1-piece Monofocal",
+    "label": "Aspheric Monofocal",
     "type": "IOL",
     "manufacturer": "Johnson & Johnson Vision",
     "model": "TECNIS Monofocal ZCB00",
@@ -89,7 +89,7 @@
   },
   {
     "id": "vivity",
-    "label": "Vivity",
+    "label": "Vivity-like EDOF",
     "type": "IOL",
     "manufacturer": "Alcon",
     "model": "AcrySof IQ Vivity",

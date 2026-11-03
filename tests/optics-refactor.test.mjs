@@ -60,9 +60,9 @@ test('legacy blur policy preserves full sigma at full resolution for extreme wor
 
 test('IOL selection contains exactly the three supported legacy models', () => {
   assert.deepEqual(curves.filter(curve => curve.type === 'IOL').map(({ id, label }) => ({ id, label })), [
-    { id: 'envista', label: 'enVista Monofocal' },
-    { id: 'zcb00', label: '1-piece Monofocal' },
-    { id: 'vivity', label: 'Vivity' }
+    { id: 'envista', label: 'Spherical Monofocal' },
+    { id: 'zcb00', label: 'Aspheric Monofocal' },
+    { id: 'vivity', label: 'Vivity-like EDOF' }
   ]);
   for (const curve of curves) {
     assert.equal(curve.defocus_D.length, curve.logMAR.length);

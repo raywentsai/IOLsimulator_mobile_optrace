@@ -1,0 +1,25 @@
+{
+  "source": "https://commons.wikimedia.org/wiki/File:ETDRS_Chart_2.svg",
+  "license": "public domain",
+  "sourceSha256": "02ca7f1655d19db1e12f18ce4a1d475e301a3754207f0ea420487bb4ccf0cf27",
+  "assetSha256": "544be7f9ce925eaa1fc40ab9f4af0e57d21081d4723247e6c57c285fc8923fd2",
+  "aspect": 1.305982905982906,
+  "objectHeightMm": 28.0,
+  "cropPoints": [
+    150,
+    175,
+    1678,
+    1345
+  ],
+  "letterHeightsMm": [
+    3.946798262636886,
+    3.142820804954594,
+    2.485021033653846,
+    1.9733993139022437,
+    1.5645591279380342,
+    1.242510516826923,
+    0.9867003872863248
+  ],
+  "angularRule": "2 atan(letterHeightMm * objectVergenceD / 2000); physical display size = object size * actual viewing distance / simulated object distance",
+  "status": "ETDRS-style illustrative card, not a validated acuity test; source labels are cropped out"
+}
