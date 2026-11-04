@@ -1,28 +1,37 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {fetchSceneAsset} from '../src/lib/render/scene-assets.ts';
+import {loadSceneImage} from '../src/lib/render/scene-assets.ts';
 
-test('scene download retries a transient response, preserves bytes and identifies permanent errors',async()=>{
-  const original=globalThis.fetch;
+test('PNG and SVG retain native URLs and work without fetch/blob support',async()=>{
+  const originalImage=globalThis.Image,originalFetch=globalThis.fetch;const requested=[];
   try {
-    let calls=0;
-    globalThis.fetch=async()=>++calls===1?new Response('',{status:503}):new Response(new Uint8Array([1,2,3]),{headers:{'content-type':'image/png'}});
-    const result=await fetchSceneAsset('/project/background.png');
-    assert.deepEqual(new Uint8Array(await result.arrayBuffer()),new Uint8Array([1,2,3]));assert.equal(calls,2);
-    calls=0;globalThis.fetch=async()=>{calls++;return new Response('',{status:404});};
-    await assert.rejects(fetchSceneAsset('/project/card.svg'),/\/project\/card.svg.*HTTP 404/);assert.equal(calls,1);
-    globalThis.fetch=async()=>new Response('<html>error</html>',{headers:{'content-type':'text/html'}});
-    await assert.rejects(fetchSceneAsset('/project/card.svg'),/Invalid image response/);
-  }finally{globalThis.fetch=original;}
+    globalThis.fetch=()=>{throw Error('fetch is unavailable');};
+    globalThis.Image=class {naturalWidth=1528;set src(url){this.url=url;requested.push(url);queueMicrotask(()=>this.onload?.());}get src(){return this.url;}removeAttribute(){this.url='';}};
+    for(const url of ['/app/background.png','/app/reading-card.svg']) {
+      const image=await loadSceneImage(url,new AbortController().signal);
+      assert.equal(image.src,url);assert.equal(image.onload,null);assert.equal(image.onerror,null);
+    }
+    assert.deepEqual(requested,['/app/background.png','/app/reading-card.svg']);
+  }finally{globalThis.Image=originalImage;globalThis.fetch=originalFetch;}
 });
 
-test('scene loading times out after two attempts and cancellation stops retries',async()=>{
-  const original=globalThis.fetch;let calls=0;
+test('native failure retries once with resource URL and manual retry recovers',async()=>{
+  const original=globalThis.Image;let requests=0,fail=true;
   try {
-    globalThis.fetch=async(_,options)=>{calls++;return new Promise((_,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('aborted'))));};
-    await assert.rejects(fetchSceneAsset('/slow.png',undefined,5),/slow.png.*timed out/);assert.equal(calls,2);
-    calls=0;const controller=new AbortController();
-    const pending=fetchSceneAsset('/slow.png',controller.signal,100);
-    controller.abort();await assert.rejects(pending,/cancelled/);assert.equal(calls,1);
-  }finally{globalThis.fetch=original;}
+    globalThis.Image=class {naturalWidth=1;set src(url){requests++;queueMicrotask(()=>fail?this.onerror?.():this.onload?.());}removeAttribute(){}};
+    await assert.rejects(loadSceneImage('/app/card.svg',new AbortController().signal),/card.svg.*download or decode failed/);
+    assert.equal(requests,2);fail=false;
+    assert.ok(await loadSceneImage('/app/card.svg',new AbortController().signal));assert.equal(requests,3);
+  }finally{globalThis.Image=original;}
+});
+
+test('native timeout is bounded and abort prevents retry',async()=>{
+  const original=globalThis.Image;let requests=0;
+  try {
+    globalThis.Image=class {set src(url){requests++;}removeAttribute(){}};
+    await assert.rejects(loadSceneImage('/slow.png',new AbortController().signal,5),/slow.png.*timed out/);
+    assert.equal(requests,2);requests=0;
+    const controller=new AbortController(),pending=loadSceneImage('/slow.svg',controller.signal,100);
+    controller.abort();await assert.rejects(pending,/cancelled/);assert.equal(requests,1);
+  }finally{globalThis.Image=original;}
 });

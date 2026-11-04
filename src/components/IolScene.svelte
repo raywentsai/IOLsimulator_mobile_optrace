@@ -1,7 +1,7 @@
 <script lang="ts">
   import {onMount,onDestroy} from 'svelte';
   import {base} from '$app/paths';
-  import backgroundAsset from '../lib/assets/images/background.lossless.webp';
+  import backgroundAsset from '../lib/assets/images/background.png';
   import {loadSceneImage} from '../lib/render/scene-assets';
   import {WebGLRenderer,type RenderConfig} from '../lib/render/gl/renderer';
   import {resolveBlurPolicy} from '../lib/render/blur-policy';
@@ -152,12 +152,12 @@
     const signal=loadController.signal;
     error='';status='Loading scene…';
       try {
-        renderer?.dispose();renderer=new WebGLRenderer(canvas);
-        const images=Promise.all([loadSceneImage(backgroundAsset,signal),loadSceneImage(`${base}/reading-card.svg`,signal)]);
-        // Initialize shaders while the two required scene assets download.
-        const [loaded]=await Promise.all([images,renderer.initialize()]);
-        [background,card]=loaded;
+        [background,card]=await Promise.all([loadSceneImage(backgroundAsset,signal),loadSceneImage(`${base}/reading-card.svg`,signal)]);
         if(disposed) return;
+        // Match 01e764e: do not keep a live WebGL context idle during download.
+        renderer?.dispose();renderer=new WebGLRenderer(canvas);
+        await renderer.initialize();
+        if(disposed)return;
         backgroundTexture=await renderer.loadImageTexture(background);
         // The first Gaussian frame uploads the actual sampled card; avoid
         // uploading its much larger native SVG raster during initialization.
