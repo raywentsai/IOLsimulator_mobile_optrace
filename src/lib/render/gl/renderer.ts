@@ -119,6 +119,7 @@ export interface WebGLErrorInfo {
  * Main WebGL renderer class
  */
 export class WebGLRenderer {
+  private imageTextureSequence = 0;
   private gl: WebGLRenderingContext;
   private canvas: HTMLCanvasElement;
   private resources: WebGLResources;
@@ -405,7 +406,7 @@ export class WebGLRenderer {
       throw new Error('Failed to create texture from image');
     }
 
-    const textureId = `image_${Date.now()}`;
+    const textureId = `image_${++this.imageTextureSequence}`;
     this.resources.textures.set(textureId, texture);
     return textureId;
   }

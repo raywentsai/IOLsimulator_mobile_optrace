@@ -8,7 +8,7 @@
     "build:gh-pages": "cross-env NODE_ENV=production vite build",
     "preview": "vite preview",
     "preview:gh-pages": "cross-env NODE_ENV=production vite preview --base=/IOLsimulator_mobile_optrace/",
-    "test:optics": "node --test tests/optics-refactor.test.mjs tests/psf-math.test.mjs tests/psf-library.test.mjs",
+    "test:optics": "node --test tests/optics-refactor.test.mjs tests/psf-math.test.mjs tests/psf-library.test.mjs tests/scene-assets.test.mjs tests/psf-prefetch.test.mjs",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
