@@ -7,30 +7,33 @@
   import {manifest,loadPsf} from '../lib/render/psf/library';
   import {objectVergence,PSF_MODELS,mobileSampling,calibratedCssPxPerMm} from '../lib/render/psf/geometry';
   import type {SceneInput} from '../lib/render/psf/scene';
+  import {PsfDisplay} from '../lib/render/psf/display';
   import {blurEngine,selectedLensId,selectedCompareLensId,masterDefocus,cssPxPerMmCal,calibrationScale,currentViewportScale,viewingDistance,splitViewEnabled,
     blurSigma,compareBlurSigma,backgroundBlurSigma,compareBackgroundBlurSigma,currentVADecimal,compareVADecimal} from '../lib/stores/app';
 
   let host:HTMLDivElement,canvas:HTMLCanvasElement;
   let renderer:WebGLRenderer|null=null;
+  let psfDisplay:PsfDisplay|null=null;
   let worker:Worker|null=null;
   let observer:ResizeObserver;
   let ready=false,disposed=false,busy=false,dirty=false,version=0;
   let error='',status='Loading scene…',renderMs=0;
-  let timer:ReturnType<typeof setTimeout>;
+  let profile:Record<string,unknown>={},scheduledAt=0;
+  let timer:ReturnType<typeof setTimeout>|null=null;
   let background:HTMLImageElement,card:HTMLImageElement;
   let sourcePixels:ImageData;
-  let backgroundTexture='',cardTexture='',outputTexture='';
+  let backgroundTexture='',cardTexture='';
   const cardCanvas=typeof document!=='undefined'?document.createElement('canvas'):null;
-  const resultCanvas=typeof document!=='undefined'?document.createElement('canvas'):null;
   const CARD_HEIGHT_MM=28,ASPECT=1528/1170;
   let id=0;
-  const pending=new Map<number,{resolve:(value:{data:Uint8ClampedArray;milliseconds:number})=>void;reject:(error:Error)=>void}>();
+  type Computed={data:Uint8ClampedArray;milliseconds:number;profile:Record<string,number>};
+  const pending=new Map<number,{resolve:(value:Computed)=>void;reject:(error:Error)=>void}>();
 
   function loadImage(url:string):Promise<HTMLImageElement> {
     return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('Scene asset failed to load'));image.src=url;});
   }
 
-  function compute(input:SceneInput,backgroundKey:string):Promise<{data:Uint8ClampedArray;milliseconds:number}> {
+  function compute(input:SceneInput,backgroundKey:string):Promise<Computed> {
     return new Promise((resolve,reject)=>{
       const requestId=++id;pending.set(requestId,{resolve,reject});
       worker!.postMessage({id:requestId,input,backgroundKey});
@@ -39,8 +42,9 @@
 
   function schedule():void {
     if(!ready||disposed) return;
-    version++;dirty=true;status='Updating…';clearTimeout(timer);
-    timer=setTimeout(()=>void flush(),75);
+    version++;dirty=true;status='Updating…';
+    scheduledAt=performance.now();
+    if(timer===null&&!busy)timer=setTimeout(()=>{timer=null;void flush();},16);
   }
 
   async function flush():Promise<void> {
@@ -51,6 +55,7 @@
     const sigma=$blurSigma,compareSigma=$compareBlurSigma,bgSigma=$backgroundBlurSigma,compareBgSigma=$compareBackgroundBlurSigma;
     try {
       const start=performance.now(),cssWidth=Math.max(1,host.clientWidth),cssHeight=Math.max(1,host.clientHeight);
+      const metrics:Record<string,unknown>={queueMs:start-scheduledAt};
       // Physics is computed off-thread at a bounded sampling grid; its physical
       // PSF scale uses this exact ratio. Gaussian keeps the original GPU policy.
       const library=engine==='psf'?await manifest(base):null,demand=objectVergence(defocus);
@@ -59,7 +64,6 @@
       const desiredScale=Math.min(devicePixelRatio||1,2);
       const width=sampling?.width??Math.max(1,Math.round(cssWidth*desiredScale)),height=sampling?.height??Math.max(1,Math.round(cssHeight*desiredScale));
       const scale=width/cssWidth,scaleY=height/cssHeight;
-      canvas.width=width;canvas.height=height;
       const heightPixels=Math.max(1,Math.round(CARD_HEIGHT_MM*distance*(-defocus)*ppm*scaleY));
       const widthPixels=Math.max(1,Math.round(CARD_HEIGHT_MM*ASPECT*distance*(-defocus)*ppm*scale));
       if(widthPixels*heightPixels>4194304) throw new Error('Card exceeds available sampling memory; use a shorter viewing distance');
@@ -68,6 +72,8 @@
       ctx.fillStyle='white';ctx.fillRect(0,0,widthPixels,heightPixels);ctx.drawImage(card,0,0,widthPixels,heightPixels);
       const config:RenderConfig={width,height,blurSigma:0,nsGrade:0,pscRadius:0,pscDensity:0,pscSoftness:.2,splitView:false,splitPosition:.5};
       if(engine==='gaussian') {
+        if(canvas.width!==width) canvas.width=width;
+        if(canvas.height!==height) canvas.height=height;
         renderer!.updateImageTexture(cardTexture,cardCanvas!);
         const policy=(s:number)=>resolveBlurPolicy({sigmaCssRaw:s,deviceCssPxPerMm:ppm,viewingDistanceM:distance,renderPixelScale:scale}).sigmaTexelUsedFull;
         await renderer!.render(cardTexture,{...config,blurSigma:policy(sigma),compareBlurSigma:split?policy(compareSigma):undefined,
@@ -85,24 +91,32 @@
           const near=library!.entries.find(e=>e.model===model&&e.objectVergenceD===demand);
           const infinity=library!.entries.find(e=>e.model===model&&e.objectVergenceD===0);
           if(!near||!infinity) throw new Error('Requested PSF is missing');
-          const [nearEnergy,infinityEnergy]=await Promise.all([loadPsf(base,near),loadPsf(base,infinity)]);
-          return compute({width,height,background:new Uint8ClampedArray(0),backgroundWidth:sourcePixels.width,backgroundHeight:sourcePixels.height,
+          const loadStart=performance.now();
+          const nearLoad:Record<string,number>={},infinityLoad:Record<string,number>={};
+          const [nearEnergy,infinityEnergy]=await Promise.all([loadPsf(base,near,nearLoad),loadPsf(base,infinity,infinityLoad)]);
+          if(disposed||requestVersion!==version) return null;
+          const computeStart=performance.now();
+          const result=await compute({width,height,background:new Uint8ClampedArray(0),backgroundWidth:sourcePixels.width,backgroundHeight:sourcePixels.height,
             card:gray,cardWidth:widthPixels,cardHeight:heightPixels,near,nearEnergy,infinity,infinityEnergy,
             cssPxPerMm:ppm,viewingDistanceM:distance,renderScale:scale,renderScaleY:scaleY},[model,width,height,ppm,distance,scale,scaleY].join(':'));
+          metrics[lensId]={loadDecodeMs:computeStart-loadStart,nearLoad,infinityLoad,workerRoundTripMs:performance.now()-computeStart,workerMs:result.milliseconds,...result.profile};
+          return result;
         };
-        const left=await makeSide(lens),right=split?await makeSide(compareLens):null;
+        const left=await makeSide(lens);
+        if(!left||disposed||requestVersion!==version) return;
+        const right=split?await makeSide(compareLens):null;
         if(disposed||requestVersion!==version) return;
+        const displayStart=performance.now();
         if(right) for(let y=0;y<height;y++) {
           const start=4*(y*width+Math.floor(width/2)),end=4*(y+1)*width;
           left.data.set(right.data.subarray(start,end),start);
         }
-        resultCanvas!.width=width;resultCanvas!.height=height;
-        resultCanvas!.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(left.data),width,height),0,0);
-        if(!outputTexture) outputTexture=await renderer!.loadImageTexture(resultCanvas!);
-        else renderer!.updateImageTexture(outputTexture,resultCanvas!);
-        await renderer!.render(outputTexture,config); // copy only: no Gaussian or cataract pass
+        metrics.splitCopyMs=performance.now()-displayStart;
+        psfDisplay??=new PsfDisplay(canvas);
+        const displayScale=(devicePixelRatio||1)*(window.visualViewport?.scale??1);
+        Object.assign(metrics,psfDisplay.present(left.data,width,height,Math.max(1,Math.round(cssWidth*displayScale)),Math.max(1,Math.round(cssHeight*displayScale))));
       }
-      if(requestVersion===version) {error='';status='';renderMs=performance.now()-start;}
+      if(requestVersion===version) {error='';status='';renderMs=performance.now()-start;profile={...metrics,renderMs,inputToSubmitMs:performance.now()-scheduledAt,width,height,objectVergenceD:demand,lens,compareLens:split?compareLens:null,cssPxPerMm:ppm,viewingDistanceM:distance};}
     } catch(e) {if(requestVersion===version) {error=String(e);status='';}}
     finally {busy=false;if(dirty&&!disposed) void flush();}
   }
@@ -131,14 +145,14 @@
     })();
   });
   function updateViewport():void {currentViewportScale.set(window.visualViewport?.scale??1);schedule();}
-  onDestroy(()=>{disposed=true;clearTimeout(timer);if(typeof window!=='undefined')window.visualViewport?.removeEventListener('resize',updateViewport);observer?.disconnect();worker?.terminate();renderer?.dispose();
+  onDestroy(()=>{disposed=true;if(timer!==null)clearTimeout(timer);if(typeof window!=='undefined')window.visualViewport?.removeEventListener('resize',updateViewport);observer?.disconnect();worker?.terminate();psfDisplay?.dispose();renderer?.dispose();
     for(const p of pending.values())p.reject(new Error('Scene disposed'));pending.clear();});
   $: if(ready) {void [$blurEngine,$selectedLensId,$selectedCompareLensId,$masterDefocus,$cssPxPerMmCal,$calibrationScale,$currentViewportScale,$viewingDistance,$splitViewEnabled,
     $blurSigma,$compareBlurSigma,$backgroundBlurSigma,$compareBackgroundBlurSigma];schedule();}
 </script>
 
 <div class="scene" bind:this={host}>
-  <canvas bind:this={canvas} data-render-ms={Math.round(renderMs)} aria-label="IOL vision simulation canvas (WebGL)"></canvas>
+  <canvas bind:this={canvas} data-render-ms={Math.round(renderMs)} data-profile={JSON.stringify(profile)} aria-label="IOL vision simulation canvas (WebGL)"></canvas>
   {#if status}<div class="status" role="status">{status}</div>{/if}
   {#if error}<div class="error" role="alert">{error}</div>{/if}
   <div class="readout">

@@ -2,6 +2,50 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {convolvePair,reflectIndex,srgbToLinear,linearToSrgb} from '../src/lib/render/psf/convolve.ts';
 import {scalePsf,pixelsPerRetinalMm,objectVergence,mobileSampling,calibratedCssPxPerMm} from '../src/lib/render/psf/geometry.ts';
+import {renderScene} from '../src/lib/render/psf/scene.ts';
+
+test('minimal full FFT convolution preserves all tails and energy against direct spatial convolution',()=>{
+  for(const [width,height,kw,kh] of [[1,1,3,5],[8,5,5,3],[17,9,7,9]]) {
+    const a=Float32Array.from({length:width*height},(_,i)=>(i*13%31)/31),b=Float32Array.from(a,x=>1-x);
+    const data=Float64Array.from({length:kw*kh},(_,i)=>(i*7%19)+1),sum=data.reduce((a,b)=>a+b,0);
+    for(let i=0;i<data.length;i++)data[i]/=sum;
+    const outputs=convolvePair(a,b,width,height,{width:kw,height:kh,data},'zero',true);
+    const ow=width+kw-1,oh=height+kh-1;
+    for(const [channel,input] of [[0,a],[1,b]]) {
+      const expected=new Float64Array(ow*oh);
+      for(let y=0;y<height;y++)for(let x=0;x<width;x++)for(let ky=0;ky<kh;ky++)for(let kx=0;kx<kw;kx++)expected[(y+ky)*ow+x+kx]+=input[y*width+x]*data[ky*kw+kx];
+      assert.equal(outputs[channel].length,expected.length);
+      assert.ok(outputs[channel].every((v,i)=>Math.abs(v-expected[i])<1e-6));
+      assert.ok(Math.abs(outputs[channel].reduce((s,v)=>s+v,0)-input.reduce((s,v)=>s+v,0))<1e-5);
+    }
+  }
+});
+
+test('visible-source crop and cached background agree with direct full-card linear composition',()=>{
+  const entry={width:3,height:3,retinalExtentMm:[-.02,.02,-.02,.02],retinalMmPerTanTheta:17};
+  const energy=new Float32Array([0,.125,.125,0,.25,.125,.125,.125,.125]);
+  for(const [width,height,cw,ch] of [[7,5,3,2],[7,5,19,17],[8,6,10,4]]) {
+    const card=Float32Array.from({length:cw*ch},(_,i)=>(i*7%17)/17);
+    const background=Array.from({length:3},(_,c)=>Float32Array.from({length:width*height},(_,i)=>(i+c*3)%13/13));
+    const input={width,height,card,cardWidth:cw,cardHeight:ch,near:entry,nearEnergy:energy,cssPxPerMm:3,viewingDistanceM:.4,renderScale:1};
+    const kernel=scalePsf(energy,entry,pixelsPerRetinalMm(entry,3,.4,1));
+    const rx=kernel.width>>1,ry=kernel.height>>1,left=Math.round((width-cw)/2),top=height-ch;
+    const expected=new Uint8ClampedArray(width*height*4);
+    for(let y=0;y<height;y++)for(let x=0;x<width;x++) {
+      let fg=0,alpha=0;
+      for(let ky=0;ky<kernel.height;ky++)for(let kx=0;kx<kernel.width;kx++) {
+        const sx=x-left+rx-kx,sy=y-top+ry-ky;
+        if(sx>=0&&sx<cw&&sy>=0&&sy<ch){const e=kernel.data[ky*kernel.width+kx];fg+=card[sy*cw+sx]*e;alpha+=e;}
+      }
+      const i=y*width+x;
+      for(let c=0;c<3;c++)expected[4*i+c]=Math.round(255*linearToSrgb(fg+(1-alpha)*background[c][i]));
+      expected[4*i+3]=255;
+    }
+    const cold=renderScene(input,background),warm=renderScene(input,background);
+    assert.deepEqual(warm,cold);
+    assert.ok(cold.every((v,i)=>Math.abs(v-expected[i])<=1));
+  }
+});
 
 test('nonseparable asymmetric convolution has correct centre, orientation, edges and packed channels',()=>{
   const width=9,height=7;

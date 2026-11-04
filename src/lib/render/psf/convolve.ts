@@ -44,16 +44,19 @@ export function reflectIndex(i:number,n:number):number {
 
 // The two real channels are packed as a single complex image; multiplying by
 // a real kernel convolves both independently, with no separability assumption.
-export function convolvePair(first:Float32Array,second:Float32Array,width:number,height:number,kernel:Kernel,padding:'reflect'|'zero'='reflect'): [Float32Array,Float32Array] {
+export function convolvePair(first:Float32Array,second:Float32Array,width:number,height:number,kernel:Kernel,padding:'reflect'|'zero'='reflect',full=false): [Float32Array,Float32Array] {
   if(first.length!==width*height || second.length!==first.length) throw new Error('Image shape mismatch');
   if(kernel.width%2!==1 || kernel.height%2!==1) throw new Error('Kernel must have a defined central bin');
+  if(full && padding!=='zero') throw new Error('Full convolution requires zero padding');
   const rx=kernel.width>>1,ry=kernel.height>>1;
-  const w=power2(width+4*rx),h=power2(height+4*ry);
+  // Zero boundaries require only the linear-convolution support N+K-1.
+  // Reflect boundaries additionally extend the source by one kernel radius.
+  const borderX=padding==='reflect'?rx:0,borderY=padding==='reflect'?ry:0;
+  const w=power2(width+2*borderX+2*rx),h=power2(height+2*borderY+2*ry);
   if(w*h>2097152) throw new Error('This calibration and viewing distance need too much memory. Reduce viewing distance.');
   const a=new Float64Array(2*w*h),b=new Float64Array(a.length);
-  for(let y=0;y<height+2*ry;y++) for(let x=0;x<width+2*rx;x++) {
-    const sx=x-rx,sy=y-ry;
-    if(padding==='zero' && (sx<0 || sy<0 || sx>=width || sy>=height)) continue;
+  for(let y=0;y<height+2*borderY;y++) for(let x=0;x<width+2*borderX;x++) {
+    const sx=x-borderX,sy=y-borderY;
     const s=reflectIndex(sy,height)*width+reflectIndex(sx,width),t=2*(y*w+x);
     a[t]=first[s];a[t+1]=second[s];
   }
@@ -61,9 +64,11 @@ export function convolvePair(first:Float32Array,second:Float32Array,width:number
   fft2(a,w,h,false);fft2(b,w,h,false);
   for(let i=0;i<a.length;i+=2) { const re=a[i]*b[i]-a[i+1]*b[i+1];a[i+1]=a[i]*b[i+1]+a[i+1]*b[i];a[i]=re; }
   fft2(a,w,h,true);
-  const out1=new Float32Array(first.length),out2=new Float32Array(first.length);
-  for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
-    const s=2*((y+2*ry)*w+x+2*rx),t=y*width+x;
+  const ow=full?width+2*rx:width,oh=full?height+2*ry:height;
+  const offsetX=full?0:borderX+rx,offsetY=full?0:borderY+ry;
+  const out1=new Float32Array(ow*oh),out2=new Float32Array(ow*oh);
+  for(let y=0;y<oh;y++) for(let x=0;x<ow;x++) {
+    const s=2*((y+offsetY)*w+x+offsetX),t=y*ow+x;
     out1[t]=a[s];out2[t]=a[s+1];
   }
   return [out1,out2];

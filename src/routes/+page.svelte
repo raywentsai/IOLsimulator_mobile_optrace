@@ -250,6 +250,12 @@
   }
 
   function scheduleMainDefocusUpdate(nextValue: number): void {
+    // IOL rendering already coalesces work off-thread. Publish the control
+    // value immediately instead of adding a second animation-frame queue.
+    if ($simulationMode === 'IOL') {
+      masterDefocus.set(nextValue);
+      return;
+    }
     pendingMainDefocusValue = nextValue;
     if (mainDefocusRaf !== null) {
       return;
