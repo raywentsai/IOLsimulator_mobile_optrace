@@ -1,7 +1,7 @@
 // Keep PNG/SVG at their real URLs for their whole lifetime, as in 01e764e.
 // No fetch, Blob URL creation or early object-URL revocation is required.
-export async function loadSceneImage(url:string,signal:AbortSignal,timeoutMs=60000):Promise<HTMLImageElement> {
-  for(let attempt=0;attempt<2;attempt++) {
+export async function loadSceneImage(url:string,signal:AbortSignal,timeoutMs=18000,attempts=2):Promise<HTMLImageElement> {
+  for(let attempt=0;attempt<attempts;attempt++) {
     if(signal.aborted)throw new Error(url+': loading cancelled');
     try {
       return await new Promise<HTMLImageElement>((resolve,reject)=>{
@@ -20,7 +20,7 @@ export async function loadSceneImage(url:string,signal:AbortSignal,timeoutMs=600
         image.onerror=()=>finish('image download or decode failed');
         if(signal.aborted)abort();else image.src=url;
       });
-    }catch(error){if(signal.aborted||attempt===1)throw error;}
+    }catch(error){if(signal.aborted||attempt===attempts-1)throw error;}
   }
   throw new Error(url+': unable to load image');
 }

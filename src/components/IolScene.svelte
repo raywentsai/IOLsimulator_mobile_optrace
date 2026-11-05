@@ -2,7 +2,10 @@
   import {onMount,onDestroy} from 'svelte';
   import {base} from '$app/paths';
   import backgroundAsset from '../lib/assets/images/background.png';
+  import backgroundInfo from '../lib/assets/images/background.json';
   import {loadSceneImage} from '../lib/render/scene-assets';
+  import {loadPngAsset,type AssetProgress,type LoadedPng} from '../lib/render/asset-loading';
+  import LoadingProgress from './LoadingProgress.svelte';
   import {WebGLRenderer,type RenderConfig} from '../lib/render/gl/renderer';
   import {resolveBlurPolicy} from '../lib/render/blur-policy';
   import {manifest,loadPsf,prefetchPsfNeighbors,cancelPsfPrefetch,psfCacheInfo} from '../lib/render/psf/library';
@@ -20,11 +23,15 @@
   let worker:Worker|null=null;
   let observer:ResizeObserver;
   let ready=false,disposed=false,busy=false,dirty=false,version=0;
-  let error='',status='Loading scene…',renderMs=0;
+  let error='',status='Loading reading card…',renderMs=0;
+  let backgroundReady=false,backgroundLoading=true,backgroundError='',backgroundAttempt=0;
+  let backgroundProgress:AssetProgress|null=null,opticalProgress:AssetProgress|null=null;
+  let fallbackMessage='';
+  let backgroundController=new AbortController(),backgroundAssetHandle:LoadedPng|null=null;
   let profile:Record<string,unknown>={},scheduledAt=0;
   let timer:ReturnType<typeof setTimeout>|null=null;
   let prefetchTimer:ReturnType<typeof setTimeout>|null=null;
-  let background:HTMLImageElement,card:HTMLImageElement;
+  let background:HTMLImageElement|HTMLCanvasElement,card:HTMLImageElement;
   let sourcePixels:ImageData;
   let loadController=new AbortController();
   let backgroundTexture='',cardTexture='';
@@ -32,7 +39,12 @@
   const CARD_HEIGHT_MM=28,ASPECT=1528/1170;
   let id=0;
   type Computed={data:Uint8ClampedArray;milliseconds:number;profile:Record<string,number>};
-  const pending=new Map<number,{resolve:(value:Computed)=>void;reject:(error:Error)=>void}>();
+  const pending=new Map<number,{resolve:(value:Computed)=>void;reject:(error:Error)=>void;timer:ReturnType<typeof setTimeout>}>();
+
+  function resetWorker(reason:string):void {
+    worker?.terminate();worker=null;
+    for(const p of pending.values()){clearTimeout(p.timer);p.reject(new Error(reason));}pending.clear();
+  }
 
   function ensureWorker():void {
     if(worker)return;
@@ -40,9 +52,9 @@
     const ctx=native.getContext('2d',{willReadFrequently:true})!;ctx.drawImage(background,0,0);
     sourcePixels=ctx.getImageData(0,0,native.width,native.height);
     worker=new Worker(new URL('../lib/render/psf/worker.ts',import.meta.url),{type:'module'});
-    worker.onmessage=event=>{const item=pending.get(event.data.id);if(!item)return;pending.delete(event.data.id);
+    worker.onmessage=event=>{const item=pending.get(event.data.id);if(!item)return;pending.delete(event.data.id);clearTimeout(item.timer);
       if(event.data.error)item.reject(new Error(event.data.error));else item.resolve(event.data);};
-    worker.onerror=()=>{error='Physics worker failed; please reload';status='';for(const p of pending.values())p.reject(new Error(error));pending.clear();};
+    worker.onerror=()=>resetWorker('Physics worker failed; retry rendering or select Gaussian');
     worker.postMessage({source:sourcePixels.data},[sourcePixels.data.buffer]);
     native.width=1;native.height=1;
   }
@@ -50,14 +62,14 @@
   function compute(input:SceneInput&{opticalLayer?:OpticalImageLayer},backgroundKey:string):Promise<Computed> {
     return new Promise((resolve,reject)=>{
       ensureWorker();
-      const requestId=++id;pending.set(requestId,{resolve,reject});
+      const requestId=++id;pending.set(requestId,{resolve,reject,timer:setTimeout(()=>resetWorker('Physics rendering timed out; retry rendering or select Gaussian'),30000)});
       worker!.postMessage({id:requestId,input,backgroundKey});
     });
   }
 
   function schedule():void {
     if(!ready||disposed) return;
-    version++;dirty=true;status='Updating…';
+    version++;dirty=true;status='Updating…';opticalProgress=null;
     if(prefetchTimer!==null){clearTimeout(prefetchTimer);prefetchTimer=null;}
     cancelPsfPrefetch($blurEngine==='psf'?{models:[PSF_MODELS[$selectedLensId],...($splitViewEnabled?[PSF_MODELS[$selectedCompareLensId]]:[])],demand:objectVergence($masterDefocus)}:undefined);
     cancelOpticalImageLoads($blurEngine==='psf'&&[$selectedLensId,...($splitViewEnabled?[$selectedCompareLensId]:[])].includes('zcb00')?objectVergence($masterDefocus):undefined);
@@ -73,7 +85,9 @@
     const sigma=$blurSigma,compareSigma=$compareBlurSigma,bgSigma=$backgroundBlurSigma,compareBgSigma=$compareBackgroundBlurSigma;
     try {
       const start=performance.now(),cssWidth=Math.max(1,host.clientWidth),cssHeight=Math.max(1,host.clientHeight);
-      const metrics:Record<string,unknown>={queueMs:start-scheduledAt};
+      const metrics:Record<string,unknown>={queueMs:start-scheduledAt,backgroundReady};
+      fallbackMessage='';
+      status=engine==='psf'?'Loading PSF library…':'Updating…';
       // Physics is computed off-thread at a bounded sampling grid; its physical
       // PSF scale uses this exact ratio. Gaussian keeps the original GPU policy.
       const library=engine==='psf'?await manifest(base):null,demand=objectVergence(defocus);
@@ -89,12 +103,14 @@
         // Start infinity/other-lens transfers while the Aspheric image loads.
         void Promise.all(library.entries.filter(e=>models.includes(e.model)&&(e.objectVergenceD===0||(e.model!==PSF_MODELS.zcb00&&e.objectVergenceD===demand))).map(e=>loadPsf(base,e))).catch(()=>undefined);
         const entry=library.entries.find(e=>e.model===PSF_MODELS.zcb00&&e.objectVergenceD===demand)!;
-        try{opticalLayer=await loadOpticalImage(base,entry,ppm*distance*1000*sampling!.scaleX,ppm*distance*1000*sampling!.scaleY);}
-        catch(e){if(requestVersion===version)console.warn('Optical image unavailable; using the dynamic PSF renderer',String(e));}
+        status='Loading optical image…';
+        try{opticalLayer=await loadOpticalImage(base,entry,ppm*distance*1000*sampling!.scaleX,ppm*distance*1000*sampling!.scaleY,p=>{if(!disposed&&requestVersion===version)opticalProgress=p;});}
+        catch(e){if(requestVersion===version){console.warn('Optical image unavailable; using the dynamic PSF renderer',String(e));fallbackMessage='Optical image unavailable. Using dynamic PSF rendering.';}}
         if(disposed||requestVersion!==version)return;
         if(onlyAspheric&&!opticalLayer)sampling=mobileSampling(cssWidth,cssHeight,ppm,distance,demand,CARD_HEIGHT_MM,ASPECT,Math.min(...projections!));
       }
       metrics.asphericRendering=opticalLayer?'precomputed':'dynamic';
+      opticalProgress=null;status=engine==='psf'?'Loading PSF data…':'Updating…';
       const desiredScale=Math.min(devicePixelRatio||1,2);
       const width=sampling?.width??Math.max(1,Math.round(cssWidth*desiredScale)),height=sampling?.height??Math.max(1,Math.round(cssHeight*desiredScale));
       const scale=width/cssWidth,scaleY=height/cssHeight;
@@ -131,6 +147,7 @@
         }));
         metrics.psfDownloads=downloads;metrics.psfLoadMs=performance.now()-loadStarted;
         if(disposed||requestVersion!==version)return;
+        status='Rendering optical scene…';
         const makeSide=async(lensId:string)=>{
           const model=PSF_MODELS[lensId];
           const near=library!.entries.find(e=>e.model===model&&e.objectVergenceD===demand);
@@ -162,25 +179,26 @@
         const displayScale=(devicePixelRatio||1)*(window.visualViewport?.scale??1);
         Object.assign(metrics,psfDisplay.present(left.data,width,height,Math.max(1,Math.round(cssWidth*displayScale)),Math.max(1,Math.round(cssHeight*displayScale))));
         prefetchTimer=setTimeout(()=>{
-          prefetchTimer=null;if(disposed||requestVersion!==version)return;
+          prefetchTimer=null;if(disposed||requestVersion!==version||!backgroundReady)return;
           const dynamicModels=selectedModels.filter(model=>!(opticalLayer&&model===PSF_MODELS.zcb00));
           if(dynamicModels.length)void prefetchPsfNeighbors(base,dynamicModels,demand).catch(()=>undefined);
           if(opticalLayer)void prefetchOpticalNeighbors(base,demand,ppm*distance*1000*scale,ppm*distance*1000*scaleY).catch(()=>undefined);
         },150);
       }
       if(requestVersion===version) {error='';status='';renderMs=performance.now()-start;profile={...metrics,renderMs,inputToSubmitMs:performance.now()-scheduledAt,width,height,objectVergenceD:demand,lens,compareLens:split?compareLens:null,cssPxPerMm:ppm,viewingDistanceM:distance,psfCache:psfCacheInfo()};}
-    } catch(e) {if(requestVersion===version) {error=String(e);status='';}}
+    } catch(e) {if(requestVersion===version) {error=String(e);status='';opticalProgress=null;}}
     finally {busy=false;if(dirty&&!disposed) void flush();}
   }
 
   async function initializeScene():Promise<void> {
     loadController.abort();loadController=new AbortController();
     const signal=loadController.signal;
-    error='';status='Loading scene…';
+    error='';status='Loading reading card…';
       try {
-        [background,card]=await Promise.all([loadSceneImage(backgroundAsset,signal),loadSceneImage(`${base}/reading-card.svg`,signal)]);
+        card=await loadSceneImage(`${base}/reading-card.svg`,signal,15000,1);
         if(disposed) return;
-        // Match 01e764e: do not keep a live WebGL context idle during download.
+        status='Preparing chart…';
+        // The chart becomes usable independently of the large background.
         renderer?.dispose();renderer=new WebGLRenderer(canvas);
         await renderer.initialize();
         if(disposed)return;
@@ -193,22 +211,49 @@
         ready=true;schedule();
       }catch(e){loadController.abort();if(!disposed){error=String(e);status='';}}
   }
+
+  async function startBackgroundLoad():Promise<void> {
+    backgroundController.abort();backgroundController=new AbortController();
+    const attempt=++backgroundAttempt,signal=backgroundController.signal;
+    backgroundLoading=true;backgroundError='';backgroundProgress=null;
+    try {
+      const asset=await loadPngAsset(backgroundAsset,signal,{expectedBytes:backgroundInfo.bytes,totalMs:45000,onProgress:p=>{if(!disposed&&attempt===backgroundAttempt)backgroundProgress=p;}});
+      if(disposed||attempt!==backgroundAttempt){asset.release();return;}
+      const old=backgroundAssetHandle;backgroundAssetHandle=asset;background=asset.image;backgroundReady=true;
+      if(ready){
+        // Invalidate work using the explicitly labelled neutral placeholder.
+        version++;resetWorker('Background updated');
+        renderer!.updateImageTexture(backgroundTexture,background);
+        schedule();
+      }
+      old?.release();
+    }catch(e){if(!disposed&&attempt===backgroundAttempt)backgroundError=String(e);}
+    finally{if(!disposed&&attempt===backgroundAttempt){backgroundLoading=false;backgroundProgress=null;}}
+  }
   onMount(()=>{
     disposed=false;
+    const neutral=document.createElement('canvas');neutral.width=1;neutral.height=1;
+    const context=neutral.getContext('2d')!;context.fillStyle='#eeeeee';context.fillRect(0,0,1,1);background=neutral;
     updateViewport();window.visualViewport?.addEventListener('resize',updateViewport);
+    void startBackgroundLoad();
     void initializeScene();
   });
   function updateViewport():void {currentViewportScale.set(window.visualViewport?.scale??1);schedule();}
-  onDestroy(()=>{disposed=true;loadController.abort();cancelPsfPrefetch();cancelOpticalImageLoads();if(prefetchTimer!==null)clearTimeout(prefetchTimer);if(timer!==null)clearTimeout(timer);if(typeof window!=='undefined')window.visualViewport?.removeEventListener('resize',updateViewport);observer?.disconnect();worker?.terminate();psfDisplay?.dispose();renderer?.dispose();
-    for(const p of pending.values())p.reject(new Error('Scene disposed'));pending.clear();});
+  onDestroy(()=>{disposed=true;loadController.abort();backgroundController.abort();backgroundAssetHandle?.release();cancelPsfPrefetch();cancelOpticalImageLoads();if(prefetchTimer!==null)clearTimeout(prefetchTimer);if(timer!==null)clearTimeout(timer);if(typeof window!=='undefined')window.visualViewport?.removeEventListener('resize',updateViewport);observer?.disconnect();resetWorker('Scene disposed');psfDisplay?.dispose();renderer?.dispose();});
   $: if(ready) {void [$blurEngine,$selectedLensId,$selectedCompareLensId,$masterDefocus,$cssPxPerMmCal,$calibrationScale,$currentViewportScale,$viewingDistance,$splitViewEnabled,
     $blurSigma,$compareBlurSigma,$backgroundBlurSigma,$compareBackgroundBlurSigma];schedule();}
 </script>
 
-<div class="scene" bind:this={host}>
+<div class="scene" bind:this={host} data-scene-state={!ready?'initializing':profile.backgroundReady?'complete':'partial'}>
   <canvas bind:this={canvas} data-render-ms={Math.round(renderMs)} data-profile={JSON.stringify(profile)} aria-label="IOL vision simulation canvas (WebGL)"></canvas>
-  {#if status}<div class="status" role="status">{status}</div>{/if}
-  {#if error}<div class="error" role="alert">{error}{#if !ready}<button on:click={()=>void initializeScene()}>Retry scene</button>{/if}</div>{/if}
+  <div class="loading-stack">
+    {#if !ready&&status}<LoadingProgress label={status} detail="Controls are available while the scene loads." />{/if}
+    {#if backgroundLoading}<LoadingProgress label="Loading background" progress={backgroundProgress} detail={ready?'Near chart is available. The complete scene is still loading.':'The chart loads separately.'} />{/if}
+    {#if ready&&status}<div class="status"><LoadingProgress label={status} progress={opticalProgress} /></div>{/if}
+    {#if backgroundError}<div class="error" role="alert"><strong>Background unavailable</strong><p>{ready?'The near chart remains available on a neutral background.':'Controls remain available. The background can be retried separately from the chart.'}</p><details><summary>Error details</summary>{backgroundError}</details><button on:click={()=>void startBackgroundLoad()}>Retry background</button></div>{/if}
+    {#if error}<div class="error" role="alert"><p>{error}</p><button on:click={()=>ready?schedule():void initializeScene()}>{ready?'Retry rendering':'Retry chart'}</button>{#if $blurEngine==='psf'}<button on:click={()=>blurEngine.set('gaussian')}>Use Gaussian</button>{/if}</div>{/if}
+    {#if fallbackMessage&&!status}<div class="notice" role="status">{fallbackMessage}</div>{/if}
+  </div>
   <div class="readout">
     <span>{$blurEngine==='psf'?'OPTrace PSF':`VA ~ ${$currentVADecimal.toFixed(2)}`}</span>
     {#if $splitViewEnabled}<span>{$blurEngine==='psf'?'OPTrace PSF':`VA ~ ${$compareVADecimal.toFixed(2)}`}</span>{/if}
@@ -219,8 +264,14 @@
 <style>
   .scene{position:relative;width:100%;height:100%;overflow:hidden;background:#eee}
   canvas{display:block;width:100%;height:100%}
-  .status,.error{position:absolute;top:2rem;left:50%;transform:translateX(-50%);background:#fffE;padding:.5rem .8rem;border-radius:.5rem;font-size:.8rem;max-width:90%;z-index:2}
-  .error{color:#991b1b}
+  .loading-stack{position:absolute;top:2rem;left:50%;transform:translateX(-50%);width:min(22rem,90%);z-index:2;display:grid;gap:.5rem}
+  .status{animation:reveal .15s .15s both}
+  @keyframes reveal{from{opacity:0}to{opacity:1}}
+  @media(prefers-reduced-motion:reduce){.status{animation:none}}
+  .error,.notice{background:#fffffff2;padding:.65rem .8rem;border:1px solid #dbe3ef;border-radius:.65rem;font-size:.78rem;overflow-wrap:anywhere}
+  .error{color:#991b1b}.error p{margin:.35rem 0}.error details{font-size:.7rem;margin:.4rem 0}
+  .error button{color:#1d4ed8;background:#eff6ff;border:1px solid #bfdbfe;border-radius:.4rem;padding:.35rem .55rem;margin:.35rem .4rem 0 0;cursor:pointer}
+  .notice{color:#4b5563}
   .readout{position:absolute;inset:.5rem .5rem auto;display:flex;gap:1rem;font-size:.7rem;pointer-events:none}
   .readout span{flex:1;color:white;text-shadow:0 1px 3px black}
   .distance{position:absolute;bottom:.5rem;right:.5rem;background:#374151aa;color:white;border-radius:5px;padding:2px 5px;font-size:.65rem}

@@ -1,4 +1,5 @@
 import type { PsfEntry } from './geometry';
+import {downloadBlob,allowSpeculativeLoads} from '../asset-loading.ts';
 
 export interface PsfManifest { version: number; entries: PsfEntry[] }
 let manifestPromise: Promise<PsfManifest> | undefined;
@@ -22,6 +23,7 @@ export function cancelPsfPrefetch(keep?:{models:string[];demand:number}):void {
 }
 
 export async function prefetchPsfNeighbors(base:string,models:string[],demand:number):Promise<void> {
+  if(!allowSpeculativeLoads())return;
   const generation=prefetchGeneration;
   const library=await manifest(base);
   const nodes=library.entries.filter(e=>models.includes(e.model)&&Math.abs(Math.abs(e.objectVergenceD-demand)-.1)<1e-8);
@@ -32,9 +34,7 @@ export async function prefetchPsfNeighbors(base:string,models:string[],demand:nu
 
 export async function manifest(base: string): Promise<PsfManifest> {
   if(!manifestPromise) manifestPromise=(async()=>{
-    const response=await fetch(`${base}/psf/manifest.json`);
-    if(!response.ok) throw new Error('PSF library is unavailable');
-    const value=await response.json() as PsfManifest;
+    const value=JSON.parse(await (await downloadBlob(`${base}/psf/manifest.json`,new AbortController().signal,{totalMs:12000})).text()) as PsfManifest;
     if(value.version!==1 || value.entries.length!==96) throw new Error('Incomplete PSF library');
     return value;
   })().catch(e=>{manifestPromise=undefined;throw e;});
@@ -48,9 +48,7 @@ export async function loadPsf(base:string,entry:PsfEntry,profile:Record<string,n
   const controller=new AbortController();
   const promise=(async()=>{
     const start=performance.now();
-    const response=await fetch(`${base}/psf/${entry.file}`,{signal:controller?.signal});
-    if(!response.ok || !response.body) throw new Error(`PSF download failed: ${entry.file}`);
-    const compressed=await response.arrayBuffer(),downloaded=performance.now();
+    const compressed=await (await downloadBlob(`${base}/psf/${entry.file}`,controller.signal,{totalMs:30000,priority:speculative?'low':'high'})).arrayBuffer(),downloaded=performance.now();
     profile.downloadMs=downloaded-start;
     const bytes=await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
     const inflated=performance.now();profile.inflateMs=inflated-downloaded;

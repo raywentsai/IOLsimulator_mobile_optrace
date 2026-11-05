@@ -6,12 +6,17 @@
   import {PsfDisplay} from '../../lib/render/psf/display';
   import {srgbToLinear,linearToSrgb} from '../../lib/render/psf/convolve';
   import {loadOpticalImage} from '../../lib/render/psf/optical-images';
+  import {loadPngAsset} from '../../lib/render/asset-loading';
+  import backgroundAsset from '../../lib/assets/images/background.png';
+  import backgroundInfo from '../../lib/assets/images/background.json';
   let state='Running independent Python / Worker / WebGL comparison…';
   let rows:Array<{name:string;workerError:number;webglError:number;scaledError:number|null;milliseconds:number}>=[];
   let canvas:HTMLCanvasElement;
   let midpoint:number|null=null;
+  let backgroundVerified=false;
   onMount(()=>{
     let cancelled=false;
+    const controller=new AbortController();
     let worker!:Worker;
     let renderer:PsfDisplay|null=null;
     void (async()=>{
@@ -97,11 +102,21 @@
         const gl=canvas.getContext('webgl')!,pixel=new Uint8Array(4);
         gl.readPixels(1,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,pixel);midpoint=pixel[0];
         if(Math.abs(midpoint-188)>1)throw new Error('Display interpolated in encoded sRGB instead of linear light');
+        const asset=await loadPngAsset(backgroundAsset,controller.signal,{expectedBytes:backgroundInfo.bytes,totalMs:45000});
+        try {
+          const surface=document.createElement('canvas');surface.width=asset.image.naturalWidth;surface.height=asset.image.naturalHeight;
+          const ctx=surface.getContext('2d',{willReadFrequently:true})!;ctx.drawImage(asset.image,0,0);
+          const rgba=ctx.getImageData(0,0,surface.width,surface.height).data,rgb=new Uint8Array(surface.width*surface.height*3);
+          for(let i=0;i<rgb.length/3;i++)rgb.set(rgba.subarray(4*i,4*i+3),3*i);
+          const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',rgb)),b=>b.toString(16).padStart(2,'0')).join('');
+          if(surface.width!==backgroundInfo.width||surface.height!==backgroundInfo.height||hash!==backgroundInfo.rgbSha256)throw new Error('Background browser decode changed original RGB samples');
+          surface.width=1;surface.height=1;backgroundVerified=true;
+        }finally{asset.release();}
         state='PASS: all Python / Worker / WebGL comparisons';
       }catch(error){state=`FAIL: ${error}`;}
       finally{worker?.terminate();renderer?.dispose();}
     })();
-    return()=>{cancelled=true;worker?.terminate();renderer?.dispose();};
+    return()=>{cancelled=true;controller.abort();worker?.terminate();renderer?.dispose();};
   });
 </script>
 <svelte:head><title>Optics numerical validation</title></svelte:head>
@@ -110,6 +125,7 @@
   <p role="status">{state}</p>
   <p>Identical PSF bins, input radiance, physical pixel scale and padding. Reference: independent Python/SciPy float computation.</p>
   <p>Black/white 50% linear-light display sample: {midpoint??'pending'} / 255 (expected 188).</p>
+  <p>Background PNG browser decode: {backgroundVerified?'PASS — every original RGB sample preserved':'pending'}.</p>
   <table><thead><tr><th>Model</th><th>Worker max byte error</th><th>WebGL max byte error</th><th>Linear upscale max byte error</th><th>Worker ms</th></tr></thead>
     <tbody>{#each rows as row}<tr><td>{row.name}</td><td>{row.workerError}</td><td>{row.webglError}</td><td>{row.scaledError??'—'}</td><td>{row.milliseconds.toFixed(1)}</td></tr>{/each}</tbody>
   </table>
