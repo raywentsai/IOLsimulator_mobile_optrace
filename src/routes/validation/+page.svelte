@@ -5,8 +5,9 @@
   import type {SceneInput} from '../../lib/render/psf/scene';
   import {PsfDisplay} from '../../lib/render/psf/display';
   import {srgbToLinear,linearToSrgb} from '../../lib/render/psf/convolve';
+  import {loadOpticalImage} from '../../lib/render/psf/optical-images';
   let state='Running independent Python / Worker / WebGL comparison…';
-  let rows:Array<{name:string;workerError:number;webglError:number;scaledError:number;milliseconds:number}>=[];
+  let rows:Array<{name:string;workerError:number;webglError:number;scaledError:number|null;milliseconds:number}>=[];
   let canvas:HTMLCanvasElement;
   let midpoint:number|null=null;
   onMount(()=>{
@@ -50,6 +51,47 @@
           rows=[...rows,{name:fixture.name,workerError,webglError,scaledError,milliseconds:result.milliseconds}];
           if(workerError>1||webglError>1||scaledError>1)throw new Error('Independent render comparison exceeded 1 sRGB byte tolerance');
         }
+        const opticalResponse=await fetch(`${base}/validation/optical-image-reference.json`);
+        if(!opticalResponse.ok)throw new Error('Optical image fixtures unavailable');
+        const opticalCases=await opticalResponse.json() as {cases:Array<SceneInput&{name:string;cardFile:string;expectedFile:string}>};
+        const inflate=async(file:string)=>{
+          const response=await fetch(`${base}/validation/${file}`);
+          if(!response.ok||!response.body)throw new Error('Compressed optical fixture unavailable');
+          return new Uint8Array(await new Response(response.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
+        };
+        for(const [index,fixture]of opticalCases.cases.entries()) {
+          const [cardBytes,expected,nearEnergy,infinityEnergy,layer]=await Promise.all([
+            inflate(fixture.cardFile),inflate(fixture.expectedFile),loadPsf(base,fixture.near),loadPsf(base,fixture.infinity),
+            loadOpticalImage(base,fixture.near,fixture.renderScale*1000,(fixture.renderScaleY??fixture.renderScale)*1000)
+          ]);
+          if(!layer)throw new Error('Canonical optical image unavailable');
+          const input={...fixture,background:new Uint8ClampedArray(fixture.background),
+            card:new Float32Array(cardBytes.buffer.slice(cardBytes.byteOffset,cardBytes.byteOffset+cardBytes.byteLength)),nearEnergy,infinityEnergy};
+          worker.postMessage({source:input.background});
+          const run=async(precomputed:boolean)=>new Promise<{data:Uint8ClampedArray;milliseconds:number}>((resolve,reject)=>{
+            const timeout=setTimeout(()=>reject(new Error('Canonical renderer timeout')),30000);
+            worker.onmessage=event=>{clearTimeout(timeout);if(event.data.error)reject(new Error(event.data.error));else resolve(event.data);};
+            worker.postMessage({id:100+index,input:{...input,...(precomputed?{opticalLayer:layer,nearEnergy:new Float32Array(0)}:{})},backgroundKey:fixture.name});
+          });
+          const dynamic=await run(false),optical=await run(true);
+          if(cancelled)return;
+          let workerError=0,pairError=0;
+          for(let i=0;i<expected.length;i++){
+            workerError=Math.max(workerError,Math.abs(optical.data[i]-expected[i]));
+            pairError=Math.max(pairError,Math.abs(optical.data[i]-dynamic.data[i]));
+          }
+          renderer?.dispose();renderer=new PsfDisplay(canvas);
+          renderer.present(optical.data,fixture.width,fixture.height,fixture.width,fixture.height);
+          const gl=canvas.getContext('webgl')!,readback=new Uint8Array(expected.length);
+          gl.readPixels(0,0,fixture.width,fixture.height,gl.RGBA,gl.UNSIGNED_BYTE,readback);
+          let webglError=0;
+          for(let y=0;y<fixture.height;y++)for(let x=0;x<fixture.width;x++)for(let c=0;c<4;c++){
+            const i=4*(y*fixture.width+x)+c,j=4*((fixture.height-1-y)*fixture.width+x)+c;
+            webglError=Math.max(webglError,Math.abs(readback[j]-expected[i]));
+          }
+          rows=[...rows,{name:fixture.name,workerError,webglError,scaledError:null,milliseconds:optical.milliseconds}];
+          if(workerError>1||pairError>1||webglError>1)throw new Error('Optical image / dynamic FFT / Python canonical comparison failed');
+        }
         renderer?.dispose();renderer=new PsfDisplay(canvas);
         renderer.present(new Uint8ClampedArray([0,0,0,255,255,255,255,255]),2,1,3,1);
         const gl=canvas.getContext('webgl')!,pixel=new Uint8Array(4);
@@ -69,7 +111,7 @@
   <p>Identical PSF bins, input radiance, physical pixel scale and padding. Reference: independent Python/SciPy float computation.</p>
   <p>Black/white 50% linear-light display sample: {midpoint??'pending'} / 255 (expected 188).</p>
   <table><thead><tr><th>Model</th><th>Worker max byte error</th><th>WebGL max byte error</th><th>Linear upscale max byte error</th><th>Worker ms</th></tr></thead>
-    <tbody>{#each rows as row}<tr><td>{row.name}</td><td>{row.workerError}</td><td>{row.webglError}</td><td>{row.scaledError}</td><td>{row.milliseconds.toFixed(1)}</td></tr>{/each}</tbody>
+    <tbody>{#each rows as row}<tr><td>{row.name}</td><td>{row.workerError}</td><td>{row.webglError}</td><td>{row.scaledError??'—'}</td><td>{row.milliseconds.toFixed(1)}</td></tr>{/each}</tbody>
   </table>
   <canvas bind:this={canvas} aria-label="Validation scene output"></canvas>
   <p><a href={`${base}/`}>Simulator</a></p>

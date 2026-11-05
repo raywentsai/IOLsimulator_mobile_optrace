@@ -1,0 +1,346 @@
+{
+  "cases": [
+    {
+      "name": "Aspheric optical image 1.0 D",
+      "width": 274,
+      "height": 239,
+      "cardWidth": 150,
+      "cardHeight": 115,
+      "cardFile": "optical-card-10.card",
+      "expectedFile": "optical-scene-10.ref",
+      "cardSha256": "54d88c0e7e4f8764715652a54a467aa602a44ba6cf2607daf545d431ce9878d1",
+      "expectedSha256": "fb3b73d6bc3c07d7e061ce4676abc12a69c62406e47bb4a9900be6557b7762f6",
+      "near": {
+        "model": "aspheric_monofocal_dc_v1",
+        "objectVergenceD": 1.0,
+        "file": "aspheric_monofocal_dc_v1_10.psf",
+        "width": 513,
+        "height": 513,
+        "center": [
+          256.0,
+          256.0
+        ],
+        "retinalExtentMm": [
+          -0.25,
+          0.25,
+          -0.25,
+          0.25
+        ],
+        "retinalMmPerTanTheta": 16.815121297998083,
+        "sum": 1.0000000002384755,
+        "captureFraction": 0.9966423874917378,
+        "sha256": "8d58cb71e7f214e9eedfd00128adccaf3535c570a3be86a1418202b5dc3d7a4a",
+        "sourceSha256": "f0185b35e1aa5f9a3c76be10fa5e08edc3dc3ece373bd275205131af1af51286",
+        "origin": "authenticated_reference"
+      },
+      "infinity": {
+        "model": "aspheric_monofocal_dc_v1",
+        "objectVergenceD": 0.0,
+        "file": "aspheric_monofocal_dc_v1_00.psf",
+        "width": 513,
+        "height": 513,
+        "center": [
+          256.0,
+          256.0
+        ],
+        "retinalExtentMm": [
+          -0.25,
+          0.25,
+          -0.25,
+          0.25
+        ],
+        "retinalMmPerTanTheta": 16.864104711932058,
+        "sum": 0.9999999994688316,
+        "captureFraction": 0.996869700954759,
+        "sha256": "8be30f81b93afbff067997c40f627d167d88c8f666e8563f9f079199274525b5",
+        "sourceSha256": "38d7fd62a94a642858542f3b2f06ffc0ffdf6dc9b7671520cacc0a5d5ea3e0cf",
+        "origin": "authenticated_reference"
+      },
+      "level": {
+        "width": 274,
+        "height": 239,
+        "density": 4096,
+        "pixelsPerTanTheta": [
+          4102.000747943156,
+          4107.142857142857
+        ],
+        "extentTanTheta": [
+          -0.03339833618233618,
+          0.03339833618233618,
+          -0.04309565217391305,
+          0.015095652173913045
+        ],
+        "cardPixels": [
+          150,
+          115
+        ],
+        "cardExtentTanTheta": [
+          -0.018283760683760683,
+          0.018283760683760683,
+          -0.028,
+          0
+        ],
+        "kernelPixels": [
+          125,
+          125
+        ],
+        "kernelEnergy": 1.0,
+        "expectedCoverageCentroidTanTheta": [
+          -6.952828016922777e-07,
+          -0.013998557480195474
+        ],
+        "coverageCentroidTanTheta": [
+          -6.969994359020156e-07,
+          -0.013998520606035321
+        ],
+        "centroidErrorTanTheta": 3.6914096493801395e-08,
+        "coverageAreaRelativeError": -1.831855744893751e-05,
+        "file": "aspheric_10_4096.png",
+        "bytes": 36714,
+        "fileSha256": "d4ce07215490017ba6e5cfb3db322ef965c221992da43f0565df7fa9aef09477",
+        "decodedRgbaSha256": "9e6a1c92b226120a5e171146596b36d3c2fd286ef391cf45606acd68f956ed42",
+        "maxLinearQuantizationError": 0.000122099475887023
+      },
+      "cssPxPerMm": 1.0,
+      "viewingDistanceM": 1.0,
+      "renderScale": 4.102000747943156,
+      "renderScaleY": 4.107142857142857,
+      "background": [
+        38,
+        112,
+        207,
+        255
+      ],
+      "backgroundWidth": 1,
+      "backgroundHeight": 1
+    },
+    {
+      "name": "Aspheric optical image 2.5 D",
+      "width": 498,
+      "height": 411,
+      "cardWidth": 374,
+      "cardHeight": 287,
+      "cardFile": "optical-card-25.card",
+      "expectedFile": "optical-scene-25.ref",
+      "cardSha256": "c01f32dd4a239201554bc8431ade8cb7c631a0eef8628ca706baba9ee7088087",
+      "expectedSha256": "5d06ad0933f0c32fd911aaad93f139e1c7471068cb8904af0e30294366c582db",
+      "near": {
+        "model": "aspheric_monofocal_dc_v1",
+        "objectVergenceD": 2.5,
+        "file": "aspheric_monofocal_dc_v1_25.psf",
+        "width": 513,
+        "height": 513,
+        "center": [
+          256.0,
+          256.0
+        ],
+        "retinalExtentMm": [
+          -0.25,
+          0.25,
+          -0.25,
+          0.25
+        ],
+        "retinalMmPerTanTheta": 16.742177328878054,
+        "sum": 1.0000000003993317,
+        "captureFraction": 0.9964671017396771,
+        "sha256": "b14761e61566c58425eac38fc96e6da1b00bf0576f7116801dbfceb446706c73",
+        "sourceSha256": "40d9e910e910d22380fec827604302e146276496fb7cacb5847c257c430fbcff",
+        "origin": "direct_trace"
+      },
+      "infinity": {
+        "model": "aspheric_monofocal_dc_v1",
+        "objectVergenceD": 0.0,
+        "file": "aspheric_monofocal_dc_v1_00.psf",
+        "width": 513,
+        "height": 513,
+        "center": [
+          256.0,
+          256.0
+        ],
+        "retinalExtentMm": [
+          -0.25,
+          0.25,
+          -0.25,
+          0.25
+        ],
+        "retinalMmPerTanTheta": 16.864104711932058,
+        "sum": 0.9999999994688316,
+        "captureFraction": 0.996869700954759,
+        "sha256": "8be30f81b93afbff067997c40f627d167d88c8f666e8563f9f079199274525b5",
+        "sourceSha256": "38d7fd62a94a642858542f3b2f06ffc0ffdf6dc9b7671520cacc0a5d5ea3e0cf",
+        "origin": "authenticated_reference"
+      },
+      "level": {
+        "width": 498,
+        "height": 411,
+        "density": 4096,
+        "pixelsPerTanTheta": [
+          4091.062079281974,
+          4100.0
+        ],
+        "extentTanTheta": [
+          -0.060864390511449346,
+          0.060864390511449346,
+          -0.0851219512195122,
+          0.015121951219512195
+        ],
+        "cardPixels": [
+          374,
+          287
+        ],
+        "cardExtentTanTheta": [
+          -0.045709401709401715,
+          0.045709401709401715,
+          -0.07,
+          0
+        ],
+        "kernelPixels": [
+          125,
+          125
+        ],
+        "kernelEnergy": 1.0,
+        "expectedCoverageCentroidTanTheta": [
+          -4.804047592080553e-06,
+          -0.034992141545752566
+        ],
+        "coverageCentroidTanTheta": [
+          -4.720878373216828e-06,
+          -0.03499217199953419
+        ],
+        "centroidErrorTanTheta": 8.856947432073134e-08,
+        "coverageAreaRelativeError": -2.6663687249239842e-06,
+        "file": "aspheric_25_4096.png",
+        "bytes": 126121,
+        "fileSha256": "6a521322300db561e08571d147e550652dc78dec7e9f971c22899def53dabfb8",
+        "decodedRgbaSha256": "b6f52784786992cc4e5afbea651ed34fd1d619cba935e1a826011f774bee7bdf",
+        "maxLinearQuantizationError": 0.00012210011811430999
+      },
+      "cssPxPerMm": 1.0,
+      "viewingDistanceM": 1.0,
+      "renderScale": 4.091062079281974,
+      "renderScaleY": 4.1,
+      "background": [
+        38,
+        112,
+        207,
+        255
+      ],
+      "backgroundWidth": 1,
+      "backgroundHeight": 1
+    },
+    {
+      "name": "Aspheric optical image 4.0 D",
+      "width": 723,
+      "height": 583,
+      "cardWidth": 599,
+      "cardHeight": 459,
+      "cardFile": "optical-card-40.card",
+      "expectedFile": "optical-scene-40.ref",
+      "cardSha256": "cb8020be9a03edd3625b0c4754636ca07bbd2e8f02d8df2d3854b3a97b0c8be0",
+      "expectedSha256": "92126f9c216363a173d7081bd8835d5341c8c626a2e7594a75d330a711d119dd",
+      "near": {
+        "model": "aspheric_monofocal_dc_v1",
+        "objectVergenceD": 4.0,
+        "file": "aspheric_monofocal_dc_v1_40.psf",
+        "width": 513,
+        "height": 513,
+        "center": [
+          256.0,
+          256.0
+        ],
+        "retinalExtentMm": [
+          -0.25,
+          0.25,
+          -0.25,
+          0.25
+        ],
+        "retinalMmPerTanTheta": 16.66986348790436,
+        "sum": 1.0000000000108937,
+        "captureFraction": 0.9959625956057334,
+        "sha256": "98544d75e83ab2a2bdaeb301127e4b98ef0029c6c2d42511f1e05de6cf1a72c4",
+        "sourceSha256": "69d37ca1f0c99e3710877f8aca1dbb94d697ef42fd8e9eb35e9ae894f88277ab",
+        "origin": "direct_trace"
+      },
+      "infinity": {
+        "model": "aspheric_monofocal_dc_v1",
+        "objectVergenceD": 0.0,
+        "file": "aspheric_monofocal_dc_v1_00.psf",
+        "width": 513,
+        "height": 513,
+        "center": [
+          256.0,
+          256.0
+        ],
+        "retinalExtentMm": [
+          -0.25,
+          0.25,
+          -0.25,
+          0.25
+        ],
+        "retinalMmPerTanTheta": 16.864104711932058,
+        "sum": 0.9999999994688316,
+        "captureFraction": 0.996869700954759,
+        "sha256": "8be30f81b93afbff067997c40f627d167d88c8f666e8563f9f079199274525b5",
+        "sourceSha256": "38d7fd62a94a642858542f3b2f06ffc0ffdf6dc9b7671520cacc0a5d5ea3e0cf",
+        "origin": "authenticated_reference"
+      },
+      "level": {
+        "width": 723,
+        "height": 583,
+        "density": 4096,
+        "pixelsPerTanTheta": [
+          4095.164080029918,
+          4098.214285714285
+        ],
+        "extentTanTheta": [
+          -0.08827485124780617,
+          0.08827485124780617,
+          -0.1271285403050109,
+          0.015128540305010894
+        ],
+        "cardPixels": [
+          599,
+          459
+        ],
+        "cardExtentTanTheta": [
+          -0.07313504273504273,
+          0.07313504273504273,
+          -0.112,
+          0
+        ],
+        "kernelPixels": [
+          125,
+          125
+        ],
+        "kernelEnergy": 1.0,
+        "expectedCoverageCentroidTanTheta": [
+          -7.519567707547458e-06,
+          -0.055990297689045454
+        ],
+        "coverageCentroidTanTheta": [
+          -7.468659803408821e-06,
+          -0.05599028037851176
+        ],
+        "centroidErrorTanTheta": 5.377052427267957e-08,
+        "coverageAreaRelativeError": -8.348999587237671e-07,
+        "file": "aspheric_40_4096.png",
+        "bytes": 252320,
+        "fileSha256": "5b25f2fa462e879f59028fb8a82c274b667f6feee9ee56e4456940d088c5d754",
+        "decodedRgbaSha256": "92894cb2fc13bbaf1421f72966e5f775cb386b7c86af8bebf1c8df8b5021819a",
+        "maxLinearQuantizationError": 0.0001220998822285853
+      },
+      "cssPxPerMm": 1.0,
+      "viewingDistanceM": 1.0,
+      "renderScale": 4.095164080029918,
+      "renderScaleY": 4.098214285714286,
+      "background": [
+        38,
+        112,
+        207,
+        255
+      ],
+      "backgroundWidth": 1,
+      "backgroundHeight": 1
+    }
+  ]
+}

@@ -7,6 +7,7 @@ dependencies = [
   "numpy>=2,<3",
   "scipy>=1.14,<2",
   "pillow>=11,<13",
+  "pymupdf>=1.26,<2",
 ]
 [build-system]
 requires = ["hatchling"]
