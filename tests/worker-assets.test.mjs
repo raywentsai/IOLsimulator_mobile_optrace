@@ -5,21 +5,19 @@ import {gunzipSync} from 'node:zlib';
 import {AssetCache} from '../src/lib/render/psf/asset-cache.ts';
 import {PhysicsWorkerRuntime} from '../src/lib/render/psf/worker-runtime.ts';
 import {PhysicsWorkerClient} from '../src/lib/render/psf/worker-client.ts';
-import {OPTICAL_CACHE_BYTES,unpackOpticalImage,renderOpticalImage,renderOpticalImageLatest,opticalImageKey,validatePackedOpticalImage} from '../src/lib/render/psf/optical-image-math.ts';
-import {PSF_MODELS} from '../src/lib/render/psf/geometry.ts';
+import {unpackOpticalImage,renderOpticalImage,renderOpticalImageLatest,opticalImageKey,validatePackedOpticalImage} from '../src/lib/render/psf/optical-image-math.ts';
 import {readRgbPng} from './png-helper.mjs';
-const libraries=Object.values(PSF_MODELS).map(model=>JSON.parse(fs.readFileSync(`static/optical-images/${model}.json`)));
-const library=libraries.find(value=>value.model===PSF_MODELS.zcb00);
+const library=JSON.parse(fs.readFileSync('static/optical-images/manifest.json'));
 const fixtures=JSON.parse(fs.readFileSync('static/validation/optical-image-reference.json')).cases;
 const energy=e=>{const a=gunzipSync(fs.readFileSync('static/psf/'+e.file));return new Float32Array(a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength));};
 const packed=level=>({key:opticalImageKey(level),level,rgba:readRgbPng('static/optical-images/'+level.file).rgba});
 
-test('packed CPU integration is byte-identical to Float32 planes across all shipped levels',()=>{
-  for(const model of libraries)for(const node of model.entries)for(const level of node.levels){
+test('packed CPU integration is byte-identical to Float32 planes for all 62 levels, cropped odd/even anchors and low density',()=>{
+  for(const node of library.entries)for(const level of node.levels){
     const p=packed(level);validatePackedOpticalImage(p.rgba,level);
     const expanded=unpackOpticalImage(p.rgba,level);
     for(const width of [73,74]){
-      const density=width===73?128:Math.min(8192,Math.min(...level.pixelsPerTanTheta)*.8);
+      const density=width===73?128:Math.min(...level.pixelsPerTanTheta)*.8;
       const input={width,height:91,cardWidth:Math.round(28*1528/1170*node.objectVergenceD*density/1000),cssPxPerMm:1,viewingDistanceM:1,renderScale:density/1000};
       const background=[0,1,2].map(c=>Float32Array.from({length:width*91},(_,i)=>.05+c*.1+(i%19)/40));
       assert.deepEqual(renderOpticalImage(input,p,background),renderOpticalImage(input,expanded,background),level.file);
@@ -28,7 +26,7 @@ test('packed CPU integration is byte-identical to Float32 planes across all ship
 });
 
 test('byte LRU retains both high-density neighbours, touches hits, accounts replacement and protects active assets',()=>{
-  const cache=new AssetCache(OPTICAL_CACHE_BYTES);
+  const cache=new AssetCache(16*1024*1024);
   const [a,b]=[3.9,4].map(d=>packed(library.entries.find(e=>e.objectVergenceD===d).levels[1]));
   cache.set(a.key,a,a.rgba.byteLength);cache.set(b.key,b,b.rgba.byteLength);
   assert.equal(cache.info().keys.length,2);assert.ok(cache.info().bytes<cache.budget);
@@ -38,33 +36,6 @@ test('byte LRU retains both high-density neighbours, touches hits, accounts repl
   const before=cache.info();assert.throws(()=>cache.set('too-large',null,12*1024*1024),/Active assets/);assert.deepEqual(cache.info(),before);
   cache.set(a.key,a,a.rgba.byteLength);assert.equal(cache.info().bytes,a.rgba.byteLength+5*1024*1024);
   cache.clear();assert.equal(cache.info().bytes,0);
-});
-
-test('both selected lenses fit in the shared budget and the pending side survives eviction',async()=>{
-  for(let index=0;index<31;index++){
-    const sizes=libraries.map(model=>Math.max(...model.entries[index].levels.map(level=>4*level.width*level.height)));
-    sizes.sort((a,b)=>b-a);
-    assert.ok(sizes[0]+sizes[1]<=OPTICAL_CACHE_BYTES);
-  }
-  const at=(model,demand)=>packed(model.entries.find(e=>e.objectVergenceD===demand).levels.at(-1));
-  const left=at(library,3.9),previous=at(library,4),right=at(libraries.find(m=>m.model===PSF_MODELS.vivity),3.9);
-  const worker=new FakeWorker();
-  const client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(0),reason=>client.dispose(reason));
-  try{
-    client.invalidate(1);
-    await client.registerOptical(left);
-    await client.registerOptical(previous);
-    // Left is the oldest asset, but it is needed by this version of the split.
-    await client.reserveOptical(1,[left.key,right.key]);
-    await client.registerOptical(right);
-    assert.ok(client.getOptical(left.key));
-    assert.ok(client.getOptical(right.key));
-    assert.equal(client.getOptical(previous.key),undefined);
-    client.invalidate(2);
-    await client.reserveOptical(1,[left.key,right.key]);
-    await client.registerOptical(at(library,4));
-    assert.equal(client.getOptical(left.key),undefined);
-  }finally{client.dispose('done');}
 });
 
 // Actual structuredClone/transfer semantics, asynchronous message boundaries and runtime.

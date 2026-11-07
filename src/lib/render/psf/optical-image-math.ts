@@ -1,5 +1,4 @@
 import {linearToSrgb} from './convolve.ts';
-export const OPTICAL_CACHE_BYTES=14*1024*1024;
 import type {SceneInput,BlurredBackground,SceneProfile} from './scene.ts';
 
 export interface OpticalImageLevel {

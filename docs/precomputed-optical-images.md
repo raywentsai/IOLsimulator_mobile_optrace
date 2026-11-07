@@ -4,8 +4,6 @@ Phase 5 proof of concept, 2026-11-05. No new ray tracing, eye parameters or PSFs
 
 Runtime follow-up: [Phase 7](phase7-rendering-optimization.md) replaces the expanded main-thread cache with Worker-owned packed caching and asset IDs. The format and numerical results below remain applicable; performance/cache measurements below describe the Phase 5 baseline.
 
-[Phase 8](phase8-unified-rendering.md) covers the current three-model library, release densities and shared validation path.
-
 ## Reproduction and format
 
 Run with the locked `optics/` uv environment:
