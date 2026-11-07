@@ -12,15 +12,16 @@
   import {objectVergence,PSF_MODELS,mobileSampling,calibratedCssPxPerMm} from '../lib/render/psf/geometry';
   import type {SceneInput} from '../lib/render/psf/scene';
   import {PsfDisplay} from '../lib/render/psf/display';
-  import {loadOpticalImage,prefetchOpticalNeighbors,cancelOpticalImageLoads} from '../lib/render/psf/optical-images';
-  import type {OpticalImageLayer} from '../lib/render/psf/optical-image-math';
+  import {OpticalImageLoader} from '../lib/render/psf/optical-images';
+  import type {OpticalImageRef} from '../lib/render/psf/optical-image-math';
+  import {PhysicsWorkerClient,type Computed} from '../lib/render/psf/worker-client';
   import {blurEngine,selectedLensId,selectedCompareLensId,masterDefocus,cssPxPerMmCal,calibrationScale,currentViewportScale,viewingDistance,splitViewEnabled,
     blurSigma,compareBlurSigma,backgroundBlurSigma,compareBackgroundBlurSigma,currentVADecimal,compareVADecimal} from '../lib/stores/app';
 
   let host:HTMLDivElement,canvas:HTMLCanvasElement;
   let renderer:WebGLRenderer|null=null;
   let psfDisplay:PsfDisplay|null=null;
-  let worker:Worker|null=null;
+  let worker:PhysicsWorkerClient|null=null;
   let observer:ResizeObserver;
   let ready=false,disposed=false,busy=false,dirty=false,version=0;
   let error='',status='Loading reading card…',renderMs=0;
@@ -29,52 +30,56 @@
   let fallbackMessage='';
   let backgroundController=new AbortController(),backgroundAssetHandle:LoadedPng|null=null;
   let profile:Record<string,unknown>={},scheduledAt=0;
-  let timer:ReturnType<typeof setTimeout>|null=null;
+  let queued=false,lastRequestedKey='',backgroundRevision=0;
   let prefetchTimer:ReturnType<typeof setTimeout>|null=null;
   let background:HTMLImageElement|HTMLCanvasElement,card:HTMLImageElement;
-  let sourcePixels:ImageData;
   let loadController=new AbortController();
   let backgroundTexture='',cardTexture='';
   const cardCanvas=typeof document!=='undefined'?document.createElement('canvas'):null;
   const CARD_HEIGHT_MM=28,ASPECT=1528/1170;
-  let id=0;
-  type Computed={data:Uint8ClampedArray;milliseconds:number;profile:Record<string,number>};
-  const pending=new Map<number,{resolve:(value:Computed)=>void;reject:(error:Error)=>void;timer:ReturnType<typeof setTimeout>}>();
+  const opticalImages=new OpticalImageLoader({
+    getOptical:key=>worker?.getOptical(key),
+    registerOptical:layer=>{ensureWorker();return worker!.registerOptical(layer);}
+  });
 
   function resetWorker(reason:string):void {
-    worker?.terminate();worker=null;
-    for(const p of pending.values()){clearTimeout(p.timer);p.reject(new Error(reason));}pending.clear();
+    worker?.dispose(reason);worker=null;
+  }
+
+  function backgroundPixels():Uint8ClampedArray {
+    const native=document.createElement('canvas');native.width=background.width;native.height=background.height;
+    const ctx=native.getContext('2d',{willReadFrequently:true})!;ctx.drawImage(background,0,0);
+    const pixels=ctx.getImageData(0,0,native.width,native.height).data;
+    native.width=1;native.height=1;
+    return pixels;
   }
 
   function ensureWorker():void {
     if(worker)return;
-    const native=document.createElement('canvas');native.width=background.width;native.height=background.height;
-    const ctx=native.getContext('2d',{willReadFrequently:true})!;ctx.drawImage(background,0,0);
-    sourcePixels=ctx.getImageData(0,0,native.width,native.height);
-    worker=new Worker(new URL('../lib/render/psf/worker.ts',import.meta.url),{type:'module'});
-    worker.onmessage=event=>{const item=pending.get(event.data.id);if(!item)return;pending.delete(event.data.id);clearTimeout(item.timer);
-      if(event.data.error)item.reject(new Error(event.data.error));else item.resolve(event.data);};
-    worker.onerror=()=>resetWorker('Physics worker failed; retry rendering or select Gaussian');
-    worker.postMessage({source:sourcePixels.data},[sourcePixels.data.buffer]);
-    native.width=1;native.height=1;
+    worker=new PhysicsWorkerClient(new Worker(new URL('../lib/render/psf/worker.ts',import.meta.url),{type:'module'}),backgroundPixels(),resetWorker);
+    worker.invalidate(version);
   }
 
-  function compute(input:SceneInput&{opticalLayer?:OpticalImageLayer},backgroundKey:string):Promise<Computed> {
-    return new Promise((resolve,reject)=>{
-      ensureWorker();
-      const requestId=++id;pending.set(requestId,{resolve,reject,timer:setTimeout(()=>resetWorker('Physics rendering timed out; retry rendering or select Gaussian'),30000)});
-      worker!.postMessage({id:requestId,input,backgroundKey});
-    });
+  function compute(input:SceneInput&{opticalLayer?:OpticalImageRef},backgroundKey:string,requestVersion:number):Promise<Computed> {
+    ensureWorker();return worker!.render(input,backgroundKey,requestVersion);
   }
 
   function schedule():void {
     if(!ready||disposed) return;
+    const key=JSON.stringify([$blurEngine,$selectedLensId,$splitViewEnabled?$selectedCompareLensId:null,$splitViewEnabled,$masterDefocus,
+      calibratedCssPxPerMm($cssPxPerMmCal,$calibrationScale,$currentViewportScale),$viewingDistance,host.clientWidth,host.clientHeight,
+      devicePixelRatio,window.visualViewport?.scale??1,backgroundRevision,
+      ...($blurEngine==='gaussian'?[$blurSigma,$compareBlurSigma,$backgroundBlurSigma,$compareBackgroundBlurSigma]:[])]);
+    if(key===lastRequestedKey)return;
+    lastRequestedKey=key;
     version++;dirty=true;status='Updating…';opticalProgress=null;
+    worker?.invalidate(version);
     if(prefetchTimer!==null){clearTimeout(prefetchTimer);prefetchTimer=null;}
     cancelPsfPrefetch($blurEngine==='psf'?{models:[PSF_MODELS[$selectedLensId],...($splitViewEnabled?[PSF_MODELS[$selectedCompareLensId]]:[])],demand:objectVergence($masterDefocus)}:undefined);
-    cancelOpticalImageLoads($blurEngine==='psf'&&[$selectedLensId,...($splitViewEnabled?[$selectedCompareLensId]:[])].includes('zcb00')?objectVergence($masterDefocus):undefined);
+    opticalImages.cancel($blurEngine==='psf'&&[$selectedLensId,...($splitViewEnabled?[$selectedCompareLensId]:[])].includes('zcb00')?objectVergence($masterDefocus):undefined);
     scheduledAt=performance.now();
-    if(timer===null&&!busy)timer=setTimeout(()=>{timer=null;void flush();},16);
+    // Svelte has already coalesced synchronous store updates. No extra frame/timer wait.
+    if(!queued&&!busy){queued=true;queueMicrotask(()=>{queued=false;void flush();});}
   }
 
   async function flush():Promise<void> {
@@ -85,7 +90,7 @@
     const sigma=$blurSigma,compareSigma=$compareBlurSigma,bgSigma=$backgroundBlurSigma,compareBgSigma=$compareBackgroundBlurSigma;
     try {
       const start=performance.now(),cssWidth=Math.max(1,host.clientWidth),cssHeight=Math.max(1,host.clientHeight);
-      const metrics:Record<string,unknown>={queueMs:start-scheduledAt,backgroundReady};
+      const metrics:Record<string,unknown>={engine,queueMs:start-scheduledAt,backgroundReady};
       fallbackMessage='';
       status=engine==='psf'?'Loading PSF library…':'Updating…';
       // Physics is computed off-thread at a bounded sampling grid; its physical
@@ -98,13 +103,13 @@
       // independently of near distance. Its convolution is reused on slides.
       const farProjections=library?.entries.filter(e=>models.includes(e.model)&&e.objectVergenceD===0).map(e=>e.retinalMmPerTanTheta);
       let sampling=library?mobileSampling(cssWidth,cssHeight,ppm,distance,onlyAspheric?1:demand,CARD_HEIGHT_MM,ASPECT,Math.min(...(onlyAspheric?farProjections!:projections!))):null;
-      let opticalLayer:OpticalImageLayer|null=null;
+      let opticalLayer:OpticalImageRef|null=null;
       if(library&&models.includes(PSF_MODELS.zcb00)) {
         // Start infinity/other-lens transfers while the Aspheric image loads.
         void Promise.all(library.entries.filter(e=>models.includes(e.model)&&(e.objectVergenceD===0||(e.model!==PSF_MODELS.zcb00&&e.objectVergenceD===demand))).map(e=>loadPsf(base,e))).catch(()=>undefined);
         const entry=library.entries.find(e=>e.model===PSF_MODELS.zcb00&&e.objectVergenceD===demand)!;
         status='Loading optical image…';
-        try{opticalLayer=await loadOpticalImage(base,entry,ppm*distance*1000*sampling!.scaleX,ppm*distance*1000*sampling!.scaleY,p=>{if(!disposed&&requestVersion===version)opticalProgress=p;});}
+        try{opticalLayer=await opticalImages.load(base,entry,ppm*distance*1000*sampling!.scaleX,ppm*distance*1000*sampling!.scaleY,p=>{if(!disposed&&requestVersion===version)opticalProgress=p;});}
         catch(e){if(requestVersion===version){console.warn('Optical image unavailable; using the dynamic PSF renderer',String(e));fallbackMessage='Optical image unavailable. Using dynamic PSF rendering.';}}
         if(disposed||requestVersion!==version)return;
         if(onlyAspheric&&!opticalLayer)sampling=mobileSampling(cssWidth,cssHeight,ppm,distance,demand,CARD_HEIGHT_MM,ASPECT,Math.min(...projections!));
@@ -161,16 +166,17 @@
           const computeStart=performance.now();
           const result=await compute({width,height,background:new Uint8ClampedArray(0),backgroundWidth:background.width,backgroundHeight:background.height,
             card:gray,cardWidth:widthPixels,cardHeight:heightPixels,near,nearEnergy,infinity,infinityEnergy,
-            cssPxPerMm:ppm,viewingDistanceM:distance,renderScale:scale,renderScaleY:scaleY,...(imageLayer?{opticalLayer:imageLayer}:{})},[model,width,height,ppm,distance,scale,scaleY].join(':'));
+            cssPxPerMm:ppm,viewingDistanceM:distance,renderScale:scale,renderScaleY:scaleY,...(imageLayer?{opticalLayer:imageLayer}:{})},[model,width,height,ppm,distance,scale,scaleY].join(':'),requestVersion);
+          if(result.cancelled||!result.data)return null;
           metrics[lensId]={loadDecodeMs:computeStart-loadStart,nearLoad,infinityLoad,workerRoundTripMs:performance.now()-computeStart,workerMs:result.milliseconds,...result.profile};
           return result;
         };
         const left=await makeSide(lens);
-        if(!left||disposed||requestVersion!==version) return;
+        if(!left?.data||disposed||requestVersion!==version) return;
         const right=split?(compareLens===lens?left:await makeSide(compareLens)):null;
-        if(disposed||requestVersion!==version) return;
+        if(disposed||requestVersion!==version||(split&&!right?.data)) return;
         const displayStart=performance.now();
-        if(right) for(let y=0;y<height;y++) {
+        if(right?.data) for(let y=0;y<height;y++) {
           const start=4*(y*width+Math.floor(width/2)),end=4*(y+1)*width;
           left.data.set(right.data.subarray(start,end),start);
         }
@@ -182,11 +188,11 @@
           prefetchTimer=null;if(disposed||requestVersion!==version||!backgroundReady)return;
           const dynamicModels=selectedModels.filter(model=>!(opticalLayer&&model===PSF_MODELS.zcb00));
           if(dynamicModels.length)void prefetchPsfNeighbors(base,dynamicModels,demand).catch(()=>undefined);
-          if(opticalLayer)void prefetchOpticalNeighbors(base,demand,ppm*distance*1000*scale,ppm*distance*1000*scaleY).catch(()=>undefined);
+          if(opticalLayer)void opticalImages.prefetch(base,demand,ppm*distance*1000*scale,ppm*distance*1000*scaleY).catch(()=>undefined);
         },150);
       }
-      if(requestVersion===version) {error='';status='';renderMs=performance.now()-start;profile={...metrics,renderMs,inputToSubmitMs:performance.now()-scheduledAt,width,height,objectVergenceD:demand,lens,compareLens:split?compareLens:null,cssPxPerMm:ppm,viewingDistanceM:distance,psfCache:psfCacheInfo()};}
-    } catch(e) {if(requestVersion===version) {error=String(e);status='';opticalProgress=null;}}
+      if(requestVersion===version) {error='';status='';renderMs=performance.now()-start;profile={...metrics,renderMs,inputToSubmitMs:performance.now()-scheduledAt,width,height,objectVergenceD:demand,lens,compareLens:split?compareLens:null,cssPxPerMm:ppm,viewingDistanceM:distance,psfCache:psfCacheInfo(),workerAssets:worker?.info(),opticalLoads:opticalImages.info()};}
+    } catch(e) {if(requestVersion===version) {lastRequestedKey='';error=String(e);status='';opticalProgress=null;}}
     finally {busy=false;if(dirty&&!disposed) void flush();}
   }
 
@@ -222,7 +228,7 @@
       const old=backgroundAssetHandle;backgroundAssetHandle=asset;background=asset.image;backgroundReady=true;
       if(ready){
         // Invalidate work using the explicitly labelled neutral placeholder.
-        version++;resetWorker('Background updated');
+        backgroundRevision++;worker?.source(backgroundPixels());
         renderer!.updateImageTexture(backgroundTexture,background);
         schedule();
       }
@@ -239,7 +245,7 @@
     void initializeScene();
   });
   function updateViewport():void {currentViewportScale.set(window.visualViewport?.scale??1);schedule();}
-  onDestroy(()=>{disposed=true;loadController.abort();backgroundController.abort();backgroundAssetHandle?.release();cancelPsfPrefetch();cancelOpticalImageLoads();if(prefetchTimer!==null)clearTimeout(prefetchTimer);if(timer!==null)clearTimeout(timer);if(typeof window!=='undefined')window.visualViewport?.removeEventListener('resize',updateViewport);observer?.disconnect();resetWorker('Scene disposed');psfDisplay?.dispose();renderer?.dispose();});
+  onDestroy(()=>{disposed=true;loadController.abort();backgroundController.abort();backgroundAssetHandle?.release();cancelPsfPrefetch();opticalImages.clear();if(prefetchTimer!==null)clearTimeout(prefetchTimer);if(typeof window!=='undefined')window.visualViewport?.removeEventListener('resize',updateViewport);observer?.disconnect();resetWorker('Scene disposed');psfDisplay?.dispose();renderer?.dispose();});
   $: if(ready) {void [$blurEngine,$selectedLensId,$selectedCompareLensId,$masterDefocus,$cssPxPerMmCal,$calibrationScale,$currentViewportScale,$viewingDistance,$splitViewEnabled,
     $blurSigma,$compareBlurSigma,$backgroundBlurSigma,$compareBackgroundBlurSigma];schedule();}
 </script>

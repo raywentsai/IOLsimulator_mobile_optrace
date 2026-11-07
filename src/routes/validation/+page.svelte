@@ -6,6 +6,7 @@
   import {PsfDisplay} from '../../lib/render/psf/display';
   import {srgbToLinear,linearToSrgb} from '../../lib/render/psf/convolve';
   import {loadOpticalImage} from '../../lib/render/psf/optical-images';
+  import {PhysicsWorkerClient} from '../../lib/render/psf/worker-client';
   import {loadPngAsset} from '../../lib/render/asset-loading';
   import backgroundAsset from '../../lib/assets/images/background.png';
   import backgroundInfo from '../../lib/assets/images/background.json';
@@ -18,6 +19,7 @@
     let cancelled=false;
     const controller=new AbortController();
     let worker!:Worker;
+    let assetClient:PhysicsWorkerClient|null=null;
     let renderer:PsfDisplay|null=null;
     void (async()=>{
       try {
@@ -73,12 +75,19 @@
           const input={...fixture,background:new Uint8ClampedArray(fixture.background),
             card:new Float32Array(cardBytes.buffer.slice(cardBytes.byteOffset,cardBytes.byteOffset+cardBytes.byteLength)),nearEnergy,infinityEnergy};
           worker.postMessage({source:input.background});
-          const run=async(precomputed:boolean)=>new Promise<{data:Uint8ClampedArray;milliseconds:number}>((resolve,reject)=>{
+          const run=async()=>new Promise<{data:Uint8ClampedArray;milliseconds:number}>((resolve,reject)=>{
             const timeout=setTimeout(()=>reject(new Error('Canonical renderer timeout')),30000);
             worker.onmessage=event=>{clearTimeout(timeout);if(event.data.error)reject(new Error(event.data.error));else resolve(event.data);};
-            worker.postMessage({id:100+index,input:{...input,...(precomputed?{opticalLayer:layer,nearEnergy:new Float32Array(0)}:{})},backgroundKey:fixture.name});
+            worker.postMessage({id:100+index,input,backgroundKey:fixture.name});
           });
-          const dynamic=await run(false),optical=await run(true);
+          const dynamic=await run();
+          assetClient=new PhysicsWorkerClient(new Worker(new URL('../../lib/render/psf/worker.ts',import.meta.url),{type:'module'}),new Uint8ClampedArray(fixture.background),reason=>assetClient?.dispose(reason));
+          assetClient.invalidate(1);
+          // Validation keeps its standalone cache; only this fixture copy is transferred.
+          const ref=await assetClient.registerOptical({...layer,rgba:layer.rgba.slice()});
+          const optical=await assetClient.render({...input,nearEnergy:new Float32Array(0),opticalLayer:ref},fixture.name,1);
+          assetClient.dispose('Fixture complete');assetClient=null;
+          if(!optical.data)throw new Error('Registered optical renderer did not produce an image');
           if(cancelled)return;
           let workerError=0,pairError=0;
           for(let i=0;i<expected.length;i++){
@@ -114,9 +123,9 @@
         }finally{asset.release();}
         state='PASS: all Python / Worker / WebGL comparisons';
       }catch(error){state=`FAIL: ${error}`;}
-      finally{worker?.terminate();renderer?.dispose();}
+      finally{worker?.terminate();assetClient?.dispose('Validation complete');renderer?.dispose();}
     })();
-    return()=>{cancelled=true;controller.abort();worker?.terminate();renderer?.dispose();};
+    return()=>{cancelled=true;controller.abort();worker?.terminate();assetClient?.dispose('Validation disposed');renderer?.dispose();};
   });
 </script>
 <svelte:head><title>Optics numerical validation</title></svelte:head>
