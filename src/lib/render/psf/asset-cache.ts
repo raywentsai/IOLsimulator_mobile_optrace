@@ -10,14 +10,15 @@ export class AssetCache<T> {
     if(item){this.items.delete(key);this.items.set(key,item);}
     return item?.value;
   }
-  set(key:string,value:T,bytes:number):void {
+  set(key:string,value:T,bytes:number,retained:readonly string[]=[]):void {
     if(bytes>this.budget||bytes<0)throw new Error('Asset exceeds memory budget');
     const old=this.items.get(key);
-    const protectedBytes=[...this.items].reduce((n,[k,v])=>n+(k!==key&&this.pinned.has(k)?v.bytes:0),0);
+    const protectedKey=(candidate:string)=>this.pinned.has(candidate)||retained.includes(candidate);
+    const protectedBytes=[...this.items].reduce((n,[k,v])=>n+(k!==key&&protectedKey(k)?v.bytes:0),0);
     if(protectedBytes+bytes>this.budget)throw new Error('Active assets exceed memory budget');
     if(old){this.items.delete(key);this.used-=old.bytes;}
     while(this.used+bytes>this.budget){
-      const oldest=[...this.items.keys()].find(k=>!this.pinned.has(k))!;
+      const oldest=[...this.items.keys()].find(k=>!protectedKey(k))!;
       this.used-=this.items.get(oldest)!.bytes;this.items.delete(oldest);
     }
     this.items.set(key,{value,bytes});this.used+=bytes;

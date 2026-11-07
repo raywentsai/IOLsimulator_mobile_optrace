@@ -1,4 +1,4 @@
-"""Preconvolve the existing ETDRS card with authenticated Aspheric PSFs.
+"""Preconvolve the existing ETDRS card with authenticated IOL PSFs.
 
 No ray tracing. Coordinates are tan(theta), not screen/device pixels. PNG RGB
 stores two linear 12-bit channels (premultiplied radiance and coverage); alpha
@@ -20,8 +20,20 @@ from validate_library import scaled_kernel
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / 'static'
-MODEL = 'aspheric_monofocal_dc_v1'
+MODELS = {
+    'aspheric_monofocal_dc_v1': 'aspheric',
+    'spherical_monofocal_dc_v1': 'spherical',
+    'vivity_inspired_v2_1_dc_v1': 'vivity',
+}
 DENSITIES = [4096, 8192]
+# Minimum source grids that pass the dense-reference convergence gate.
+# The exceptions are confined to nodes with a sharper low-vergence response.
+MINIMUM_DENSITIES = {
+    'spherical_monofocal_dc_v1': dict.fromkeys([10, 11, 12, 13, 14, 15, 16, 19], 8192),
+    'vivity_inspired_v2_1_dc_v1': {
+        10: 16384, 11: 16384, 12: 12288, 13: 8192, 14: 8192, 15: 8192, 16: 8192, 17: 8192,
+    },
+}
 HEIGHT_MM, ASPECT = 28., 1528 / 1170
 
 
@@ -86,24 +98,18 @@ def pack(fg, alpha):
     return rgb, float(error)
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=PUBLIC / 'optical-images')
-    parser.add_argument('--demands', nargs='+', type=float, default=[i / 10 for i in range(10, 41)])
-    parser.add_argument('--densities', nargs='+', type=int, default=DENSITIES)
-    args = parser.parse_args()
-    library = json.loads((PUBLIC / 'psf/manifest.json').read_text('utf8'))
-    args.output.mkdir(parents=True, exist_ok=True)
-    doc = pymupdf.open(PUBLIC / 'reading-card.svg')
+def export_model(page, library, model, output, demands, densities):
     entries = []
-    for demand in args.demands:
-        source = next(e for e in library['entries'] if e['model'] == MODEL and e['objectVergenceD'] == demand)
+    for demand in demands:
+        source = next(e for e in library['entries'] if e['model'] == model and e['objectVergenceD'] == demand)
         energy = read_psf(source)
         node = {'objectVergenceD': demand, 'psfSha256': source['sha256'],
                 'retinalMmPerTanTheta': source['retinalMmPerTanTheta'], 'levels': []}
         start = time.perf_counter()
-        for density in args.densities:
-            fg, alpha, metadata = optical_layer(doc[0], source, energy, demand, density)
+        minimum = MINIMUM_DENSITIES.get(model, {}).get(round(demand * 10), DENSITIES[0])
+        levels = densities or [density for density in DENSITIES if density >= minimum] or [minimum]
+        for density in levels:
+            fg, alpha, metadata = optical_layer(page, source, energy, demand, density)
             rgb, error = pack(fg, alpha)
             coverage=(((rgb[:,:,1].astype(np.uint16)&15)<<8)|rgb[:,:,2])/4095
             mass=coverage.sum();px,py=metadata['pixelsPerTanTheta'];x0,_,y0,_=metadata['extentTanTheta']
@@ -113,28 +119,42 @@ def main():
             assert centroid_error < .05/min(px,py)
             metadata.update(coverageCentroidTanTheta=centroid,centroidErrorTanTheta=centroid_error,
                             coverageAreaRelativeError=float(mass/(metadata['cardPixels'][0]*metadata['cardPixels'][1])-1))
-            name = f'aspheric_{round(demand * 10):02d}_{density}.png'
-            path = args.output / name
+            name = f'{MODELS[model]}_{round(demand * 10):02d}_{density}.png'
+            path = output / name
             Image.fromarray(rgb).save(path, optimize=True)
             rgba = np.concatenate((rgb, np.full((*rgb.shape[:2], 1), 255, np.uint8)), axis=2)
             metadata.update(file=name, bytes=path.stat().st_size, fileSha256=sha(path.read_bytes()),
                             decodedRgbaSha256=sha(rgba.tobytes()), maxLinearQuantizationError=error)
             node['levels'].append(metadata)
         entries.append(node)
-        print(f'{demand:.1f} D: {sum(x["bytes"] for x in node["levels"])} bytes, '
+        print(f'{model} {demand:.1f} D: {sum(x["bytes"] for x in node["levels"])} bytes, '
               f'{time.perf_counter() - start:.2f}s', flush=True)
-    result = {'version': 1, 'model': MODEL, 'encoding': 'opaque-rgb-f12-a12',
+    result = {'version': 1, 'model': model, 'encoding': 'opaque-rgb-f12-a12',
               'coordinates': 'tan(theta), x right/y down; card bottom centre is (0,0)',
               'channels': 'R=f>>4; G=((f&15)<<4)|(a>>8); B=a&255; f,a in [0,4095]',
               'radiometry': 'linear photopic radiance, premultiplied foreground + coverage; no RGB gamma encoding',
               'physicalCardMm': [HEIGHT_MM * ASPECT, HEIGHT_MM],
               'cardSvgCanonicalSha256': sha((PUBLIC / 'reading-card.svg').read_text('utf8').replace('\r\n', '\n').encode()),
-              'assumptions': 'existing frozen Aspheric model, existing PSFs; on-axis shift-invariant scalar-Y',
+              'assumptions': 'existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y',
               'background': 'independent infinity PSF; never blur background with a near node',
               'software': {'pymupdf': pymupdf.VersionBind, 'numpy': np.__version__, 'scipy': scipy.__version__},
               'entries': entries}
-    (args.output / 'manifest.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf8')
+    (output / f'{model}.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf8')
     print(f'Total PNG bytes: {sum(l["bytes"] for e in entries for l in e["levels"])}', flush=True)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=PUBLIC / 'optical-images')
+    parser.add_argument('--models', nargs='+', choices=MODELS, default=list(MODELS))
+    parser.add_argument('--demands', nargs='+', type=float, default=[i / 10 for i in range(10, 41)])
+    parser.add_argument('--densities', nargs='+', type=int, help='Override release densities for an offline experiment')
+    args = parser.parse_args()
+    library = json.loads((PUBLIC / 'psf/manifest.json').read_text('utf8'))
+    args.output.mkdir(parents=True, exist_ok=True)
+    with pymupdf.open(PUBLIC / 'reading-card.svg') as doc:
+        for model in args.models:
+            export_model(doc[0], library, model, args.output, args.demands, args.densities)
 
 
 if __name__ == '__main__':

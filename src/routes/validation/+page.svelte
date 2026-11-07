@@ -5,7 +5,7 @@
   import type {SceneInput} from '../../lib/render/psf/scene';
   import {PsfDisplay} from '../../lib/render/psf/display';
   import {srgbToLinear,linearToSrgb} from '../../lib/render/psf/convolve';
-  import {loadOpticalImage} from '../../lib/render/psf/optical-images';
+  import {OpticalImageLoader} from '../../lib/render/psf/optical-images';
   import {PhysicsWorkerClient} from '../../lib/render/psf/worker-client';
   import {loadPngAsset} from '../../lib/render/asset-loading';
   import backgroundAsset from '../../lib/assets/images/background.png';
@@ -18,30 +18,31 @@
   onMount(()=>{
     let cancelled=false;
     const controller=new AbortController();
-    let worker!:Worker;
-    let assetClient:PhysicsWorkerClient|null=null;
+    const client=new PhysicsWorkerClient(new Worker(new URL('../../lib/render/psf/worker.ts',import.meta.url),{type:'module'}),
+      new Uint8ClampedArray(0),reason=>client.dispose(reason));
+    const images=new OpticalImageLoader({
+      getOptical:key=>client.getOptical(key),
+      registerOptical:layer=>client.registerOptical(layer)
+    });
+    client.invalidate(1);
     let renderer:PsfDisplay|null=null;
     void (async()=>{
       try {
         const response=await fetch(`${base}/validation/psf-reference.json`);
         if(!response.ok)throw new Error('Independent reference fixtures unavailable');
         const bundle=await response.json() as {cases:Array<SceneInput & {name:string;expectedRgba:number[]}>};
-        worker=new Worker(new URL('../../lib/render/psf/worker.ts',import.meta.url),{type:'module'});
-        for(const [index,fixture] of bundle.cases.entries()) {
+        for(const fixture of bundle.cases) {
           const [nearEnergy,infinityEnergy]=await Promise.all([loadPsf(base,fixture.near),loadPsf(base,fixture.infinity)]);
           const input={...fixture,background:new Uint8ClampedArray(fixture.background),card:new Float32Array(fixture.card),nearEnergy,infinityEnergy};
-          worker.postMessage({source:input.background});
-          const result=await new Promise<{data:Uint8ClampedArray;milliseconds:number}>((resolve,reject)=>{
-            const timeout=setTimeout(()=>reject(new Error('Validation worker timeout')),30000);
-            worker.onmessage=event=>{clearTimeout(timeout);if(event.data.error)reject(new Error(event.data.error));else resolve(event.data);};
-            worker.onerror=()=>{clearTimeout(timeout);reject(new Error('Worker failed'));};
-            worker.postMessage({id:index,input,backgroundKey:fixture.name});
-          });
+          if(cancelled)return;
+          client.source(input.background);
+          const result=await client.render(input,fixture.name,1);
+          if(!result.data)throw new Error('Dynamic renderer did not produce an image');
           if(cancelled)return;
           let workerError=0,webglError=0,scaledError=0;
           for(let i=0;i<result.data.length;i++)workerError=Math.max(workerError,Math.abs(result.data[i]-fixture.expectedRgba[i]));
           for(const enlarged of [false,true]) {
-            renderer?.dispose();renderer=new PsfDisplay(canvas);
+            renderer??=new PsfDisplay(canvas);
             const dw=enlarged?fixture.width*2+1:fixture.width,dh=enlarged?fixture.height*2+3:fixture.height;
             renderer.present(result.data,fixture.width,fixture.height,dw,dh);
             const gl=canvas.getContext('webgl')!,readback=new Uint8Array(dw*dh*4);
@@ -60,41 +61,37 @@
         }
         const opticalResponse=await fetch(`${base}/validation/optical-image-reference.json`);
         if(!opticalResponse.ok)throw new Error('Optical image fixtures unavailable');
-        const opticalCases=await opticalResponse.json() as {cases:Array<SceneInput&{name:string;cardFile:string;expectedFile:string}>};
+        const opticalCases=await opticalResponse.json() as {cases:Array<SceneInput&{name:string;cardFile:string;expectedFile:string;compareDynamic:boolean}>};
         const inflate=async(file:string)=>{
           const response=await fetch(`${base}/validation/${file}`);
           if(!response.ok||!response.body)throw new Error('Compressed optical fixture unavailable');
           return new Uint8Array(await new Response(response.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
         };
-        for(const [index,fixture]of opticalCases.cases.entries()) {
-          const [cardBytes,expected,nearEnergy,infinityEnergy,layer]=await Promise.all([
-            inflate(fixture.cardFile),inflate(fixture.expectedFile),loadPsf(base,fixture.near),loadPsf(base,fixture.infinity),
-            loadOpticalImage(base,fixture.near,fixture.renderScale*1000,(fixture.renderScaleY??fixture.renderScale)*1000)
+        for(const fixture of opticalCases.cases) {
+          const empty=new Float32Array(0);
+          const [cardBytes,expected,nearEnergy,infinityEnergy,selection]=await Promise.all([
+            fixture.compareDynamic?inflate(fixture.cardFile):null,inflate(fixture.expectedFile),
+            fixture.compareDynamic?loadPsf(base,fixture.near):empty,loadPsf(base,fixture.infinity),
+            images.select(base,fixture.near,fixture.renderScale*1000,(fixture.renderScaleY??fixture.renderScale)*1000)
           ]);
-          if(!layer)throw new Error('Canonical optical image unavailable');
+          if(cancelled)return;
+          if(!selection)throw new Error('Canonical optical image unavailable');
+          const opticalLayer=await images.load(base,selection);
           const input={...fixture,background:new Uint8ClampedArray(fixture.background),
-            card:new Float32Array(cardBytes.buffer.slice(cardBytes.byteOffset,cardBytes.byteOffset+cardBytes.byteLength)),nearEnergy,infinityEnergy};
-          worker.postMessage({source:input.background});
-          const run=async()=>new Promise<{data:Uint8ClampedArray;milliseconds:number}>((resolve,reject)=>{
-            const timeout=setTimeout(()=>reject(new Error('Canonical renderer timeout')),30000);
-            worker.onmessage=event=>{clearTimeout(timeout);if(event.data.error)reject(new Error(event.data.error));else resolve(event.data);};
-            worker.postMessage({id:100+index,input,backgroundKey:fixture.name});
-          });
-          const dynamic=await run();
-          assetClient=new PhysicsWorkerClient(new Worker(new URL('../../lib/render/psf/worker.ts',import.meta.url),{type:'module'}),new Uint8ClampedArray(fixture.background),reason=>assetClient?.dispose(reason));
-          assetClient.invalidate(1);
-          // Validation keeps its standalone cache; only this fixture copy is transferred.
-          const ref=await assetClient.registerOptical({...layer,rgba:layer.rgba.slice()});
-          const optical=await assetClient.render({...input,nearEnergy:new Float32Array(0),opticalLayer:ref},fixture.name,1);
-          assetClient.dispose('Fixture complete');assetClient=null;
+            card:cardBytes?new Float32Array(cardBytes.buffer,cardBytes.byteOffset,cardBytes.byteLength/4):empty,nearEnergy,infinityEnergy};
+          if(cancelled)return;
+          client.source(input.background);
+          const dynamic=fixture.compareDynamic?await client.render(input,fixture.name,1):null;
+          if(dynamic&&!dynamic.data)throw new Error('Canonical dynamic renderer did not produce an image');
+          const optical=await client.render({...input,card:empty,nearEnergy:empty,opticalLayer},fixture.name,1);
           if(!optical.data)throw new Error('Registered optical renderer did not produce an image');
           if(cancelled)return;
           let workerError=0,pairError=0;
           for(let i=0;i<expected.length;i++){
             workerError=Math.max(workerError,Math.abs(optical.data[i]-expected[i]));
-            pairError=Math.max(pairError,Math.abs(optical.data[i]-dynamic.data[i]));
+            if(dynamic?.data)pairError=Math.max(pairError,Math.abs(optical.data[i]-dynamic.data[i]),Math.abs(expected[i]-dynamic.data[i]));
           }
-          renderer?.dispose();renderer=new PsfDisplay(canvas);
+          renderer??=new PsfDisplay(canvas);
           renderer.present(optical.data,fixture.width,fixture.height,fixture.width,fixture.height);
           const gl=canvas.getContext('webgl')!,readback=new Uint8Array(expected.length);
           gl.readPixels(0,0,fixture.width,fixture.height,gl.RGBA,gl.UNSIGNED_BYTE,readback);
@@ -106,7 +103,7 @@
           rows=[...rows,{name:fixture.name,workerError,webglError,scaledError:null,milliseconds:optical.milliseconds}];
           if(workerError>1||pairError>1||webglError>1)throw new Error('Optical image / dynamic FFT / Python canonical comparison failed');
         }
-        renderer?.dispose();renderer=new PsfDisplay(canvas);
+        renderer??=new PsfDisplay(canvas);
         renderer.present(new Uint8ClampedArray([0,0,0,255,255,255,255,255]),2,1,3,1);
         const gl=canvas.getContext('webgl')!,pixel=new Uint8Array(4);
         gl.readPixels(1,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,pixel);midpoint=pixel[0];
@@ -123,16 +120,16 @@
         }finally{asset.release();}
         state='PASS: all Python / Worker / WebGL comparisons';
       }catch(error){state=`FAIL: ${error}`;}
-      finally{worker?.terminate();assetClient?.dispose('Validation complete');renderer?.dispose();}
+      finally{client.dispose('Validation complete');renderer?.dispose();}
     })();
-    return()=>{cancelled=true;controller.abort();worker?.terminate();assetClient?.dispose('Validation disposed');renderer?.dispose();};
+    return()=>{cancelled=true;controller.abort();images.cancel();client.dispose('Validation disposed');renderer?.dispose();};
   });
 </script>
 <svelte:head><title>Optics numerical validation</title></svelte:head>
 <main>
   <h1>Optics numerical validation</h1>
   <p role="status">{state}</p>
-  <p>Identical PSF bins, input radiance, physical pixel scale and padding. Reference: independent Python/SciPy float computation.</p>
+  <p>Python/SciPy references use identical PSF bins, physical pixel scale and padding. Dense optical grids are area integrated to the display grid.</p>
   <p>Black/white 50% linear-light display sample: {midpoint??'pending'} / 255 (expected 188).</p>
   <p>Background PNG browser decode: {backgroundVerified?'PASS — every original RGB sample preserved':'pending'}.</p>
   <table><thead><tr><th>Model</th><th>Worker max byte error</th><th>WebGL max byte error</th><th>Linear upscale max byte error</th><th>Worker ms</th></tr></thead>
