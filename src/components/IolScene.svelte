@@ -10,11 +10,10 @@
   import {resolveBlurPolicy} from '../lib/render/blur-policy';
   import {manifest,loadPsf,prefetchPsfNeighbors,cancelPsfPrefetch,psfCacheInfo} from '../lib/render/psf/library';
   import {objectVergence,PSF_MODELS,mobileSampling,calibratedCssPxPerMm} from '../lib/render/psf/geometry';
-  import type {SceneInput} from '../lib/render/psf/scene';
   import {PsfDisplay} from '../lib/render/psf/display';
-  import {OpticalImageLoader,opticalWorkingSet} from '../lib/render/psf/optical-images';
-  import type {OpticalImageRef} from '../lib/render/psf/optical-image-math';
-  import {PhysicsWorkerClient,type Computed} from '../lib/render/psf/worker-client';
+  import {OpticalImageLoader,opticalDecodeBytes,opticalWorkingSet} from '../lib/render/psf/optical-images';
+  import {OPTICAL_CACHE_BYTES,type OpticalImageRef} from '../lib/render/psf/optical-image-math';
+  import {PhysicsWorkerClient} from '../lib/render/psf/worker-client';
   import {blurEngine,selectedLensId,selectedCompareLensId,masterDefocus,cssPxPerMmCal,calibrationScale,currentViewportScale,viewingDistance,splitViewEnabled,
     blurSigma,compareBlurSigma,backgroundBlurSigma,compareBackgroundBlurSigma,currentVADecimal,compareVADecimal} from '../lib/stores/app';
 
@@ -43,6 +42,7 @@
     decode:'Background PNG could not be decoded',native:'Browser could not load the background image',upload:'Background texture upload failed',cancelled:'Background download cancelled'};
   const opticalImages=new OpticalImageLoader({
     getOptical:key=>worker?.getOptical(key),
+    sliceOptical:selection=>worker?.sliceOptical(selection),
     registerOptical:layer=>{ensureWorker();return worker!.registerOptical(layer);}
   });
 
@@ -62,10 +62,6 @@
     if(worker)return;
     worker=new PhysicsWorkerClient(new Worker(new URL('../lib/render/psf/worker.ts',import.meta.url),{type:'module'}),backgroundPixels(),resetWorker);
     worker.invalidate(version);
-  }
-
-  function compute(input:SceneInput&{opticalLayer?:OpticalImageRef},backgroundKey:string,requestVersion:number):Promise<Computed> {
-    ensureWorker();return worker!.render(input,backgroundKey,requestVersion);
   }
 
   const sceneEngine=()=>backgroundLoading&&!backgroundReady?'gaussian':$blurEngine;
@@ -137,9 +133,9 @@
       let sampling=library?sample(demand,sides.length>1?near:[]):null;
       let opticalPlan:ReturnType<typeof opticalWorkingSet>|undefined;
       const physicalDensity=ppm*distance*1000;
+      const cardWidthAt=(scale:number,at:number)=>Math.max(1,Math.round(CARD_HEIGHT_MM*ASPECT*distance*at*ppm*scale));
       if(library&&sampling){
         const opticalStart=performance.now();
-        const px=physicalDensity*sampling.scaleX,py=physicalDensity*sampling.scaleY;
         const opticalFailure=(cause:unknown)=>{
           if(current()){
             console.warn('Optical image unavailable; using the dynamic PSF renderer',String(cause));
@@ -148,17 +144,22 @@
           return null;
         };
         status='Loading optical image…';
+        const select=(entry:typeof near[number],grid:ReturnType<typeof sample>,at:number,index:number)=>{
+          const {width,scaleX,scaleY}=grid,mid=Math.floor(width/2);
+          const visible=sides.length===2?{width,cardWidth:cardWidthAt(scaleX,at),left:index===0?0:mid,right:index===0?mid:width}:undefined;
+          return opticalImages.select(base,entry,physicalDensity*scaleX,physicalDensity*scaleY,signal,visible);
+        };
+        const grid=sampling;
         const adjacent=[Math.round(demand*10-1)/10,Math.round(demand*10+1)/10].map(at=>{
           if(at<1||at>4)return null;
           const entries=sides.map(side=>library.entries.find(entry=>entry.model===side.model&&entry.objectVergenceD===at)!);
-          const grid=sample(at,sides.length>1?entries:[]);
-          return {entries,px:physicalDensity*grid.scaleX,py:physicalDensity*grid.scaleY};
+          return {entries,at,grid:sample(at,sides.length>1?entries:[])};
         });
         const candidates=await Promise.all(sides.map(async(side,index)=>{
-          const selected=await opticalImages.select(base,side.near,px,py,signal).catch(opticalFailure);
+          const selected=await select(side.near,grid,-defocus,index).catch(opticalFailure);
           if(!selected||signal.aborted)return [null,null,null] as const;
           const [previous,next]=await Promise.all(adjacent.map(node=>node?
-            opticalImages.select(base,node.entries[index],node.px,node.py,signal).catch(()=>null):null));
+            select(node.entries[index],node.grid,node.at,index).catch(()=>null):null));
           return [selected,previous,next] as const;
         }));
         if(!current())return;
@@ -170,12 +171,16 @@
           await worker!.reserveOptical(requestVersion,keys);
         }
         if(!current())return;
-        await Promise.all(sides.map(async(side,index)=>{
+        const loadSide=async(side:typeof sides[number],index:number)=>{
           const selection=selections[index];
-          if(selection)side.optical=await waitForAsset(opticalImages.load(base,selection,p=>{
+          if(selection&&current())side.optical=await waitForAsset(opticalImages.load(base,selection,p=>{
             if(current())opticalProgress=p;
           }),signal).catch(opticalFailure);
-        }));
+        };
+        const decodeBytes=selections.reduce((sum,node)=>sum+(node&&!worker?.getOptical(node.key)?opticalDecodeBytes(node):0),0);
+        if(decodeBytes>OPTICAL_CACHE_BYTES){
+          for(const [index,side]of sides.entries())await loadSide(side,index);
+        }else await Promise.all(sides.map(loadSide));
         if(!current())return;
         if(sides.length===1&&!sides[0].optical)sampling=sample(demand,near);
         metrics.opticalLoadMs=performance.now()-opticalStart;
@@ -186,14 +191,17 @@
       const width=sampling?.width??Math.max(1,Math.round(cssWidth*desiredScale)),height=sampling?.height??Math.max(1,Math.round(cssHeight*desiredScale));
       const scale=width/cssWidth,scaleY=height/cssHeight;
       const heightPixels=Math.max(1,Math.round(CARD_HEIGHT_MM*distance*(-defocus)*ppm*scaleY));
-      const widthPixels=Math.max(1,Math.round(CARD_HEIGHT_MM*ASPECT*distance*(-defocus)*ppm*scale));
+      const widthPixels=cardWidthAt(scale,-defocus);
       if(widthPixels*heightPixels>4194304) throw new Error('Card exceeds available sampling memory; use a shorter viewing distance');
-      const needsCardRaster=engine==='gaussian'||sides.some(side=>!side.optical);
-      if(needsCardRaster){cardCanvas!.width=widthPixels;cardCanvas!.height=heightPixels;}
-      const ctx=cardCanvas!.getContext('2d',{willReadFrequently:true})!;
-      if(needsCardRaster){ctx.fillStyle='white';ctx.fillRect(0,0,widthPixels,heightPixels);ctx.drawImage(card,0,0,widthPixels,heightPixels);}
+      const rasterCard=()=>{
+        cardCanvas!.width=widthPixels;cardCanvas!.height=heightPixels;
+        const ctx=cardCanvas!.getContext('2d',{willReadFrequently:true})!;
+        ctx.fillStyle='white';ctx.fillRect(0,0,widthPixels,heightPixels);ctx.drawImage(card,0,0,widthPixels,heightPixels);
+        return ctx;
+      };
       const config:RenderConfig={width,height,blurSigma:0,nsGrade:0,pscRadius:0,pscDensity:0,pscSoftness:.2,splitView:false,splitPosition:.5};
       if(engine==='gaussian') {
+        rasterCard();
         if(canvas.width!==width) canvas.width=width;
         if(canvas.height!==height) canvas.height=height;
         renderer!.updateImageTexture(cardTexture,cardCanvas!);
@@ -203,11 +211,6 @@
           splitView:split,backgroundTextureId:backgroundTexture,backgroundNativeWidth:background.width,backgroundNativeHeight:background.height,
           foregroundScale:1,foregroundNativeWidth:widthPixels/scale,foregroundNativeHeight:heightPixels/scaleY});
       } else {
-        const cardPixels=needsCardRaster?ctx.getImageData(0,0,widthPixels,heightPixels).data:new Uint8ClampedArray(0);
-        // SVG black-path coverage on white is an integrated linear radiance
-        // sample, as in the reference MuPDF vector rasterizer.
-        const gray=new Float32Array(needsCardRaster?widthPixels*heightPixels:0);
-        for(let i=0;i<gray.length;i++) gray[i]=cardPixels[4*i]/255;
         const loadStarted=performance.now();
         const empty=new Float32Array(0);
         const [farEnergy,nearEnergy]=await waitForAsset(Promise.all([
@@ -216,28 +219,28 @@
         metrics.psfDownloads=downloads;metrics.psfLoadMs=performance.now()-loadStarted;
         if(!current())return;
         status='Rendering optical scene…';
-        // Both sides use the same grid and request version. Only one Worker renders.
-        const frames:Uint8ClampedArray[]=[];
-        for(const [index,{lensId,model,near,infinity,optical}]of sides.entries()){
-          const computeStart=performance.now();
-          const result=await compute({width,height,background:new Uint8ClampedArray(0),backgroundWidth:background.width,backgroundHeight:background.height,
+        let gray=empty;
+        if(sides.some(side=>!side.optical)){
+          const pixels=rasterCard().getImageData(0,0,widthPixels,heightPixels).data;
+          // Black SVG paths on white encode integrated linear radiance coverage.
+          gray=new Float32Array(widthPixels*heightPixels);
+          for(let i=0;i<gray.length;i++)gray[i]=pixels[4*i]/255;
+        }
+        const computeStart=performance.now();
+        ensureWorker();
+        const result=await worker!.renderFrame(sides.map(({model,near,infinity,optical},index)=>({
+          input:{width,height,background:new Uint8ClampedArray(0),backgroundWidth:background.width,backgroundHeight:background.height,
             card:optical?empty:gray,cardWidth:widthPixels,cardHeight:heightPixels,near,nearEnergy:nearEnergy[index],infinity,infinityEnergy:farEnergy[index],
             cssPxPerMm:ppm,viewingDistanceM:distance,renderScale:scale,renderScaleY:scaleY,opticalLayer:optical??undefined},
-            [model,width,height,ppm,distance,scale,scaleY].join(':'),requestVersion);
-          if(!current()||result.cancelled||!result.data)return;
-          metrics[lensId]={workerRoundTripMs:performance.now()-computeStart,workerMs:result.milliseconds,...result.profile};
-          frames.push(result.data);
-        }
-        const [left,right]=frames;
-        const displayStart=performance.now();
-        if(right) for(let y=0;y<height;y++) {
-          const start=4*(y*width+Math.floor(width/2)),end=4*(y+1)*width;
-          left.set(right.subarray(start,end),start);
-        }
-        metrics.splitCopyMs=performance.now()-displayStart;
+          backgroundKey:[model,width,height,ppm,distance,scale,scaleY].join(':')
+        })),requestVersion,true);
+        if(!current()||result.cancelled||!result.data)return;
+        metrics.workerRoundTripMs=performance.now()-computeStart;
+        metrics.workerOutputBytes=result.data.byteLength;
+        for(const [index,side]of sides.entries())metrics[side.lensId]=result.profiles?.[index];
         psfDisplay??=new PsfDisplay(canvas);
         const displayScale=(devicePixelRatio||1)*(window.visualViewport?.scale??1);
-        Object.assign(metrics,psfDisplay.present(left,width,height,Math.max(1,Math.round(cssWidth*displayScale)),Math.max(1,Math.round(cssHeight*displayScale))));
+        Object.assign(metrics,psfDisplay.present(result.data,width,height,Math.max(1,Math.round(cssWidth*displayScale)),Math.max(1,Math.round(cssHeight*displayScale))));
         prefetchTimer=setTimeout(()=>{
           prefetchTimer=null;if(disposed||requestVersion!==version||!backgroundReady)return;
           const dynamicModels=sides.filter(side=>!side.optical).map(side=>side.model);

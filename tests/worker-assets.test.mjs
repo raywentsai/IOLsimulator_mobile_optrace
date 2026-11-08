@@ -5,7 +5,10 @@ import {gunzipSync} from 'node:zlib';
 import {AssetCache} from '../src/lib/render/psf/asset-cache.ts';
 import {PhysicsWorkerRuntime} from '../src/lib/render/psf/worker-runtime.ts';
 import {PhysicsWorkerClient} from '../src/lib/render/psf/worker-client.ts';
-import {OPTICAL_CACHE_BYTES,unpackOpticalImage,renderOpticalImage,renderOpticalImageLatest,opticalImageKey,validatePackedOpticalImage} from '../src/lib/render/psf/optical-image-math.ts';
+import {OPTICAL_CACHE_BYTES,unpackOpticalImage,renderOpticalImage,renderOpticalImageLatest,opticalImageKey,opticalColumns,cropOpticalPixels,
+  angularDisplayDensity,validatePackedOpticalImage} from '../src/lib/render/psf/optical-image-math.ts';
+import {blurBackground,renderScene,sceneTarget} from '../src/lib/render/psf/scene.ts';
+import {opticalWorkingSet} from '../src/lib/render/psf/optical-images.ts';
 import {PSF_MODELS} from '../src/lib/render/psf/geometry.ts';
 import {readRgbPng} from './png-helper.mjs';
 const libraries=Object.values(PSF_MODELS).map(model=>JSON.parse(fs.readFileSync(`static/optical-images/${model}.json`)));
@@ -13,6 +16,10 @@ const library=libraries.find(value=>value.model===PSF_MODELS.zcb00);
 const fixtures=JSON.parse(fs.readFileSync('static/validation/optical-image-reference.json')).cases;
 const energy=e=>{const a=gunzipSync(fs.readFileSync('static/psf/'+e.file));return new Float32Array(a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength));};
 const packed=level=>({key:opticalImageKey(level),level,rgba:readRgbPng('static/optical-images/'+level.file).rgba});
+const slice=(layer,input,left,right)=>{
+  const columns=opticalColumns(layer.level,angularDisplayDensity(input)[0],input.width,input.cardWidth,left,right);
+  return columns?{...layer,key:opticalImageKey(layer.level,columns),columns,rgba:cropOpticalPixels(layer.rgba,layer.level,columns)}:layer;
+};
 
 test('packed CPU integration is byte-identical to Float32 planes across all shipped levels',()=>{
   for(const model of libraries)for(const node of model.entries)for(const level of node.levels){
@@ -22,7 +29,15 @@ test('packed CPU integration is byte-identical to Float32 planes across all ship
       const density=width===73?128:Math.min(8192,Math.min(...level.pixelsPerTanTheta)*.8);
       const input={width,height:91,cardWidth:Math.round(28*1528/1170*node.objectVergenceD*density/1000),cssPxPerMm:1,viewingDistanceM:1,renderScale:density/1000};
       const background=[0,1,2].map(c=>Float32Array.from({length:width*91},(_,i)=>.05+c*.1+(i%19)/40));
-      assert.deepEqual(renderOpticalImage(input,p,background),renderOpticalImage(input,expanded,background),level.file);
+      const expected=renderOpticalImage(input,expanded,background);
+      assert.deepEqual(renderOpticalImage(input,p,background),expected,level.file);
+      const output=new Uint8ClampedArray(expected.length),mid=Math.floor(width/2);
+      for(const [left,right] of [[0,mid],[mid,width]]){
+        const crop=background.map(channel=>Float32Array.from({length:(right-left)*91},(_,i)=>
+          channel[Math.floor(i/(right-left))*width+left+i%(right-left)]));
+        renderOpticalImage(input,slice(p,input,left,right),crop,{},sceneTarget(width,91,left,right,output));
+      }
+      assert.deepEqual(output,expected,`cropped optical rows are byte-identical for ${level.file}`);
     }
   }
 });
@@ -74,12 +89,69 @@ class FakeWorker {
   postMessage(message,transfer=[]){
     const cloned=structuredClone(message,{transfer});this.messages.push(cloned);
     setImmediate(async()=>{if(this.terminated)return;
-      try{const result=await this.runtime.handle(cloned);if(result)this.onmessage?.({data:result});}
+      try{const result=await this.runtime.handle(cloned);if(result)this.onmessage?.({data:structuredClone(result,{transfer:result.data?[result.data.buffer]:[]})});}
       catch(e){this.onmessage?.({data:{id:cloned.id,error:String(e),assets:this.runtime.assets()}});}
     });
   }
   terminate(){this.terminated=true;}
 }
+
+test('mixed split returns one output buffer matching two full renders and transfers the dynamic raster',async()=>{
+  const [a,b]=[fixtures[1],fixtures[7]],{width,height}=a,mid=Math.floor(width/2);
+  const background=Uint8ClampedArray.from({length:21*17*4},(_,i)=>i%4===3?255:i*71%256);
+  const bytes=gunzipSync(fs.readFileSync('static/validation/'+b.cardFile));
+  const card=new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));
+  const input=fixture=>({...fixture,background,backgroundWidth:21,backgroundHeight:17,
+    infinityEnergy:energy(fixture.infinity),nearEnergy:energy(fixture.near),card});
+  const left=input(a),right=input(b),layer=packed(a.level);
+  const fullLeft=renderOpticalImage(left,layer,blurBackground(left)),fullRight=renderScene(right);
+  const worker=new FakeWorker(),client=new PhysicsWorkerClient(worker,background.slice(),reason=>client.dispose(reason));
+  try{
+    client.invalidate(1);
+    const selected=slice(layer,left,0,mid);
+    await client.registerOptical(layer);
+    const opticalLayer=await client.sliceOptical(selected);
+    assert.ok(opticalLayer&&client.getOptical(selected.key));
+    assert.equal(worker.messages.filter(m=>m.kind==='optical').length,1);
+    const result=await client.renderFrame([
+      {input:{...left,card:new Float32Array(0),opticalLayer},backgroundKey:a.name},
+      {input:right,backgroundKey:b.name}
+    ],1,true);
+    assert.equal(card.byteLength,0);
+    assert.equal(worker.messages.filter(m=>m.kind==='render').length,1);
+    assert.equal(result.data.length,width*height*4);
+    assert.equal(result.profiles[0].nearConvolveMs,0);
+    assert.ok(result.profiles[1].nearConvolveMs>0);
+    for(let i=0;i<result.data.length;i++){
+      const expected=Math.floor(i/4)%width<mid?fullLeft[i]:fullRight[i];
+      assert.ok(Math.abs(result.data[i]-expected)<=1,`split byte ${i}`);
+    }
+  }finally{client.dispose('done');}
+});
+
+test('100 cm comparison retains both eyes at two adjacent dense nodes within the existing cache',async()=>{
+  const width=219,height=349,cssPxPerMm=7.780659503519822,mid=Math.floor(width/2);
+  const models=[library,libraries.find(m=>m.model===PSF_MODELS.vivity)];
+  let fullBytes=0;
+  const sides=models.map((model,index)=>[3.9,4].map(demand=>{
+    const level=model.entries.find(e=>e.objectVergenceD===demand).levels.at(-1);
+    const input={width,height,cssPxPerMm,viewingDistanceM:1,renderScale:width/390,
+      cardWidth:Math.round(28*1528/1170*cssPxPerMm*demand*width/390)};
+    fullBytes+=level.width*level.height*4;
+    return slice(packed(level),input,index===0?0:mid,index===0?mid:width);
+  }));
+  const chosen=opticalWorkingSet(sides.map(([current,next])=>[current,null,next]));
+  assert.ok(fullBytes>OPTICAL_CACHE_BYTES);
+  assert.deepEqual(chosen.selections,sides.map(([current])=>current));
+  const worker=new FakeWorker(),client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(0),reason=>client.dispose(reason));
+  try{
+    for(const layer of sides.flat())await client.registerOptical(layer);
+    for(const layer of sides.flat())assert.ok(client.getOptical(layer.key));
+    assert.equal(client.info().opticalEntries,4);
+    assert.ok(client.info().opticalPackedBytes<OPTICAL_CACHE_BYTES);
+  }finally{client.dispose('done');}
+});
+
 test('register-once transfers sole optical/source buffers; warm frames send IDs without optical or PSF arrays; reset reacquires assets',async()=>{
   const fixture=fixtures[1],raw=new Uint8ClampedArray(fixture.background),worker=new FakeWorker();
   const client=new PhysicsWorkerClient(worker,raw,reason=>client.dispose(reason));assert.equal(raw.byteLength,0);
@@ -94,7 +166,8 @@ test('register-once transfers sole optical/source buffers; warm frames send IDs 
   assert.equal(worker.messages.filter(m=>m.kind==='psf').length,1);
   assert.equal(worker.messages.filter(m=>m.kind==='optical').length,1);
   for(const m of worker.messages.filter(m=>m.kind==='render')){
-    assert.equal(m.input.opticalLayer,undefined);assert.equal(m.input.nearEnergy,undefined);assert.equal(m.input.infinityEnergy,undefined);assert.equal(m.input.card.byteLength,0);
+    const frame=m.frames[0];
+    assert.equal(frame.opticalLayer,undefined);assert.equal(frame.nearEnergy,undefined);assert.equal(frame.infinityEnergy,undefined);assert.equal(frame.card.byteLength,0);
   }
   // Replacing the source drops backgrounds while preserving the registered optical/PSF assets.
   client.source(new Uint8ClampedArray(fixture.background));await client.render(input,'same',1);
@@ -111,12 +184,12 @@ test('obsolete versions skip work, cold FFT cache survives cancellation, and coo
   runtime=new PhysicsWorkerRuntime(async()=>{if(!invalidated){invalidated=true;await runtime.handle({kind:'invalidate',version:2});}});
   await runtime.handle({source:new Uint8ClampedArray(f.background)});
   await runtime.handle({kind:'optical',id:1,layer:p});await runtime.handle({kind:'psf',id:2,key:'infinity',energy:energy(f.infinity)});
-  const input={...f,card:new Float32Array(0),infinityKey:'infinity',opticalKey:p.key};
+  const frames=[{...f,card:new Float32Array(0),infinityKey:'infinity',opticalKey:p.key,backgroundKey:'bg'}];
   await runtime.handle({kind:'invalidate',version:1});
-  assert.equal((await runtime.handle({kind:'render',id:3,version:1,input,backgroundKey:'bg'})).cancelled,true);
-  const next=await runtime.handle({kind:'render',id:4,version:2,input,backgroundKey:'bg'});
-  assert.ok(next.data);assert.equal(next.profile.backgroundConvolveMs,undefined);
-  assert.equal((await runtime.handle({kind:'render',id:5,version:1,input,backgroundKey:'bg'})).cancelled,true);
+  assert.equal((await runtime.handle({kind:'render',id:3,version:1,frames})).cancelled,true);
+  const next=await runtime.handle({kind:'render',id:4,version:2,frames});
+  assert.ok(next.data);assert.equal(next.profiles[0].backgroundConvolveMs,undefined);
+  assert.equal((await runtime.handle({kind:'render',id:5,version:1,frames})).cancelled,true);
   let current=true,yields=0;
   const background=[0,1,2].map(()=>new Float32Array(f.width*f.height).fill(.2));
   const result=await renderOpticalImageLatest(f,p,background,{},()=>current,async()=>{yields++;current=false;},0);

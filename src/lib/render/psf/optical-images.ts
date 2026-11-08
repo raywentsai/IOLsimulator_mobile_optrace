@@ -1,12 +1,18 @@
 import {loadPngAsset,downloadBlob,allowSpeculativeLoads,ManifestCache,type ProgressListener,type AssetProgress} from '../asset-loading.ts';
 import type {PsfEntry} from './geometry';
-import {OPTICAL_CACHE_BYTES,validatePackedOpticalImage,opticalImageKey,type PackedOpticalImageLayer,type OpticalImageRef,type OpticalImageLevel} from './optical-image-math.ts';
+import {OPTICAL_CACHE_BYTES,validatePackedOpticalImage,opticalImageKey,opticalColumns,cropOpticalPixels,packedOpticalBytes,
+  type PackedOpticalImageLayer,type OpticalImageRef,type OpticalImageLevel} from './optical-image-math.ts';
 
 interface OpticalNode {objectVergenceD:number;psfSha256:string;levels:OpticalImageLevel[]}
 interface OpticalLibrary {version:number;model:string;encoding:string;physicalCardMm:[number,number];entries:OpticalNode[]}
-export interface OpticalImageStore {getOptical:(key:string)=>OpticalImageRef|undefined;registerOptical:(layer:PackedOpticalImageLayer)=>Promise<OpticalImageRef>}
+export interface OpticalImageStore {
+  getOptical:(key:string)=>OpticalImageRef|undefined;
+  sliceOptical?:(selection:OpticalImageRef)=>Promise<OpticalImageRef|undefined>|undefined;
+  registerOptical:(layer:PackedOpticalImageLayer)=>Promise<OpticalImageRef>;
+}
 type OpticalRequest={models:string[];demand:number};
 interface OpticalSelection extends OpticalImageRef {model:string;demand:number}
+interface VisibleColumns {width:number;cardWidth:number;left:number;right:number}
 interface PendingLayer {
   promise:Promise<OpticalImageRef>;
   controller:AbortController;
@@ -19,7 +25,10 @@ function supportsOpticalDensity(px:number,py:number):boolean {
   return Math.min(px,py)>=128&&Math.max(px,py)<=8192;
 }
 
-const packedBytes=(layer:OpticalImageRef)=>layer.level.width*layer.level.height*4;
+const packedBytes=(layer:OpticalImageRef)=>packedOpticalBytes(layer.level,layer.columns);
+export function opticalDecodeBytes(layer:OpticalImageRef):number {
+  return packedOpticalBytes(layer.level)+(layer.columns?packedBytes(layer):0);
+}
 type OpticalNodes=readonly [current:OpticalSelection|null,previous:OpticalSelection|null,next:OpticalSelection|null];
 
 // A slider step must keep the displayed layers and the adjacent frame's layers
@@ -68,27 +77,33 @@ export class OpticalImageLoader {
     if(resident)return resident;
     const found=this.pending.get(key);
     if(found)return this.observe(found,listener);
-    const bytes=packedBytes(selection);
+    const bytes=opticalDecodeBytes(selection);
     if(level.width<1||level.height<1||bytes+this.info().mainPackedBytes>OPTICAL_CACHE_BYTES){
       throw new Error('Optical image exceeds packed memory budget');
     }
     const controller=new AbortController();let item:PendingLayer;
     const promise=(async()=>{
+      if(selection.columns&&this.store.sliceOptical){
+        const sliced=await this.store.sliceOptical(selection);
+        if(controller.signal.aborted)throw new Error('Optical image loading cancelled');
+        if(sliced)return sliced;
+      }
       const asset=await loadPngAsset(`${base}/optical-images/${level.file}`,controller.signal,{totalMs:18000,expectedBytes:level.bytes,priority:listener?'high':'low',onProgress:p=>{if(item){item.progress=p;for(const fn of item.listeners)fn(p);}}});
+      let rgba:Uint8ClampedArray<ArrayBuffer>;
       try{
         const image=asset.image;
         if(image.naturalWidth!==level.width||image.naturalHeight!==level.height)throw new Error('Optical image dimensions changed');
         const canvas=document.createElement('canvas');canvas.width=level.width;canvas.height=level.height;
-        let rgba:Uint8ClampedArray<ArrayBuffer>;
         try{const ctx=canvas.getContext('2d',{willReadFrequently:true})!;ctx.drawImage(image,0,0);rgba=ctx.getImageData(0,0,level.width,level.height).data;}
         finally{canvas.width=1;canvas.height=1;}
-        const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',rgba)),b=>b.toString(16).padStart(2,'0')).join('');
-        if(controller.signal.aborted)throw new Error('Optical image loading cancelled');
-        if(hash!==level.decodedRgbaSha256)throw new Error('Optical image numeric samples failed integrity validation');
-        validatePackedOpticalImage(rgba,level);
-        const layer:PackedOpticalImageLayer={key,level,rgba};
-        return await this.store.registerOptical(layer);
       }finally{asset.release();}
+      const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',rgba)),b=>b.toString(16).padStart(2,'0')).join('');
+      if(controller.signal.aborted)throw new Error('Optical image loading cancelled');
+      if(hash!==level.decodedRgbaSha256)throw new Error('Optical image numeric samples failed integrity validation');
+      validatePackedOpticalImage(rgba,level);
+      const {columns}=selection;
+      if(columns)rgba=cropOpticalPixels(rgba,level,columns);
+      return await this.store.registerOptical({key,level,columns,rgba});
     })();
     item={promise,controller,selection,bytes,listeners:new Set()};
     this.pending.set(key,item);
@@ -96,7 +111,7 @@ export class OpticalImageLoader {
     void promise.then(remove,remove);
     return this.observe(item,listener);
   }
-  async select(base:string,entry:PsfEntry,px:number,py:number,signal?:AbortSignal):Promise<OpticalSelection|null> {
+  async select(base:string,entry:PsfEntry,px:number,py:number,signal?:AbortSignal,visible?:VisibleColumns):Promise<OpticalSelection|null> {
     if(!supportsOpticalDensity(px,py))return null;
     const url=`${base}/optical-images/${entry.model}.json`;
     const manifest=await this.manifests.get(url,async downloadSignal=>{
@@ -109,11 +124,13 @@ export class OpticalImageLoader {
     const node=manifest.entries.find(e=>e.objectVergenceD===entry.objectVergenceD);
     if(!node||node.psfSha256!==entry.sha256)throw new Error('Precomputed optical image does not match selected PSF');
     const level=selectLevel(node,px,py);
-    return level?{key:opticalImageKey(level),level,model:entry.model,demand:entry.objectVergenceD}:null;
+    if(!level)return null;
+    const columns=visible?opticalColumns(level,px,visible.width,visible.cardWidth,visible.left,visible.right):undefined;
+    return {key:opticalImageKey(level,columns),level,columns,model:entry.model,demand:entry.objectVergenceD};
   }
   async prefetch(base:string,current:OpticalSelection[],neighbors:OpticalSelection[]):Promise<void> {
     if(!allowSpeculativeLoads())return;
-    const small=neighbors.filter(node=>packedBytes(node)<=2*1024*1024);
+    const small=neighbors.filter(node=>opticalDecodeBytes(node)<=2*1024*1024);
     if([...current,...small].reduce((sum,node)=>sum+packedBytes(node),0)>OPTICAL_CACHE_BYTES)return;
     await Promise.all(small.filter(node=>!this.store.getOptical(node.key)).slice(0,2).map(node=>this.load(base,node).catch(()=>undefined)));
   }

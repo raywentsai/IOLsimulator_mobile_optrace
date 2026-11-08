@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {convolvePair,reflectIndex,srgbToLinear,linearToSrgb} from '../src/lib/render/psf/convolve.ts';
 import {scalePsf,pixelsPerRetinalMm,objectVergence,mobileSampling,calibratedCssPxPerMm} from '../src/lib/render/psf/geometry.ts';
-import {renderScene} from '../src/lib/render/psf/scene.ts';
+import {blurBackground,renderScene,sampleBackground,sceneTarget} from '../src/lib/render/psf/scene.ts';
 
 test('minimal full FFT convolution preserves all tails and energy against direct spatial convolution',()=>{
   for(const [width,height,kw,kh] of [[1,1,3,5],[8,5,5,3],[17,9,7,9]]) {
@@ -44,6 +44,37 @@ test('visible-source crop and cached background agree with direct full-card line
     const cold=renderScene(input,background),warm=renderScene(input,background);
     assert.deepEqual(warm,cold);
     assert.ok(cold.every((v,i)=>Math.abs(v-expected[i])<=1));
+    const split=new Uint8ClampedArray(expected.length),mid=Math.floor(width/2);
+    for(const [left,right] of [[0,mid],[mid,width]]){
+      const channels=background.map(channel=>Float32Array.from({length:(right-left)*height},(_,i)=>
+        channel[Math.floor(i/(right-left))*width+left+i%(right-left)]));
+      renderScene(input,channels,{},sceneTarget(width,height,left,right,split));
+    }
+    assert.ok(split.every((v,i)=>Math.abs(v-expected[i])<=1),'visible FFT retains card contributions across the split');
+  }
+});
+
+test('split infinity convolution reflects at the full scene edges and crosses the comparison boundary',()=>{
+  const entry={width:3,height:3,retinalExtentMm:[-.06,.06,-.06,.06],retinalMmPerTanTheta:17};
+  const energy=new Float32Array([0,.125,.125,0,.25,.125,.125,.125,.125]);
+  const background=Uint8ClampedArray.from({length:6*9*4},(_,i)=>(i%4===3?255:i*71%256));
+  for(const width of [7,8,31]){
+    const height=13,cssPxPerMm=3,viewingDistanceM=.4,renderScale=1,renderScaleY=.9;
+    const input={width,height,background,backgroundWidth:6,backgroundHeight:9,cssPxPerMm,viewingDistanceM,renderScale,renderScaleY,
+      infinity:entry,infinityEnergy:energy};
+    const kernel=scalePsf(energy,entry,pixelsPerRetinalMm(entry,cssPxPerMm,viewingDistanceM,renderScale),
+      pixelsPerRetinalMm(entry,cssPxPerMm,viewingDistanceM,renderScaleY));
+    const source=sampleBackground(input),mid=Math.floor(width/2),rx=kernel.width>>1,ry=kernel.height>>1;
+    for(const [left,right] of [[0,mid],[mid,width]]){
+      const cropped=blurBackground(input,{}, {left,right});
+      for(let c=0;c<3;c++)for(let y=0;y<height;y++)for(let x=left;x<right;x++){
+        let expected=0;
+        for(let ky=0;ky<kernel.height;ky++)for(let kx=0;kx<kernel.width;kx++){
+          expected+=kernel.data[ky*kernel.width+kx]*source[c][reflectIndex(y+ry-ky,height)*width+reflectIndex(x+rx-kx,width)];
+        }
+        assert.ok(Math.abs(cropped[c][y*(right-left)+x-left]-expected)<1e-6);
+      }
+    }
   }
 });
 

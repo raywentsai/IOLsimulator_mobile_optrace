@@ -1,11 +1,13 @@
 import type {SceneInput} from './scene';
 import type {PsfEntry} from './geometry';
-import type {OpticalImageRef,PackedOpticalImageLayer} from './optical-image-math';
+import {opticalImageKey,type OpticalImageRef,type PackedOpticalImageLayer} from './optical-image-math.ts';
 import type {AssetFrame} from './worker-runtime';
 
 export interface Computed {data?:Uint8ClampedArray;cancelled?:boolean;milliseconds:number;profile:Record<string,number>}
+type RenderInput=SceneInput&{opticalLayer?:OpticalImageRef};
+type FrameResult=Omit<Computed,'profile'>&{profiles?:Record<string,number>[]};
 type Assets={optical:{keys:string[];bytes:number};psfs:{keys:string[];bytes:number}};
-type Reply=Computed&{id:number;assets:Assets;error?:string};
+type Reply=FrameResult&{id:number;assets:Assets;error?:string;sliced?:boolean};
 export class PhysicsWorkerClient {
   private id=0;
   private version=0;
@@ -19,7 +21,11 @@ export class PhysicsWorkerClient {
   constructor(worker:Worker,source:Uint8ClampedArray,failed:(reason:string)=>void){
     this.worker=worker;this.failed=failed;
     worker.onmessage=event=>{
-      const result=event.data as Reply;if(result.assets)this.assets=result.assets;
+      const result=event.data as Reply;
+      if(result.assets){
+        this.assets=result.assets;
+        for(const key of this.opticalRefs.keys())if(!this.assets.optical.keys.includes(key))this.opticalRefs.delete(key);
+      }
       const item=this.pending.get(result.id);if(!item)return;
       this.pending.delete(result.id);clearTimeout(item.timer);
       if(result.error)item.reject(new Error(result.error));else item.resolve(result);
@@ -45,9 +51,21 @@ export class PhysicsWorkerClient {
     });
   }
   getOptical(key:string):OpticalImageRef|undefined {return this.assets.optical.keys.includes(key)?this.opticalRefs.get(key):undefined;}
+  async sliceOptical(target:OpticalImageRef):Promise<OpticalImageRef|undefined> {
+    const {columns,level}=target;
+    if(!columns)return;
+    const [left,right]=columns,fullKey=opticalImageKey(level);
+    const source=[...this.opticalRefs.values()].find(ref=>ref.key===fullKey||
+      ref.columns&&ref.key===opticalImageKey(level,ref.columns)&&ref.columns[0]<=left&&ref.columns[1]>=right);
+    if(!source)return;
+    const reply=await this.request({kind:'slice-optical',sourceKey:source.key,columns});
+    if(!reply.sliced)return;
+    const ref={key:target.key,level,columns};
+    this.opticalRefs.set(ref.key,ref);return ref;
+  }
   async registerOptical(layer:PackedOpticalImageLayer):Promise<OpticalImageRef> {
     const found=this.getOptical(layer.key);if(found)return found;
-    const ref={key:layer.key,level:layer.level};
+    const ref={key:layer.key,level:layer.level,columns:layer.columns};
     await this.request({kind:'optical',layer},[layer.rgba.buffer]);
     this.opticalRefs.set(ref.key,ref);return ref;
   }
@@ -60,13 +78,21 @@ export class PhysicsWorkerClient {
     }
     return key;
   }
-  async render(input:SceneInput&{opticalLayer?:OpticalImageRef},backgroundKey:string,version:number):Promise<Computed> {
-    const {background,nearEnergy,infinityEnergy,opticalLayer,...parameters}=input;
-    const infinityKey=await this.psf(input.infinity,infinityEnergy);
-    const nearKey=opticalLayer?undefined:await this.psf(input.near,nearEnergy);
-    if(version!==this.version)return {cancelled:true,milliseconds:0,profile:{}};
-    const frame:AssetFrame={...parameters,infinityKey,nearKey,opticalKey:opticalLayer?.key};
-    return this.request({kind:'render',input:frame,backgroundKey,version});
+  async render(input:RenderInput,backgroundKey:string,version:number):Promise<Computed> {
+    const {profiles,...result}=await this.renderFrame([{input,backgroundKey}],version);
+    return {...result,profile:profiles?.[0]??{}};
+  }
+  async renderFrame(sides:{input:RenderInput;backgroundKey:string}[],version:number,transferCard=false):Promise<FrameResult> {
+    const frames=await Promise.all(sides.map(async({input,backgroundKey}):Promise<AssetFrame>=>{
+      const {background,nearEnergy,infinityEnergy,opticalLayer,...parameters}=input;
+      const infinityKey=await this.psf(input.infinity,infinityEnergy);
+      const nearKey=opticalLayer?undefined:await this.psf(input.near,nearEnergy);
+      return {...parameters,infinityKey,nearKey,opticalKey:opticalLayer?.key,backgroundKey};
+    }));
+    if(version!==this.version)return {cancelled:true,milliseconds:0};
+    const transfer=transferCard?[...new Set(frames.map(frame=>frame.card.buffer)
+      .filter((buffer):buffer is ArrayBuffer=>buffer instanceof ArrayBuffer&&buffer.byteLength>0))]:[];
+    return this.request({kind:'render',frames,version},transfer);
   }
   info():{opticalPackedBytes:number;workerPsfBytes:number;opticalEntries:number} {
     return {opticalPackedBytes:this.assets.optical.bytes,workerPsfBytes:this.assets.psfs.bytes,opticalEntries:this.assets.optical.keys.length};
