@@ -2,7 +2,7 @@
   import { onMount, onDestroy, tick } from "svelte";
   import BadgeTag from "./BadgeTag.svelte";
   import bookImageAsset from "../lib/assets/images/book.png";
-  import backgroundImageAsset from "../lib/assets/images/background.png";
+  import backgroundImageAsset from "../lib/assets/images/background.jpg";
   import {
     blurSigma,
     compareBlurSigma,

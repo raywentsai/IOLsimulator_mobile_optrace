@@ -1,10 +1,9 @@
 <script lang="ts">
   import {onMount,onDestroy} from 'svelte';
   import {base} from '$app/paths';
-  import backgroundAsset from '../lib/assets/images/background.png';
-  import backgroundInfo from '../lib/assets/images/background.json';
   import {loadSceneImage} from '../lib/render/scene-assets';
-  import {AssetError,loadPngAsset,waitForAsset,type AssetProgress,type LoadedPng} from '../lib/render/asset-loading';
+  import {AssetError,waitForAsset,type AssetProgress,type LoadedImage} from '../lib/render/asset-loading';
+  import {loadBackgroundAsset} from '../lib/render/background-asset';
   import LoadingProgress from './LoadingProgress.svelte';
   import {WebGLRenderer,type RenderConfig} from '../lib/render/gl/renderer';
   import {resolveBlurPolicy} from '../lib/render/blur-policy';
@@ -28,7 +27,7 @@
   let backgroundError:AssetError|null=null;
   let backgroundProgress:AssetProgress|null=null,opticalProgress:AssetProgress|null=null;
   let fallbackMessage='';
-  let backgroundController=new AbortController(),backgroundAssetHandle:LoadedPng|null=null,pendingBackground:LoadedPng|null=null;
+  let backgroundController=new AbortController(),backgroundAssetHandle:LoadedImage|null=null,pendingBackground:LoadedImage|null=null;
   let renderController=new AbortController();
   let profile:Record<string,unknown>={},scheduledAt=0;
   let queued=false,lastRequestedKey='',backgroundRevision=0;
@@ -39,7 +38,7 @@
   const cardCanvas=typeof document!=='undefined'?document.createElement('canvas'):null;
   const CARD_HEIGHT_MM=28,ASPECT=1528/1170;
   const backgroundErrorLabels={stalled:'Background download stalled',timeout:'Background download timed out',transfer:'Background download failed',
-    decode:'Background PNG could not be decoded',native:'Browser could not load the background image',upload:'Background texture upload failed',cancelled:'Background download cancelled'};
+    decode:'Background image could not be decoded',native:'Browser could not load the background image',upload:'Background texture upload failed',cancelled:'Background download cancelled'};
   const opticalImages=new OpticalImageLoader({
     getOptical:key=>worker?.getOptical(key),
     sliceOptical:selection=>worker?.sliceOptical(selection),
@@ -302,7 +301,7 @@
     pendingBackground?.release();pendingBackground=null;
     schedule();
     try {
-      const asset=await loadPngAsset(backgroundAsset,signal,{expectedBytes:backgroundInfo.bytes,totalMs:45000,onProgress:p=>{if(!disposed&&attempt===backgroundAttempt)backgroundProgress=p;}});
+      const asset=await loadBackgroundAsset(signal,p=>{if(!disposed&&attempt===backgroundAttempt)backgroundProgress=p;});
       if(disposed||attempt!==backgroundAttempt){asset.release();return;}
       pendingBackground=asset;installBackground();
     }catch(e){if(!disposed&&attempt===backgroundAttempt)backgroundError=e instanceof AssetError?e:new AssetError('decode',String(e));}

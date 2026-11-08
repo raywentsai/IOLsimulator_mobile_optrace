@@ -7,8 +7,7 @@
   import {srgbToLinear,linearToSrgb} from '../../lib/render/psf/convolve';
   import {OpticalImageLoader} from '../../lib/render/psf/optical-images';
   import {PhysicsWorkerClient} from '../../lib/render/psf/worker-client';
-  import {loadPngAsset} from '../../lib/render/asset-loading';
-  import backgroundAsset from '../../lib/assets/images/background.png';
+  import {loadBackgroundAsset} from '../../lib/render/background-asset';
   import backgroundInfo from '../../lib/assets/images/background.json';
   let state='Running independent Python / Worker / WebGL comparison…';
   let rows:Array<{name:string;workerError:number;webglError:number;scaledError:number|null;milliseconds:number}>=[];
@@ -108,16 +107,16 @@
         const gl=canvas.getContext('webgl')!,pixel=new Uint8Array(4);
         gl.readPixels(1,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,pixel);midpoint=pixel[0];
         if(Math.abs(midpoint-188)>1)throw new Error('Display interpolated in encoded sRGB instead of linear light');
-        const asset=await loadPngAsset(backgroundAsset,controller.signal,{expectedBytes:backgroundInfo.bytes,totalMs:45000});
+        const asset=await loadBackgroundAsset(controller.signal);
+        const surface=document.createElement('canvas');surface.width=asset.image.naturalWidth;surface.height=asset.image.naturalHeight;
         try {
-          const surface=document.createElement('canvas');surface.width=asset.image.naturalWidth;surface.height=asset.image.naturalHeight;
           const ctx=surface.getContext('2d',{willReadFrequently:true})!;ctx.drawImage(asset.image,0,0);
-          const rgba=ctx.getImageData(0,0,surface.width,surface.height).data,rgb=new Uint8Array(surface.width*surface.height*3);
-          for(let i=0;i<rgb.length/3;i++)rgb.set(rgba.subarray(4*i,4*i+3),3*i);
-          const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',rgb)),b=>b.toString(16).padStart(2,'0')).join('');
-          if(surface.width!==backgroundInfo.width||surface.height!==backgroundInfo.height||hash!==backgroundInfo.rgbSha256)throw new Error('Background browser decode changed original RGB samples');
-          surface.width=1;surface.height=1;backgroundVerified=true;
-        }finally{asset.release();}
+          for(const [x,y,...expected]of backgroundInfo.rgbSamples){
+            const rgba=ctx.getImageData(x,y,1,1).data;
+            if(expected.some((value,channel)=>Math.abs(value-rgba[channel])>4))throw new Error('Background JPEG browser decode differs from reference');
+          }
+          backgroundVerified=true;
+        }finally{surface.width=1;surface.height=1;asset.release();}
         state='PASS: all Python / Worker / WebGL comparisons';
       }catch(error){state=`FAIL: ${error}`;}
       finally{client.dispose('Validation complete');renderer?.dispose();}
@@ -131,7 +130,7 @@
   <p role="status">{state}</p>
   <p>Python/SciPy references use identical PSF bins, physical pixel scale and padding. Dense optical grids are area integrated to the display grid.</p>
   <p>Black/white 50% linear-light display sample: {midpoint??'pending'} / 255 (expected 188).</p>
-  <p>Background PNG browser decode: {backgroundVerified?'PASS — every original RGB sample preserved':'pending'}.</p>
+  <p>Background JPEG browser decode: {backgroundVerified?'PASS — dimensions and reference samples match':'pending'}.</p>
   <table><thead><tr><th>Model</th><th>Worker max byte error</th><th>WebGL max byte error</th><th>Linear upscale max byte error</th><th>Worker ms</th></tr></thead>
     <tbody>{#each rows as row}<tr><td>{row.name}</td><td>{row.workerError}</td><td>{row.webglError}</td><td>{row.scaledError??'—'}</td><td>{row.milliseconds.toFixed(1)}</td></tr>{/each}</tbody>
   </table>

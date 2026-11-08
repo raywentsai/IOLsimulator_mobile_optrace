@@ -1,5 +1,17 @@
 # Initial loading reliability and UX
 
+## Background download timeout follow-up
+
+`4a0f221` set the background transfer limit to 45 seconds. Phase 8 (`3fc6686`) gave the background priority over Physics assets, and Phase 9A (`c28d540`) reused the same 2,833,899-byte PNG and deadline. The reported Pages URL returned HTTP 200 with the expected size and SHA-256. The PNG alone needed about 63 kB/s to meet the deadline, before sharing the connection with the chart or page resources.
+
+The current background is a 987,962-byte progressive JPEG at quality 95 with full chroma resolution. It preserves the 1024 × 1536 dimensions and composition, reduces the transfer by 65.1%, and measures 40.2 dB sRGB PSNR against the archived PNG. The change affects the scene photograph. Optical assets continue to use their lossless numeric format. Recreate the JPEG and its metadata with `uv run --locked --project optics python optics/prepare_scene_assets.py` from a clone that includes `c28d540`.
+
+The background has a 120-second transfer budget and streamed requests still stop after 10 seconds without bytes. The fallback for browsers that need a native image URL also has a 120-second deadline. Transfer, decode and upload errors still use distinct messages. The validation page checks the JPEG dimensions and representative RGB samples, and regression tests verify the exact file hash and size. The lossless PNG results below describe the earlier release.
+
+At 20 kB/s and 150 ms latency in Chrome mobile emulation, Phase 9A aborted the PNG after 45 seconds with 795,796 bytes received. The JPEG finished in 54.6 seconds, and Physics began fetching its assets after that. At 75 kB/s, the JPEG finished in 14.7 seconds, compared with 39.3 seconds for the previous PNG. At 20 kB/s, the subsequent Vivity optical PNG hit its own deadline and the full scene rendered using dynamic PSF. Native JPEG fallback and background retry also passed in the browser.
+
+## Original loading audit
+
 2026-11-05; baseline: `1d84ad4` (Phase 5). Optical data and calculations are unchanged.
 
 ## Findings
@@ -15,7 +27,7 @@ The desktop could not reproduce the user's exact physical-phone decoder failure.
 
 ## Changes
 
-- Losslessly repack the same RGB PNG with Pillow: **2,833,899 bytes** (486 KB / 14.6% smaller). All 4,718,592 RGB bytes are unchanged. Resize only the favicon to 64×64 / **2,938 bytes**. Reproduce with `uv run --project optics python optics/prepare_scene_assets.py`; source dimensions and encoded/decoded hashes are recorded in `src/lib/assets/images/background.json`.
+- Losslessly repack the same RGB PNG with Pillow: **2,833,899 bytes** (486 KB / 14.6% smaller). All 4,718,592 RGB bytes are unchanged. Resize only the favicon to 64×64 / **2,938 bytes**. The PNG, metadata and original preparation script are archived at `4a0f221`.
 - Load ETDRS through its real native SVG URL and initialize the chart independently. A labelled neutral background is used only while the actual background is pending/unavailable; it is not represented as a completed far-scene simulation. Header, settings, calibration, lens selection and near chart remain usable. The actual full-resolution background replaces the placeholder atomically and invalidates the placeholder's Worker/background caches.
 - PNG HTTP streaming reports **received bytes / expected bytes**, then a separate decode stage. Unknown totals, native fallback, PSF loading and rendering show their current stage without fabricated percentages. The previous completed image stays visible during optical-image downloads.
 - Validate HTTP status, content type, PNG signature and expected response length. Retry transient transfers once with a short delay; do not retry permanent HTTP/MIME errors blindly. Header/body inactivity limit is 10 s; total budgets include retries: background 45 s, optical PNG 18 s, PSF 30 s, manifests 12 s. Native card load has one 15 s attempt. PNG Blob decode is bounded to 8 s, with one real-URL native fallback for unavailable/rejected Blob URLs (also for browser fetch restrictions), within the overall PNG budget. Worker requests have a 30 s deadline and a recoverable reset.

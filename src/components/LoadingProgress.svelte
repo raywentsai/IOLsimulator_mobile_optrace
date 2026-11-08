@@ -6,7 +6,7 @@
   $: measured=progress?.stage==='download'&&!!progress.total;
   $: loaded=progress?.loaded??0;
   $: total=progress?.total??1;
-  $: stage=progress?.stage==='decode'?'Decoding PNG…':progress?.stage==='native'?'Loading with the browser image decoder…':progress?.stage==='retry'?'Retrying download…':'';
+  $: stage=progress?.stage==='decode'?'Decoding image…':progress?.stage==='native'?'Loading with the browser image decoder…':progress?.stage==='retry'?'Retrying download…':'';
 </script>
 
 <div class="loading-progress" role="status" aria-live="polite">

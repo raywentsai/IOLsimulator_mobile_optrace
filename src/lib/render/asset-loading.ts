@@ -3,7 +3,8 @@ import {loadSceneImage} from './scene-assets.ts';
 export interface AssetProgress {url:string;stage:'download'|'decode'|'retry'|'native'|'complete';loaded:number;total?:number;attempt:number}
 export type ProgressListener=(progress:AssetProgress)=>void;
 interface DownloadOptions {onProgress?:ProgressListener;totalMs?:number;idleMs?:number;attempts?:number;mime?:string;expectedBytes?:number;priority?:'high'|'low'}
-export interface LoadedPng {image:HTMLImageElement;release:()=>void}
+interface ImageOptions extends DownloadOptions {nativeMs?:number}
+export interface LoadedImage {image:HTMLImageElement;release:()=>void}
 export type AssetErrorCode='stalled'|'timeout'|'transfer'|'decode'|'native'|'upload'|'cancelled';
 export class AssetError extends Error {
   readonly code:AssetErrorCode;
@@ -97,15 +98,24 @@ export async function downloadBlob(url:string,signal:AbortSignal,options:Downloa
   finally{clearTimeout(deadline);clearTimeout(idle);signal.removeEventListener('abort',abort);}
 }
 
-// PNG bytes use an observable, bounded HTTP transfer. SVGs retain real native
-// URLs. Keep a PNG's Blob URL alive until its owner releases the decoded image;
-// if the browser cannot decode that URL, try its native real URL once.
-export async function loadPngAsset(url:string,signal:AbortSignal,options:DownloadOptions={}):Promise<LoadedPng> {
+export function loadPngAsset(url:string,signal:AbortSignal,options:ImageOptions={}):Promise<LoadedImage> {
+  return loadRasterAsset(url,signal,'PNG',options);
+}
+
+export function loadJpegAsset(url:string,signal:AbortSignal,options:ImageOptions={}):Promise<LoadedImage> {
+  return loadRasterAsset(url,signal,'JPEG',options);
+}
+
+// Keep the Blob URL alive until its owner releases the decoded image. If the
+// browser cannot decode that URL, try the real URL once.
+async function loadRasterAsset(url:string,signal:AbortSignal,format:'PNG'|'JPEG',options:ImageOptions):Promise<LoadedImage> {
+  const mime=format==='PNG'?'image/png':'image/jpeg';
+  const signature=format==='PNG'?[137,80,78,71,13,10,26,10]:[255,216,255];
   const report=(stage:AssetProgress['stage'],loaded=0,total?:number)=>options.onProgress?.({url,stage,loaded,total,attempt:1});
   const native=async(context?:string,code:AssetErrorCode='native')=>{
     report('native');
     try {
-      const image=await loadSceneImage(url,signal,8000,1);
+      const image=await loadSceneImage(url,signal,options.nativeMs??8000,1);
       report('complete');return {image,release:()=>image.removeAttribute('src')};
     }catch(error){
       if(signal.aborted)throw cancelled();
@@ -114,24 +124,24 @@ export async function loadPngAsset(url:string,signal:AbortSignal,options:Downloa
   };
   if(typeof fetch!=='function'||typeof URL.createObjectURL!=='function')return native();
   let blob:Blob;
-  try{blob=await downloadBlob(url,signal,{...options,mime:'image/png'});}
+  try{blob=await downloadBlob(url,signal,{...options,mime});}
   catch(error){
     // Some embedded browsers disable fetch while native image URLs work.
-    if(!signal.aborted&&/failed to fetch|load failed|networkerror|fetch is unavailable/i.test(String(error)))return native('HTTP download failed before PNG decode');
+    if(!signal.aborted&&/failed to fetch|load failed|networkerror|fetch is unavailable/i.test(String(error)))return native(`HTTP download failed before ${format} decode`);
     throw error;
   }
-  const signature=new Uint8Array(await blob.slice(0,8).arrayBuffer());
+  const header=new Uint8Array(await blob.slice(0,signature.length).arrayBuffer());
   if(signal.aborted)throw cancelled();
-  if(signature.length!==8||signature.some((b,i)=>b!==[137,80,78,71,13,10,26,10][i]))throw new AssetError('decode',`${url}: invalid PNG response`);
+  if(header.length!==signature.length||header.some((b,i)=>b!==signature[i]))throw new AssetError('decode',`${url}: invalid ${format} response`);
   report('decode',blob.size,blob.size);
   let objectUrl:string;
-  try{objectUrl=URL.createObjectURL(blob);}catch{return native('Browser could not create a PNG Blob URL');}
+  try{objectUrl=URL.createObjectURL(blob);}catch{return native(`Browser could not create a ${format} Blob URL`);}
   try {
     const image=await loadSceneImage(objectUrl,signal,8000,1);
     report('complete',blob.size,blob.size);
     let released=false;
     return {image,release:()=>{if(!released){released=true;image.removeAttribute('src');URL.revokeObjectURL(objectUrl);}}};
-  }catch{URL.revokeObjectURL(objectUrl);if(signal.aborted)throw cancelled();return native('PNG decode failed after a complete download','decode');}
+  }catch{URL.revokeObjectURL(objectUrl);if(signal.aborted)throw cancelled();return native(`${format} decode failed after a complete download`,'decode');}
 }
 
 export function allowSpeculativeLoads():boolean {

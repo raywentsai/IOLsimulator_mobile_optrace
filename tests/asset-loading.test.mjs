@@ -2,8 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {downloadBlob,loadPngAsset,allowSpeculativeLoads,ManifestCache} from '../src/lib/render/asset-loading.ts';
-import {readRgbPng} from './png-helper.mjs';
+import {downloadBlob,loadJpegAsset,loadPngAsset,allowSpeculativeLoads,ManifestCache} from '../src/lib/render/asset-loading.ts';
 
 test('streamed progress counts received bytes, retries 503 once, and rejects permanent HTTP/MIME failures',async()=>{
   const original=globalThis.fetch;let calls=0;const progress=[];
@@ -50,6 +49,21 @@ test('PNG decode retains Blob URL until release, native decode fallback retains 
   }finally{globalThis.fetch=originalFetch;globalThis.Image=originalImage;URL.createObjectURL=originalCreate;URL.revokeObjectURL=originalRevoke;}
 });
 
+test('background JPEG checks length and format before decoding and keeps transfer errors distinct',async()=>{
+  const original=globalThis.fetch;
+  const signal=new AbortController().signal;
+  try{
+    for(const [bytes,contentType,expectedBytes,code]of [
+      [[255,216,255],'image/jpeg',4,'transfer'],
+      [[255,216,255],'image/png',3,'transfer'],
+      [[137,80,78],'image/jpeg',3,'decode']
+    ]){
+      globalThis.fetch=async()=>new Response(Uint8Array.from(bytes),{headers:{'content-type':contentType}});
+      await assert.rejects(loadJpegAsset('/background.jpg',signal,{expectedBytes}),{code});
+    }
+  }finally{globalThis.fetch=original;}
+});
+
 test('manifest frame cancellation preserves shared work and dropping a model aborts its request',async()=>{
   const cache=new ManifestCache();
   const frame=new AbortController();
@@ -88,14 +102,11 @@ test('speculative loads are disabled on metered/slow connections and low-memory 
   }finally{if(descriptor)Object.defineProperty(globalThis,'navigator',descriptor);else delete globalThis.navigator;}
 });
 
-test('optimized background preserves EVERY original RGB sample, while the favicon stays small',()=>{
+test('published JPEG matches its metadata and background transfer stays under 1 MB',()=>{
   const metadata=JSON.parse(fs.readFileSync('src/lib/assets/images/background.json'));
-  const hash=b=>createHash('sha256').update(b).digest('hex');
-  assert.equal(hash(fs.readFileSync('src/lib/assets/images/background.png')),metadata.fileSha256);
-  const {width,height,rgba}=readRgbPng('src/lib/assets/images/background.png'),rgb=new Uint8Array(width*height*3);
-  for(let i=0;i<width*height;i++)rgb.set(rgba.subarray(4*i,4*i+3),3*i);
-  assert.equal(width,1024);assert.equal(height,1536);
-  assert.equal(hash(rgb),'1678f9534ab4afd59440bbde578e32123b462e2b52eee60555f46155c23ebc5c');
-  assert.equal(hash(rgb),metadata.rgbSha256);assert.ok(metadata.bytes<2900000);
+  const bytes=fs.readFileSync('src/lib/assets/images/background.jpg');
+  assert.deepEqual([...bytes.subarray(0,3)],[255,216,255]);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),metadata.fileSha256);
+  assert.equal(bytes.length,metadata.bytes);assert.ok(bytes.length<1_000_000);
   assert.ok(fs.statSync('static/favicon.png').size<10000);
 });
