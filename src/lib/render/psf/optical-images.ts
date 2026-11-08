@@ -49,12 +49,16 @@ function selectLevel(node:OpticalNode,px:number,py:number):OpticalImageLevel|nul
   return [...node.levels].sort((a,b)=>a.density-b.density).find(l=>l.pixelsPerTanTheta[0]+1e-7>=px&&l.pixelsPerTanTheta[1]+1e-7>=py)??null;
 }
 
-// The Worker owns completed layers. Only in-flight loads live here.
+// The active renderer owns completed layers. Only in-flight loads live here.
 export class OpticalImageLoader {
   private manifests=new ManifestCache<OpticalLibrary>();
   private pending=new Map<string,PendingLayer>();
   private store:OpticalImageStore;
   constructor(store:OpticalImageStore) {this.store=store;}
+  useStore(store:OpticalImageStore):void {
+    if(this.store===store)return;
+    this.cancel();this.store=store;
+  }
   cancel(keep?:OpticalRequest):void {
     this.manifests.cancel(url=>keep?.models.some(model=>url.endsWith(`/${model}.json`))??false);
     for(const [key,item]of this.pending){
@@ -73,7 +77,7 @@ export class OpticalImageLoader {
   }
   async load(base:string,selection:OpticalSelection,listener?:ProgressListener):Promise<OpticalImageRef> {
     const {key,level}=selection;
-    const resident=this.store.getOptical(key);
+    const store=this.store,resident=store.getOptical(key);
     if(resident)return resident;
     const found=this.pending.get(key);
     if(found)return this.observe(found,listener);
@@ -83,8 +87,8 @@ export class OpticalImageLoader {
     }
     const controller=new AbortController();let item:PendingLayer;
     const promise=(async()=>{
-      if(selection.columns&&this.store.sliceOptical){
-        const sliced=await this.store.sliceOptical(selection);
+      if(selection.columns&&store.sliceOptical){
+        const sliced=await store.sliceOptical(selection);
         if(controller.signal.aborted)throw new Error('Optical image loading cancelled');
         if(sliced)return sliced;
       }
@@ -103,7 +107,7 @@ export class OpticalImageLoader {
       validatePackedOpticalImage(rgba,level);
       const {columns}=selection;
       if(columns)rgba=cropOpticalPixels(rgba,level,columns);
-      return await this.store.registerOptical({key,level,columns,rgba});
+      return await store.registerOptical({key,level,columns,rgba});
     })();
     item={promise,controller,selection,bytes,listeners:new Set()};
     this.pending.set(key,item);

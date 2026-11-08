@@ -7,7 +7,8 @@ import {PhysicsWorkerRuntime} from '../src/lib/render/psf/worker-runtime.ts';
 import {PhysicsWorkerClient} from '../src/lib/render/psf/worker-client.ts';
 import {OPTICAL_CACHE_BYTES,unpackOpticalImage,renderOpticalImage,renderOpticalImageLatest,opticalImageKey,opticalColumns,cropOpticalPixels,
   angularDisplayDensity,validatePackedOpticalImage} from '../src/lib/render/psf/optical-image-math.ts';
-import {blurBackground,renderScene,sceneTarget} from '../src/lib/render/psf/scene.ts';
+import {blurBackground,packBackgroundRgb,renderScene,sceneTarget} from '../src/lib/render/psf/scene.ts';
+import {gpuSampling} from '../src/lib/render/psf/gpu-display.ts';
 import {opticalWorkingSet} from '../src/lib/render/psf/optical-images.ts';
 import {PSF_MODELS} from '../src/lib/render/psf/geometry.ts';
 import {readRgbPng} from './png-helper.mjs';
@@ -55,6 +56,16 @@ test('byte LRU retains both high-density neighbours, touches hits, accounts repl
   cache.clear();assert.equal(cache.info().bytes,0);
 });
 
+test('texture-backed LRU releases replaced, evicted and cleared allocations exactly once',()=>{
+  const released=[],cache=new AssetCache(6,value=>released.push(value));
+  cache.set('left','left texture',3);cache.set('right','right texture',3);
+  cache.set('left','replacement',3);cache.get('right');
+  cache.set('other','other texture',3,['right']);
+  cache.clear();cache.clear();
+  assert.deepEqual(released,['left texture','replacement','right texture','other texture']);
+  assert.deepEqual(cache.info(),{keys:[],bytes:0});
+});
+
 test('both selected lenses fit in the shared budget and the pending side survives eviction',async()=>{
   for(let index=0;index<31;index++){
     const sizes=libraries.map(model=>Math.max(...model.entries[index].levels.map(level=>4*level.width*level.height)));
@@ -89,12 +100,55 @@ class FakeWorker {
   postMessage(message,transfer=[]){
     const cloned=structuredClone(message,{transfer});this.messages.push(cloned);
     setImmediate(async()=>{if(this.terminated)return;
-      try{const result=await this.runtime.handle(cloned);if(result)this.onmessage?.({data:structuredClone(result,{transfer:result.data?[result.data.buffer]:[]})});}
+      try{
+        const result=await this.runtime.handle(cloned);
+        if(result)this.onmessage?.({data:structuredClone(result,{transfer:result.data?[result.data.buffer]:result.backgrounds?.map(frame=>frame.pixels.buffer)??[]})});
+      }
       catch(e){this.onmessage?.({data:{id:cloned.id,error:String(e),assets:this.runtime.assets()}});}
     });
   }
   terminate(){this.terminated=true;}
 }
+
+test('GPU background preparation transfers only requested linear regions and shares the CPU blur cache',async()=>{
+  const f=fixtures[0],width=37,height=43,backgroundWidth=7,backgroundHeight=9;
+  const background=Uint8ClampedArray.from({length:backgroundWidth*backgroundHeight*4},(_,i)=>i%4===3?255:i*71%256);
+  const input={...f,width,height,backgroundWidth,backgroundHeight,background:background.slice(),infinityEnergy:energy(f.infinity)};
+  const worker=new FakeWorker(),client=new PhysicsWorkerClient(worker,input.background,reason=>client.dispose(reason));
+  try{
+    const left=Math.floor(width/2),right=width,backgroundKey='gpu-test';
+    const expected=packBackgroundRgb(blurBackground({...input,background},{},{left,right}));
+    client.invalidate(1);
+    const miss=await client.prepareBackgrounds([{input,left,right,backgroundKey}],1);
+    assert.deepEqual(miss.backgrounds[0],{key:'gpu-test:18:37',width:19,height,pixels:expected});
+    assert.ok(miss.profiles[0].backgroundConvolveMs>0);
+    const hit=await client.prepareBackgrounds([{input,left,right,backgroundKey}],1);
+    assert.equal(hit.profiles[0].backgroundConvolveMs,undefined);
+    assert.deepEqual(hit.backgrounds[0].pixels,expected);
+    const request=worker.messages.find(m=>m.kind==='backgrounds').frames[0];
+    assert.equal(request.background,undefined);assert.equal(request.infinityEnergy,undefined);assert.equal(request.card,undefined);
+    client.invalidate(2);
+    assert.equal(await client.prepareBackgrounds([{input,left,right,backgroundKey}],1),undefined);
+    client.source(Uint8ClampedArray.from(background,x=>255-x));
+    const fresh=await client.prepareBackgrounds([{input,left,right,backgroundKey}],2);
+    assert.notDeepEqual(fresh.backgrounds[0].pixels,expected);
+    const optical=await client.registerOptical(packed(f.level));
+    assert.ok(client.getOptical(optical.key));client.clearOptical();assert.equal(client.getOptical(optical.key),undefined);
+    await client.prepareBackgrounds([{input,left,right,backgroundKey}],2);
+    assert.equal(client.info().opticalPackedBytes,0);
+  }finally{client.dispose('done');}
+});
+
+test('GPU area footprint preserves odd anchors and crop offsets and rejects oversized tap counts',()=>{
+  const level={pixelsPerTanTheta:[4096,4100],extentTanTheta:[-.02,.02,-.1,.01],width:180,height:450};
+  const input={width:101,height:143,cardWidth:72,cssPxPerMm:1,viewingDistanceM:1,renderScale:.512,renderScaleY:.514};
+  const full=gpuSampling(input,{level});
+  const cropped=gpuSampling(input,{level,columns:[20,110]});
+  assert.equal(full.pitchX,8);assert.equal(full.originY,cropped.originY);
+  assert.equal(full.originX-cropped.originX,20);
+  assert.equal(gpuSampling({...input,renderScale:.511},{level}),null);
+  assert.equal(gpuSampling({...input,renderScaleY:.512},{level}),null);
+});
 
 test('mixed split returns one output buffer matching two full renders and transfers the dynamic raster',async()=>{
   const [a,b]=[fixtures[1],fixtures[7]],{width,height}=a,mid=Math.floor(width/2);

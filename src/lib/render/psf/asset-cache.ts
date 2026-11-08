@@ -4,7 +4,8 @@ export class AssetCache<T> {
   private used=0;
   readonly pinned=new Set<string>();
   readonly budget:number;
-  constructor(budget:number) {this.budget=budget;}
+  private release?:(value:T)=>void;
+  constructor(budget:number,release?:(value:T)=>void) {this.budget=budget;this.release=release;}
   get(key:string):T|undefined {
     const item=this.items.get(key);
     if(item){this.items.delete(key);this.items.set(key,item);}
@@ -16,13 +17,18 @@ export class AssetCache<T> {
     const protectedKey=(candidate:string)=>this.pinned.has(candidate)||retained.includes(candidate);
     const protectedBytes=[...this.items].reduce((n,[k,v])=>n+(k!==key&&protectedKey(k)?v.bytes:0),0);
     if(protectedBytes+bytes>this.budget)throw new Error('Active assets exceed memory budget');
-    if(old){this.items.delete(key);this.used-=old.bytes;}
+    if(old)this.delete(key);
     while(this.used+bytes>this.budget){
       const oldest=[...this.items.keys()].find(k=>!protectedKey(k))!;
-      this.used-=this.items.get(oldest)!.bytes;this.items.delete(oldest);
+      this.delete(oldest);
     }
     this.items.set(key,{value,bytes});this.used+=bytes;
   }
-  clear():void {this.items.clear();this.used=0;this.pinned.clear();}
+  delete(key:string):boolean {
+    const item=this.items.get(key);
+    if(!item)return false;
+    this.items.delete(key);this.used-=item.bytes;this.release?.(item.value);return true;
+  }
+  clear():void {for(const key of this.items.keys())this.delete(key);this.pinned.clear();}
   info():{keys:string[];bytes:number} {return {keys:[...this.items.keys()],bytes:this.used};}
 }

@@ -1,15 +1,19 @@
 import {AssetCache} from './asset-cache.ts';
-import {blurBackground,renderScene,sceneTarget,type SceneInput,type SceneProfile} from './scene.ts';
+import {backgroundRegionKey,blurBackground,packBackgroundRgb,renderScene,sceneTarget,
+  type BackgroundInput,type BackgroundTextureData,type SceneInput,type SceneProfile} from './scene.ts';
 import {OPTICAL_CACHE_BYTES,renderOpticalImageLatest,opticalImageKey,packedOpticalBytes,cropOpticalPixels,
   type OpticalColumns,type PackedOpticalImageLayer} from './optical-image-math.ts';
 
 export type AssetFrame=Omit<SceneInput,'background'|'nearEnergy'|'infinityEnergy'>&{nearKey?:string;infinityKey:string;opticalKey?:string;backgroundKey:string};
+export type BackgroundFrame=Omit<BackgroundInput,'background'|'infinityEnergy'>&{infinityKey:string;backgroundKey:string;left:number;right:number};
 export type WorkerRequest=
   |{kind:'optical';id:number;layer:PackedOpticalImageLayer}
   |{kind:'slice-optical';id:number;sourceKey:string;columns:OpticalColumns}
   |{kind:'psf';id:number;key:string;energy:Float32Array}
   |{kind:'render';id:number;version:number;frames:AssetFrame[]}
+  |{kind:'backgrounds';id:number;version:number;frames:BackgroundFrame[]}
   |{kind:'invalidate';version:number}
+  |{kind:'clear-optical'}
   |{kind:'reserve-optical';id?:number;version:number;keys:string[]}
   |{source:Uint8ClampedArray};
 
@@ -25,9 +29,18 @@ export class PhysicsWorkerRuntime {
   private yieldTask:()=>Promise<void>;
   constructor(yieldTask:()=>Promise<void>) {this.yieldTask=yieldTask;}
   assets(){return {optical:this.optical.info(),psfs:this.psfs.info()};}
+  private getBackground(input:BackgroundInput,key:string,region:{left:number;right:number},profile:SceneProfile){
+    const background=this.backgrounds.get(key);
+    if(background){this.backgrounds.delete(key);this.backgrounds.set(key,background);return {background,cold:false};}
+    const rendered=blurBackground(input,profile,region);
+    this.backgrounds.set(key,rendered);
+    if(this.backgrounds.size>2)this.backgrounds.delete(this.backgrounds.keys().next().value!);
+    return {background:rendered,cold:true};
+  }
   async handle(message:WorkerRequest) {
     if('source' in message){this.source=message.source;this.backgrounds.clear();return;}
     if(message.kind==='invalidate'){this.latest=message.version;this.reservedOptical=[];return;}
+    if(message.kind==='clear-optical'){this.optical.clear();this.reservedOptical=[];return;}
     if(message.kind==='reserve-optical'){
       if(message.version===this.latest)this.reservedOptical=message.keys;
       return message.id===undefined?undefined:{id:message.id,assets:this.assets()};
@@ -56,6 +69,23 @@ export class PhysicsWorkerRuntime {
     if(this.rendering)throw new Error('Physics renderer already busy');
     const current=()=>message.version===this.latest;
     if(!current())return {id:message.id,cancelled:true,assets:this.assets()};
+    if(message.kind==='backgrounds'){
+      this.rendering=true;
+      try{
+        const backgrounds:BackgroundTextureData[]=[],profiles:SceneProfile[]=[];
+        for(const frame of message.frames){
+          const infinityEnergy=this.psfs.get(frame.infinityKey);
+          if(!infinityEnergy)throw new Error('Worker background PSF unavailable');
+          const key=backgroundRegionKey(frame.backgroundKey,frame.left,frame.right),profile:SceneProfile={};
+          const {background,cold}=this.getBackground({...frame,background:this.source,infinityEnergy},key,frame,profile);
+          if(cold)await this.yieldTask();
+          if(!current())return {id:message.id,cancelled:true,assets:this.assets()};
+          backgrounds.push({key,width:frame.right-frame.left,height:frame.height,pixels:packBackgroundRgb(background)});
+          profiles.push(profile);
+        }
+        return {id:message.id,backgrounds,profiles,assets:this.assets()};
+      }finally{this.rendering=false;}
+    }
     const {frames}=message;
     if(frames.length<1||frames.length>2)throw new Error('Invalid frame count');
     const {width,height}=frames[0];
@@ -78,14 +108,10 @@ export class PhysicsWorkerRuntime {
         const left=index===0?0:boundary,right=inputs.length===2&&index===0?boundary:width;
         if(left===right)continue;
         const target=sceneTarget(width,height,left,right,data);
-        const key=`${backgroundKey}:${left}:${right}`;
-        let background=this.backgrounds.get(key);
-        if(!background){
-          background=blurBackground(input,profile,target);this.backgrounds.set(key,background);
-          if(this.backgrounds.size>2)this.backgrounds.delete(this.backgrounds.keys().next().value!);
-          // Inputs arriving during a synchronous cold FFT can skip obsolete work.
-          await this.yieldTask();
-        }else{this.backgrounds.delete(key);this.backgrounds.set(key,background);}
+        const key=backgroundRegionKey(backgroundKey,left,right);
+        const {background,cold}=this.getBackground(input,key,target,profile);
+        // Inputs arriving during a synchronous cold FFT can skip obsolete work.
+        if(cold)await this.yieldTask();
         if(!current())return {id:message.id,cancelled:true,assets:this.assets()};
         if(layer)await renderOpticalImageLatest(input,layer,background,profile,current,this.yieldTask,6,target);
         else renderScene(input,background,profile,target);

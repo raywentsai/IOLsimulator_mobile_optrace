@@ -1,3 +1,7 @@
+export const displayColorFunctions=`
+  vec3 decode(vec3 c){return mix(c/12.92,pow((c+.055)/1.055,vec3(2.4)),step(vec3(.04045),c));}
+  vec3 encode(vec3 c){c=clamp(c,0.,1.);return mix(12.92*c,1.055*pow(c,vec3(1./2.4))-.055,step(vec3(.0031308),c));}`;
+
 // Explicit linear-light reconstruction of the computed sRGB sample grid at
 // device resolution. CSS/compositor interpolation of encoded sRGB is avoided.
 export class PsfDisplay {
@@ -5,15 +9,16 @@ export class PsfDisplay {
   private program:WebGLProgram;
   private buffer:WebGLBuffer;
   private texture:WebGLTexture;
-  constructor(private canvas:HTMLCanvasElement) {
+  private canvas:HTMLCanvasElement;
+  constructor(canvas:HTMLCanvasElement) {
+    this.canvas=canvas;
     const gl=canvas.getContext('webgl');
     if(!gl)throw new Error('WebGL is unavailable');
     this.gl=gl;
     const vertex=`attribute vec2 position;varying vec2 uv;void main(){uv=vec2(position.x*.5+.5,.5-position.y*.5);gl_Position=vec4(position,0.,1.);}`;
     const fragment=`precision highp float;
       uniform sampler2D image;uniform vec2 size;varying vec2 uv;
-      vec3 decode(vec3 c){return mix(c/12.92,pow((c+.055)/1.055,vec3(2.4)),step(vec3(.04045),c));}
-      vec3 encode(vec3 c){c=clamp(c,0.,1.);return mix(12.92*c,1.055*pow(c,vec3(1./2.4))-.055,step(vec3(.0031308),c));}
+      ${displayColorFunctions}
       vec3 sampleLinear(vec2 p){return decode(texture2D(image,(clamp(p,vec2(0.),size-1.)+.5)/size).rgb);}
       void main(){
         vec2 p=uv*size-.5,a=floor(p),f=fract(p);

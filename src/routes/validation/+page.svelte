@@ -2,8 +2,9 @@
   import {onMount} from 'svelte';
   import {base} from '$app/paths';
   import {loadPsf} from '../../lib/render/psf/library';
-  import type {SceneInput} from '../../lib/render/psf/scene';
+  import {backgroundRegionKey,type SceneInput} from '../../lib/render/psf/scene';
   import {PsfDisplay} from '../../lib/render/psf/display';
+  import {GpuDisplay} from '../../lib/render/psf/gpu-display';
   import {srgbToLinear,linearToSrgb} from '../../lib/render/psf/convolve';
   import {OpticalImageLoader} from '../../lib/render/psf/optical-images';
   import {PhysicsWorkerClient} from '../../lib/render/psf/worker-client';
@@ -14,14 +15,20 @@
   let canvas:HTMLCanvasElement;
   let midpoint:number|null=null;
   let backgroundVerified=false;
+  let gpuState='';
   onMount(()=>{
     let cancelled=false;
     const controller=new AbortController();
     const client=new PhysicsWorkerClient(new Worker(new URL('../../lib/render/psf/worker.ts',import.meta.url),{type:'module'}),
       new Uint8ClampedArray(0),reason=>client.dispose(reason));
+    let gpu:GpuDisplay|null=null,gpuError=0,gpuCases=0;
+    if(new URLSearchParams(window.location.search).get('composition')==='gpu'){
+      try{gpu=new GpuDisplay(document.createElement('canvas'));gpuState='Running WebGL2 optical comparison…';}
+      catch{gpuState='WebGL2 unavailable. CPU validation continues.';}
+    }
     const images=new OpticalImageLoader({
       getOptical:key=>client.getOptical(key),
-      registerOptical:layer=>client.registerOptical(layer)
+      registerOptical:async layer=>{if(gpu)await gpu.registerOptical(layer);return client.registerOptical(layer);}
     });
     client.invalidate(1);
     let renderer:PsfDisplay|null=null;
@@ -85,6 +92,19 @@
           const optical=await client.render({...input,card:empty,nearEnergy:empty,opticalLayer},fixture.name,1);
           if(!optical.data)throw new Error('Registered optical renderer did not produce an image');
           if(cancelled)return;
+          if(gpu){
+            const {width,height}=fixture,backgroundKey=fixture.name,left=0,right=width;
+            const prepared=await client.prepareBackgrounds([{input,backgroundKey,left,right}],1);
+            const frame=prepared?.backgrounds?.[0];
+            if(!frame)throw new Error('GPU validation background unavailable');
+            const key=backgroundRegionKey(backgroundKey,left,right);
+            gpu.uploadBackground(frame,[key]);
+            gpu.draw(input,[{ref:opticalLayer,backgroundKey:key,left,right}],width,height);
+            const actual=gpu.readGrid();
+            for(let i=0;i<expected.length;i++)gpuError=Math.max(gpuError,Math.abs(actual[i]-expected[i]),Math.abs(actual[i]-optical.data[i]));
+            if(gpuError>1)throw new Error('WebGL2 optical comparison exceeded 1 sRGB byte');
+            gpuCases++;gpu.clearOptical();gpu.clearBackgrounds();
+          }
           let workerError=0,pairError=0;
           for(let i=0;i<expected.length;i++){
             workerError=Math.max(workerError,Math.abs(optical.data[i]-expected[i]));
@@ -118,16 +138,18 @@
           backgroundVerified=true;
         }finally{surface.width=1;surface.height=1;asset.release();}
         state='PASS: all Python / Worker / WebGL comparisons';
+        if(gpu)gpuState=`PASS: WebGL2 matched CPU and Python within ${gpuError} sRGB byte across ${gpuCases} cases.`;
       }catch(error){state=`FAIL: ${error}`;}
-      finally{client.dispose('Validation complete');renderer?.dispose();}
+      finally{client.dispose('Validation complete');renderer?.dispose();gpu?.dispose();}
     })();
-    return()=>{cancelled=true;controller.abort();images.cancel();client.dispose('Validation disposed');renderer?.dispose();};
+    return()=>{cancelled=true;controller.abort();images.cancel();client.dispose('Validation disposed');renderer?.dispose();gpu?.dispose();};
   });
 </script>
 <svelte:head><title>Optics numerical validation</title></svelte:head>
 <main>
   <h1>Optics numerical validation</h1>
   <p role="status">{state}</p>
+  {#if gpuState}<p data-gpu-validation>{gpuState}</p>{/if}
   <p>Python/SciPy references use identical PSF bins, physical pixel scale and padding. Dense optical grids are area integrated to the display grid.</p>
   <p>Black/white 50% linear-light display sample: {midpoint??'pending'} / 255 (expected 188).</p>
   <p>Background JPEG browser decode: {backgroundVerified?'PASS — dimensions and reference samples match':'pending'}.</p>

@@ -1,13 +1,13 @@
-import type {SceneInput} from './scene';
+import type {BackgroundInput,BackgroundTextureData,SceneInput} from './scene';
 import type {PsfEntry} from './geometry';
 import {opticalImageKey,type OpticalImageRef,type PackedOpticalImageLayer} from './optical-image-math.ts';
-import type {AssetFrame} from './worker-runtime';
+import type {AssetFrame,BackgroundFrame} from './worker-runtime';
 
 export interface Computed {data?:Uint8ClampedArray;cancelled?:boolean;milliseconds:number;profile:Record<string,number>}
 type RenderInput=SceneInput&{opticalLayer?:OpticalImageRef};
 type FrameResult=Omit<Computed,'profile'>&{profiles?:Record<string,number>[]};
 type Assets={optical:{keys:string[];bytes:number};psfs:{keys:string[];bytes:number}};
-type Reply=FrameResult&{id:number;assets:Assets;error?:string;sliced?:boolean};
+type Reply=FrameResult&{id:number;assets:Assets;error?:string;sliced?:boolean;backgrounds?:BackgroundTextureData[]};
 export class PhysicsWorkerClient {
   private id=0;
   private version=0;
@@ -51,6 +51,9 @@ export class PhysicsWorkerClient {
     });
   }
   getOptical(key:string):OpticalImageRef|undefined {return this.assets.optical.keys.includes(key)?this.opticalRefs.get(key):undefined;}
+  clearOptical():void {
+    this.opticalRefs.clear();this.assets.optical={keys:[],bytes:0};this.worker.postMessage({kind:'clear-optical'});
+  }
   async sliceOptical(target:OpticalImageRef):Promise<OpticalImageRef|undefined> {
     const {columns,level}=target;
     if(!columns)return;
@@ -93,6 +96,15 @@ export class PhysicsWorkerClient {
     const transfer=transferCard?[...new Set(frames.map(frame=>frame.card.buffer)
       .filter((buffer):buffer is ArrayBuffer=>buffer instanceof ArrayBuffer&&buffer.byteLength>0))]:[];
     return this.request({kind:'render',frames,version},transfer);
+  }
+  async prepareBackgrounds(sides:{input:Omit<BackgroundInput,'background'>;backgroundKey:string;left:number;right:number}[],version:number):Promise<Reply|undefined> {
+    const frames=await Promise.all(sides.map(async({input,...region}):Promise<BackgroundFrame>=>{
+      const {width,height,backgroundWidth,backgroundHeight,infinity,infinityEnergy,cssPxPerMm,viewingDistanceM,renderScale,renderScaleY}=input;
+      const infinityKey=await this.psf(infinity,infinityEnergy);
+      return {...region,infinityKey,infinity,width,height,backgroundWidth,backgroundHeight,cssPxPerMm,viewingDistanceM,renderScale,renderScaleY};
+    }));
+    if(version!==this.version)return;
+    return this.request({kind:'backgrounds',frames,version});
   }
   info():{opticalPackedBytes:number;workerPsfBytes:number;opticalEntries:number} {
     return {opticalPackedBytes:this.assets.optical.bytes,workerPsfBytes:this.assets.psfs.bytes,opticalEntries:this.assets.optical.keys.length};

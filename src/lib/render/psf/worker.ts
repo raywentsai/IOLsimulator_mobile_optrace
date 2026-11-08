@@ -7,6 +7,10 @@ const runtime=new PhysicsWorkerRuntime(()=>new Promise(resolve=>{waiting.push(re
 scope.onmessage=async(event:MessageEvent<WorkerRequest>)=>{
   try{
     const result=await runtime.handle(event.data);
-    if(result)scope.postMessage(result,'data' in result&&result.data?[result.data.buffer]:[]);
+    if(result){
+      const transfer='data' in result&&result.data?[result.data.buffer]:
+        'backgrounds' in result&&result.backgrounds?result.backgrounds.map(frame=>frame.pixels.buffer):[];
+      scope.postMessage(result,transfer);
+    }
   }catch(error){scope.postMessage({id:'id' in event.data?event.data.id:undefined,error:String(error),assets:runtime.assets()});}
 };

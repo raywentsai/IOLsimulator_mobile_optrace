@@ -11,6 +11,19 @@ export interface SceneInput {
 
 export type SceneProfile = Record<string,number>;
 export type BlurredBackground=[Float32Array,Float32Array,Float32Array]&{encoded?:Uint8ClampedArray};
+export type BackgroundInput=Pick<SceneInput,'width'|'height'|'background'|'backgroundWidth'|'backgroundHeight'|
+  'infinity'|'infinityEnergy'|'cssPxPerMm'|'viewingDistanceM'|'renderScale'|'renderScaleY'>;
+export interface BackgroundTextureData {key:string;width:number;height:number;pixels:Float32Array<ArrayBuffer>}
+
+export function backgroundRegionKey(key:string,left:number,right:number):string {return `${key}:${left}:${right}`;}
+
+export function packBackgroundRgb(background:BlurredBackground):Float32Array<ArrayBuffer> {
+  const [red,green,blue]=background,pixels=new Float32Array(3*red.length);
+  for(let i=0;i<red.length;i++){
+    pixels[3*i]=red[i];pixels[3*i+1]=green[i];pixels[3*i+2]=blue[i];
+  }
+  return pixels;
+}
 export interface SceneTarget {
   left:number; right:number; width:number; height:number; stride:number; offset:number;
   data:Uint8ClampedArray<ArrayBuffer>;
@@ -35,7 +48,7 @@ export function writeBackground(background:BlurredBackground,target:SceneTarget)
 }
 
 // Background images are decoded as sRGB, then interpolated in LINEAR light.
-export function sampleBackground(input:SceneInput,window:PixelWindow={left:0,top:0,width:input.width,height:input.height}): BlurredBackground {
+export function sampleBackground(input:BackgroundInput,window:PixelWindow={left:0,top:0,width:input.width,height:input.height}): BlurredBackground {
   const {width,height,background:src,backgroundWidth:sw,backgroundHeight:sh}=input;
   const {left,top,width:cols,height:rows}=window;
   const channels:BlurredBackground=[new Float32Array(cols*rows),new Float32Array(cols*rows),new Float32Array(cols*rows)];
@@ -55,7 +68,7 @@ export function sampleBackground(input:SceneInput,window:PixelWindow={left:0,top
   return channels;
 }
 
-export function blurBackground(input:SceneInput,profile:SceneProfile={},region={left:0,right:input.width}):BlurredBackground {
+export function blurBackground(input:BackgroundInput,profile:SceneProfile={},region={left:0,right:input.width}):BlurredBackground {
   const start=performance.now();
   const kernel=scalePsf(input.infinityEnergy,input.infinity,pixelsPerRetinalMm(input.infinity,input.cssPxPerMm,input.viewingDistanceM,input.renderScale),pixelsPerRetinalMm(input.infinity,input.cssPxPerMm,input.viewingDistanceM,input.renderScaleY??input.renderScale));
   const scaled=performance.now();profile.backgroundScaleMs=scaled-start;
