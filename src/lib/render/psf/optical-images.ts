@@ -1,61 +1,78 @@
-import {loadPngAsset,downloadBlob,allowSpeculativeLoads,type ProgressListener,type AssetProgress} from '../asset-loading.ts';
+import {loadPngAsset,downloadBlob,allowSpeculativeLoads,ManifestCache,type ProgressListener,type AssetProgress} from '../asset-loading.ts';
 import type {PsfEntry} from './geometry';
-import {validatePackedOpticalImage,opticalImageKey,type PackedOpticalImageLayer,type OpticalImageRef,type OpticalImageLevel} from './optical-image-math.ts';
+import {OPTICAL_CACHE_BYTES,validatePackedOpticalImage,opticalImageKey,type PackedOpticalImageLayer,type OpticalImageRef,type OpticalImageLevel} from './optical-image-math.ts';
 
 interface OpticalNode {objectVergenceD:number;psfSha256:string;levels:OpticalImageLevel[]}
 interface OpticalLibrary {version:number;model:string;encoding:string;physicalCardMm:[number,number];entries:OpticalNode[]}
 export interface OpticalImageStore {getOptical:(key:string)=>OpticalImageRef|undefined;registerOptical:(layer:PackedOpticalImageLayer)=>Promise<OpticalImageRef>}
-type ImageAsset=OpticalImageRef|PackedOpticalImageLayer;
-interface CachedLayer {promise:Promise<ImageAsset>;controller:AbortController;pending:boolean;demand:number;bytes:number;listeners:Set<ProgressListener>;progress?:AssetProgress}
-const MODEL='aspheric_monofocal_dc_v1',MAX_CACHE_BYTES=14*1024*1024;
-let libraryPromise:Promise<OpticalLibrary>|undefined;
-async function library(base:string):Promise<OpticalLibrary> {
-  if(!libraryPromise)libraryPromise=(async()=>{
-    const result=JSON.parse(await (await downloadBlob(`${base}/optical-images/manifest.json`,new AbortController().signal,{totalMs:12000})).text()) as OpticalLibrary;
-    if(result.version!==1||result.model!==MODEL||result.encoding!=='opaque-rgb-f12-a12'||result.entries.length!==31||
-      Math.abs(result.physicalCardMm[1]-28)>1e-9||Math.abs(result.physicalCardMm[0]-28*1528/1170)>1e-9)throw new Error('Incompatible optical image library');
-    for(let d=10;d<=40;d++)if(!result.entries.some(e=>e.objectVergenceD===d/10))throw new Error('Incomplete optical image nodes');
-    return result;
-  })().catch(error=>{libraryPromise=undefined;throw error;});
-  return libraryPromise;
+type OpticalRequest={models:string[];demand:number};
+interface OpticalSelection extends OpticalImageRef {model:string;demand:number}
+interface PendingLayer {
+  promise:Promise<OpticalImageRef>;
+  controller:AbortController;
+  selection:OpticalSelection;
+  bytes:number;
+  listeners:Set<ProgressListener>;
+  progress?:AssetProgress;
+}
+function supportsOpticalDensity(px:number,py:number):boolean {
+  return Math.min(px,py)>=128&&Math.max(px,py)<=8192;
+}
+
+const packedBytes=(layer:OpticalImageRef)=>layer.level.width*layer.level.height*4;
+type OpticalNodes=readonly [current:OpticalSelection|null,previous:OpticalSelection|null,next:OpticalSelection|null];
+
+// A slider step must keep the displayed layers and the adjacent frame's layers
+// resident together. The previous and next steps need not coexist.
+export function opticalWorkingSet(sides:OpticalNodes[]) {
+  const fits=(candidates:OpticalNodes[])=>{
+    const bytesAt=(index:number)=>candidates.reduce((sum,nodes)=>sum+(nodes[index]?packedBytes(nodes[index]):0),0);
+    return bytesAt(0)+Math.max(bytesAt(1),bytesAt(2))<=OPTICAL_CACHE_BYTES;
+  };
+  const available=sides.filter(nodes=>nodes[0]);
+  const chosen=fits(available)?available:available.filter(nodes=>fits([nodes])).slice(0,1);
+  const selections=sides.map(nodes=>chosen.includes(nodes)?nodes[0]:null);
+  const neighbors=[...chosen.map(nodes=>nodes[1]),...chosen.map(nodes=>nodes[2])].filter(node=>node!==null);
+  return {selections,neighbors};
 }
 function selectLevel(node:OpticalNode,px:number,py:number):OpticalImageLevel|null {
-  if(Math.min(px,py)<128||Math.max(px,py)>8192)return null;
+  if(!supportsOpticalDensity(px,py))return null;
   return [...node.levels].sort((a,b)=>a.density-b.density).find(l=>l.pixelsPerTanTheta[0]+1e-7>=px&&l.pixelsPerTanTheta[1]+1e-7>=py)??null;
 }
 
-// With a Worker store, only pending loads live here. Transfer moves the sole
-// packed buffer to that store; completed promises do not retain detached assets.
+// The Worker owns completed layers. Only in-flight loads live here.
 export class OpticalImageLoader {
-  private cache=new Map<string,CachedLayer>();
-  private generation=0;
-  private keepDemand:number|undefined;
-  private store?:OpticalImageStore;
-  constructor(store?:OpticalImageStore) {this.store=store;}
-  cancel(demand?:number):void {
-    this.generation++;this.keepDemand=demand;
-    for(const [key,item]of this.cache)if(item.pending&&item.demand!==demand){this.cache.delete(key);item.controller.abort();}
-  }
-  clear():void {this.cancel();this.cache.clear();}
-  info(){return {mainPackedBytes:[...this.cache.values()].reduce((s,i)=>s+i.bytes,0),pending:[...this.cache.values()].filter(i=>i.pending).length};}
-  private trim(keep:string):void {
-    while(this.info().mainPackedBytes>MAX_CACHE_BYTES){
-      const oldest=[...this.cache.keys()].find(k=>k!==keep);if(!oldest)break;
-      const item=this.cache.get(oldest)!;this.cache.delete(oldest);if(item.pending)item.controller.abort();
+  private manifests=new ManifestCache<OpticalLibrary>();
+  private pending=new Map<string,PendingLayer>();
+  private store:OpticalImageStore;
+  constructor(store:OpticalImageStore) {this.store=store;}
+  cancel(keep?:OpticalRequest):void {
+    this.manifests.cancel(url=>keep?.models.some(model=>url.endsWith(`/${model}.json`))??false);
+    for(const [key,item]of this.pending){
+      const {model,demand}=item.selection;
+      if(keep?.demand===demand&&keep.models.includes(model))continue;
+      this.pending.delete(key);
+      item.controller.abort();
     }
   }
-  private observe(item:CachedLayer,listener?:ProgressListener):Promise<ImageAsset> {
+  info(){
+    return {mainPackedBytes:[...this.pending.values()].reduce((sum,item)=>sum+item.bytes,0),pending:this.pending.size};
+  }
+  private observe(item:PendingLayer,listener?:ProgressListener):Promise<OpticalImageRef> {
     if(listener){item.listeners.add(listener);if(item.progress)listener(item.progress);}
     return item.promise.finally(()=>{if(listener)item.listeners.delete(listener);});
   }
-  private async loadLevel(base:string,node:OpticalNode,level:OpticalImageLevel,listener?:ProgressListener):Promise<ImageAsset> {
-    const key=opticalImageKey(level),resident=this.store?.getOptical(key);
+  async load(base:string,selection:OpticalSelection,listener?:ProgressListener):Promise<OpticalImageRef> {
+    const {key,level}=selection;
+    const resident=this.store.getOptical(key);
     if(resident)return resident;
-    const found=this.cache.get(key);
-    if(found){this.cache.delete(key);this.cache.set(key,found);return this.observe(found,listener);}
-    const bytes=level.width*level.height*4;
-    if(bytes>MAX_CACHE_BYTES||level.width<1||level.height<1)throw new Error('Optical image exceeds packed memory budget');
-    const controller=new AbortController();let item:CachedLayer;
+    const found=this.pending.get(key);
+    if(found)return this.observe(found,listener);
+    const bytes=packedBytes(selection);
+    if(level.width<1||level.height<1||bytes+this.info().mainPackedBytes>OPTICAL_CACHE_BYTES){
+      throw new Error('Optical image exceeds packed memory budget');
+    }
+    const controller=new AbortController();let item:PendingLayer;
     const promise=(async()=>{
       const asset=await loadPngAsset(`${base}/optical-images/${level.file}`,controller.signal,{totalMs:18000,expectedBytes:level.bytes,priority:listener?'high':'low',onProgress:p=>{if(item){item.progress=p;for(const fn of item.listeners)fn(p);}}});
       try{
@@ -70,36 +87,34 @@ export class OpticalImageLoader {
         if(hash!==level.decodedRgbaSha256)throw new Error('Optical image numeric samples failed integrity validation');
         validatePackedOpticalImage(rgba,level);
         const layer:PackedOpticalImageLayer={key,level,rgba};
-        return this.store?await this.store.registerOptical(layer):layer;
+        return await this.store.registerOptical(layer);
       }finally{asset.release();}
     })();
-    item={promise,controller,pending:true,demand:node.objectVergenceD,bytes,listeners:new Set()};this.cache.set(key,item);this.trim(key);
-    void promise.then(()=>{item.pending=false;if(this.store&&this.cache.get(key)===item)this.cache.delete(key);},()=>{item.pending=false;if(this.cache.get(key)===item)this.cache.delete(key);});
+    item={promise,controller,selection,bytes,listeners:new Set()};
+    this.pending.set(key,item);
+    const remove=()=>{if(this.pending.get(key)===item)this.pending.delete(key);};
+    void promise.then(remove,remove);
     return this.observe(item,listener);
   }
-  async load(base:string,entry:PsfEntry,px:number,py:number,onProgress?:ProgressListener):Promise<ImageAsset|null> {
-    if(entry.model!==MODEL||Math.min(px,py)<128||Math.max(px,py)>8192)return null;
-    const requestGeneration=this.generation,manifest=await library(base);
-    if(this.generation!==requestGeneration&&this.keepDemand!==entry.objectVergenceD)return null;
+  async select(base:string,entry:PsfEntry,px:number,py:number,signal?:AbortSignal):Promise<OpticalSelection|null> {
+    if(!supportsOpticalDensity(px,py))return null;
+    const url=`${base}/optical-images/${entry.model}.json`;
+    const manifest=await this.manifests.get(url,async downloadSignal=>{
+      const result=JSON.parse(await (await downloadBlob(url,downloadSignal,{totalMs:12000})).text()) as OpticalLibrary;
+      if(result.version!==1||result.model!==entry.model||result.encoding!=='opaque-rgb-f12-a12'||result.entries.length!==31||
+        Math.abs(result.physicalCardMm[1]-28)>1e-9||Math.abs(result.physicalCardMm[0]-28*1528/1170)>1e-9)throw new Error('Incompatible optical image library');
+      for(let d=10;d<=40;d++)if(!result.entries.some(e=>e.objectVergenceD===d/10))throw new Error('Incomplete optical image nodes');
+      return result;
+    },signal);
     const node=manifest.entries.find(e=>e.objectVergenceD===entry.objectVergenceD);
     if(!node||node.psfSha256!==entry.sha256)throw new Error('Precomputed optical image does not match selected PSF');
     const level=selectLevel(node,px,py);
-    return level?this.loadLevel(base,node,level,onProgress):null;
+    return level?{key:opticalImageKey(level),level,model:entry.model,demand:entry.objectVergenceD}:null;
   }
-  async prefetch(base:string,demand:number,px:number,py:number):Promise<void> {
+  async prefetch(base:string,current:OpticalSelection[],neighbors:OpticalSelection[]):Promise<void> {
     if(!allowSpeculativeLoads())return;
-    const generation=this.generation,manifest=await library(base);if(generation!==this.generation)return;
-    const neighbors=manifest.entries.filter(e=>Math.abs(Math.abs(e.objectVergenceD-demand)-.1)<1e-8);
-    await Promise.all(neighbors.map(node=>{
-      const level=selectLevel(node,px,py);
-      // Retain the old prefetch envelope: <=4 MiB expanded / <=2 MiB packed.
-      return level&&level.width*level.height*4<=2*1024*1024?this.loadLevel(base,node,level).catch(()=>undefined):undefined;
-    }));
+    const small=neighbors.filter(node=>packedBytes(node)<=2*1024*1024);
+    if([...current,...small].reduce((sum,node)=>sum+packedBytes(node),0)>OPTICAL_CACHE_BYTES)return;
+    await Promise.all(small.filter(node=>!this.store.getOptical(node.key)).slice(0,2).map(node=>this.load(base,node).catch(()=>undefined)));
   }
-}
-
-// Standalone validation owns a small main-thread packed cache, with no transfer.
-const defaultLoader=new OpticalImageLoader();
-export async function loadOpticalImage(base:string,entry:PsfEntry,px:number,py:number,onProgress?:ProgressListener):Promise<PackedOpticalImageLayer|null> {
-  return await defaultLoader.load(base,entry,px,py,onProgress) as PackedOpticalImageLayer|null;
 }

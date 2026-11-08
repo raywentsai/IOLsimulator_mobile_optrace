@@ -415,12 +415,13 @@ export class WebGLRenderer {
    * Update an existing texture in-place to avoid reallocating texture IDs.
    * Returns false if the texture is missing and cannot be updated.
    */
-  updateImageTexture(textureId: string, imageSource: HTMLImageElement | HTMLCanvasElement): boolean {
+  updateImageTexture(textureId: string, imageSource: HTMLImageElement | HTMLCanvasElement, verifyUpload = false): boolean {
     const texture = this.resources.textures.get(textureId);
     if (!texture) {
       return false;
     }
 
+    if (verifyUpload) this.gl.getError(); // Discard a prior rendering error before checking this upload.
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
     this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, imageSource);
@@ -428,7 +429,7 @@ export class WebGLRenderer {
     this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
     this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
     this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-    return true;
+    return !verifyUpload || this.gl.getError() === this.gl.NO_ERROR && !this.gl.isContextLost();
   }
 
   /**

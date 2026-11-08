@@ -1,8 +1,8 @@
 import type { PsfEntry } from './geometry';
-import {downloadBlob,allowSpeculativeLoads} from '../asset-loading.ts';
+import {downloadBlob,allowSpeculativeLoads,ManifestCache} from '../asset-loading.ts';
 
 export interface PsfManifest { version: number; entries: PsfEntry[] }
-let manifestPromise: Promise<PsfManifest> | undefined;
+const manifests=new ManifestCache<PsfManifest>();
 type CachedPsf={promise:Promise<Float32Array>;controller:AbortController;speculative:boolean;pending:boolean;bytes:number;model:string;demand:number};
 const cache = new Map<string, CachedPsf>();
 const infinityFiles=new Set<string>();
@@ -14,6 +14,7 @@ export function psfCacheInfo():{entries:number;decodedBytes:number} {
 
 export function cancelPsfPrefetch(keep?:{models:string[];demand:number}):void {
   prefetchGeneration++;
+  if(!keep)manifests.cancel();
   // A superseded foreground download must not hold the single scene queue
   // behind a slow network request. Keep current near and infinity requests.
   for(const [file,item] of cache)if(item.pending){
@@ -32,13 +33,12 @@ export async function prefetchPsfNeighbors(base:string,models:string[],demand:nu
   while(nodes.length&&generation===prefetchGeneration)await Promise.all(nodes.splice(0,2).map(e=>loadPsf(base,e,{},true).catch(()=>undefined)));
 }
 
-export async function manifest(base: string): Promise<PsfManifest> {
-  if(!manifestPromise) manifestPromise=(async()=>{
-    const value=JSON.parse(await (await downloadBlob(`${base}/psf/manifest.json`,new AbortController().signal,{totalMs:12000})).text()) as PsfManifest;
+export function manifest(base:string,signal?:AbortSignal):Promise<PsfManifest> {
+  return manifests.get(base,async downloadSignal=>{
+    const value=JSON.parse(await (await downloadBlob(`${base}/psf/manifest.json`,downloadSignal,{totalMs:12000})).text()) as PsfManifest;
     if(value.version!==1 || value.entries.length!==96) throw new Error('Incomplete PSF library');
     return value;
-  })().catch(e=>{manifestPromise=undefined;throw e;});
-  return manifestPromise;
+  },signal);
 }
 
 export async function loadPsf(base:string,entry:PsfEntry,profile:Record<string,number>={},speculative=false):Promise<Float32Array> {

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {downloadBlob,loadPngAsset,allowSpeculativeLoads} from '../src/lib/render/asset-loading.ts';
+import {downloadBlob,loadPngAsset,allowSpeculativeLoads,ManifestCache} from '../src/lib/render/asset-loading.ts';
 import {readRgbPng} from './png-helper.mjs';
 
 test('streamed progress counts received bytes, retries 503 once, and rejects permanent HTTP/MIME failures',async()=>{
@@ -24,10 +24,10 @@ test('stalled headers/body, total deadline and cancellation terminate the actual
   const original=globalThis.fetch;let calls=0;
   try {
     globalThis.fetch=(url,{signal})=>{calls++;return new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(Error('aborted'))));};
-    await assert.rejects(downloadBlob('/stalled-headers',new AbortController().signal,{idleMs:8,totalMs:100}),/network stalled/);assert.equal(calls,1);
+    await assert.rejects(loadPngAsset('/stalled-headers',new AbortController().signal,{idleMs:8,totalMs:100}),{code:'stalled',message:/network stalled/});assert.equal(calls,1);
     globalThis.fetch=async(url,{signal})=>new Response(new ReadableStream({start(c){c.enqueue(new Uint8Array([1]));signal.addEventListener('abort',()=>c.error(Error('aborted')));}}));
     await assert.rejects(downloadBlob('/stalled-body',new AbortController().signal,{idleMs:8,totalMs:100}),/network stalled/);
-    await assert.rejects(downloadBlob('/total-deadline',new AbortController().signal,{idleMs:100,totalMs:8}),/time limit/);
+    await assert.rejects(loadPngAsset('/total-deadline',new AbortController().signal,{idleMs:100,totalMs:8}),{code:'timeout',message:/download exceeded time limit/});
     const abort=new AbortController(),pending=downloadBlob('/cancel',abort.signal);abort.abort();await assert.rejects(pending,/cancelled/);
   }finally{globalThis.fetch=original;}
 });
@@ -44,10 +44,39 @@ test('PNG decode retains Blob URL until release, native decode fallback retains 
     rejectBlob=true;const fallback=await loadPngAsset('/background.png',new AbortController().signal);
     assert.equal(fallback.image.src,'/background.png');assert.equal(requests.filter(u=>u==='/background.png').length,1);fallback.release();
     rejectAll=true;
-    await assert.rejects(loadPngAsset('/decode-failure.png',new AbortController().signal),/PNG decode failed after a complete download; native URL also failed/);
+    await assert.rejects(loadPngAsset('/decode-failure.png',new AbortController().signal),{code:'decode',message:/PNG decode failed after a complete download; native URL also failed/});
     globalThis.fetch=async()=>new Response('broken',{headers:{'content-type':'image/png'}});
     await assert.rejects(loadPngAsset('/bad.png',new AbortController().signal),/bad.png.*invalid PNG/);
   }finally{globalThis.fetch=originalFetch;globalThis.Image=originalImage;URL.createObjectURL=originalCreate;URL.revokeObjectURL=originalRevoke;}
+});
+
+test('manifest frame cancellation preserves shared work and dropping a model aborts its request',async()=>{
+  const cache=new ManifestCache();
+  const frame=new AbortController();
+  const downloads=[];
+  const load=signal=>new Promise((resolve,reject)=>{
+    downloads.push({signal,resolve});
+    signal.addEventListener('abort',()=>reject(Error('request aborted')),{once:true});
+  });
+  const first=cache.get('lens',load,frame.signal);
+  const next=cache.get('lens',load);
+  frame.abort();
+  await assert.rejects(first,{code:'cancelled'});
+  assert.equal(downloads.length,1);
+  assert.equal(downloads[0].signal.aborted,false);
+  downloads[0].resolve('cached');
+  assert.equal(await next,'cached');
+
+  const old=cache.get('other lens',load);
+  cache.cancel(key=>key==='lens');
+  assert.equal(downloads[1].signal.aborted,true);
+  const replacement=cache.get('other lens',load);
+  await assert.rejects(old,/request aborted/);
+  downloads[2].resolve('replacement');
+  assert.equal(await replacement,'replacement');
+  assert.equal(await cache.get('other lens',load),'replacement');
+  assert.equal(await cache.get('lens',load),'cached');
+  assert.equal(downloads.length,3);
 });
 
 test('speculative loads are disabled on metered/slow connections and low-memory devices',()=>{

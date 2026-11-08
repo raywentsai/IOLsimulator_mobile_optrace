@@ -7,13 +7,25 @@ import {readRgbPng} from './png-helper.mjs';
 import {unpackOpticalImage,renderOpticalImage,angularAreaWeights,angularDisplayDensity} from '../src/lib/render/psf/optical-image-math.ts';
 import {renderScene} from '../src/lib/render/psf/scene.ts';
 import {srgbToLinear} from '../src/lib/render/psf/convolve.ts';
+import {PSF_MODELS} from '../src/lib/render/psf/geometry.ts';
+import {opticalWorkingSet} from '../src/lib/render/psf/optical-images.ts';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
-const library=JSON.parse(fs.readFileSync('static/optical-images/manifest.json'));
 const psfs=JSON.parse(fs.readFileSync('static/psf/manifest.json')).entries;
 const energy=e=>{const bytes=gunzipSync(fs.readFileSync(`static/psf/${e.file}`));return new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));};
 
-test('31 Aspheric optical nodes authenticate original PSFs, card and opaque numeric PNG samples',()=>{
-  assert.equal(library.model,'aspheric_monofocal_dc_v1');assert.equal(library.entries.length,31);
+test('optical cache planning includes both eyes and each adjacent slider transition',()=>{
+  const nodes=(model,miB)=>[0,1,2].map(i=>({key:`${model}:${i}`,level:{width:miB*256,height:1024}}));
+  const left=nodes('left',3),right=nodes('right',3),large=nodes('large',6),oversized=nodes('oversized',8);
+  // Both transitions fit in 12 MiB even though all three nodes total 18 MiB.
+  assert.deepEqual(opticalWorkingSet([left,right]).selections,[left[0],right[0]]);
+  assert.deepEqual(opticalWorkingSet([large,right]).selections,[large[0],null]);
+  assert.deepEqual(opticalWorkingSet([oversized,right]).selections,[null,right[0]]);
+  assert.deepEqual(opticalWorkingSet([oversized]).selections,[null]);
+});
+
+for(const model of Object.values(PSF_MODELS))test(`31 optical nodes authenticate original PSFs and numeric PNG samples: ${model}`,()=>{
+  const library=JSON.parse(fs.readFileSync(`static/optical-images/${model}.json`));
+  assert.equal(library.model,model);assert.equal(library.entries.length,31);
   assert.deepEqual(library.entries.map(e=>e.objectVergenceD),Array.from({length:31},(_,i)=>(i+10)/10));
   const card=fs.readFileSync('static/reading-card.svg','utf8').replaceAll('\r\n','\n');
   assert.equal(hash(card),library.cardSvgCanonicalSha256);
@@ -34,19 +46,22 @@ test('31 Aspheric optical nodes authenticate original PSFs, card and opaque nume
 });
 
 const fixtures=JSON.parse(fs.readFileSync('static/validation/optical-image-reference.json')).cases;
-for(const fixture of fixtures)test(`Identical-grid optical PNG / dynamic FFT / independent Python: ${fixture.name}`,()=>{
+for(const fixture of fixtures)test(`Optical PNG / independent Python: ${fixture.name}`,()=>{
   const bytes=gunzipSync(fs.readFileSync(`static/validation/${fixture.cardFile}`));assert.equal(hash(bytes),fixture.cardSha256);
   const card=new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));
   const expected=gunzipSync(fs.readFileSync(`static/validation/${fixture.expectedFile}`));assert.equal(hash(expected),fixture.expectedSha256);
   const layer=unpackOpticalImage(readRgbPng(`static/optical-images/${fixture.level.file}`).rgba,fixture.level);
   const input={...fixture,card,nearEnergy:energy(fixture.near),infinityEnergy:energy(fixture.infinity)};
   const background=fixture.background.slice(0,3).map(c=>new Float32Array(fixture.width*fixture.height).fill(srgbToLinear(c/255)));
-  const dynamic=renderScene(input,background),precomputed=renderOpticalImage(input,layer,background);
+  const dynamic=fixture.compareDynamic?renderScene(input,background):null;
+  const precomputed=renderOpticalImage(input,layer,background);
   let dynamicError=0,imageError=0,pairError=0;
   for(let i=0;i<expected.length;i++) {
-    dynamicError=Math.max(dynamicError,Math.abs(dynamic[i]-expected[i]));
+    if(dynamic){
+      dynamicError=Math.max(dynamicError,Math.abs(dynamic[i]-expected[i]));
+      pairError=Math.max(pairError,Math.abs(precomputed[i]-dynamic[i]));
+    }
     imageError=Math.max(imageError,Math.abs(precomputed[i]-expected[i]));
-    pairError=Math.max(pairError,Math.abs(precomputed[i]-dynamic[i]));
   }
   assert.ok(dynamicError<=1,`dynamic/Python ${dynamicError}`);
   assert.ok(imageError<=1,`optical/Python ${imageError}`);

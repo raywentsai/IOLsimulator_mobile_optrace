@@ -1,0 +1,2669 @@
+{
+  "version": 1,
+  "model": "vivity_inspired_v2_1_dc_v1",
+  "encoding": "opaque-rgb-f12-a12",
+  "coordinates": "tan(theta), x right/y down; card bottom centre is (0,0)",
+  "channels": "R=f>>4; G=((f&15)<<4)|(a>>8); B=a&255; f,a in [0,4095]",
+  "radiometry": "linear photopic radiance, premultiplied foreground + coverage; no RGB gamma encoding",
+  "physicalCardMm": [
+    36.567521367521366,
+    28.0
+  ],
+  "cardSvgCanonicalSha256": "96fbd1abc5e3810196f8eda664ebe330ec261079eccb3efff9cbbd8660e5b65c",
+  "assumptions": "existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y",
+  "background": "independent infinity PSF; never blur background with a near node",
+  "software": {
+    "pymupdf": "1.28.2",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1"
+  },
+  "entries": [
+    {
+      "objectVergenceD": 1.0,
+      "psfSha256": "9f63fedab9ac8044588dbba69ac8a53d0bb0eb842f336bbafdfa81499b3c2df5",
+      "retinalMmPerTanTheta": 16.80946277187097,
+      "levels": [
+        {
+          "width": 1089,
+          "height": 949,
+          "density": 16384,
+          "pixelsPerTanTheta": [
+            16380.656320119671,
+            16392.85714285714
+          ],
+          "extentTanTheta": [
+            -0.03324042635161166,
+            0.03324042635161166,
+            -0.04294553376906318,
+            0.014945533769063182
+          ],
+          "cardPixels": [
+            599,
+            459
+          ],
+          "cardExtentTanTheta": [
+            -0.018283760683760683,
+            0.018283760683760683,
+            -0.028,
+            0
+          ],
+          "kernelPixels": [
+            491,
+            491
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -3.9819034699720403e-07,
+            -0.013998464045555168
+          ],
+          "coverageCentroidTanTheta": [
+            -3.7753374689697597e-07,
+            -0.013998406375952618
+          ],
+          "centroidErrorTanTheta": 6.125747453146613e-08,
+          "coverageAreaRelativeError": -1.637469748805298e-05,
+          "file": "vivity_10_16384.png",
+          "bytes": 351509,
+          "fileSha256": "868918d5157a68277fa6964f005e5df8325b9d23ca09c5ec378972dc1c5196cb",
+          "decodedRgbaSha256": "1f977b60c21c263eb3b10065eb45cbf1d9df4a6d4f48ea9dc2c433bd53359042",
+          "maxLinearQuantizationError": 0.0001221000555613143
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.1,
+      "psfSha256": "268d8997968280d071a08bd95398c2b56b600e46bc9d8843ef87989c8b4d8b36",
+      "retinalMmPerTanTheta": 16.804581030341662,
+      "levels": [
+        {
+          "width": 1149,
+          "height": 995,
+          "density": 16384,
+          "pixelsPerTanTheta": [
+            16383.142381179028,
+            16396.103896103894
+          ],
+          "extentTanTheta": [
+            -0.035066532819734646,
+            0.035066532819734646,
+            -0.04574257425742575,
+            0.014942574257425744
+          ],
+          "cardPixels": [
+            659,
+            505
+          ],
+          "cardExtentTanTheta": [
+            -0.020112136752136755,
+            0.020112136752136755,
+            -0.030800000000000004,
+            0
+          ],
+          "kernelPixels": [
+            491,
+            491
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.273918121160264e-07,
+            -0.015398288295680893
+          ],
+          "coverageCentroidTanTheta": [
+            -4.44593589626954e-07,
+            -0.01539831246254396
+          ],
+          "centroidErrorTanTheta": 2.966375600094325e-08,
+          "coverageAreaRelativeError": -1.3768022902760357e-05,
+          "file": "vivity_11_16384.png",
+          "bytes": 396909,
+          "fileSha256": "f428dd80589322437cd0c8a8ba6b7a23e993d3d979454e5ac287546270910211",
+          "decodedRgbaSha256": "bff21505b8a71d776f8ef3b80d13a62b6eb9d30e4b576b35ba00e7bca7c0c6fd",
+          "maxLinearQuantizationError": 0.00012210007065815986
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.2,
+      "psfSha256": "d90e19111ab1a03bbe607fa9800996047550992256b83e76a00deede82b60c17",
+      "retinalMmPerTanTheta": 16.79970212346349,
+      "levels": [
+        {
+          "width": 907,
+          "height": 781,
+          "density": 12288,
+          "pixelsPerTanTheta": [
+            12283.21335078534,
+            12291.666666666664
+          ],
+          "extentTanTheta": [
+            -0.03692030636030637,
+            0.03692030636030637,
+            -0.04856949152542374,
+            0.014969491525423732
+          ],
+          "cardPixels": [
+            539,
+            413
+          ],
+          "cardExtentTanTheta": [
+            -0.021940512820512823,
+            0.021940512820512823,
+            -0.033600000000000005,
+            0
+          ],
+          "kernelPixels": [
+            369,
+            369
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -8.317950134946552e-07,
+            -0.016796819080095015
+          ],
+          "coverageCentroidTanTheta": [
+            -8.712753676604309e-07,
+            -0.01679676369186965
+          ],
+          "centroidErrorTanTheta": 6.801877589322218e-08,
+          "coverageAreaRelativeError": -9.079882579032805e-06,
+          "file": "vivity_12_12288.png",
+          "bytes": 283712,
+          "fileSha256": "ed439e9e09a197d26b8dea028942ce0c657457e449b53d050fee327a465bd210",
+          "decodedRgbaSha256": "4b1b8d29cae77d8e912b9fb2cd3d6c6cd90c5c17fddbbd06832e7834f9ba0f2e",
+          "maxLinearQuantizationError": 0.00012210009823972233
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.3,
+      "psfSha256": "2093e884ec9f579103ac51d5e42b61eee8c971dcbfac7b09247a2901d6ac93a3",
+      "retinalMmPerTanTheta": 16.7948260487682,
+      "levels": [
+        {
+          "width": 635,
+          "height": 544,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8182.965594614809,
+            8186.813186813187
+          ],
+          "extentTanTheta": [
+            -0.038800114253070554,
+            0.038800114253070554,
+            -0.051424161073825504,
+            0.015024161073825504
+          ],
+          "cardPixels": [
+            389,
+            298
+          ],
+          "cardExtentTanTheta": [
+            -0.02376888888888889,
+            0.02376888888888889,
+            -0.0364,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -2.3987147534317905e-07,
+            -0.018195603481797867
+          ],
+          "coverageCentroidTanTheta": [
+            -2.9356511388778297e-07,
+            -0.018195606196301516
+          ],
+          "centroidErrorTanTheta": 5.376221117311366e-08,
+          "coverageAreaRelativeError": -1.0987978759202655e-05,
+          "file": "vivity_13_8192.png",
+          "bytes": 165294,
+          "fileSha256": "6323b722652b006a8968821973d04eea5889e2655a520d7ef40c86f734aaefa3",
+          "decodedRgbaSha256": "a1495ebea809542a8e1c25c7e0d62857d7606f05b3b2b6986b85921d0ca78dbf",
+          "maxLinearQuantizationError": 0.0001220999219999075
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.4,
+      "psfSha256": "423a50e10d0313287fd0aebad834196f50c88f4aabb415ec9de98a2cff6d8d51",
+      "retinalMmPerTanTheta": 16.789952803790403,
+      "levels": [
+        {
+          "width": 665,
+          "height": 567,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8184.468158991345,
+            8188.775510204082
+          ],
+          "extentTanTheta": [
+            -0.04062573077943006,
+            0.04062573077943006,
+            -0.05422056074766355,
+            0.015020560747663551
+          ],
+          "cardPixels": [
+            419,
+            321
+          ],
+          "cardExtentTanTheta": [
+            -0.025597264957264956,
+            0.025597264957264956,
+            -0.0392,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            1.5206733447823393e-07,
+            -0.019596869599393312
+          ],
+          "coverageCentroidTanTheta": [
+            1.6886891507211687e-07,
+            -0.019596835678036904
+          ],
+          "centroidErrorTanTheta": 3.785434626299295e-08,
+          "coverageAreaRelativeError": -8.101335248866803e-06,
+          "file": "vivity_14_8192.png",
+          "bytes": 182291,
+          "fileSha256": "8e2695b31931bcfa42140dd819eab087c8e9d4fc46bb5dba224286e6d89fe456",
+          "decodedRgbaSha256": "da48ce33e57203a4f818cb82a8424311d1ae475b9dd61ea4aa6e7bc52cbdde5e",
+          "maxLinearQuantizationError": 0.00012209956292330142
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.5,
+      "psfSha256": "1fc793b0e65a6583bf098a66e20a4af1e34bad7a13a9ad0b7a6df53a486c266c",
+      "retinalMmPerTanTheta": 16.785082386067565,
+      "levels": [
+        {
+          "width": 695,
+          "height": 590,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8185.770381451009,
+            8190.47619047619
+          ],
+          "extentTanTheta": [
+            -0.042451716064188225,
+            0.042451716064188225,
+            -0.05701744186046512,
+            0.015017441860465117
+          ],
+          "cardPixels": [
+            449,
+            344
+          ],
+          "cardExtentTanTheta": [
+            -0.027425641025641028,
+            0.027425641025641028,
+            -0.042,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0000000000000002,
+          "expectedCoverageCentroidTanTheta": [
+            -6.143268405606857e-07,
+            -0.020995548469500608
+          ],
+          "coverageCentroidTanTheta": [
+            -6.107798977848101e-07,
+            -0.02099552034085479
+          ],
+          "centroidErrorTanTheta": 2.835139359284809e-08,
+          "coverageAreaRelativeError": -6.128089206636211e-06,
+          "file": "vivity_15_8192.png",
+          "bytes": 200113,
+          "fileSha256": "c3a1c706f04b0e1057fd4ca8387b1afe7465dfc5ec167682655f707ae523e14d",
+          "decodedRgbaSha256": "bfb1f61c325cebdff2c67d2882b18ab162d1c7639059e918a79e783b61d9614b",
+          "maxLinearQuantizationError": 0.0001221000131586238
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.6,
+      "psfSha256": "1c5708c1b12f891c9800c3f4c356b73391e4a891fd8eae1a32de18842d5b5fe3",
+      "retinalMmPerTanTheta": 16.78021479314002,
+      "levels": [
+        {
+          "width": 725,
+          "height": 613,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8186.909826103214,
+            8191.964285714284
+          ],
+          "extentTanTheta": [
+            -0.04427800082079832,
+            0.04427800082079832,
+            -0.059814713896457775,
+            0.015014713896457768
+          ],
+          "cardPixels": [
+            479,
+            367
+          ],
+          "cardExtentTanTheta": [
+            -0.0292540170940171,
+            0.0292540170940171,
+            -0.044800000000000006,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.152372917580731e-07,
+            -0.02239636338787684
+          ],
+          "coverageCentroidTanTheta": [
+            -4.120173219504274e-07,
+            -0.022396415635990673
+          ],
+          "centroidErrorTanTheta": 5.234724065849517e-08,
+          "coverageAreaRelativeError": -5.931607303555353e-06,
+          "file": "vivity_16_8192.png",
+          "bytes": 216637,
+          "fileSha256": "37e96dfb8dcdede562149a756345eafc3fcb1584c3cbef1ce80684e278bc3bac",
+          "decodedRgbaSha256": "38fed7fc217b6f683a20445311fd22939c6bb67e60b190704b72593750a60062",
+          "maxLinearQuantizationError": 0.00012209984520187143
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.7,
+      "psfSha256": "6e36446248be66876fe4a2288193bb611fdbe80452f65c5d6191cc4d5e35d65f",
+      "retinalMmPerTanTheta": 16.775350022550953,
+      "levels": [
+        {
+          "width": 755,
+          "height": 636,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8187.915218443398,
+            8193.27731092437
+          ],
+          "extentTanTheta": [
+            -0.046104532097459405,
+            0.046104532097459405,
+            -0.06261230769230769,
+            0.015012307692307693
+          ],
+          "cardPixels": [
+            509,
+            390
+          ],
+          "cardExtentTanTheta": [
+            -0.031082393162393165,
+            0.031082393162393165,
+            -0.0476,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -1.2509089279150298e-06,
+            -0.023796640824031764
+          ],
+          "coverageCentroidTanTheta": [
+            -1.257110009861385e-06,
+            -0.02379663666531977
+          ],
+          "centroidErrorTanTheta": 7.466478604048906e-09,
+          "coverageAreaRelativeError": -5.295864446419607e-06,
+          "file": "vivity_17_8192.png",
+          "bytes": 235343,
+          "fileSha256": "8da0b183b8d63e501160fce5e6c6d16a553641358ac326b4076795e87bdfede0",
+          "decodedRgbaSha256": "78f0bc4c5ef4cb1b67e38f80dcecc1e8105547ae48f7b61b6379bfc245be5258",
+          "maxLinearQuantizationError": 0.00012210001588319752
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.8,
+      "psfSha256": "26e7d516fef4fb5485d4be4ccb34673fe049bfe2cef58ea82b2699d066a78a03",
+      "retinalMmPerTanTheta": 16.77048807184639,
+      "levels": [
+        {
+          "width": 394,
+          "height": 330,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4102.000747943156,
+            4087.3015873015875
+          ],
+          "extentTanTheta": [
+            -0.04802534472934473,
+            0.04802534472934473,
+            -0.06556893203883495,
+            0.01516893203883495
+          ],
+          "cardPixels": [
+            270,
+            206
+          ],
+          "cardExtentTanTheta": [
+            -0.03291076923076923,
+            0.03291076923076923,
+            -0.0504,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0000000000000002,
+          "expectedCoverageCentroidTanTheta": [
+            -1.5309696147013468e-06,
+            -0.02519635078904627
+          ],
+          "coverageCentroidTanTheta": [
+            -1.68569869083086e-06,
+            -0.025196464986236042
+          ],
+          "centroidErrorTanTheta": 1.9230726754896482e-07,
+          "coverageAreaRelativeError": -5.417891070447212e-06,
+          "file": "vivity_18_4096.png",
+          "bytes": 83193,
+          "fileSha256": "33aa379146213b0adb268bc911839fd02385951233d09461ebfe3bd9539a0357",
+          "decodedRgbaSha256": "4accbe04e98eadfc51f5ac7cc7001f013789466fbc43f41ce09d3b316ddaf294",
+          "maxLinearQuantizationError": 0.00012209907199189907
+        },
+        {
+          "width": 785,
+          "height": 659,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8188.808900523561,
+            8194.444444444445
+          ],
+          "extentTanTheta": [
+            -0.047931268731268725,
+            0.047931268731268725,
+            -0.06541016949152542,
+            0.015010169491525423
+          ],
+          "cardPixels": [
+            539,
+            413
+          ],
+          "cardExtentTanTheta": [
+            -0.03291076923076923,
+            0.03291076923076923,
+            -0.0504,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -1.3988490582391563e-06,
+            -0.025196375075859426
+          ],
+          "coverageCentroidTanTheta": [
+            -1.3193311383055912e-06,
+            -0.025196470636733834
+          ],
+          "centroidErrorTanTheta": 1.2431806106990068e-07,
+          "coverageAreaRelativeError": -5.798750672081354e-06,
+          "file": "vivity_18_8192.png",
+          "bytes": 254371,
+          "fileSha256": "b5d938ec1d0555541f14b940ffb80c9b368cdbfa5696ad94b57b584775d3220a",
+          "decodedRgbaSha256": "eb0b549e116c09c063ee156ce7ea45fcbe10addb8c25d2840e3c0b4720080a23",
+          "maxLinearQuantizationError": 0.00012210010958206563
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 1.9,
+      "psfSha256": "c6275cc591f72f90177f2c7d32a335d000dc98ce3e66109ffba2fc27a153efde",
+      "retinalMmPerTanTheta": 16.7656289385752,
+      "levels": [
+        {
+          "width": 409,
+          "height": 342,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4102.000747943156,
+            4097.744360902256
+          ],
+          "extentTanTheta": [
+            -0.049853720797720796,
+            0.049853720797720796,
+            -0.06833027522935779,
+            0.015130275229357799
+          ],
+          "cardPixels": [
+            285,
+            218
+          ],
+          "cardExtentTanTheta": [
+            -0.0347391452991453,
+            0.0347391452991453,
+            -0.0532,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -2.8381923634899994e-06,
+            -0.02659547287245079
+          ],
+          "coverageCentroidTanTheta": [
+            -2.7566620891610115e-06,
+            -0.026595545967755225
+          ],
+          "centroidErrorTanTheta": 1.0949935690446669e-07,
+          "coverageAreaRelativeError": -4.056247416839298e-06,
+          "file": "vivity_19_4096.png",
+          "bytes": 89616,
+          "fileSha256": "8b9aa85899194ae908b660a8c8a1fbfd336fb10a0417f50170f1b392e121b885",
+          "decodedRgbaSha256": "964139c8c0ae59290e8a8341df37045cfefbbaf8bd3db7b744d63fa914ba1c68",
+          "maxLinearQuantizationError": 0.00012209983422051263
+        },
+        {
+          "width": 815,
+          "height": 682,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8189.6085108058105,
+            8195.488721804511
+          ],
+          "extentTanTheta": [
+            -0.0497581782404278,
+            0.0497581782404278,
+            -0.06820825688073394,
+            0.015008256880733945
+          ],
+          "cardPixels": [
+            569,
+            436
+          ],
+          "cardExtentTanTheta": [
+            -0.0347391452991453,
+            0.0347391452991453,
+            -0.0532,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -2.5582910476260077e-06,
+            -0.026595400721756864
+          ],
+          "coverageCentroidTanTheta": [
+            -2.5462005027553257e-06,
+            -0.02659544640652405
+          ],
+          "centroidErrorTanTheta": 4.725758381439468e-08,
+          "coverageAreaRelativeError": -4.164763681702155e-06,
+          "file": "vivity_19_8192.png",
+          "bytes": 273103,
+          "fileSha256": "b6044d77233ea8d860586049d273f298129043117584ec7069b9ddeebd2d9e41",
+          "decodedRgbaSha256": "ecfc6ffbab88e1af93524204658b9b2a485ad157cf3b4f0689ebdfdfb54baccc",
+          "maxLinearQuantizationError": 0.00012209967690557377
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.0,
+      "psfSha256": "7ff0c537f203fdfb17fed35ddcc75ace482eb1c25028e98bb10078bfb0c66e4a",
+      "retinalMmPerTanTheta": 16.760772620289114,
+      "levels": [
+        {
+          "width": 424,
+          "height": 353,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4102.000747943156,
+            4089.285714285714
+          ],
+          "extentTanTheta": [
+            -0.051682096866096865,
+            0.051682096866096865,
+            -0.07116157205240176,
+            0.015161572052401748
+          ],
+          "cardPixels": [
+            300,
+            229
+          ],
+          "cardExtentTanTheta": [
+            -0.036567521367521366,
+            0.036567521367521366,
+            -0.056,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -1.975521838431079e-06,
+            -0.027994113636035992
+          ],
+          "coverageCentroidTanTheta": [
+            -2.04713278211355e-06,
+            -0.02799418623681472
+          ],
+          "centroidErrorTanTheta": 1.0197548885476314e-07,
+          "coverageAreaRelativeError": -4.372144110087461e-06,
+          "file": "vivity_20_4096.png",
+          "bytes": 96838,
+          "fileSha256": "fa5013a5d639a9ff65098864cd6d64bb78f4a6b77aeab55331b46cc9e1af8fdd",
+          "decodedRgbaSha256": "e838f58199e12e2dae3cdd9cd1a0164589e2c87153d9c0aa69154a34805884fd",
+          "maxLinearQuantizationError": 0.00012209974877364083
+        },
+        {
+          "width": 845,
+          "height": 705,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8190.328160059836,
+            8196.42857142857
+          ],
+          "extentTanTheta": [
+            -0.05158523465034316,
+            0.05158523465034316,
+            -0.07100653594771242,
+            0.01500653594771242
+          ],
+          "cardPixels": [
+            599,
+            459
+          ],
+          "cardExtentTanTheta": [
+            -0.036567521367521366,
+            0.036567521367521366,
+            -0.056,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -1.9434311830355432e-06,
+            -0.02799424657063398
+          ],
+          "coverageCentroidTanTheta": [
+            -1.9767655989781636e-06,
+            -0.027994162329196645
+          ],
+          "centroidErrorTanTheta": 9.0596926276336e-08,
+          "coverageAreaRelativeError": -4.844196143438673e-06,
+          "file": "vivity_20_8192.png",
+          "bytes": 294028,
+          "fileSha256": "f5e533e1a9b579ddc4bca66e19934e3a84c0d94f8f644848d4b4ccfab94c90d5",
+          "decodedRgbaSha256": "813b53cf40e08c85d6c6b5f6a49dadbf97df385f033db5e44c790f38ca0d8142",
+          "maxLinearQuantizationError": 0.0001221000818275586
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.1,
+      "psfSha256": "8ef71ab4e0e0784101735a80ddb85421eafea89b1a0847803968180ad18790f4",
+      "retinalMmPerTanTheta": 16.75591911454266,
+      "levels": [
+        {
+          "width": 439,
+          "height": 365,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4102.000747943156,
+            4098.639455782312
+          ],
+          "extentTanTheta": [
+            -0.05351047293447294,
+            0.05351047293447294,
+            -0.07392697095435685,
+            0.015126970954356849
+          ],
+          "cardPixels": [
+            315,
+            241
+          ],
+          "cardExtentTanTheta": [
+            -0.03839589743589744,
+            0.03839589743589744,
+            -0.058800000000000005,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -1.9434085546625596e-06,
+            -0.029394405308051097
+          ],
+          "coverageCentroidTanTheta": [
+            -2.0381518471639624e-06,
+            -0.02939428911452889
+          ],
+          "centroidErrorTanTheta": 1.4992406770355972e-07,
+          "coverageAreaRelativeError": -3.4065475676969825e-06,
+          "file": "vivity_21_4096.png",
+          "bytes": 103908,
+          "fileSha256": "42d8445bad5cf73e568d4c2acdc23a5e7c916fee2e76994379c2d0e3c360a376",
+          "decodedRgbaSha256": "37ece0a43dcd7855c70f4763c08ed2b198c24572a9390d0b4ea446daacf94409",
+          "maxLinearQuantizationError": 0.00012210003152846038
+        },
+        {
+          "width": 875,
+          "height": 728,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8190.979271289667,
+            8197.278911564625
+          ],
+          "extentTanTheta": [
+            -0.053412416941828716,
+            0.053412416941828716,
+            -0.07380497925311204,
+            0.015004979253112035
+          ],
+          "cardPixels": [
+            629,
+            482
+          ],
+          "cardExtentTanTheta": [
+            -0.03839589743589744,
+            0.03839589743589744,
+            -0.058800000000000005,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0000000000000002,
+          "expectedCoverageCentroidTanTheta": [
+            -2.0553887447196986e-06,
+            -0.02939410954602495
+          ],
+          "coverageCentroidTanTheta": [
+            -2.009416393248235e-06,
+            -0.029393939139908228
+          ],
+          "centroidErrorTanTheta": 1.7649844677982882e-07,
+          "coverageAreaRelativeError": -3.7059592833399435e-06,
+          "file": "vivity_21_8192.png",
+          "bytes": 314934,
+          "fileSha256": "40b3474fd6802e0051083d678d14833559f9ac56826dbb7496fdb83ed67c31f3",
+          "decodedRgbaSha256": "d7cf4b20b167694906cbd8c3c6e6cf97343125ef993784a016a161c89b75fc1d",
+          "maxLinearQuantizationError": 0.00012210002509384116
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.2,
+      "psfSha256": "32620d984f07f11c2a50334574ed01f3b73d17e1bd05baa7917471833728eddb",
+      "retinalMmPerTanTheta": 16.75106841889323,
+      "levels": [
+        {
+          "width": 454,
+          "height": 376,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4102.000747943156,
+            4090.9090909090905
+          ],
+          "extentTanTheta": [
+            -0.05533884900284901,
+            0.05533884900284901,
+            -0.07675555555555556,
+            0.015155555555555558
+          ],
+          "cardPixels": [
+            330,
+            252
+          ],
+          "cardExtentTanTheta": [
+            -0.04022427350427351,
+            0.04022427350427351,
+            -0.06160000000000001,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999998,
+          "expectedCoverageCentroidTanTheta": [
+            -2.548033271939548e-06,
+            -0.030794137471373495
+          ],
+          "coverageCentroidTanTheta": [
+            -2.6301721919128096e-06,
+            -0.030794195251131234
+          ],
+          "centroidErrorTanTheta": 1.0042560718623821e-07,
+          "coverageAreaRelativeError": -2.8366695032921996e-06,
+          "file": "vivity_22_4096.png",
+          "bytes": 111082,
+          "fileSha256": "9a4008c0ce4a308bdbbf1ff018a8799407184c9fff47a35b9b702ba7ad2eac02",
+          "decodedRgbaSha256": "ceb27889888e305d3edc974f122e3bd83245dcb8a1937b408787ab34f1e5bbfa",
+          "maxLinearQuantizationError": 0.0001220996035814284
+        },
+        {
+          "width": 905,
+          "height": 751,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8191.571190589514,
+            8198.051948051947
+          ],
+          "extentTanTheta": [
+            -0.05523970792316772,
+            0.05523970792316772,
+            -0.07660356435643566,
+            0.015003564356435645
+          ],
+          "cardPixels": [
+            659,
+            505
+          ],
+          "cardExtentTanTheta": [
+            -0.04022427350427351,
+            0.04022427350427351,
+            -0.06160000000000001,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -2.5799797019297845e-06,
+            -0.03079407609157753
+          ],
+          "coverageCentroidTanTheta": [
+            -2.4794455792486353e-06,
+            -0.030794103554806582
+          ],
+          "centroidErrorTanTheta": 1.0421774692072003e-07,
+          "coverageAreaRelativeError": -3.0503475566545646e-06,
+          "file": "vivity_22_8192.png",
+          "bytes": 337935,
+          "fileSha256": "5c3c8c2b99aaec695648725e078d8e94c3576b63c08d1be5ed2d85c239301199",
+          "decodedRgbaSha256": "8fe96e54b41771a19d5ea94e01694042ee2b149288ecc8c0a7f8f9823c0f3d59",
+          "maxLinearQuantizationError": 0.00012210007590595772
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.3,
+      "psfSha256": "fcad660d1c0308d1c540b503e3c957464608f936386d2ff72308a32b2f06b9dc",
+      "retinalMmPerTanTheta": 16.74622053090103,
+      "levels": [
+        {
+          "width": 468,
+          "height": 388,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4090.1108907027424,
+            4099.378881987579
+          ],
+          "extentTanTheta": [
+            -0.05721116279069766,
+            0.05721116279069766,
+            -0.0795242424242424,
+            0.015124242424242419
+          ],
+          "cardPixels": [
+            344,
+            264
+          ],
+          "cardExtentTanTheta": [
+            -0.042052649572649564,
+            0.042052649572649564,
+            -0.06439999999999999,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999998,
+          "expectedCoverageCentroidTanTheta": [
+            -2.1625842204337006e-06,
+            -0.03219449883502767
+          ],
+          "coverageCentroidTanTheta": [
+            -2.112031446346435e-06,
+            -0.03219455000394343
+          ],
+          "centroidErrorTanTheta": 7.192941615504212e-08,
+          "coverageAreaRelativeError": -2.842226679233839e-06,
+          "file": "vivity_23_4096.png",
+          "bytes": 118313,
+          "fileSha256": "8ade2a60a34a02ed1907b97da5e7a81c41bae2d57b89fc72d52a2206b1b9d12a",
+          "decodedRgbaSha256": "c459d23cd000192c572c880b7bb8fb90029b89e833d691a8266482703c0a220f",
+          "maxLinearQuantizationError": 0.00012209967015260146
+        },
+        {
+          "width": 935,
+          "height": 774,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8192.1116386459,
+            8198.757763975158
+          ],
+          "extentTanTheta": [
+            -0.05706709339684665,
+            0.05706709339684665,
+            -0.07940227272727271,
+            0.015002272727272722
+          ],
+          "cardPixels": [
+            689,
+            528
+          ],
+          "cardExtentTanTheta": [
+            -0.042052649572649564,
+            0.042052649572649564,
+            -0.06439999999999999,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -2.3996174199807266e-06,
+            -0.032194672576958364
+          ],
+          "coverageCentroidTanTheta": [
+            -2.3126496769106115e-06,
+            -0.03219463017856943
+          ],
+          "centroidErrorTanTheta": 9.675232151586938e-08,
+          "coverageAreaRelativeError": -2.410506764527476e-06,
+          "file": "vivity_23_8192.png",
+          "bytes": 360249,
+          "fileSha256": "3df665ee3c819ebb57b50c5523476c844f1f476927642c423c4ac9f624e8b4d2",
+          "decodedRgbaSha256": "54f29681920b52b11021e1c6809cb330cc0d31c4bf0f348ccb3bf3a876847ba5",
+          "maxLinearQuantizationError": 0.00012210009286162116
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.4,
+      "psfSha256": "f6c14b57dae63dab37f317f927943322fecc2f171cb674106c8e862b28a61902",
+      "retinalMmPerTanTheta": 16.741375448129098,
+      "levels": [
+        {
+          "width": 483,
+          "height": 399,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4090.6063014210913,
+            4092.261904761904
+          ],
+          "extentTanTheta": [
+            -0.05903770302121278,
+            0.05903770302121278,
+            -0.08235054545454547,
+            0.015150545454545456
+          ],
+          "cardPixels": [
+            359,
+            275
+          ],
+          "cardExtentTanTheta": [
+            -0.043881025641025646,
+            0.043881025641025646,
+            -0.06720000000000001,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.733927909942867e-06,
+            -0.033592130893834296
+          ],
+          "coverageCentroidTanTheta": [
+            -4.690321202780612e-06,
+            -0.03359188929257582
+          ],
+          "centroidErrorTanTheta": 2.4550501625823203e-07,
+          "coverageAreaRelativeError": -2.7827325878027054e-06,
+          "file": "vivity_24_4096.png",
+          "bytes": 125599,
+          "fileSha256": "47ee476947dbcb959e295cd2f82366e56696ac9af7b6247fe65d7f37a1566f6d",
+          "decodedRgbaSha256": "60625d3dbae3ee36638ab44e758ea47879cc2b7d1e39e7ac37ecb304bffbf5b9",
+          "maxLinearQuantizationError": 0.00012209922120420824
+        },
+        {
+          "width": 965,
+          "height": 797,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8192.607049364247,
+            8199.404761904761
+          ],
+          "extentTanTheta": [
+            -0.05889456153489534,
+            0.05889456153489534,
+            -0.08220108892921961,
+            0.015001088929219602
+          ],
+          "cardPixels": [
+            719,
+            551
+          ],
+          "cardExtentTanTheta": [
+            -0.043881025641025646,
+            0.043881025641025646,
+            -0.06720000000000001,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.439595133156284e-06,
+            -0.03359236796134466
+          ],
+          "coverageCentroidTanTheta": [
+            -4.475378456963235e-06,
+            -0.0335923447302837
+          ],
+          "centroidErrorTanTheta": 4.2662963518454495e-08,
+          "coverageAreaRelativeError": -2.441577123035721e-06,
+          "file": "vivity_24_8192.png",
+          "bytes": 380840,
+          "fileSha256": "680695462392125d7c19c62facbd03391d0207baafcba498efc3aea0656f5942",
+          "decodedRgbaSha256": "ca054782863ee4e44eb04043b33361303681c29d0d14485eb086d45ca0f70d1e",
+          "maxLinearQuantizationError": 0.00012210009737301242
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.5,
+      "psfSha256": "1f5de30a49e78865a3e758883862398298ecb3d0df027b72340305f788fcbea1",
+      "retinalMmPerTanTheta": 16.736533168143282,
+      "levels": [
+        {
+          "width": 498,
+          "height": 411,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4091.062079281974,
+            4100.0
+          ],
+          "extentTanTheta": [
+            -0.060864390511449346,
+            0.060864390511449346,
+            -0.0851219512195122,
+            0.015121951219512195
+          ],
+          "cardPixels": [
+            374,
+            287
+          ],
+          "cardExtentTanTheta": [
+            -0.045709401709401715,
+            0.045709401709401715,
+            -0.07,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999999,
+          "expectedCoverageCentroidTanTheta": [
+            -4.065350272319448e-06,
+            -0.03499152396937434
+          ],
+          "coverageCentroidTanTheta": [
+            -3.999330625797982e-06,
+            -0.034991565812705766
+          ],
+          "centroidErrorTanTheta": 7.816302266124257e-08,
+          "coverageAreaRelativeError": -2.2386577007704744e-06,
+          "file": "vivity_25_4096.png",
+          "bytes": 133407,
+          "fileSha256": "62c97de14e00887850e4c648ff045f98a80386ad647f1b84b01ffa5c0518de50",
+          "decodedRgbaSha256": "e8624255584662b05adf09f3b621d42575bed955b32e5f2110050b2c854457a9",
+          "maxLinearQuantizationError": 0.00012210006229707027
+        },
+        {
+          "width": 995,
+          "height": 819,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8193.06282722513,
+            8185.714285714285
+          ],
+          "extentTanTheta": [
+            -0.060722102404345404,
+            0.060722102404345404,
+            -0.08502617801047122,
+            0.015026178010471205
+          ],
+          "cardPixels": [
+            749,
+            573
+          ],
+          "cardExtentTanTheta": [
+            -0.045709401709401715,
+            0.045709401709401715,
+            -0.07,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0000000000000002,
+          "expectedCoverageCentroidTanTheta": [
+            -3.987472834669834e-06,
+            -0.03499149395779767
+          ],
+          "coverageCentroidTanTheta": [
+            -3.9463373054116935e-06,
+            -0.03499144787743203
+          ],
+          "centroidErrorTanTheta": 6.176999162200983e-08,
+          "coverageAreaRelativeError": -2.153652046477106e-06,
+          "file": "vivity_25_8192.png",
+          "bytes": 406430,
+          "fileSha256": "dffbec60c48cad6b23de3cd9016db686ce7d7c89bdc0efc861d0e94eccf58f7f",
+          "decodedRgbaSha256": "cc5df2428ae15f9bd9eed41fcfeb2a79047b1f4d80cbd9d5149680a9a4918f3a",
+          "maxLinearQuantizationError": 0.00012210004753234437
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.6,
+      "psfSha256": "1d02c2c34b91250b292ef2d5109bc2a2ff97d26303eb65e4fdddc5c17e7924d5",
+      "retinalMmPerTanTheta": 16.73169368851225,
+      "levels": [
+        {
+          "width": 513,
+          "height": 422,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4091.4827973074043,
+            4093.4065934065934
+          ],
+          "extentTanTheta": [
+            -0.06269120822622108,
+            0.06269120822622108,
+            -0.08794630872483222,
+            0.015146308724832214
+          ],
+          "cardPixels": [
+            389,
+            298
+          ],
+          "cardExtentTanTheta": [
+            -0.04753777777777778,
+            0.04753777777777778,
+            -0.0728,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999999,
+          "expectedCoverageCentroidTanTheta": [
+            -3.722075018103078e-06,
+            -0.036391635389750675
+          ],
+          "coverageCentroidTanTheta": [
+            -3.8589918309407724e-06,
+            -0.03639160478600932
+          ],
+          "centroidErrorTanTheta": 1.402954119794041e-07,
+          "coverageAreaRelativeError": -2.133976703122542e-06,
+          "file": "vivity_26_4096.png",
+          "bytes": 141249,
+          "fileSha256": "a1c7201d50ab950410e0fe856ced82402a41bf26c59c79ebfe3da81167ee0630",
+          "decodedRgbaSha256": "7a7249f194974106ec21902c1336a9c6c8ea05bd10ce80425ba5e5867826f165",
+          "maxLinearQuantizationError": 0.00012209959211773036
+        },
+        {
+          "width": 1025,
+          "height": 842,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8193.48354525056,
+            8186.813186813187
+          ],
+          "extentTanTheta": [
+            -0.06254970760233919,
+            0.06254970760233919,
+            -0.08782416107382551,
+            0.015024161073825504
+          ],
+          "cardPixels": [
+            779,
+            596
+          ],
+          "cardExtentTanTheta": [
+            -0.04753777777777778,
+            0.04753777777777778,
+            -0.0728,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0000000000000002,
+          "expectedCoverageCentroidTanTheta": [
+            -3.615907282662335e-06,
+            -0.03639159350052223
+          ],
+          "coverageCentroidTanTheta": [
+            -3.636901678206122e-06,
+            -0.03639161029099848
+          ],
+          "centroidErrorTanTheta": 2.6882796302317664e-08,
+          "coverageAreaRelativeError": -2.1028348518026263e-06,
+          "file": "vivity_26_8192.png",
+          "bytes": 430062,
+          "fileSha256": "1059c63659257c647c04e85ccba33f91d25f1318d3e6a1d1cc3f8d7e6b2a27b8",
+          "decodedRgbaSha256": "0b29318c04e20ef83f46bd13967205b8b5fd94f187f87ba91b0d41e12c153575",
+          "maxLinearQuantizationError": 0.00012209998359835605
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.7,
+      "psfSha256": "175fe67aeeb1a8bf12cd57c7d45636957a9bd7dc086777a3dc7664337a157b33",
+      "retinalMmPerTanTheta": 16.726857006807478,
+      "levels": [
+        {
+          "width": 528,
+          "height": 434,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4091.8723510346535,
+            4100.5291005291
+          ],
+          "extentTanTheta": [
+            -0.0645181416603199,
+            0.0645181416603199,
+            -0.09072000000000002,
+            0.015120000000000001
+          ],
+          "cardPixels": [
+            404,
+            310
+          ],
+          "cardExtentTanTheta": [
+            -0.04936615384615386,
+            0.04936615384615386,
+            -0.07560000000000001,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -2.893342184759307e-06,
+            -0.037790547871361976
+          ],
+          "coverageCentroidTanTheta": [
+            -2.9439202241286393e-06,
+            -0.03779048330952398
+          ],
+          "centroidErrorTanTheta": 8.201444379854025e-08,
+          "coverageAreaRelativeError": -1.7509726868425446e-06,
+          "file": "vivity_27_4096.png",
+          "bytes": 150344,
+          "fileSha256": "066e0815403e0847513777fa5a95f9b5c4206145fb565391e11da4fd2f31272e",
+          "decodedRgbaSha256": "0bb749830bee5a1e337a6be7f8b806cf52ec51362976617d2dfdb437bc761b2b",
+          "maxLinearQuantizationError": 0.0001220997093758872
+        },
+        {
+          "width": 1055,
+          "height": 865,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8193.873098977809,
+            8187.830687830687
+          ],
+          "extentTanTheta": [
+            -0.06437736997242562,
+            0.06437736997242562,
+            -0.09062229402261714,
+            0.015022294022617127
+          ],
+          "cardPixels": [
+            809,
+            619
+          ],
+          "cardExtentTanTheta": [
+            -0.04936615384615386,
+            0.04936615384615386,
+            -0.07560000000000001,
+            0
+          ],
+          "kernelPixels": [
+            247,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -2.9476192230573296e-06,
+            -0.037790551859572384
+          ],
+          "coverageCentroidTanTheta": [
+            -2.8714249406897385e-06,
+            -0.03779053522293688
+          ],
+          "centroidErrorTanTheta": 7.798939868017685e-08,
+          "coverageAreaRelativeError": -1.8540397275224052e-06,
+          "file": "vivity_27_8192.png",
+          "bytes": 456364,
+          "fileSha256": "054b3809a384e3b1b76e125fd6a80d34087e329dfc774a4433a7a916f4fc84ab",
+          "decodedRgbaSha256": "d2e07dab41f33218a39cdc0ed1d138c02f1b56f72a2ba6287c05fb662e00e405",
+          "maxLinearQuantizationError": 0.0001221000173138309
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.8,
+      "psfSha256": "e09926fa996c6a138433e9eab575e10ca70d03c5c9389ad70773cc9e0211dfb8",
+      "retinalMmPerTanTheta": 16.72202312060326,
+      "levels": [
+        {
+          "width": 543,
+          "height": 445,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4092.2340794956726,
+            4094.387755102041
+          ],
+          "extentTanTheta": [
+            -0.0663451783856557,
+            0.0663451783856557,
+            -0.09354267912772585,
+            0.015142679127725857
+          ],
+          "cardPixels": [
+            419,
+            321
+          ],
+          "cardExtentTanTheta": [
+            -0.05119452991452991,
+            0.05119452991452991,
+            -0.0784,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999999,
+          "expectedCoverageCentroidTanTheta": [
+            -3.966437411277525e-06,
+            -0.03919156599644887
+          ],
+          "coverageCentroidTanTheta": [
+            -4.1812066740575535e-06,
+            -0.039191321712824904
+          ],
+          "centroidErrorTanTheta": 3.252696191992361e-07,
+          "coverageAreaRelativeError": -1.5251281060280064e-06,
+          "file": "vivity_28_4096.png",
+          "bytes": 158588,
+          "fileSha256": "10da614208c4c569fe3a4032cb375689c4988282f76583eaaf686996198673a1",
+          "decodedRgbaSha256": "aa9b3c6c02f71ef6495002683eaf97715723a94340c4aae5e9352411bcf13a4a",
+          "maxLinearQuantizationError": 0.00012210007759294594
+        },
+        {
+          "width": 1087,
+          "height": 888,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8194.23482743883,
+            8188.775510204082
+          ],
+          "extentTanTheta": [
+            -0.06632712040178071,
+            0.06632712040178071,
+            -0.09342056074766356,
+            0.015020560747663551
+          ],
+          "cardPixels": [
+            839,
+            642
+          ],
+          "cardExtentTanTheta": [
+            -0.05119452991452991,
+            0.05119452991452991,
+            -0.0784,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.0476091692010404e-06,
+            -0.039191639101447795
+          ],
+          "coverageCentroidTanTheta": [
+            -3.952330884175021e-06,
+            -0.03919161585123467
+          ],
+          "centroidErrorTanTheta": 9.807407408564373e-08,
+          "coverageAreaRelativeError": -1.6316648265846112e-06,
+          "file": "vivity_28_8192.png",
+          "bytes": 480836,
+          "fileSha256": "7802f604fdcc56b9826c8bb6e21eba59c2d42a6f622a2fcd134db024d6ce9d93",
+          "decodedRgbaSha256": "c43f63c9dd8103e33fdc51b8a68564419ee5bc9426c11d8782359936ce0d1580",
+          "maxLinearQuantizationError": 0.0001221000043729603
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 2.9,
+      "psfSha256": "1a5e5848e16d6f124ce01adec37dce703d5468f2c2942de2c0cb3f646bb40723",
+      "retinalMmPerTanTheta": 16.71719202747667,
+      "levels": [
+        {
+          "width": 558,
+          "height": 457,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4092.5708611662753,
+            4100.985221674877
+          ],
+          "extentTanTheta": [
+            -0.0681723076923077,
+            0.0681723076923077,
+            -0.09631831831831833,
+            0.015118318318318318
+          ],
+          "cardPixels": [
+            434,
+            333
+          ],
+          "cardExtentTanTheta": [
+            -0.05302290598290599,
+            0.05302290598290599,
+            -0.08120000000000001,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999999,
+          "expectedCoverageCentroidTanTheta": [
+            -3.644233585671344e-06,
+            -0.04059170767732033
+          ],
+          "coverageCentroidTanTheta": [
+            -3.410221141171155e-06,
+            -0.04059167939942983
+          ],
+          "centroidErrorTanTheta": 2.357147922217949e-07,
+          "coverageAreaRelativeError": -1.4058385794379902e-06,
+          "file": "vivity_29_4096.png",
+          "bytes": 167148,
+          "fileSha256": "f425b5309abf2ed77561724a0d6cace523bc7cbd20fee3138a414fbb9a696edd",
+          "decodedRgbaSha256": "a17bf18d7bbe25188f590abe647e5369210a0143edafeb4c30630b26c1d61972",
+          "maxLinearQuantizationError": 0.0001220989725091992
+        },
+        {
+          "width": 1117,
+          "height": 911,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8194.571609109431,
+            8189.655172413793
+          ],
+          "extentTanTheta": [
+            -0.06815487454879861,
+            0.06815487454879861,
+            -0.09621894736842106,
+            0.015018947368421054
+          ],
+          "cardPixels": [
+            869,
+            665
+          ],
+          "cardExtentTanTheta": [
+            -0.05302290598290599,
+            0.05302290598290599,
+            -0.08120000000000001,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            247
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -3.71778515289882e-06,
+            -0.04059182514363087
+          ],
+          "coverageCentroidTanTheta": [
+            -3.60469572236503e-06,
+            -0.04059185681081994
+          ],
+          "centroidErrorTanTheta": 1.1743947446324361e-07,
+          "coverageAreaRelativeError": -1.534795481705764e-06,
+          "file": "vivity_29_8192.png",
+          "bytes": 507627,
+          "fileSha256": "bbfddfecd938e97243e73dea45a5d99755a0d3288b13f117b97542ecfcdf4d56",
+          "decodedRgbaSha256": "a02d02afd60666018670eb4d330539f2b59efd50c81e3c91606e0488c1d1b1f6",
+          "maxLinearQuantizationError": 0.00012210009181509718
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.0,
+      "psfSha256": "3e7836c91399e20e1413cb89558e800fa9662174afcd02e6c9bd2d1a1765c49c",
+      "retinalMmPerTanTheta": 16.712363725007613,
+      "levels": [
+        {
+          "width": 573,
+          "height": 468,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4092.8851907255043,
+            4095.238095238095
+          ],
+          "extentTanTheta": [
+            -0.06999952030152476,
+            0.06999952030152476,
+            -0.09913953488372093,
+            0.015139534883720931
+          ],
+          "cardPixels": [
+            449,
+            344
+          ],
+          "cardExtentTanTheta": [
+            -0.054851282051282056,
+            0.054851282051282056,
+            -0.084,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999999,
+          "expectedCoverageCentroidTanTheta": [
+            -4.168864536594861e-06,
+            -0.04199225167507372
+          ],
+          "coverageCentroidTanTheta": [
+            -4.257314688821481e-06,
+            -0.04199220903699269
+          ],
+          "centroidErrorTanTheta": 9.81908110921408e-08,
+          "coverageAreaRelativeError": -1.470361961408706e-06,
+          "file": "vivity_30_4096.png",
+          "bytes": 176187,
+          "fileSha256": "8cdd47d8dec92d4675f5fa2a2f3f4b9d288f712858e3c05d5a36967fa28767ac",
+          "decodedRgbaSha256": "c20748faed90e82087d5bb03707aa60a128644451c7d50c4da38c7f0d8e6d57a",
+          "maxLinearQuantizationError": 0.00012209955189556752
+        },
+        {
+          "width": 1147,
+          "height": 936,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8194.88593866866,
+            8190.47619047619
+          ],
+          "extentTanTheta": [
+            -0.06998267020335987,
+            0.06998267020335987,
+            -0.09913953488372093,
+            0.015139534883720931
+          ],
+          "cardPixels": [
+            899,
+            688
+          ],
+          "cardExtentTanTheta": [
+            -0.054851282051282056,
+            0.054851282051282056,
+            -0.084,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 0.9999999999999998,
+          "expectedCoverageCentroidTanTheta": [
+            -4.0507642700991025e-06,
+            -0.04199217413284504
+          ],
+          "coverageCentroidTanTheta": [
+            -4.104376857141331e-06,
+            -0.04199224542474457
+          ],
+          "centroidErrorTanTheta": 8.920114588897234e-08,
+          "coverageAreaRelativeError": -1.5441368236279729e-06,
+          "file": "vivity_30_8192.png",
+          "bytes": 533739,
+          "fileSha256": "8f50f10d506ff318c2afb81989dac65415f2b0f24ffc7f88f64e2ff93034e1c7",
+          "decodedRgbaSha256": "cd8d0854b9fb39a0848ce0d065156510dbeaede49becdfbf8647d0d17a071116",
+          "maxLinearQuantizationError": 0.00012210010275803818
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.1,
+      "psfSha256": "1d396a065011ce9a757edb53731f78cf2c4a71ae1170d804ad4d598eaf952c9d",
+      "retinalMmPerTanTheta": 16.70753821077876,
+      "levels": [
+        {
+          "width": 588,
+          "height": 480,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4093.179240958332,
+            4101.382488479263
+          ],
+          "extentTanTheta": [
+            -0.07182680813439435,
+            0.07182680813439435,
+            -0.10191685393258428,
+            0.015116853932584268
+          ],
+          "cardPixels": [
+            464,
+            356
+          ],
+          "cardExtentTanTheta": [
+            -0.056679658119658125,
+            0.056679658119658125,
+            -0.0868,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999999,
+          "expectedCoverageCentroidTanTheta": [
+            -4.6997870844986886e-06,
+            -0.04339130409618725
+          ],
+          "coverageCentroidTanTheta": [
+            -4.622235323068395e-06,
+            -0.043391304787345854
+          ],
+          "centroidErrorTanTheta": 7.755484124898354e-08,
+          "coverageAreaRelativeError": -1.5434004198011664e-06,
+          "file": "vivity_31_4096.png",
+          "bytes": 184963,
+          "fileSha256": "13b74baf94d28d74885b88056904550df1e878c6633dd56effe0fcd65f73b955",
+          "decodedRgbaSha256": "3b28506fe7b8460e2e34b4d8be6b24a7d660fb9c2b3c6c91728b99287415640c",
+          "maxLinearQuantizationError": 0.00012209981399680103
+        },
+        {
+          "width": 1177,
+          "height": 959,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8195.179988901487,
+            8191.244239631336
+          ],
+          "extentTanTheta": [
+            -0.0718105033442816,
+            0.0718105033442816,
+            -0.1019381153305204,
+            0.015138115330520395
+          ],
+          "cardPixels": [
+            929,
+            711
+          ],
+          "cardExtentTanTheta": [
+            -0.056679658119658125,
+            0.056679658119658125,
+            -0.0868,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.644074206403761e-06,
+            -0.04339136506685344
+          ],
+          "coverageCentroidTanTheta": [
+            -4.6572046565310685e-06,
+            -0.04339137463512387
+          ],
+          "centroidErrorTanTheta": 1.624686183514497e-08,
+          "coverageAreaRelativeError": -1.5472348591227814e-06,
+          "file": "vivity_31_8192.png",
+          "bytes": 562900,
+          "fileSha256": "9a1873f32052cbb98814142ae2320dfad4a158c7bcbbfc9c42b8024e7ce69de6",
+          "decodedRgbaSha256": "e9f62f0eda1199e26d8a4cef29237ab4e61b6ba170f6f8fc0b9e3f6fd16f2730",
+          "maxLinearQuantizationError": 0.00012209990344746145
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.2,
+      "psfSha256": "c541a1204f692e8692bd09254a9f681b6ffaf7f8536ea87be4e0a19d5cccc2be",
+      "retinalMmPerTanTheta": 16.702715482375595,
+      "levels": [
+        {
+          "width": 603,
+          "height": 491,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4093.454913051607,
+            4095.982142857142
+          ],
+          "extentTanTheta": [
+            -0.07365416412397625,
+            0.07365416412397625,
+            -0.10473678474114442,
+            0.015136784741144417
+          ],
+          "cardPixels": [
+            479,
+            367
+          ],
+          "cardExtentTanTheta": [
+            -0.0585080341880342,
+            0.0585080341880342,
+            -0.08960000000000001,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.171910941915718e-06,
+            -0.044792454859741315
+          ],
+          "coverageCentroidTanTheta": [
+            -4.117165140642738e-06,
+            -0.04479230364943508
+          ],
+          "centroidErrorTanTheta": 1.608156070428709e-07,
+          "coverageAreaRelativeError": -1.2293846518574014e-06,
+          "file": "vivity_32_4096.png",
+          "bytes": 193471,
+          "fileSha256": "5af6b13ce0a5f2fcebcd2ded1f22899c2e03c4cec2e0f4622da1ffcd615547ed",
+          "decodedRgbaSha256": "dbdd9dba298974732dfb8eadae98f083466297d1e95edd1c3a8cdde31dcc29ce",
+          "maxLinearQuantizationError": 0.0001220998125385231
+        },
+        {
+          "width": 1207,
+          "height": 982,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8195.455660994763,
+            8191.964285714284
+          ],
+          "extentTanTheta": [
+            -0.07363837045355295,
+            0.07363837045355295,
+            -0.10473678474114442,
+            0.015136784741144417
+          ],
+          "cardPixels": [
+            959,
+            734
+          ],
+          "cardExtentTanTheta": [
+            -0.0585080341880342,
+            0.0585080341880342,
+            -0.08960000000000001,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 0.9999999999999998,
+          "expectedCoverageCentroidTanTheta": [
+            -4.247734876196597e-06,
+            -0.044792326313519266
+          ],
+          "coverageCentroidTanTheta": [
+            -4.208631675895558e-06,
+            -0.04479235794488857
+          ],
+          "centroidErrorTanTheta": 5.029516674272698e-08,
+          "coverageAreaRelativeError": -1.6541225168476004e-06,
+          "file": "vivity_32_8192.png",
+          "bytes": 591788,
+          "fileSha256": "b08311469db60eb34f6d1085d19f693ac13787152d5161b768f9e7dcc4844f47",
+          "decodedRgbaSha256": "2db2bdad1d2a355a2c8cb302538be14ebc852eb1730a7fd1256421aff7ea8c54",
+          "maxLinearQuantizationError": 0.00012210010264429583
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.3,
+      "psfSha256": "82badda172382a3f9eec9210004d811fad0ea2f960376afaaf2884086f4859c4",
+      "retinalMmPerTanTheta": 16.697895537386376,
+      "levels": [
+        {
+          "width": 618,
+          "height": 502,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4093.7138777452915,
+            4090.909090909091
+          ],
+          "extentTanTheta": [
+            -0.07548158206166303,
+            0.07548158206166303,
+            -0.10755555555555556,
+            0.015155555555555556
+          ],
+          "cardPixels": [
+            494,
+            378
+          ],
+          "cardExtentTanTheta": [
+            -0.060336410256410254,
+            0.060336410256410254,
+            -0.0924,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.901593071682373e-06,
+            -0.046192299290672686
+          ],
+          "coverageCentroidTanTheta": [
+            -4.733572113116114e-06,
+            -0.04619220510215197
+          ],
+          "centroidErrorTanTheta": 1.9262014420291334e-07,
+          "coverageAreaRelativeError": -1.1717510592923475e-06,
+          "file": "vivity_33_4096.png",
+          "bytes": 203288,
+          "fileSha256": "d15a1a6f0e1a467b47387d7c3fa2033274d2514aac9563321283e6bae2fdc551",
+          "decodedRgbaSha256": "2205b3c01e262912ee423901ba4e19bde98897c209c81f51b113c1e089a6302c",
+          "maxLinearQuantizationError": 0.00012209981926525337
+        },
+        {
+          "width": 1237,
+          "height": 1005,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8195.714625688448,
+            8192.640692640693
+          ],
+          "extentTanTheta": [
+            -0.0754662684400197,
+            0.0754662684400197,
+            -0.10753553500660501,
+            0.01513553500660502
+          ],
+          "cardPixels": [
+            989,
+            757
+          ],
+          "cardExtentTanTheta": [
+            -0.060336410256410254,
+            0.060336410256410254,
+            -0.0924,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.937209502138492e-06,
+            -0.04619236023108465
+          ],
+          "coverageCentroidTanTheta": [
+            -4.858213898747008e-06,
+            -0.046192202222655514
+          ],
+          "centroidErrorTanTheta": 1.7665494341879034e-07,
+          "coverageAreaRelativeError": -1.397344162490377e-06,
+          "file": "vivity_33_8192.png",
+          "bytes": 619926,
+          "fileSha256": "29a87726667d357048785658408d10278905d13257a066090294b00bfcbf1a97",
+          "decodedRgbaSha256": "5ca7c9f327d069c464cbce2fcb4a8173fafc64a3410e655e59e6443292a0a73c",
+          "maxLinearQuantizationError": 0.00012209991029149547
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.4,
+      "psfSha256": "80696d8bd9b43daf2a16bca79c31560d17ad20685abf3955dce653a45a5dcfd7",
+      "retinalMmPerTanTheta": 16.693078373402148,
+      "levels": [
+        {
+          "width": 633,
+          "height": 514,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4093.957609221699,
+            4096.638655462185
+          ],
+          "extentTanTheta": [
+            -0.07730905647070677,
+            0.07730905647070677,
+            -0.11033435897435898,
+            0.015134358974358974
+          ],
+          "cardPixels": [
+            509,
+            390
+          ],
+          "cardExtentTanTheta": [
+            -0.06216478632478633,
+            0.06216478632478633,
+            -0.0952,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -5.770410354420893e-06,
+            -0.04759159699133224
+          ],
+          "coverageCentroidTanTheta": [
+            -5.86268975697483e-06,
+            -0.04759141725191353
+          ],
+          "centroidErrorTanTheta": 2.0204392288269607e-07,
+          "coverageAreaRelativeError": -1.1354431787014008e-06,
+          "file": "vivity_34_4096.png",
+          "bytes": 212458,
+          "fileSha256": "7b9981fe432b625b563ad43f12cdbf2d69cc45ba6e08b02f72ae8d955390a93e",
+          "decodedRgbaSha256": "dcd486195fb6fac190db760d7821939809f9db678e3952e42b6fc8baa2f3a9be",
+          "maxLinearQuantizationError": 0.00012209990159658306
+        },
+        {
+          "width": 1267,
+          "height": 1028,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8195.958357164855,
+            8193.27731092437
+          ],
+          "extentTanTheta": [
+            -0.07729419457654983,
+            0.07729419457654983,
+            -0.11033435897435898,
+            0.015134358974358974
+          ],
+          "cardPixels": [
+            1019,
+            780
+          ],
+          "cardExtentTanTheta": [
+            -0.06216478632478633,
+            0.06216478632478633,
+            -0.0952,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -5.860855250221201e-06,
+            -0.04759161838882392
+          ],
+          "coverageCentroidTanTheta": [
+            -6.05997235513281e-06,
+            -0.04759164984043297
+          ],
+          "centroidErrorTanTheta": 2.015857762353788e-07,
+          "coverageAreaRelativeError": -1.2956297397170857e-06,
+          "file": "vivity_34_8192.png",
+          "bytes": 649169,
+          "fileSha256": "261fe30e30e792747f39ee3c57641fd9ebe222941057e6532e72d5748a59655d",
+          "decodedRgbaSha256": "718decb70cf6beb3ed295ad055e18a65786c6276cffece9dfa61eccca78c947d",
+          "maxLinearQuantizationError": 0.00012209995365186632
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.5,
+      "psfSha256": "4c1e976e7d720f994868ecac14dc41daa5518e948843b16b132854ff93231aa7",
+      "retinalMmPerTanTheta": 16.688263988016732,
+      "levels": [
+        {
+          "width": 648,
+          "height": 525,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4094.187413185169,
+            4091.8367346938776
+          ],
+          "extentTanTheta": [
+            -0.079136582501468,
+            0.079136582501468,
+            -0.11315211970074814,
+            0.01515211970074813
+          ],
+          "cardPixels": [
+            524,
+            401
+          ],
+          "cardExtentTanTheta": [
+            -0.0639931623931624,
+            0.0639931623931624,
+            -0.098,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.446181688849286e-06,
+            -0.048990611608692204
+          ],
+          "coverageCentroidTanTheta": [
+            -4.291279683291694e-06,
+            -0.04899090195194766
+          ],
+          "centroidErrorTanTheta": 3.2908029007549665e-07,
+          "coverageAreaRelativeError": -1.2028480931292052e-06,
+          "file": "vivity_35_4096.png",
+          "bytes": 222284,
+          "fileSha256": "48f88ecc6e909d6630095b4192f8fcea240b9ada2bc5ff8a1f2ec4be169b3f0b",
+          "decodedRgbaSha256": "9cafe0ede2651a8170939af34218e67acd3c1bd47e4a0efb71dd91796f47b768",
+          "maxLinearQuantizationError": 0.0001220995688475574
+        },
+        {
+          "width": 1296,
+          "height": 1051,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8188.374826370338,
+            8193.877551020409
+          ],
+          "extentTanTheta": [
+            -0.079136582501468,
+            0.079136582501468,
+            -0.1131332503113325,
+            0.015133250311332502
+          ],
+          "cardPixels": [
+            1048,
+            803
+          ],
+          "cardExtentTanTheta": [
+            -0.0639931623931624,
+            0.0639931623931624,
+            -0.098,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0000000000000002,
+          "expectedCoverageCentroidTanTheta": [
+            -4.482355725134919e-06,
+            -0.048990655696786
+          ],
+          "coverageCentroidTanTheta": [
+            -4.512312472499724e-06,
+            -0.04899075993562939
+          ],
+          "centroidErrorTanTheta": 1.0845802498673058e-07,
+          "coverageAreaRelativeError": -1.2332700819461806e-06,
+          "file": "vivity_35_8192.png",
+          "bytes": 676816,
+          "fileSha256": "a096c8facf1f9e3e08ecf380d0b52eb9a17c918dddfd22546b293320561e8e15",
+          "decodedRgbaSha256": "3b3130bcc8e692ca6620e7e8226cc7e83d50053bb474cc1305f66d568d744481",
+          "maxLinearQuantizationError": 0.0001220999288292341
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.6,
+      "psfSha256": "087a5995045596dab0b4f697aa0f68690eb2ac48bb9c807ae3bca5b43a9ea82a",
+      "retinalMmPerTanTheta": 16.683452378826725,
+      "levels": [
+        {
+          "width": 663,
+          "height": 537,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4094.4044502617803,
+            4097.222222222223
+          ],
+          "extentTanTheta": [
+            -0.08096415584415584,
+            0.08096415584415584,
+            -0.11593220338983051,
+            0.015132203389830507
+          ],
+          "cardPixels": [
+            539,
+            413
+          ],
+          "cardExtentTanTheta": [
+            -0.06582153846153846,
+            0.06582153846153846,
+            -0.1008,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.725424623381705e-06,
+            -0.0503904262362224
+          ],
+          "coverageCentroidTanTheta": [
+            -4.788541024660023e-06,
+            -0.0503902673008231
+          ],
+          "centroidErrorTanTheta": 1.7100918472675167e-07,
+          "coverageAreaRelativeError": -9.73040455098939e-07,
+          "file": "vivity_36_4096.png",
+          "bytes": 232198,
+          "fileSha256": "95a1b1241440872280a315544a76fecff55f30d91ce3955bc4f18b85827e71d8",
+          "decodedRgbaSha256": "9847773a4a55aae305008e0eb357df1accdf4b9e59f501fca1d156c62d1879ac",
+          "maxLinearQuantizationError": 0.0001220999574211845
+        },
+        {
+          "width": 1326,
+          "height": 1074,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8188.808900523561,
+            8194.444444444445
+          ],
+          "extentTanTheta": [
+            -0.08096415584415584,
+            0.08096415584415584,
+            -0.11593220338983051,
+            0.015132203389830507
+          ],
+          "cardPixels": [
+            1078,
+            826
+          ],
+          "cardExtentTanTheta": [
+            -0.06582153846153846,
+            0.06582153846153846,
+            -0.1008,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.727395376608673e-06,
+            -0.050390244044046885
+          ],
+          "coverageCentroidTanTheta": [
+            -4.6816128498301885e-06,
+            -0.050390227171316714
+          ],
+          "centroidErrorTanTheta": 4.879271238267504e-08,
+          "coverageAreaRelativeError": -1.0805466158503307e-06,
+          "file": "vivity_36_8192.png",
+          "bytes": 705921,
+          "fileSha256": "0f713f7b25ac45c0ce936ed47058dfbaf1e6110918505d3252c63a8890cba79c",
+          "decodedRgbaSha256": "a1ff54a4a3e4b11c6fb1aeb114bdcdb2d50c4a330d9fe7b6a87e2a2b8903a5cb",
+          "maxLinearQuantizationError": 0.00012210008282037554
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.7,
+      "psfSha256": "5e5f29d9e09374b32032d903af7fc8d1d1f23f514dabf60345ffb155361f6216",
+      "retinalMmPerTanTheta": 16.678643543431505,
+      "levels": [
+        {
+          "width": 678,
+          "height": 548,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4094.6097556045197,
+            4092.664092664092
+          ],
+          "extentTanTheta": [
+            -0.08279177265574378,
+            0.08279177265574378,
+            -0.1187490566037736,
+            0.015149056603773588
+          ],
+          "cardPixels": [
+            554,
+            424
+          ],
+          "cardExtentTanTheta": [
+            -0.06764991452991453,
+            0.06764991452991453,
+            -0.10360000000000001,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 0.9999999999999998,
+          "expectedCoverageCentroidTanTheta": [
+            -5.035497908194105e-06,
+            -0.051791470586229
+          ],
+          "coverageCentroidTanTheta": [
+            -5.056849175869631e-06,
+            -0.05179175625919116
+          ],
+          "centroidErrorTanTheta": 2.864697504818184e-07,
+          "coverageAreaRelativeError": -1.0219366870511948e-06,
+          "file": "vivity_37_4096.png",
+          "bytes": 241476,
+          "fileSha256": "1f55c687bf2173700ffa8ce330db930c68ff0b8ced77343f4bc6673790d97234",
+          "decodedRgbaSha256": "6e96d7134090a20e797a68099202740332943b5b6af3a0b6b245049f3e8a9ffd",
+          "maxLinearQuantizationError": 0.0001220998496109793
+        },
+        {
+          "width": 1356,
+          "height": 1097,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8189.219511209039,
+            8194.980694980693
+          ],
+          "extentTanTheta": [
+            -0.08279177265574378,
+            0.08279177265574378,
+            -0.11873121319199059,
+            0.01513121319199058
+          ],
+          "cardPixels": [
+            1108,
+            849
+          ],
+          "cardExtentTanTheta": [
+            -0.06764991452991453,
+            0.06764991452991453,
+            -0.10360000000000001,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -5.197741642028122e-06,
+            -0.05179144763138836
+          ],
+          "coverageCentroidTanTheta": [
+            -5.273644415942966e-06,
+            -0.05179142701327823
+          ],
+          "centroidErrorTanTheta": 7.865327427096032e-08,
+          "coverageAreaRelativeError": -8.813297327492364e-07,
+          "file": "vivity_37_8192.png",
+          "bytes": 736167,
+          "fileSha256": "05bdb711fef35b28ad39516710bffefb46ce5c6988d60ad1ffdd2eee1c285aa5",
+          "decodedRgbaSha256": "ff26a436f59057ac02b2072c33054684cdb74548e17acecc0bcf87e7e3f4a87b",
+          "maxLinearQuantizationError": 0.0001221001030127307
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.8,
+      "psfSha256": "60cd87973ec6298b680b1a225eb5dc7f2f7a7a80fff60806e36bb2d4e99bd788",
+      "retinalMmPerTanTheta": 16.673837479433203,
+      "levels": [
+        {
+          "width": 693,
+          "height": 560,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4094.8042554029053,
+            4097.744360902256
+          ],
+          "extentTanTheta": [
+            -0.08461942949844531,
+            0.08461942949844531,
+            -0.12153027522935779,
+            0.015130275229357799
+          ],
+          "cardPixels": [
+            569,
+            436
+          ],
+          "cardExtentTanTheta": [
+            -0.0694782905982906,
+            0.0694782905982906,
+            -0.1064,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -4.820826799652115e-06,
+            -0.053190238017293584
+          ],
+          "coverageCentroidTanTheta": [
+            -4.86394598173037e-06,
+            -0.053190271042045704
+          ],
+          "centroidErrorTanTheta": 5.431296452704597e-08,
+          "coverageAreaRelativeError": -8.298028324471574e-07,
+          "file": "vivity_38_4096.png",
+          "bytes": 252974,
+          "fileSha256": "3645aff0fb939c47e03fd82cb4e1a34cd2d5e3b863594ac2268a8d413d53b6d6",
+          "decodedRgbaSha256": "7b739d41147a3f3b172058c09b7b143d50b8ddb902afc727090a6ea5eb94a7a4",
+          "maxLinearQuantizationError": 0.000122100024811167
+        },
+        {
+          "width": 1386,
+          "height": 1120,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8189.6085108058105,
+            8195.488721804511
+          ],
+          "extentTanTheta": [
+            -0.08461942949844531,
+            0.08461942949844531,
+            -0.12153027522935779,
+            0.015130275229357799
+          ],
+          "cardPixels": [
+            1138,
+            872
+          ],
+          "cardExtentTanTheta": [
+            -0.0694782905982906,
+            0.0694782905982906,
+            -0.1064,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 0.9999999999999999,
+          "expectedCoverageCentroidTanTheta": [
+            -4.749115530590895e-06,
+            -0.05319026534695665
+          ],
+          "coverageCentroidTanTheta": [
+            -4.891499807857198e-06,
+            -0.05319030303443112
+          ],
+          "centroidErrorTanTheta": 1.4728756955151486e-07,
+          "coverageAreaRelativeError": -8.647470797207291e-07,
+          "file": "vivity_38_8192.png",
+          "bytes": 769207,
+          "fileSha256": "7b53ee478a90e6e13f7c13e6e4560eca1bdc2f3f31f0787ab3c18edeb07b3dc6",
+          "decodedRgbaSha256": "88b908c1cff508c3e0455cc011ee0c7e94f45af550ca94f8a300861e7e71451f",
+          "maxLinearQuantizationError": 0.0001221001107578612
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 3.9,
+      "psfSha256": "a03477540b664b50b2495ce077072d750b5009803bde3b8f5ab20f612ce52ebf",
+      "retinalMmPerTanTheta": 16.669034184436725,
+      "levels": [
+        {
+          "width": 708,
+          "height": 571,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4094.988780852655,
+            4093.4065934065934
+          ],
+          "extentTanTheta": [
+            -0.08644712328767123,
+            0.08644712328767123,
+            -0.12434630872483222,
+            0.015146308724832214
+          ],
+          "cardPixels": [
+            584,
+            447
+          ],
+          "cardExtentTanTheta": [
+            -0.07130666666666667,
+            0.07130666666666667,
+            -0.1092,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -6.113217718827753e-06,
+            -0.054590169434721406
+          ],
+          "coverageCentroidTanTheta": [
+            -6.0412289710474195e-06,
+            -0.05459006118703241
+          ],
+          "centroidErrorTanTheta": 1.2999977684327504e-07,
+          "coverageAreaRelativeError": -8.447213559747979e-07,
+          "file": "vivity_39_4096.png",
+          "bytes": 263471,
+          "fileSha256": "5bcc7fde01a821de12347598473c114a5e3ddc4515514e14df4125ea9e3fa369",
+          "decodedRgbaSha256": "f022a0f5eba96e8445a25781bd5a6301515f061d95c21a67deb9b83d906c2a00",
+          "maxLinearQuantizationError": 0.0001220998566030529
+        },
+        {
+          "width": 1416,
+          "height": 1143,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8189.97756170531,
+            8195.970695970696
+          ],
+          "extentTanTheta": [
+            -0.08644712328767123,
+            0.08644712328767123,
+            -0.12432938547486033,
+            0.015129385474860334
+          ],
+          "cardPixels": [
+            1168,
+            895
+          ],
+          "cardExtentTanTheta": [
+            -0.07130666666666667,
+            0.07130666666666667,
+            -0.1092,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -5.967766774177872e-06,
+            -0.054590163194096694
+          ],
+          "coverageCentroidTanTheta": [
+            -5.9602451813727474e-06,
+            -0.05459016346760989
+          ],
+          "centroidErrorTanTheta": 7.526564142800247e-09,
+          "coverageAreaRelativeError": -6.898325182191911e-07,
+          "file": "vivity_39_8192.png",
+          "bytes": 800475,
+          "fileSha256": "d45b23e9c4751f7c093445d983d6bbf8382e0b05d0b280bee421ba6d7bb9d97d",
+          "decodedRgbaSha256": "27f10757a14200469fcb790983319a37b0e6b496092dc9dc7965eb477efd078e",
+          "maxLinearQuantizationError": 0.00012209996857726058
+        }
+      ]
+    },
+    {
+      "objectVergenceD": 4.0,
+      "psfSha256": "7d2336bab82412f8ecf843fa1e3cb1c2ec2f744721838cd4b346320a88786336",
+      "retinalMmPerTanTheta": 16.664233656049717,
+      "levels": [
+        {
+          "width": 723,
+          "height": 583,
+          "density": 4096,
+          "pixelsPerTanTheta": [
+            4095.164080029918,
+            4098.214285714285
+          ],
+          "extentTanTheta": [
+            -0.08827485124780617,
+            0.08827485124780617,
+            -0.1271285403050109,
+            0.015128540305010894
+          ],
+          "cardPixels": [
+            599,
+            459
+          ],
+          "cardExtentTanTheta": [
+            -0.07313504273504273,
+            0.07313504273504273,
+            -0.112,
+            0
+          ],
+          "kernelPixels": [
+            125,
+            125
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -7.45042490313168e-06,
+            -0.055990490687793285
+          ],
+          "coverageCentroidTanTheta": [
+            -7.459069802912356e-06,
+            -0.05599075932295259
+          ],
+          "centroidErrorTanTheta": 2.687742232933393e-07,
+          "coverageAreaRelativeError": -7.3719889981394e-07,
+          "file": "vivity_40_4096.png",
+          "bytes": 274187,
+          "fileSha256": "6b14e3e96d97f6974c464816493d4923ac5d5f770a846c84425dcab09f5abb5a",
+          "decodedRgbaSha256": "3936d1c89b718df157c895f50bc67a7f49ac802c7d49049280d121abf5ef9a95",
+          "maxLinearQuantizationError": 0.00012209985569489046
+        },
+        {
+          "width": 1446,
+          "height": 1166,
+          "density": 8192,
+          "pixelsPerTanTheta": [
+            8190.328160059836,
+            8196.42857142857
+          ],
+          "extentTanTheta": [
+            -0.08827485124780617,
+            0.08827485124780617,
+            -0.1271285403050109,
+            0.015128540305010894
+          ],
+          "cardPixels": [
+            1198,
+            918
+          ],
+          "cardExtentTanTheta": [
+            -0.07313504273504273,
+            0.07313504273504273,
+            -0.112,
+            0
+          ],
+          "kernelPixels": [
+            249,
+            249
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -7.590743526889406e-06,
+            -0.05599062645618167
+          ],
+          "coverageCentroidTanTheta": [
+            -7.6186536438147145e-06,
+            -0.055990521312572636
+          ],
+          "centroidErrorTanTheta": 1.0878489393115e-07,
+          "coverageAreaRelativeError": -7.152161616286179e-07,
+          "file": "vivity_40_8192.png",
+          "bytes": 830859,
+          "fileSha256": "56503ece0baa832d27059692b1eebf2abff29f1c887a4202605561328425d2ad",
+          "decodedRgbaSha256": "cb4f9d4b48335b2ddc44f4f8747940639cd52d5cd720bfc47a347cf07852fb9c",
+          "maxLinearQuantizationError": 0.00012210004729955619
+        }
+      ]
+    }
+  ]
+}

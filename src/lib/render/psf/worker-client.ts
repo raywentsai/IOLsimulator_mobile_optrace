@@ -29,6 +29,12 @@ export class PhysicsWorkerClient {
   }
   source(data:Uint8ClampedArray):void {this.worker.postMessage({source:data},[data.buffer]);}
   invalidate(version:number):void {this.version=version;this.worker.postMessage({kind:'invalidate',version});}
+  async reserveOptical(version:number,keys:string[]):Promise<void> {
+    if(this.disposed||version!==this.version)return;
+    const message={kind:'reserve-optical',version,keys};
+    if(keys.length)await this.request(message);
+    else this.worker.postMessage(message);
+  }
   private request(message:object,transfer:Transferable[]=[]):Promise<Reply> {
     if(this.disposed)return Promise.reject(new Error('Physics worker disposed'));
     const id=++this.id;
