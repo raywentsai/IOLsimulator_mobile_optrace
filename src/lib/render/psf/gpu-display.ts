@@ -1,6 +1,6 @@
 import {AssetCache} from './asset-cache.ts';
 import {displayColorFunctions} from './display.ts';
-import {OPTICAL_CACHE_BYTES,angularDisplayDensity,packedOpticalBytes,type OpticalImageRef,type PackedOpticalImageLayer} from './optical-image-math.ts';
+import {INACTIVE_OPTICAL_BYTES,OPTICAL_CACHE_BYTES,angularDisplayDensity,packedOpticalBytes,type OpticalImageRef,type PackedOpticalImageLayer} from './optical-image-math.ts';
 import type {OpticalImageStore} from './optical-images.ts';
 import type {SceneInput,BackgroundTextureData} from './scene.ts';
 
@@ -102,6 +102,7 @@ export class GpuDisplay implements OpticalImageStore {
   private output:ReturnType<typeof program>;
   private buffer:WebGLFramebuffer;
   private grid:WebGLTexture;
+  private spareGrid:{texture:WebGLTexture;width:number;height:number}|null=null;
   private width=0;
   private height=0;
   private maxSize:number;
@@ -139,6 +140,11 @@ export class GpuDisplay implements OpticalImageStore {
   }
   getOptical(key:string):OpticalImageRef|undefined {return this.optical.get(key)?.ref;}
   reserveOptical(keys:readonly string[]):void {this.reserved=keys;}
+  retainFrame(sides:PreparedSide[]):void {
+    this.reserved=[];
+    this.optical.retain(sides.map(side=>side.opticalKey),INACTIVE_OPTICAL_BYTES);
+    this.backgrounds.retain(sides.map(side=>side.backgroundKey));
+  }
   clearOptical():void {this.reserved=[];this.optical.clear();}
   async registerOptical(layer:PackedOpticalImageLayer):Promise<OpticalImageRef> {
     const {key,level,columns,rgba}=layer,gl=this.gl;
@@ -157,6 +163,9 @@ export class GpuDisplay implements OpticalImageStore {
     }
   }
   hasBackground(key:string):boolean {return !!this.backgrounds.get(key);}
+  hasFrame(sides:PreparedSide[]):boolean {
+    return sides.every(side=>this.optical.has(side.opticalKey)&&this.backgrounds.has(side.backgroundKey));
+  }
   clearBackgrounds():void {this.backgrounds.clear();}
   uploadBackground({key,width,height,pixels}:BackgroundTextureData,retain:readonly string[]):void {
     const gl=this.gl,texture=gl.createTexture();
@@ -187,7 +196,18 @@ export class GpuDisplay implements OpticalImageStore {
     gl.bindFramebuffer(gl.FRAMEBUFFER,this.buffer);
     const resizeGrid=width!==this.width||height!==this.height;
     if(resizeGrid){
-      this.pixels(this.grid,width,height,gl.RGBA8,gl.RGBA,gl.UNSIGNED_BYTE,null);
+      const spare=this.spareGrid;
+      if(this.width&&this.width*this.height*4<=1024*1024){
+        const texture=spare?.texture??gl.createTexture();
+        if(!texture)throw new GpuDisplayError('GPU composition target unavailable');
+        this.spareGrid={texture:this.grid,width:this.width,height:this.height};
+        this.grid=texture;
+      }else{
+        if(spare)gl.deleteTexture(spare.texture);
+        this.spareGrid=null;
+      }
+      if(this.grid!==spare?.texture||width!==spare.width||height!==spare.height)
+        this.pixels(this.grid,width,height,gl.RGBA8,gl.RGBA,gl.UNSIGNED_BYTE,null);
       gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,this.grid,0);
       if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw new GpuDisplayError('GPU composition target unavailable');
       this.width=width;this.height=height;
@@ -211,10 +231,11 @@ export class GpuDisplay implements OpticalImageStore {
     gl.bindFramebuffer(gl.FRAMEBUFFER,this.buffer);gl.readPixels(0,0,this.width,this.height,gl.RGBA,gl.UNSIGNED_BYTE,result);
     gl.bindFramebuffer(gl.FRAMEBUFFER,null);return result;
   }
-  info(){return {opticalBytes:this.optical.info().bytes,backgroundBytes:this.backgrounds.info().bytes,gridBytes:this.width*this.height*4};}
+  info(){return {opticalBytes:this.optical.info().bytes,backgroundBytes:this.backgrounds.info().bytes,gridBytes:this.width*this.height*4,
+    spareGridBytes:this.spareGrid?this.spareGrid.width*this.spareGrid.height*4:0};}
   dispose():void {
     const gl=this.gl;
-    this.clearOptical();this.clearBackgrounds();gl.deleteTexture(this.grid);gl.deleteFramebuffer(this.buffer);
+    this.clearOptical();this.clearBackgrounds();gl.deleteTexture(this.grid);gl.deleteTexture(this.spareGrid?.texture??null);gl.deleteFramebuffer(this.buffer);
     gl.deleteProgram(this.integrate.program);gl.deleteProgram(this.output.program);
   }
 }

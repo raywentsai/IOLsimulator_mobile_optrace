@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 const [baseline, candidate] = process.argv.slice(2);
-if (!baseline || !candidate) throw new Error('Pass the Phase 9B and Phase 10A app URLs in that order');
+if (!baseline || !candidate) throw new Error('Pass the baseline and candidate app URLs in that order');
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? 'playwright');
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const slider = '[aria-label="Holding distance"]';
@@ -101,6 +101,17 @@ try {
         const page = await context.newPage();
         await setup(page, url, scenario);
         const bounds = await page.locator('[data-scene-state]').boundingBox();
+        if (scenario.distance === .4) {
+          const visits = [];
+          for (const value of [2.6, 2.7, 2.8, 2.9, 3, 3.1]) {
+            await page.waitForTimeout(80);
+            visits.push((await drive(page, [value])).frames.at(-1));
+          }
+          const result = { version, scenario: scenario.name, firstVisits: visits.map(({ p }) => p.path),
+            inputToProfile: distribution(visits.map(visit => visit.ms)) };
+          reports.push(result);
+          console.error(JSON.stringify(result));
+        }
         for (const group of scenario.groups) {
           for (const value of group) await drive(page, [value]);
           const samples = [], bursts = [];
@@ -118,13 +129,14 @@ try {
             counts[key] = (counts[key] ?? 0) + 1;
             return counts;
           }, {});
-          if (warm && version === 'after') assert.equal(paths['warm-gpu'], samples.length);
+          if (warm && version === 'after') assert.equal((paths['warm-gpu'] ?? 0) + (paths['prefetched-gpu'] ?? 0), samples.length);
           const metric = key => distribution(frames.map(({ p }) => p[key]));
           const result = { version, scenario: scenario.name, group, scene: [bounds.width, bounds.height], paths,
             modes: [...new Set(frames.map(({ p }) => `${p.objectVergenceD} D ${p.composition} ${p.width}×${p.height}`))],
             inputToProfile: distribution(samples.map(sample => sample.frames.at(-1).ms)),
             queue: metric('queueMs'), assetsReady: metric('assetsReadyMs'), paintWait: metric('paintWaitMs'), opticalLoad: metric('opticalLoadMs'),
             worker: metric('workerRoundTripMs'), drawSubmit: metric('drawSubmitMs'),
+            packedOpticalBytes: Math.max(...frames.map(({ p }) => (p.gpuAssets?.opticalBytes ?? 0) + (p.workerAssets?.opticalPackedBytes ?? 0))),
             ...(bursts.length && { burst: {
               lastInputToProfile: distribution(bursts.map(run => run.frames.at(-1).ms)),
               frames: bursts.reduce((n, run) => n + run.frames.length, 0),

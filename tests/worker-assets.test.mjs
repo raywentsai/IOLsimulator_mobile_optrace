@@ -110,6 +110,28 @@ class FakeWorker {
   terminate(){this.terminated=true;}
 }
 
+test('inactive Worker retains a recent optical frame only when its layers fit together',async()=>{
+  const vivity=libraries.find(model=>model.model===PSF_MODELS.vivity);
+  const left=packed(vivity.entries.find(node=>node.objectVergenceD===1.7).levels[0]);
+  const right=packed(library.entries.find(node=>node.objectVergenceD===1.7).levels[0]);
+  const worker=new FakeWorker(),client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(0),reason=>client.dispose(reason));
+  try{
+    client.invalidate(1);
+    await client.registerOptical(left);
+    await client.registerOptical(right);
+    client.retainOptical([left.key]);
+    await client.reserveOptical(1,[left.key]);
+    assert.deepEqual(worker.runtime.assets().optical.keys,[left.key]);
+    assert.ok(client.getOptical(left.key));
+    assert.equal(client.getOptical(right.key),undefined);
+    await client.registerOptical(packed(right.level));
+    client.retainOptical([left.key,right.key]);
+    await client.reserveOptical(1,[left.key]);
+    assert.equal(worker.runtime.assets().optical.bytes,0);
+    assert.equal(client.getOptical(left.key),undefined);
+  }finally{client.dispose('done');}
+});
+
 test('GPU background preparation transfers only requested linear regions and shares the CPU blur cache',async()=>{
   const f=fixtures[0],width=37,height=43,backgroundWidth=7,backgroundHeight=9;
   const background=Uint8ClampedArray.from({length:backgroundWidth*backgroundHeight*4},(_,i)=>i%4===3?255:i*71%256);

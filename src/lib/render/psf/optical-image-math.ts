@@ -1,6 +1,7 @@
 import {linearToSrgb} from './convolve.ts';
 import {sceneTarget,writeBackground,type SceneInput,type BlurredBackground,type SceneProfile} from './scene.ts';
 export const OPTICAL_CACHE_BYTES=14*1024*1024;
+export const INACTIVE_OPTICAL_BYTES=2*1024*1024;
 
 export interface OpticalImageLevel {
   file:string;width:number;height:number;density:number;bytes:number;

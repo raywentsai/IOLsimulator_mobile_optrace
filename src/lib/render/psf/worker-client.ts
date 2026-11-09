@@ -1,6 +1,6 @@
 import type {BackgroundInput,BackgroundTextureData,SceneInput} from './scene';
 import type {PsfEntry} from './geometry';
-import {opticalImageKey,type OpticalImageRef,type PackedOpticalImageLayer} from './optical-image-math.ts';
+import {INACTIVE_OPTICAL_BYTES,opticalImageKey,packedOpticalBytes,type OpticalImageRef,type PackedOpticalImageLayer} from './optical-image-math.ts';
 import type {AssetFrame,BackgroundFrame} from './worker-runtime';
 
 export interface Computed {data?:Uint8ClampedArray;cancelled?:boolean;milliseconds:number;profile:Record<string,number>}
@@ -62,9 +62,15 @@ export class PhysicsWorkerClient {
     try{return await pending;}finally{this.activeFrame=null;}
   }
   getOptical(key:string):OpticalImageRef|undefined {return this.assets.optical.keys.includes(key)?this.opticalRefs.get(key):undefined;}
-  clearOptical():void {
-    this.opticalRefs.clear();this.assets.optical={keys:[],bytes:0};this.worker.postMessage({kind:'clear-optical'});
+  retainOptical(keys:string[]):void {
+    const refs=keys.flatMap(key=>this.getOptical(key)??[]);
+    const bytes=refs.reduce((sum,ref)=>sum+packedOpticalBytes(ref.level,ref.columns),0);
+    const retained=bytes<=INACTIVE_OPTICAL_BYTES?refs.map(ref=>ref.key):[];
+    for(const key of this.opticalRefs.keys())if(!retained.includes(key))this.opticalRefs.delete(key);
+    this.assets.optical={keys:retained,bytes:retained.length?bytes:0};
+    this.worker.postMessage({kind:'retain-optical',keys:retained});
   }
+  clearOptical():void {this.retainOptical([]);}
   async sliceOptical(target:OpticalImageRef):Promise<OpticalImageRef|undefined> {
     const {columns,level}=target;
     if(!columns)return;

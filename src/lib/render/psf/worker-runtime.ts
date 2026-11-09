@@ -1,7 +1,7 @@
 import {AssetCache} from './asset-cache.ts';
 import {backgroundRegionKey,blurBackground,packBackgroundRgb,renderScene,sceneTarget,
   type BackgroundInput,type BackgroundTextureData,type SceneInput,type SceneProfile} from './scene.ts';
-import {OPTICAL_CACHE_BYTES,renderOpticalImageLatest,opticalImageKey,packedOpticalBytes,cropOpticalPixels,
+import {INACTIVE_OPTICAL_BYTES,OPTICAL_CACHE_BYTES,renderOpticalImageLatest,opticalImageKey,packedOpticalBytes,cropOpticalPixels,
   type OpticalColumns,type PackedOpticalImageLayer} from './optical-image-math.ts';
 
 export type AssetFrame=Omit<SceneInput,'background'|'nearEnergy'|'infinityEnergy'>&{nearKey?:string;infinityKey:string;opticalKey?:string;backgroundKey:string};
@@ -13,7 +13,7 @@ export type WorkerRequest=
   |{kind:'render';id:number;version:number;frames:AssetFrame[]}
   |{kind:'backgrounds';id:number;version:number;frames:BackgroundFrame[]}
   |{kind:'invalidate';version:number}
-  |{kind:'clear-optical'}
+  |{kind:'retain-optical';keys:string[]}
   |{kind:'reserve-optical';id?:number;version:number;keys:string[]}
   |{source:Uint8ClampedArray};
 
@@ -40,7 +40,7 @@ export class PhysicsWorkerRuntime {
   async handle(message:WorkerRequest) {
     if('source' in message){this.source=message.source;this.backgrounds.clear();return;}
     if(message.kind==='invalidate'){this.latest=message.version;this.reservedOptical=[];return;}
-    if(message.kind==='clear-optical'){this.optical.clear();this.reservedOptical=[];return;}
+    if(message.kind==='retain-optical'){this.optical.retain(message.keys,INACTIVE_OPTICAL_BYTES);this.reservedOptical=[];return;}
     if(message.kind==='reserve-optical'){
       if(message.version===this.latest)this.reservedOptical=message.keys;
       return message.id===undefined?undefined:{id:message.id,assets:this.assets()};

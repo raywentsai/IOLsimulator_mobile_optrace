@@ -1,4 +1,4 @@
-import {loadPngAsset,downloadBlob,allowSpeculativeLoads,ManifestCache,type ProgressListener,type AssetProgress} from '../asset-loading.ts';
+import {loadPngAsset,downloadBlob,allowSpeculativeLoads,waitForAsset,ManifestCache,type ProgressListener,type AssetProgress} from '../asset-loading.ts';
 import type {PsfEntry} from './geometry';
 import {OPTICAL_CACHE_BYTES,validatePackedOpticalImage,opticalImageKey,opticalColumns,cropOpticalPixels,packedOpticalBytes,
   type PackedOpticalImageLayer,type OpticalImageRef,type OpticalImageLevel} from './optical-image-math.ts';
@@ -132,10 +132,17 @@ export class OpticalImageLoader {
     const columns=visible?opticalColumns(level,px,visible.width,visible.cardWidth,visible.left,visible.right):undefined;
     return {key:opticalImageKey(level,columns),level,columns,model:entry.model,demand:entry.objectVergenceD};
   }
-  async prefetch(base:string,current:OpticalSelection[],neighbors:OpticalSelection[]):Promise<void> {
+  async prefetch(base:string,current:OpticalSelection[],neighbors:OpticalSelection[],signal?:AbortSignal):Promise<void> {
     if(!allowSpeculativeLoads())return;
     const small=neighbors.filter(node=>opticalDecodeBytes(node)<=2*1024*1024);
+    if(signal&&small.length!==neighbors.length)return;
     if([...current,...small].reduce((sum,node)=>sum+packedBytes(node),0)>OPTICAL_CACHE_BYTES)return;
-    await Promise.all(small.filter(node=>!this.store.getOptical(node.key)).slice(0,2).map(node=>this.load(base,node).catch(()=>undefined)));
+    const pending=small.filter(node=>!this.store.getOptical(node.key)).slice(0,2);
+    if(signal){
+      for(const node of pending){
+        if(signal.aborted)return;
+        await waitForAsset(this.load(base,node),signal);
+      }
+    }else await Promise.all(pending.map(node=>this.load(base,node).catch(()=>undefined)));
   }
 }

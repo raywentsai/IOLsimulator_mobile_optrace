@@ -11,6 +11,7 @@ export class AssetCache<T> {
     if(item){this.items.delete(key);this.items.set(key,item);}
     return item?.value;
   }
+  has(key:string):boolean {return this.items.has(key);}
   set(key:string,value:T,bytes:number,retained:readonly string[]=[]):void {
     if(bytes>this.budget||bytes<0)throw new Error('Asset exceeds memory budget');
     const old=this.items.get(key);
@@ -29,6 +30,11 @@ export class AssetCache<T> {
     if(!item)return false;
     this.items.delete(key);this.used-=item.bytes;this.release?.(item.value);return true;
   }
-  clear():void {for(const key of this.items.keys())this.delete(key);this.pinned.clear();}
+  retain(keys:readonly string[],maxBytes=this.budget):void {
+    const keep=new Set(keys);
+    const bytes=[...keep].reduce((sum,key)=>sum+(this.items.get(key)?.bytes??0),0);
+    for(const key of this.items.keys())if(bytes>maxBytes||!keep.has(key))this.delete(key);
+  }
+  clear():void {this.retain([]);this.pinned.clear();}
   info():{keys:string[];bytes:number} {return {keys:[...this.items.keys()],bytes:this.used};}
 }
