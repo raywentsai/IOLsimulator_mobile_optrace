@@ -84,6 +84,18 @@ export function gpuSampling(input:GpuGeometry,ref:OpticalImageRef){
   return {originX:(-anchorX/px-x0)*sx-(ref.columns?.[0]??0),originY:(-input.height/py-y0)*sy,pitchX,pitchY};
 }
 
+type PreparedSide=Pick<GpuSide,'backgroundKey'|'left'|'right'>&{
+  opticalKey:string;samples:NonNullable<ReturnType<typeof gpuSampling>>;
+};
+
+export function prepareGpuSides(input:GpuGeometry,sides:GpuSide[]):PreparedSide[]{
+  return sides.map(({ref,backgroundKey,left,right})=>{
+    const samples=gpuSampling(input,ref);
+    if(!samples)throw new GpuDisplayError('GPU sampling unavailable');
+    return {opticalKey:ref.key,backgroundKey,left,right,samples};
+  });
+}
+
 export class GpuDisplay implements OpticalImageStore {
   private gl:WebGL2RenderingContext;
   private integrate:ReturnType<typeof program>;
@@ -155,8 +167,18 @@ export class GpuDisplay implements OpticalImageStore {
     }catch(error){if(!this.backgrounds.delete(key))gl.deleteTexture(texture);throw error;}
   }
   draw(input:GpuGeometry,sides:GpuSide[],displayWidth:number,displayHeight:number){
-    const gl=this.gl,{width,height}=input;
+    if(!this.drawResident(input,prepareGpuSides(input,sides),displayWidth,displayHeight))
+      throw new GpuDisplayError('GPU frame assets unavailable');
+  }
+  drawResident({width,height}:Pick<GpuGeometry,'width'|'height'>,sides:PreparedSide[],displayWidth:number,displayHeight:number):boolean {
+    const gl=this.gl;
     if(gl.isContextLost())throw new GpuDisplayError('WebGL2 context lost');
+    const sources=[];
+    for(const side of sides){
+      const optical=this.optical.get(side.opticalKey),background=this.backgrounds.get(side.backgroundKey);
+      if(!optical||!background)return false;
+      sources.push({side,optical:optical.texture,background});
+    }
     if(displayWidth>this.maxViewport[0]||displayHeight>this.maxViewport[1])throw new GpuDisplayError('GPU display dimensions unsupported');
     const resizeDisplay=this.canvas.width!==displayWidth||this.canvas.height!==displayHeight;
     if(this.canvas.width!==displayWidth)this.canvas.width=displayWidth;
@@ -172,11 +194,9 @@ export class GpuDisplay implements OpticalImageStore {
     }
     const integrate=this.integrate.uniform;
     gl.useProgram(this.integrate.program);gl.uniform1i(integrate.optical,0);gl.uniform1i(integrate.background,1);
-    for(const side of sides){
-      const samples=gpuSampling(input,side.ref);
-      const optical=this.optical.get(side.ref.key),background=this.backgrounds.get(side.backgroundKey);
-      if(!samples||!optical||!background)throw new GpuDisplayError('GPU frame assets unavailable');
-      this.bind(optical.texture);this.bind(background,1);
+    for(const {side,optical,background} of sources){
+      const {samples}=side;
+      this.bind(optical);this.bind(background,1);
       gl.uniform2f(integrate.origin,samples.originX,samples.originY);gl.uniform2f(integrate.pitch,samples.pitchX,samples.pitchY);
       gl.uniform1i(integrate.left,side.left);gl.viewport(side.left,0,side.right-side.left,height);gl.drawArrays(gl.TRIANGLES,0,3);
     }
@@ -184,6 +204,7 @@ export class GpuDisplay implements OpticalImageStore {
     gl.useProgram(this.output.program);gl.uniform1i(this.output.uniform.image,0);gl.uniform2i(this.output.uniform.size,width,height);
     gl.drawArrays(gl.TRIANGLES,0,3);
     if((resizeGrid||resizeDisplay)&&gl.getError()!==gl.NO_ERROR)throw new GpuDisplayError('GPU composition draw failed');
+    return true;
   }
   readGrid(){
     const gl=this.gl,result=new Uint8Array(this.width*this.height*4);

@@ -139,6 +139,38 @@ test('GPU background preparation transfers only requested linear regions and sha
   }finally{client.dispose('done');}
 });
 
+test('Worker frame handoff waits for the active frame and skips superseded requests',async()=>{
+  const f=fixtures[0],worker=new FakeWorker();
+  const entered=Promise.withResolvers(),checkpoint=Promise.withResolvers();
+  worker.runtime=new PhysicsWorkerRuntime(()=>{
+    entered.resolve();
+    return checkpoint.promise;
+  });
+  const client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(f.background),reason=>client.dispose(reason));
+  const frames=[{input:{...f,infinityEnergy:energy(f.infinity)},left:0,right:f.width,backgroundKey:'handoff'}];
+  const posted=()=>worker.messages.filter(m=>m.kind==='backgrounds').map(m=>m.version);
+  try{
+    client.invalidate(1);
+    const first=client.prepareBackgrounds(frames,1);
+    await entered.promise;
+    client.invalidate(2);
+    const obsolete=client.prepareBackgrounds(frames,2).catch(error=>error);
+    await new Promise(resolve=>setImmediate(resolve));
+    client.invalidate(3);
+    const latest=client.prepareBackgrounds(frames,3).catch(error=>error);
+    await new Promise(resolve=>setImmediate(resolve));
+    const whileActive=posted();
+    checkpoint.resolve();
+    const [cancelled,skipped,result]=await Promise.all([first,obsolete,latest]);
+    assert.deepEqual(whileActive,[1]);
+    assert.equal(cancelled.cancelled,true);
+    assert.equal(skipped,undefined);
+    assert.ok(result?.backgrounds,result?.message);
+    assert.equal(result.backgrounds.length,1);
+    assert.deepEqual(posted(),[1,3]);
+  }finally{client.dispose('done');}
+});
+
 test('GPU area footprint preserves odd anchors and crop offsets and rejects oversized tap counts',()=>{
   const level={pixelsPerTanTheta:[4096,4100],extentTanTheta:[-.02,.02,-.1,.01],width:180,height:450};
   const input={width:101,height:143,cardWidth:72,cssPxPerMm:1,viewingDistanceM:1,renderScale:.512,renderScaleY:.514};

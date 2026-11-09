@@ -12,6 +12,7 @@ export class PhysicsWorkerClient {
   private id=0;
   private version=0;
   private pending=new Map<number,{resolve:(r:Reply)=>void;reject:(e:Error)=>void;timer:ReturnType<typeof setTimeout>}>();
+  private activeFrame:Promise<Reply>|null=null;
   private registrations=new Map<string,Promise<unknown>>();
   private opticalRefs=new Map<string,OpticalImageRef>();
   private assets:Assets={optical:{keys:[],bytes:0},psfs:{keys:[],bytes:0}};
@@ -49,6 +50,16 @@ export class PhysicsWorkerClient {
       this.pending.set(id,{resolve,reject,timer});
       try{this.worker.postMessage({...message,id},transfer);}catch(e){clearTimeout(timer);this.pending.delete(id);reject(e);}
     });
+  }
+  private async requestFrame(message:{version:number}&({kind:'render';frames:AssetFrame[]}|{kind:'backgrounds';frames:BackgroundFrame[]}),
+    transfer:Transferable[]=[]):Promise<Reply|undefined> {
+    // The caller can stop waiting on invalidation, while the Worker still owns
+    // its active frame until it reaches a cancellation checkpoint.
+    while(this.activeFrame&&message.version===this.version)await this.activeFrame.catch(()=>undefined);
+    if(message.version!==this.version)return;
+    const pending=this.request(message,transfer);
+    this.activeFrame=pending;
+    try{return await pending;}finally{this.activeFrame=null;}
   }
   getOptical(key:string):OpticalImageRef|undefined {return this.assets.optical.keys.includes(key)?this.opticalRefs.get(key):undefined;}
   clearOptical():void {
@@ -95,7 +106,7 @@ export class PhysicsWorkerClient {
     if(version!==this.version)return {cancelled:true,milliseconds:0};
     const transfer=transferCard?[...new Set(frames.map(frame=>frame.card.buffer)
       .filter((buffer):buffer is ArrayBuffer=>buffer instanceof ArrayBuffer&&buffer.byteLength>0))]:[];
-    return this.request({kind:'render',frames,version},transfer);
+    return await this.requestFrame({kind:'render',frames,version},transfer)??{cancelled:true,milliseconds:0};
   }
   async prepareBackgrounds(sides:{input:Omit<BackgroundInput,'background'>;backgroundKey:string;left:number;right:number}[],version:number):Promise<Reply|undefined> {
     const frames=await Promise.all(sides.map(async({input,...region}):Promise<BackgroundFrame>=>{
@@ -104,7 +115,7 @@ export class PhysicsWorkerClient {
       return {...region,infinityKey,infinity,width,height,backgroundWidth,backgroundHeight,cssPxPerMm,viewingDistanceM,renderScale,renderScaleY};
     }));
     if(version!==this.version)return;
-    return this.request({kind:'backgrounds',frames,version});
+    return this.requestFrame({kind:'backgrounds',frames,version});
   }
   info():{opticalPackedBytes:number;workerPsfBytes:number;opticalEntries:number} {
     return {opticalPackedBytes:this.assets.optical.bytes,workerPsfBytes:this.assets.psfs.bytes,opticalEntries:this.assets.optical.keys.length};

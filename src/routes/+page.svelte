@@ -283,6 +283,13 @@
     scheduleMainDefocusUpdate(value);
   }
 
+  function stepMainDefocus(step: -1 | 1): void {
+    const tenths = Math.round(mainDefocusSliderValue * 10);
+    const value = Math.max(-40, Math.min(-10, tenths + step)) / 10;
+    mainDefocusSliderValue = value;
+    scheduleMainDefocusUpdate(value);
+  }
+
   function onMainDefocusDragStart(): void {
     isMainDefocusDragging = true;
   }
@@ -389,6 +396,8 @@
   </main>
 
   <section class="viewing-strip">
+    <button type="button" class="distance-step" aria-label="Move simulated object closer by 0.1 D"
+      disabled={mainDefocusSliderValue <= -4} on:click={() => stepMainDefocus(-1)}>−</button>
     <input
       class="viewing-slider range-input"
       type="range"
@@ -405,6 +414,8 @@
       on:touchstart={onMainDefocusDragStart}
       on:touchend={flushMainDefocusUpdate}
     />
+    <button type="button" class="distance-step" aria-label="Move simulated object farther by 0.1 D"
+      disabled={mainDefocusSliderValue >= -1} on:click={() => stepMainDefocus(1)}>+</button>
   </section>
 
   <nav class="bottom-nav" aria-label="Bottom navigation">
@@ -744,9 +755,41 @@
   }
 
   .viewing-strip {
+    position: relative;
     background: #ffffff;
     border-top: 1px solid #e5e7eb;
-    padding: 0.5rem 0.65rem 0.42rem;
+    padding: 0.5rem calc(1rem + 44px) 0.42rem;
+  }
+
+  .distance-step {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 0.55rem;
+    color: #1d4ed8;
+    background: transparent;
+    font-size: 1.2rem;
+    font-weight: 600;
+    touch-action: manipulation;
+  }
+
+  .distance-step:first-child {
+    left: 0.65rem;
+  }
+
+  .distance-step:last-child {
+    right: 0.65rem;
+  }
+
+  .distance-step:active {
+    background: #eff6ff;
+  }
+
+  .distance-step:disabled {
+    color: #9ca3af;
   }
 
   .viewing-slider {
