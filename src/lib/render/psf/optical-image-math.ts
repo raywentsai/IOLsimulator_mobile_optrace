@@ -7,6 +7,7 @@ export interface OpticalImageLevel {
   file:string;width:number;height:number;density:number;bytes:number;
   pixelsPerTanTheta:[number,number];extentTanTheta:[number,number,number,number];
   decodedRgbaSha256:string;fileSha256:string;
+  maxOutputDensity?:number;
 }
 export interface OpticalImageLayer {
   level:OpticalImageLevel;foreground:Float32Array;alpha:Float32Array;

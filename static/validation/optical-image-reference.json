@@ -8,8 +8,8 @@
       "cardHeight": 221,
       "cardFile": "optical-card-aspheric-10.card",
       "expectedFile": "optical-scene-aspheric-10.ref",
-      "cardSha256": "4fc383b6bdcb3b38d54ab01cb6f99eb52303fec13c9a72ecf1b9c138b3d78c6f",
-      "expectedSha256": "840715ee6b1a3b8f140157ba885d0ec25cf088fa264eee1eeab8b8c58c3e4ae7",
+      "cardSha256": "27e2fa73f5d2a6856fd96cf7b599a3666d960e71ba8e0ca6025300c25bbd6763",
+      "expectedSha256": "51348a7b6795780caefaf5dace0ed36832d6642854fd553c285d6f664acfaf1e",
       "near": {
         "model": "aspheric_monofocal_dc_v1",
         "objectVergenceD": 1.0,
@@ -96,10 +96,10 @@
         "centroidErrorTanTheta": 7.450076528501529e-08,
         "coverageAreaRelativeError": -3.9966803672131235e-06,
         "file": "aspheric_10_8192.png",
-        "bytes": 157085,
-        "fileSha256": "dc1327a7f0a7cedb490e3d5cfde4474ab6fd3a30f23014110340464515ba6d1c",
-        "decodedRgbaSha256": "08803c3b51a73aa9cca23eff9ed3d978144c96a7a3d6e80b8bc5f826ef311ddc",
-        "maxLinearQuantizationError": 0.00012210001114651078
+        "bytes": 177512,
+        "fileSha256": "674b32646f2338337f8d1ff2538085f4bb91e0fe3cc5af4c84a0316cf7d50967",
+        "decodedRgbaSha256": "7aa412be729ec169d196383a51b4265956673619d343049a8991cae171138f7d",
+        "maxLinearQuantizationError": 0.0001221000269273631
       },
       "compareDynamic": false,
       "cssPxPerMm": 1.0,
@@ -123,8 +123,8 @@
       "cardHeight": 553,
       "cardFile": "optical-card-aspheric-25.card",
       "expectedFile": "optical-scene-aspheric-25.ref",
-      "cardSha256": "b8579cb0ab210a1f4109ccf7d0894ff22f6446c09851371604c0828eebad1df8",
-      "expectedSha256": "a764609c2547c77f1d9965d04dd239b6905abeafa74ebec424939d8231058969",
+      "cardSha256": "00e93fae9df6980930f40539d78ae40c223dbb7a80524defd675b3566e5d8049",
+      "expectedSha256": "03ff9725fd1a8a7e6632937081c4009eafb79b9ad2c21ec643158db8b66b53e5",
       "near": {
         "model": "aspheric_monofocal_dc_v1",
         "objectVergenceD": 2.5,
@@ -199,22 +199,22 @@
           125,
           125
         ],
-        "kernelEnergy": 1,
+        "kernelEnergy": 1.0,
         "expectedCoverageCentroidTanTheta": [
-          -4.819066046606289e-06,
+          -4.819066046606276e-06,
           -0.06746713894200562
         ],
         "coverageCentroidTanTheta": [
           -4.684968776443218e-06,
           -0.06746708065034661
         ],
-        "centroidErrorTanTheta": 1.4621899799870972e-07,
+        "centroidErrorTanTheta": 1.462189979986973e-07,
         "coverageAreaRelativeError": -5.664660569504321e-07,
         "file": "aspheric_25_4096.png",
-        "bytes": 168392,
-        "fileSha256": "f4fdea3d05659e12b6ca99dbefc03d391854bba9ece40643e1bc04c1bf0ac55d",
-        "decodedRgbaSha256": "84b89901b6c66ae1bf2758dc0f420c267af8ef21c29b0eb1853aedc648830540",
-        "maxLinearQuantizationError": 0.00012209931395651668
+        "bytes": 201295,
+        "fileSha256": "e89d9740cf8fd7bc323689b76e79402631af939b6eea929d57b784aa6897536e",
+        "decodedRgbaSha256": "1335572b22b646c8a6a5703fec8bd5ef3ef31bff40d10775f8330166cd252ccd",
+        "maxLinearQuantizationError": 0.00012209996460110784
       },
       "compareDynamic": true,
       "cssPxPerMm": 1.0,
@@ -238,8 +238,8 @@
       "cardHeight": 884,
       "cardFile": "optical-card-aspheric-40.card",
       "expectedFile": "optical-scene-aspheric-40.ref",
-      "cardSha256": "7a9e69c3a40ad4a4c45a11ceb84c6073611e826edb1e9d11c10242bb59dc151f",
-      "expectedSha256": "58f6e56e63a6b93aa858b7350d657a14fa4a9b07fa51ab655c6f3d12f03df2c6",
+      "cardSha256": "bca2288b0e69b909f843260117a892b2b93a32b4dd88b4b0d7ba82564c66cbfd",
+      "expectedSha256": "c0fdbcb9b5e74b2351209ec0bb8cf872d20497654deec41f017160fb577b51ef",
       "near": {
         "model": "aspheric_monofocal_dc_v1",
         "objectVergenceD": 4.0,
@@ -314,7 +314,7 @@
           125,
           125
         ],
-        "kernelEnergy": 1,
+        "kernelEnergy": 1.0,
         "expectedCoverageCentroidTanTheta": [
           -7.520412456602206e-06,
           -0.10795029827354961
@@ -326,10 +326,10 @@
         "centroidErrorTanTheta": 1.6383357000261666e-07,
         "coverageAreaRelativeError": -1.7654435069403007e-07,
         "file": "aspheric_40_4096.png",
-        "bytes": 331690,
-        "fileSha256": "8488c521c3c119a83546f4011e6c334438277c0b106979fd7692021dba7850c5",
-        "decodedRgbaSha256": "63af30b7e09cc8ac029a861bef012c87f822ecf06b88a41e28110813aa9c234a",
-        "maxLinearQuantizationError": 0.00012209990883882416
+        "bytes": 399494,
+        "fileSha256": "841af84d7705b3538dd2b874fc52585f7c4812f6d8c33623c880c02ee2b46f25",
+        "decodedRgbaSha256": "e377b431ea8e30d133327c427d2888363008374662b4e207b1fd23c8df452423",
+        "maxLinearQuantizationError": 0.000122100022804994
       },
       "compareDynamic": true,
       "cssPxPerMm": 1.0,
@@ -353,8 +353,8 @@
       "cardHeight": 221,
       "cardFile": "optical-card-spherical-10.card",
       "expectedFile": "optical-scene-spherical-10.ref",
-      "cardSha256": "4fc383b6bdcb3b38d54ab01cb6f99eb52303fec13c9a72ecf1b9c138b3d78c6f",
-      "expectedSha256": "1589b80b94e1c9e9244f2adf201a461b40238edbd45480ec4ece9a3c2e80fe73",
+      "cardSha256": "27e2fa73f5d2a6856fd96cf7b599a3666d960e71ba8e0ca6025300c25bbd6763",
+      "expectedSha256": "ec013f3b67c0e515e559bd915da668d64150e2049ec22d9d0042a1a1cd1f4c18",
       "near": {
         "model": "spherical_monofocal_dc_v1",
         "objectVergenceD": 1.0,
@@ -441,10 +441,10 @@
         "centroidErrorTanTheta": 6.283299571384175e-08,
         "coverageAreaRelativeError": -3.6144303222629404e-06,
         "file": "spherical_10_8192.png",
-        "bytes": 151804,
-        "fileSha256": "ecdc5a71fb58515a7d4aed56d85f3d1aa20eaac40971c8c654bfa084ad4d2c32",
-        "decodedRgbaSha256": "9346a7686e59f73a3b0ba0dfae4d5fdaa208d10e37929c2a21ec126b1b877e0e",
-        "maxLinearQuantizationError": 0.00012209994940574838
+        "bytes": 173896,
+        "fileSha256": "f34fe3c01c4758b62da3e190092bc16cd5666c56dedf71c7dbd6f7a2cd7be426",
+        "decodedRgbaSha256": "c9ef7990c0a375ca9d1395acd56d9746cd07bf3cf4c8a09f392ed53fdd016b98",
+        "maxLinearQuantizationError": 0.00012210003206824215
       },
       "compareDynamic": false,
       "cssPxPerMm": 1.0,
@@ -468,8 +468,8 @@
       "cardHeight": 553,
       "cardFile": "optical-card-spherical-25.card",
       "expectedFile": "optical-scene-spherical-25.ref",
-      "cardSha256": "b8579cb0ab210a1f4109ccf7d0894ff22f6446c09851371604c0828eebad1df8",
-      "expectedSha256": "7b850ac05461ac2a731f61941eff654087e5092bb3738adfe202f5bf7f0d693d",
+      "cardSha256": "00e93fae9df6980930f40539d78ae40c223dbb7a80524defd675b3566e5d8049",
+      "expectedSha256": "c1fae5c6b87c9ef8c9dc1586431dc8e270c6665ab72a25ad59e5d648e51ded41",
       "near": {
         "model": "spherical_monofocal_dc_v1",
         "objectVergenceD": 2.5,
@@ -556,10 +556,10 @@
         "centroidErrorTanTheta": 2.4870861371726856e-07,
         "coverageAreaRelativeError": -5.76536564489416e-07,
         "file": "spherical_25_4096.png",
-        "bytes": 166078,
-        "fileSha256": "31d89dd5b99ccc5388afd4b1e17c422416ee335284ccb7e4f2c2a482e51773cf",
-        "decodedRgbaSha256": "a4ef8702a2fe0e4bc338ff8914792f0e4272338759917b099b9e1e0ee6fef99e",
-        "maxLinearQuantizationError": 0.0001220996840959332
+        "bytes": 200600,
+        "fileSha256": "35cedd69cc88ddcbfba56346b494018a45e5aedd2430b2c83eb2fbaaa1ca508b",
+        "decodedRgbaSha256": "7984b71fff6499f8bb4bde41d11e2ffa6b23d33c9508d66928141e45dcf10824",
+        "maxLinearQuantizationError": 0.00012209958598836674
       },
       "compareDynamic": true,
       "cssPxPerMm": 1.0,
@@ -583,8 +583,8 @@
       "cardHeight": 884,
       "cardFile": "optical-card-spherical-40.card",
       "expectedFile": "optical-scene-spherical-40.ref",
-      "cardSha256": "7a9e69c3a40ad4a4c45a11ceb84c6073611e826edb1e9d11c10242bb59dc151f",
-      "expectedSha256": "815a5209cb35ebcc5378aba4d7371d9b8f6a25cde3ab0ad1d0122ad837cb18b5",
+      "cardSha256": "bca2288b0e69b909f843260117a892b2b93a32b4dd88b4b0d7ba82564c66cbfd",
+      "expectedSha256": "fa141b6703801259575c37bd1228d5a0fb14bf2febecf528068e8e5b2ce6edba",
       "near": {
         "model": "spherical_monofocal_dc_v1",
         "objectVergenceD": 4.0,
@@ -661,20 +661,20 @@
         ],
         "kernelEnergy": 1.0,
         "expectedCoverageCentroidTanTheta": [
-          -7.399521363575456e-06,
+          -7.3995213635754426e-06,
           -0.10795089676035362
         ],
         "coverageCentroidTanTheta": [
           -7.29047274052338e-06,
           -0.10795087526552422
         ],
-        "centroidErrorTanTheta": 1.1114688425950825e-07,
+        "centroidErrorTanTheta": 1.1114688425949495e-07,
         "coverageAreaRelativeError": -1.6649550926839396e-07,
         "file": "spherical_40_4096.png",
-        "bytes": 328742,
-        "fileSha256": "f6be3168f31c98c42e69dcc7424a9c2f8f71df4ed4e31fbab5354116fe670604",
-        "decodedRgbaSha256": "8a31f23ac6cbc2f3b81174a901dc56fea05704339389c85ac3d44da879e416d0",
-        "maxLinearQuantizationError": 0.00012209991153155908
+        "bytes": 398425,
+        "fileSha256": "2f905dcb991ea19d229836fe26aea0cf5c72025bd4ffcfe0e65725c244059276",
+        "decodedRgbaSha256": "86b9093999c4616b571c3edd0848d8592f68416042ee635848d5deeedcefe7d8",
+        "maxLinearQuantizationError": 0.00012210006377211258
       },
       "compareDynamic": true,
       "cssPxPerMm": 1.0,
@@ -698,8 +698,8 @@
       "cardHeight": 221,
       "cardFile": "optical-card-vivity-10.card",
       "expectedFile": "optical-scene-vivity-10.ref",
-      "cardSha256": "4fc383b6bdcb3b38d54ab01cb6f99eb52303fec13c9a72ecf1b9c138b3d78c6f",
-      "expectedSha256": "dfa05d26d3d922398514dfa596f676386898ae8d401cae8747f26c467b846008",
+      "cardSha256": "27e2fa73f5d2a6856fd96cf7b599a3666d960e71ba8e0ca6025300c25bbd6763",
+      "expectedSha256": "dbb47cfb3eae40183c13495c607a25867de8f47b3a1cd83d46b00a3153c0bb38",
       "near": {
         "model": "vivity_inspired_v2_1_dc_v1",
         "objectVergenceD": 1.0,
@@ -776,20 +776,20 @@
         ],
         "kernelEnergy": 1.0,
         "expectedCoverageCentroidTanTheta": [
-          -3.981431906750745e-07,
+          -3.981431906750711e-07,
           -0.02698846455784515
         ],
         "coverageCentroidTanTheta": [
           -4.0939767788852045e-07,
           -0.026988334816638617
         ],
-        "centroidErrorTanTheta": 1.3022843066984614e-07,
+        "centroidErrorTanTheta": 1.3022843066984643e-07,
         "coverageAreaRelativeError": -3.4761109760639286e-06,
         "file": "vivity_10_16384.png",
-        "bytes": 501762,
-        "fileSha256": "e5eec926d032864bf3c4b612c3e30948b6159e909e9a4896d4357c2bc4cdb81d",
-        "decodedRgbaSha256": "d278ce847b8ead7489c774f410b86ad571e62a2d2720a01fd2ce9bd8052fc84a",
-        "maxLinearQuantizationError": 0.0001221001146362033
+        "bytes": 578180,
+        "fileSha256": "bb93cebf383510095ef8d83921f586ca515530f43b5d2294cf19727a1967dc82",
+        "decodedRgbaSha256": "5f39b497eb4336d3f8ce55184dbfb030f9e02bcc2cabd66e1ef6c14fd9af445b",
+        "maxLinearQuantizationError": 0.00012210011715485525
       },
       "compareDynamic": false,
       "cssPxPerMm": 1.0,
@@ -813,8 +813,8 @@
       "cardHeight": 553,
       "cardFile": "optical-card-vivity-25.card",
       "expectedFile": "optical-scene-vivity-25.ref",
-      "cardSha256": "b8579cb0ab210a1f4109ccf7d0894ff22f6446c09851371604c0828eebad1df8",
-      "expectedSha256": "66b717e149e9f1b7dd1b18787738729f516b01222d6925d81e1df17aadc29bc4",
+      "cardSha256": "00e93fae9df6980930f40539d78ae40c223dbb7a80524defd675b3566e5d8049",
+      "expectedSha256": "c4a43e1c87859251d1a23f1b5b2618479544b35603766c9470051391f3bb6ddf",
       "near": {
         "model": "vivity_inspired_v2_1_dc_v1",
         "objectVergenceD": 2.5,
@@ -891,20 +891,20 @@
         ],
         "kernelEnergy": 1.0,
         "expectedCoverageCentroidTanTheta": [
-          -4.059874979039709e-06,
+          -4.059874979039695e-06,
           -0.06746652651066523
         ],
         "coverageCentroidTanTheta": [
           -3.960988218649943e-06,
           -0.06746637893438405
         ],
-        "centroidErrorTanTheta": 1.7764388575948582e-07,
+        "centroidErrorTanTheta": 1.7764388575947825e-07,
         "coverageAreaRelativeError": -4.7633501309984894e-07,
         "file": "vivity_25_4096.png",
-        "bytes": 180733,
-        "fileSha256": "b172122a56988327ab7b509dedd5af07856016690f1cab35907701798f05031e",
-        "decodedRgbaSha256": "1174ad80598a128f681f5432798e7f0d6f0088bd90cbd70dccfc4c540cb9cd30",
-        "maxLinearQuantizationError": 0.0001220990347569062
+        "bytes": 213985,
+        "fileSha256": "b51d8c2883d55d9f6b30a72a3888d751c1eb5fa0ee607ef03eb85a7cf2e6777b",
+        "decodedRgbaSha256": "aed8355206adbbaeb5c19ec924db712de6518df28d28da5827ced73fe7abdcc4",
+        "maxLinearQuantizationError": 0.0001220991328917398
       },
       "compareDynamic": true,
       "cssPxPerMm": 1.0,
@@ -928,8 +928,8 @@
       "cardHeight": 884,
       "cardFile": "optical-card-vivity-40.card",
       "expectedFile": "optical-scene-vivity-40.ref",
-      "cardSha256": "7a9e69c3a40ad4a4c45a11ceb84c6073611e826edb1e9d11c10242bb59dc151f",
-      "expectedSha256": "dafd14a205f484cb8fe44fb9cc3ebb41501da515c447fe15106f0ab0e9a68eec",
+      "cardSha256": "bca2288b0e69b909f843260117a892b2b93a32b4dd88b4b0d7ba82564c66cbfd",
+      "expectedSha256": "93aad4f784719d1397fe7216460bda026330963510cbbcb99c084de647ac5ce0",
       "near": {
         "model": "vivity_inspired_v2_1_dc_v1",
         "objectVergenceD": 4.0,
@@ -1016,10 +1016,10 @@
         "centroidErrorTanTheta": 3.002580635220294e-07,
         "coverageAreaRelativeError": -1.767413867481693e-07,
         "file": "vivity_40_4096.png",
-        "bytes": 365275,
-        "fileSha256": "c552baacbe50f0929adfb57ffcbd5de79962a2d899524e1f07716ba249454dd4",
-        "decodedRgbaSha256": "7d2959dbc6e394499b07442d24828294d6d400899884bec5c772d82fce4ce192",
-        "maxLinearQuantizationError": 0.00012209996509060517
+        "bytes": 433804,
+        "fileSha256": "8f3316bbb60acc6da4c6d18dbb0d0cd8cded956169a7f23a2f5bd582802f755e",
+        "decodedRgbaSha256": "86c9d05919aa4747e35542aeb8c9f41cc9fcac8ac7befa23b9b49d53a3cc90f5",
+        "maxLinearQuantizationError": 0.0001220998030977416
       },
       "compareDynamic": true,
       "cssPxPerMm": 1.0,

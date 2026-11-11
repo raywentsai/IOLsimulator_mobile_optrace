@@ -1,21 +1,21 @@
 {
   "objectWidthMm": 85.6,
   "objectHeightMm": 53.98,
-  "assetSha256": "0a765c8faa4a000a0bbecf1963739a137327d4bd67897c4d87cb94e53c5e580e",
-  "source": "Original fictional City Walk card",
+  "assetSha256": "494b2286f7bad516ea7c43c062e69a7ecfca92b4e778a8a05918726f448834b5",
+  "source": "Original fictional North Bank credit card",
   "font": "Atkinson Hyperlegible (SIL Open Font License 1.1)",
   "letterHeightsMm": [
-    4.2,
+    3.3,
+    3.1,
     2.2,
+    1.8,
     1.6,
-    1.15,
-    1.05,
-    1.0
+    1.05
   ],
   "lineWidthsMm": [
-    0.22,
+    0.24,
+    0.33,
     0.38,
-    0.55,
-    0.85
+    0.42
   ]
 }

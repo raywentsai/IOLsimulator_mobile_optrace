@@ -8,7 +8,7 @@ import {unpackOpticalImage,renderOpticalImage,angularAreaWeights,angularDisplayD
 import {renderScene} from '../src/lib/render/psf/scene.ts';
 import {srgbToLinear} from '../src/lib/render/psf/convolve.ts';
 import {physicsIols} from '../src/lib/data/iol-models.ts';
-import {opticalWorkingSet} from '../src/lib/render/psf/optical-images.ts';
+import {opticalWorkingSet,selectOpticalLevel} from '../src/lib/render/psf/optical-images.ts';
 import readingCard from '../static/reading-card.json' with { type: 'json' };
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const psfs=JSON.parse(fs.readFileSync('static/psf/manifest.json')).entries;
@@ -22,6 +22,24 @@ test('optical cache planning includes both eyes and each adjacent slider transit
   assert.deepEqual(opticalWorkingSet([large,right]).selections,[large[0],null]);
   assert.deepEqual(opticalWorkingSet([oversized,right]).selections,[null,right[0]]);
   assert.deepEqual(opticalWorkingSet([oversized]).selections,[null]);
+});
+
+test('density-limited levels are skipped only above their audited limit on either axis',()=>{
+  let verified=0;
+  for (const model of Object.keys(physicsIols)) {
+    const library=JSON.parse(fs.readFileSync(`static/optical-images/${model}.json`));
+    for (const {levels} of library.entries) {
+      for (const [index,level] of levels.entries()) {
+        const limit=level.maxOutputDensity;
+        if (limit===undefined) continue;
+        assert.equal(selectOpticalLevel(levels,limit,limit),level);
+        assert.equal(selectOpticalLevel(levels,limit+1,limit),levels[index+1]);
+        assert.equal(selectOpticalLevel(levels,limit,limit+1),levels[index+1]);
+        verified++;
+      }
+    }
+  }
+  assert.ok(verified>0);
 });
 
 for(const model of Object.keys(physicsIols))test(`31 optical nodes authenticate original PSFs and numeric PNG samples: ${model}`,()=>{

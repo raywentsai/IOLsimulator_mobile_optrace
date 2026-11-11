@@ -1,4 +1,4 @@
-"""Create the ID-1 reading card as font-independent SVG outlines."""
+"""Create the fictional ID-1 credit card as font-independent SVG outlines."""
 import argparse
 import hashlib
 import json
@@ -33,35 +33,38 @@ def main(font_dir):
     regular, bold = (TTFont(font_dir / f'AtkinsonHyperlegible-{weight}.ttf') for weight in ('Regular', 'Bold'))
     artwork = [
         '<rect width="85.6" height="53.98" fill="#fff"/>',
-        '<path d="M5 14H80.6 M5 47H80.6" stroke="#000" stroke-width=".32"/>',
-        outline(bold, 'CITY WALK', WIDTH / 2, 8.5, 4.2),
-        outline(regular, 'RIVERSIDE ROUTE', WIDTH / 2, 12, 1.15),
+        '<rect x=".4" y=".4" width="84.8" height="53.18" rx="3.18" fill="none" stroke="#000" stroke-width=".24"/>',
+        outline(bold, 'NORTH BANK', 27, 9.8, 3.1),
+        outline(regular, 'CREDIT', 69, 9.8, 1.6),
+        # Contact chip and its etched pads. The chip sits just inside the
+        # central field so it remains visible at close distances on phones.
+        '<g fill="none" stroke="#000" stroke-width=".33">'
+        '<rect x="25" y="15.2" width="11.4" height="9.3" rx="1.35"/>'
+        '<rect x="28.65" y="17.65" width="4.1" height="4.4" rx=".8"/>'
+        '<path d="M30.7 15.2v2.45m0 4.4v2.45M25 18.3h3.65m4.1 0h3.65M25 21.4h3.65m4.1 0h3.65"/>'
+        '</g>',
+        # Contactless symbol.
+        '<path d="M55.5 19a1.55 1.55 0 0 1 0 1.7m1.2-2.4a2.9 2.9 0 0 1 0 3.1'
+        'm1.25-3.8a4.3 4.3 0 0 1 0 4.5m1.25-5.2a5.8 5.8 0 0 1 0 5.9" '
+        'fill="none" stroke="#000" stroke-width=".38" stroke-linecap="round"/>',
+        outline(bold, '0000 0000 0123 4567', WIDTH / 2, 34.3, 3.3),
+        outline(regular, 'VALID THRU', 53.7, 39.3, 1.05),
+        outline(bold, '09/39', 53.7, 42.8, 1.8),
+        outline(bold, 'ALEX MORGAN', 33.1, 47.1, 2.2),
+        '<g fill="none" stroke="#000" stroke-width=".42">'
+        '<circle cx="71.1" cy="45.5" r="3.25"/><circle cx="75.2" cy="45.5" r="3.25"/>'
+        '</g>',
     ]
-    for center, number, stop, time, length in [
-        (33.3, '08', 'Park Gate', '09:45', '280 m'),
-        (52.3, '12', 'Mill Lane', '11:20', '360 m'),
-    ]:
-        artwork.extend([
-            outline(regular, 'STOP', center, 18.5, 1.0),
-            outline(bold, number, center, 25.5, 4.2),
-            outline(bold, stop, center, 31.7, 2.2),
-            outline(regular, time, center, 37.5, 1.6),
-            outline(regular, length, center, 42.7, 1.15),
-        ])
-        for index, thickness in enumerate([.22, .38, .55, .85]):
-            x = center - 3.9 + index * 2.4
-            artwork.append(f'<path d="M{x:.2f} 44.5h1.8" stroke="#000" stroke-width="{thickness}"/>')
-    artwork.append(outline(regular, 'WALKING GUIDE', WIDTH / 2, 51, 1.05))
     svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="856" height="539.8" viewBox="0 0 {WIDTH} {HEIGHT}" fill="#000">\n'
     data = (svg + '\n'.join(artwork) + '\n</svg>\n').encode()
     (PUBLIC / 'reading-card.svg').write_bytes(data)
     metadata = {
         'objectWidthMm': WIDTH, 'objectHeightMm': HEIGHT,
         'assetSha256': hashlib.sha256(data).hexdigest(),
-        'source': 'Original fictional City Walk card',
+        'source': 'Original fictional North Bank credit card',
         'font': 'Atkinson Hyperlegible (SIL Open Font License 1.1)',
-        'letterHeightsMm': [4.2, 2.2, 1.6, 1.15, 1.05, 1.0],
-        'lineWidthsMm': [.22, .38, .55, .85],
+        'letterHeightsMm': [3.3, 3.1, 2.2, 1.8, 1.6, 1.05],
+        'lineWidthsMm': [.24, .33, .38, .42],
     }
     (PUBLIC / 'reading-card.json').write_bytes((json.dumps(metadata, indent=2) + '\n').encode())
 

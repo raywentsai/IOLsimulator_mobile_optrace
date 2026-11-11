@@ -45,9 +45,11 @@ export function opticalWorkingSet(sides:OpticalNodes[]) {
   const neighbors=[...chosen.map(nodes=>nodes[1]),...chosen.map(nodes=>nodes[2])].filter(node=>node!==null);
   return {selections,neighbors};
 }
-function selectLevel(node:OpticalNode,px:number,py:number):OpticalImageLevel|null {
+export function selectOpticalLevel(levels:OpticalImageLevel[],px:number,py:number):OpticalImageLevel|null {
   if(!supportsOpticalDensity(px,py))return null;
-  return [...node.levels].sort((a,b)=>a.density-b.density).find(l=>l.pixelsPerTanTheta[0]+1e-7>=px&&l.pixelsPerTanTheta[1]+1e-7>=py)??null;
+  return [...levels].sort((a,b)=>a.density-b.density).find(level=>
+    Math.max(px,py)<=(level.maxOutputDensity??Infinity)&&
+    level.pixelsPerTanTheta[0]+1e-7>=px&&level.pixelsPerTanTheta[1]+1e-7>=py)??null;
 }
 
 // The active renderer owns completed layers. Only in-flight loads live here.
@@ -130,7 +132,7 @@ export class OpticalImageLoader {
     },signal);
     const node=manifest.entries.find(e=>e.objectVergenceD===entry.objectVergenceD);
     if(!node||node.psfSha256!==entry.sha256)throw new Error('Precomputed optical image does not match selected PSF');
-    const level=selectLevel(node,px,py);
+    const level=selectOpticalLevel(node.levels,px,py);
     if(!level)return null;
     const columns=visible?opticalColumns(level,px,visible.width,visible.cardWidth,visible.left,visible.right):undefined;
     if(opticalDecodeBytes({level,columns})>OPTICAL_CACHE_BYTES)return null;

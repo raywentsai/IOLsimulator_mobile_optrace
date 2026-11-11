@@ -14,7 +14,7 @@
     85.6,
     53.98
   ],
-  "cardSvgCanonicalSha256": "0a765c8faa4a000a0bbecf1963739a137327d4bd67897c4d87cb94e53c5e580e",
+  "cardSvgCanonicalSha256": "494b2286f7bad516ea7c43c062e69a7ecfca92b4e778a8a05918726f448834b5",
   "assumptions": "existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y",
   "background": "independent infinity PSF; never blur background with a near node",
   "software": {
@@ -24,7 +24,7 @@
   },
   "entries": [
     {
-      "objectVergenceD": 1,
+      "objectVergenceD": 1.0,
       "psfSha256": "8d58cb71e7f214e9eedfd00128adccaf3535c570a3be86a1418202b5dc3d7a4a",
       "retinalMmPerTanTheta": 16.815121297998083,
       "levels": [
@@ -58,20 +58,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -6.863259834958762e-7,
+            -6.863259834958762e-07,
             -0.02698871714385984
           ],
           "coverageCentroidTanTheta": [
-            -6.617687133323843e-7,
+            -6.617687133323843e-07,
             -0.026988787480937616
           ],
-          "centroidErrorTanTheta": 7.450076528501529e-8,
-          "coverageAreaRelativeError": -0.0000039966803672131235,
+          "centroidErrorTanTheta": 7.450076528501529e-08,
+          "coverageAreaRelativeError": -3.9966803672131235e-06,
           "file": "aspheric_10_8192.png",
-          "bytes": 157085,
-          "fileSha256": "dc1327a7f0a7cedb490e3d5cfde4474ab6fd3a30f23014110340464515ba6d1c",
-          "decodedRgbaSha256": "08803c3b51a73aa9cca23eff9ed3d978144c96a7a3d6e80b8bc5f826ef311ddc",
-          "maxLinearQuantizationError": 0.00012210001114651078
+          "bytes": 177512,
+          "fileSha256": "674b32646f2338337f8d1ff2538085f4bb91e0fe3cc5af4c84a0316cf7d50967",
+          "decodedRgbaSha256": "7aa412be729ec169d196383a51b4265956673619d343049a8991cae171138f7d",
+          "maxLinearQuantizationError": 0.0001221000269273631
         }
       ]
     },
@@ -110,20 +110,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000012669713885170114,
+            -1.2669713885170114e-06,
             -0.029687084307582146
           ],
           "coverageCentroidTanTheta": [
-            -0.0000011674681080311852,
+            -1.1674681080311852e-06,
             -0.029687190217837178
           ],
-          "centroidErrorTanTheta": 1.4531993995401818e-7,
-          "coverageAreaRelativeError": -0.000002832574955591305,
+          "centroidErrorTanTheta": 1.4531993995401818e-07,
+          "coverageAreaRelativeError": -2.832574955591305e-06,
           "file": "aspheric_11_4096.png",
-          "bytes": 59273,
-          "fileSha256": "01880c880a585f50999d42f7da81dcaf068595d78f6b72a9e6c258e55741a192",
-          "decodedRgbaSha256": "a9578f857b7d6dc1507eb58f8c892bf977ab012fb94e0e0910b459a28ab4a3a3",
-          "maxLinearQuantizationError": 0.0001221001122716503
+          "bytes": 67676,
+          "fileSha256": "3151c997dedf9e8a0e91f379958c4dbfa2548730a03fec62715bad500fc794fd",
+          "decodedRgbaSha256": "6fe88b7d7ff9f96ae8855a8539c80e4e4a391e38a98be9ab96a9f3694a3a1d7e",
+          "maxLinearQuantizationError": 0.00012209983726250864
         },
         {
           "width": 1017,
@@ -153,21 +153,21 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -8.404207197042001e-7,
+            -8.404207197042001e-07,
             -0.029687152021338318
           ],
           "coverageCentroidTanTheta": [
-            -8.618092520719914e-7,
+            -8.618092520719914e-07,
             -0.029687120708574585
           ],
-          "centroidErrorTanTheta": 3.792042311765972e-8,
-          "coverageAreaRelativeError": -0.0000029535569397998174,
+          "centroidErrorTanTheta": 3.792042311765972e-08,
+          "coverageAreaRelativeError": -2.9535569397998174e-06,
           "file": "aspheric_11_8192.png",
-          "bytes": 175617,
-          "fileSha256": "984f9e04b24043b8be17a7b1eb8f398d6ef5267d8320026980045eb66d1cc7a0",
-          "decodedRgbaSha256": "ce4f100750a8d168fb15a16834a08ff02b9647a4e09f5836f0d4ff665e358c22",
+          "bytes": 199541,
+          "fileSha256": "fd578adf1799508f69acfd4b6dae96aff7acfadcc48cea2eaa83e50f9d1a4852",
+          "decodedRgbaSha256": "c6fc2d2986206acd6b52e1a17588a232122bbe8752dbdd75aaf99ef31c8437c0",
           "maxLinearQuantizationError": 0.00012210008404989203
         }
       ]
@@ -207,20 +207,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000011179866433029035,
+            -1.1179866433029035e-06,
             -0.032384749279025446
           ],
           "coverageCentroidTanTheta": [
-            -0.0000010317487618031092,
+            -1.0317487618031092e-06,
             -0.03238493453461225
           ],
-          "centroidErrorTanTheta": 2.0434432863854467e-7,
-          "coverageAreaRelativeError": -0.0000022392044980446,
+          "centroidErrorTanTheta": 2.0434432863854467e-07,
+          "coverageAreaRelativeError": -2.2392044980446e-06,
           "file": "aspheric_12_4096.png",
-          "bytes": 65387,
-          "fileSha256": "45e1009a1f16c7ca44bbb925af7851165a63f4dc07a2c1ea2fa34a0aa71bf8c0",
-          "decodedRgbaSha256": "2ea83faaa7e8847329f4814ae22bbbb174a902a362deb07281afa7972b1a66fb",
-          "maxLinearQuantizationError": 0.00012210010322921683
+          "bytes": 73869,
+          "fileSha256": "8d60939c39a1f2184dc925cb817cb7f136f96acac65510e4045d164a63a875ee",
+          "decodedRgbaSha256": "0b284604d1b93ec1c432c072fb3de571ee724da21447bbe46f3fe450778f30fd",
+          "maxLinearQuantizationError": 0.00012209955681852236
         },
         {
           "width": 1087,
@@ -252,20 +252,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.000001034877301893479,
+            -1.034877301893479e-06,
             -0.0323847604885806
           ],
           "coverageCentroidTanTheta": [
-            -9.854490226254295e-7,
+            -9.854490226254295e-07,
             -0.03238475883095859
           ],
-          "centroidErrorTanTheta": 4.945606638332176e-8,
-          "coverageAreaRelativeError": -0.0000024848140824929033,
+          "centroidErrorTanTheta": 4.945606638332176e-08,
+          "coverageAreaRelativeError": -2.4848140824929033e-06,
           "file": "aspheric_12_8192.png",
-          "bytes": 193736,
-          "fileSha256": "c2c298fe4dec663dd7503e2d460db5c4b8656a198766a5659f0e2939255a8bb1",
-          "decodedRgbaSha256": "8bba1fa84a68502364ebfc5a5fd9d7dbe391abc901367f68a3f88955c34a9f9d",
-          "maxLinearQuantizationError": 0.00012209955256292648
+          "bytes": 223601,
+          "fileSha256": "0245412bff0c8b17e5445f62da61ed354ca97aceb586c2c96e5998b5bd96e57b",
+          "decodedRgbaSha256": "6afc9886ceb08c844644a31a649c4f545445fa56831fda24b722d4ad84ef198a",
+          "maxLinearQuantizationError": 0.00012210011197707517
         }
       ]
     },
@@ -304,20 +304,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -5.363779589307427e-7,
+            -5.363779589307427e-07,
             -0.03508237067591241
           ],
           "coverageCentroidTanTheta": [
-            -3.9572206354839175e-7,
+            -3.9572206354839175e-07,
             -0.03508257582255996
           ],
-          "centroidErrorTanTheta": 2.4873525666335564e-7,
-          "coverageAreaRelativeError": -0.000002000295416748621,
+          "centroidErrorTanTheta": 2.4873525666335564e-07,
+          "coverageAreaRelativeError": -2.000295416748621e-06,
           "file": "aspheric_13_4096.png",
-          "bytes": 71402,
-          "fileSha256": "9ada9e33ad36fb36f6b953544df42df8e61270349bd5bc301a69746583d2f3f9",
-          "decodedRgbaSha256": "2365d659369eb5b9daacbec2310107f9e8bc4767db9558e16f0209168b7c3e96",
-          "maxLinearQuantizationError": 0.0001220998898024961
+          "bytes": 81624,
+          "fileSha256": "abf87025d4fa8c3250ee95b7e4cfbbe434af99e8d99bbf09bd174f507351470f",
+          "decodedRgbaSha256": "3fbb74f60e2a1ced3c1ffe5762b0ca7938ded8fd51caddeb2ad68f4078fc9aef",
+          "maxLinearQuantizationError": 0.0001220995640653956
         },
         {
           "width": 1158,
@@ -347,22 +347,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -5.689477821097508e-7,
+            -5.689477821097508e-07,
             -0.03508259550957652
           ],
           "coverageCentroidTanTheta": [
-            -5.923564293032489e-7,
+            -5.923564293032489e-07,
             -0.035082664332862085
           ],
-          "centroidErrorTanTheta": 7.269531896347792e-8,
-          "coverageAreaRelativeError": -0.0000023009027586562425,
+          "centroidErrorTanTheta": 7.269531896347792e-08,
+          "coverageAreaRelativeError": -2.3009027586562425e-06,
           "file": "aspheric_13_8192.png",
-          "bytes": 210881,
-          "fileSha256": "d7669aa20c5e32fcbdd62dfee8812a69a5f008d8ece81925f8178b0aab72aedc",
-          "decodedRgbaSha256": "29144e33a0d50d3cf932e63c4311f78c1ff32279cd7f11f4ce00e3e312f9a626",
-          "maxLinearQuantizationError": 0.00012210003206358788
+          "bytes": 246285,
+          "fileSha256": "ac7f4f8a329064859c7c2dbd2cd968fc1c29cfd7da44d15f74303a6e27dc7f33",
+          "decodedRgbaSha256": "f4082a292add8d53ee45156de0ce65ad11d8945b34f62d2fb2f64023239f5ddb",
+          "maxLinearQuantizationError": 0.00012210010653379566
         }
       ]
     },
@@ -399,22 +399,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -2.816733429180669e-7,
+            -2.816733429180669e-07,
             -0.03778336203989553
           ],
           "coverageCentroidTanTheta": [
-            -2.199025505096082e-7,
+            -2.199025505096082e-07,
             -0.03778347555955799
           ],
-          "centroidErrorTanTheta": 1.2923755088460274e-7,
-          "coverageAreaRelativeError": -0.000001914006250047784,
+          "centroidErrorTanTheta": 1.2923755088460274e-07,
+          "coverageAreaRelativeError": -1.914006250047784e-06,
           "file": "aspheric_14_4096.png",
-          "bytes": 77871,
-          "fileSha256": "d3efcab302c625b2a38fe2f323abd4f670333b42ee51541b70feed1b7efb2622",
-          "decodedRgbaSha256": "6205aba3004c783e965a174a6893571c69fbd13b67067a470323920c80bd1a4d",
-          "maxLinearQuantizationError": 0.00012209990989653363
+          "bytes": 89988,
+          "fileSha256": "4f1829b9acafe6bbcf75e089c87fc1ccf94c5c4f99c28fe262170933557815fd",
+          "decodedRgbaSha256": "b1234f6a84966afd36285321b5a7dbd1e15e3f2b1a8270397b25c75cf042dcb4",
+          "maxLinearQuantizationError": 0.0001220998780830366
         },
         {
           "width": 1228,
@@ -446,20 +446,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -4.5152883501952986e-7,
+            -4.5152883501952986e-07,
             -0.03778335859785679
           ],
           "coverageCentroidTanTheta": [
-            -4.321371123650741e-7,
+            -4.321371123650741e-07,
             -0.03778347640733153
           ],
-          "centroidErrorTanTheta": 1.1939477060244642e-7,
-          "coverageAreaRelativeError": -0.000001951647895181985,
+          "centroidErrorTanTheta": 1.1939477060244642e-07,
+          "coverageAreaRelativeError": -1.951647895181985e-06,
           "file": "aspheric_14_8192.png",
-          "bytes": 230384,
-          "fileSha256": "3549e2294e167a648c5127eb81ab74bde7dd5a2dd7a947fd25b4e5cb1e56ad24",
-          "decodedRgbaSha256": "0d8b03b51a704e6e2f10344c1bad8cca069800420a7ce1b4fe0585a8bc817e8e",
-          "maxLinearQuantizationError": 0.00012210010300728324
+          "bytes": 270738,
+          "fileSha256": "9da790f0279284d3113efe86e6e99112d0e50a111c11607a93da9352ea26b6a7",
+          "decodedRgbaSha256": "34c00a13833ca9376da12e6e868219fdd21efae8c9020a7a0caa87869432d913",
+          "maxLinearQuantizationError": 0.00012210011828495126
         }
       ]
     },
@@ -496,22 +496,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000010305201310851342,
+            -1.0305201310851342e-06,
             -0.04048106915353992
           ],
           "coverageCentroidTanTheta": [
-            -0.0000010311629438448693,
+            -1.0311629438448693e-06,
             -0.0404810160838775
           ],
-          "centroidErrorTanTheta": 5.307355535272263e-8,
-          "coverageAreaRelativeError": -0.0000017507599164856558,
+          "centroidErrorTanTheta": 5.307355535272263e-08,
+          "coverageAreaRelativeError": -1.7507599164856558e-06,
           "file": "aspheric_15_4096.png",
-          "bytes": 85485,
-          "fileSha256": "5e882369bee66882de870d019b90687bc4b352a1e2c20d9f4440d127872bcc9e",
-          "decodedRgbaSha256": "3c3c47bae5481d85e57db95050ce35337d9ad25179711582166a0ed7ca681d2a",
-          "maxLinearQuantizationError": 0.00012209936847562552
+          "bytes": 99400,
+          "fileSha256": "2f7b65e419e9a9fb87ffa1d0f55907fe40d469bf9defc9df696926082b5e46a6",
+          "decodedRgbaSha256": "54f5b853b4c83415ed7ea5bc39639a6b2e1954d12de7d214e6eb104de022b643",
+          "maxLinearQuantizationError": 0.00012209969537811617
         },
         {
           "width": 1298,
@@ -541,21 +541,21 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -9.95242430417457e-7,
+            -9.95242430417457e-07,
             -0.04048091232305808
           ],
           "coverageCentroidTanTheta": [
-            -0.0000010451008209555427,
+            -1.0451008209555427e-06,
             -0.04048078907981094
           ],
-          "centroidErrorTanTheta": 1.3294644437983446e-7,
-          "coverageAreaRelativeError": -0.0000016224557285449137,
+          "centroidErrorTanTheta": 1.3294644437983446e-07,
+          "coverageAreaRelativeError": -1.6224557285449137e-06,
           "file": "aspheric_15_8192.png",
-          "bytes": 253836,
-          "fileSha256": "0b653be4368742fa5009790c7018a9547a13139288b66f628c9f28df3bed068d",
-          "decodedRgbaSha256": "5a242693eef332c5a3e62c75d574e7337a3c7ef5c22dbf68ee8dddc82bbe5d8e",
+          "bytes": 298924,
+          "fileSha256": "c0f0d9ce4d18b1bb291518bbd9675ac0c67e45ebe57c61ca274cd29d9f2741ef",
+          "decodedRgbaSha256": "e9a622f0f1b4820b32354d2a780de2c5f5f5a12a0852279ec94e3bdd91e1e5c9",
           "maxLinearQuantizationError": 0.00012210011988142422
         }
       ]
@@ -595,20 +595,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -8.143077699023549e-7,
+            -8.143077699023549e-07,
             -0.04318042625481157
           ],
           "coverageCentroidTanTheta": [
-            -7.118213639497993e-7,
+            -7.118213639497993e-07,
             -0.04318052226827797
           ],
-          "centroidErrorTanTheta": 1.4043521330189292e-7,
-          "coverageAreaRelativeError": -0.0000013440026732647326,
+          "centroidErrorTanTheta": 1.4043521330189292e-07,
+          "coverageAreaRelativeError": -1.3440026732647326e-06,
           "file": "aspheric_16_4096.png",
-          "bytes": 92748,
-          "fileSha256": "b4a61d3d5f42571c751183cdf29705e7f4a0aaa47eab54cb24206f80c5d44a39",
-          "decodedRgbaSha256": "e62a3e58bf5aa1126f396185b98df46743a6284134f46d6c2d1a4f9ea56518c3",
-          "maxLinearQuantizationError": 0.000122100041771267
+          "bytes": 108697,
+          "fileSha256": "0b1a2137cd8dbf9cbe8d432888d2518659a720d9fb397f2e316bedfb015082a7",
+          "decodedRgbaSha256": "bcfc388b07d4a896c49e1048b45f50f9ac50e77faf8f20e053438b9fd1a1ead0",
+          "maxLinearQuantizationError": 0.0001221001097933607
         },
         {
           "width": 1368,
@@ -638,22 +638,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -8.110535758729644e-7,
+            -8.110535758729644e-07,
             -0.0431803166477678
           ],
           "coverageCentroidTanTheta": [
-            -7.12488475196874e-7,
+            -7.12488475196874e-07,
             -0.04318026396874271
           ],
-          "centroidErrorTanTheta": 1.1175937882830068e-7,
-          "coverageAreaRelativeError": -0.0000012782166322056199,
+          "centroidErrorTanTheta": 1.1175937882830068e-07,
+          "coverageAreaRelativeError": -1.2782166322056199e-06,
           "file": "aspheric_16_8192.png",
-          "bytes": 276080,
-          "fileSha256": "47fa6fceead97711d2f9d50a26f23085eacce58ee9200cffe2d9fe17479420fa",
-          "decodedRgbaSha256": "07af88579f6cd01008eab54afdfc8904f25e56ca9e89474ca9241df9d996baa8",
-          "maxLinearQuantizationError": 0.0001220997708455407
+          "bytes": 326496,
+          "fileSha256": "2a4453fb3de97164fb139a584fe914a573d1f18d6cca8530c8e0050d39170b1c",
+          "decodedRgbaSha256": "e98745c1cf34aa52ac10476cf33106eb73254ef5b3b4ba7b615d098791041231",
+          "maxLinearQuantizationError": 0.00012210007058099936
         }
       ]
     },
@@ -690,22 +690,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000013941698926609082,
+            -1.3941698926609082e-06,
             -0.04588010379731736
           ],
           "coverageCentroidTanTheta": [
-            -0.0000013298491865108099,
+            -1.3298491865108099e-06,
             -0.04588032323466807
           ],
-          "centroidErrorTanTheta": 2.2866985836557768e-7,
-          "coverageAreaRelativeError": -0.000001097340630473731,
+          "centroidErrorTanTheta": 2.2866985836557768e-07,
+          "coverageAreaRelativeError": -1.097340630473731e-06,
           "file": "aspheric_17_4096.png",
-          "bytes": 100458,
-          "fileSha256": "36d0652609f08a3c57d216ad3d5a3fd1afd5650fe3068e8b3c0ab1dcd79e7405",
-          "decodedRgbaSha256": "23c91d075c384cd7bb11e44fec47e4e4860606d0c2ca196decd7658248eb86a2",
-          "maxLinearQuantizationError": 0.00012209952293019554
+          "bytes": 118499,
+          "fileSha256": "6129431a05ce90aced1676f5c31db4135d59e48b77b61f5c18efc073726bc421",
+          "decodedRgbaSha256": "43b285eb7659214cfef8c7daebd246032318675a200867b2e2e5a822f8b0143b",
+          "maxLinearQuantizationError": 0.00012210002007910742
         },
         {
           "width": 1438,
@@ -735,22 +735,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000013009092370266867,
+            -1.3009092370266867e-06,
             -0.04587999306315437
           ],
           "coverageCentroidTanTheta": [
-            -0.0000013063456278529991,
+            -1.3063456278529991e-06,
             -0.0458799698085483
           ],
-          "centroidErrorTanTheta": 2.388160482208744e-8,
-          "coverageAreaRelativeError": -0.0000012400929865208354,
+          "centroidErrorTanTheta": 2.388160482208744e-08,
+          "coverageAreaRelativeError": -1.2400929865208354e-06,
           "file": "aspheric_17_8192.png",
-          "bytes": 299592,
-          "fileSha256": "dab6ef4f79f0dde9449f03461955682617d86d447fa9c9ad49afd4752f22f82c",
-          "decodedRgbaSha256": "ab06b5ad62d68f6ab996257013b219ed1624fbf2e2aa15e150a58960235958d7",
-          "maxLinearQuantizationError": 0.00012210010173752117
+          "bytes": 356228,
+          "fileSha256": "379e299466850b6117cb43a4f1558e418d67337b0d90f12d8ed3b85585028f15",
+          "decodedRgbaSha256": "acaca9493cc3bb466180f4b5dc155ecc05d8fabbc9e46923194df25df101ee14",
+          "maxLinearQuantizationError": 0.00012209999049694886
         }
       ]
     },
@@ -787,22 +787,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000018416248492994538,
+            -1.8416248492994538e-06,
             -0.04857882857882256
           ],
           "coverageCentroidTanTheta": [
-            -0.0000018758630846449485,
+            -1.8758630846449485e-06,
             -0.04857908054999356
           ],
-          "centroidErrorTanTheta": 2.5428670389331693e-7,
-          "coverageAreaRelativeError": -0.0000012640871451807811,
+          "centroidErrorTanTheta": 2.5428670389331693e-07,
+          "coverageAreaRelativeError": -1.2640871451807811e-06,
           "file": "aspheric_18_4096.png",
-          "bytes": 107219,
-          "fileSha256": "fedd5fccc647f08ec9f6a47e46fcce42eb03df80f265eda5cf5878740b54168e",
-          "decodedRgbaSha256": "958ae582070ccf403035aa2396a2e0f025a80ff30d63fd863b4420810b143f0e",
-          "maxLinearQuantizationError": 0.00012209992202560915
+          "bytes": 126921,
+          "fileSha256": "4e87e0fa93d47b3a54ca3d4a3f90cdf5a561a97289f652766bbe9e4dcb94cf58",
+          "decodedRgbaSha256": "343c4960a602785fba87ef1a5ca6a755a133586b4fd432c338cfa884b8ead348",
+          "maxLinearQuantizationError": 0.0001221000649310744
         },
         {
           "width": 1508,
@@ -832,22 +832,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000001692883445529599,
+            -1.692883445529599e-06,
             -0.04857875114951589
           ],
           "coverageCentroidTanTheta": [
-            -0.0000016650214308280204,
+            -1.6650214308280204e-06,
             -0.048578746446932136
           ],
-          "centroidErrorTanTheta": 2.8256081773391106e-8,
-          "coverageAreaRelativeError": -0.0000012823191711808235,
+          "centroidErrorTanTheta": 2.8256081773391106e-08,
+          "coverageAreaRelativeError": -1.2823191711808235e-06,
           "file": "aspheric_18_8192.png",
-          "bytes": 321473,
-          "fileSha256": "596f6a6e022add931eda901ac4849b32504d86dc177b11b4a4397e8d50e06490",
-          "decodedRgbaSha256": "dc63e9411225baf49a2ca7c4d79c4a8e698c414b3ee0655d20970d2074a9fc03",
-          "maxLinearQuantizationError": 0.000122099998532188
+          "bytes": 382021,
+          "fileSha256": "fccb2433349707d79cf60fc24514be851d7e91a94a34018324f45acd358a9a08",
+          "decodedRgbaSha256": "f96cfb7e695193a291f4daead82f45d40990e6f68cf3b8788cdc73dc0333fb15",
+          "maxLinearQuantizationError": 0.00012210001047545198
         }
       ]
     },
@@ -884,22 +884,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000028518892548337895,
+            -2.8518892548337828e-06,
             -0.05127679337938658
           ],
           "coverageCentroidTanTheta": [
-            -0.0000026834441052348897,
+            -2.6834441052348897e-06,
             -0.05127677388943821
           ],
-          "centroidErrorTanTheta": 1.6956894323808122e-7,
-          "coverageAreaRelativeError": -7.787309374007734e-7,
+          "centroidErrorTanTheta": 1.695689432380745e-07,
+          "coverageAreaRelativeError": -7.787309374007734e-07,
           "file": "aspheric_19_4096.png",
-          "bytes": 115371,
-          "fileSha256": "fcc55a9cfdcb514134d7e011d87c2d4c91b38d9bd8194d905d0c2d8e05d4377f",
-          "decodedRgbaSha256": "0df2295ceb1076156cd75ddbc5241a927544f5ab5891bbd08e59469cb214b73f",
-          "maxLinearQuantizationError": 0.0001220995659773072
+          "bytes": 135582,
+          "fileSha256": "637fb1fd604e4691adb5ab41929ebc8bf7591534a08c873acfd68bcfed1f1b81",
+          "decodedRgbaSha256": "66e02dd6f58b25100b014f6edb38059dd7925f602c606f823d88aa916360c9f0",
+          "maxLinearQuantizationError": 0.00012209963575998684
         },
         {
           "width": 1578,
@@ -929,27 +929,27 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000027257448022766762,
+            -2.7257448022766762e-06,
             -0.051276825773246736
           ],
           "coverageCentroidTanTheta": [
-            -0.000002692179810877733,
+            -2.692179810877733e-06,
             -0.05127680509676882
           ],
-          "centroidErrorTanTheta": 3.9422397019127425e-8,
-          "coverageAreaRelativeError": -9.544255574756022e-7,
+          "centroidErrorTanTheta": 3.9422397019127425e-08,
+          "coverageAreaRelativeError": -9.544255574756022e-07,
           "file": "aspheric_19_8192.png",
-          "bytes": 345203,
-          "fileSha256": "c16e9d15e03da79f6b5ac1d9c7a2cd2fd2519832193b295b812a021170eb73df",
-          "decodedRgbaSha256": "fd28d8b2d98e268a1c598ca6dedcd661b32d39b0a2d50dfe5339fb73f6c81589",
-          "maxLinearQuantizationError": 0.00012209956589037674
+          "bytes": 410526,
+          "fileSha256": "efed50c7adad4f82ce0fbb0aea90402a6749136434cedaf1421689c8ba2a0ff8",
+          "decodedRgbaSha256": "ade719a9f306d4deced3e70ca12c6c80bc78d09c7585678118ccdc53226ac620",
+          "maxLinearQuantizationError": 0.00012209996486511887
         }
       ]
     },
     {
-      "objectVergenceD": 2,
+      "objectVergenceD": 2.0,
       "psfSha256": "b678a9efc63a81604f4b6415e616d1f1c14a56b21b9334f419976df9346e77ad",
       "retinalMmPerTanTheta": 16.76642156546429,
       "levels": [
@@ -981,22 +981,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000023331246593865345,
+            -2.333124659386548e-06,
             -0.053974978493810576
           ],
           "coverageCentroidTanTheta": [
-            -0.0000025423220769807996,
+            -2.5423220769807996e-06,
             -0.05397504493433837
           ],
-          "centroidErrorTanTheta": 2.1949465428969955e-7,
-          "coverageAreaRelativeError": -9.536547512789539e-7,
+          "centroidErrorTanTheta": 2.194946542896866e-07,
+          "coverageAreaRelativeError": -9.536547512789539e-07,
           "file": "aspheric_20_4096.png",
-          "bytes": 123202,
-          "fileSha256": "888cff21bf45af256dce03bc4cda2d9b58d4720fe2624224bd9ee55ce33c0a4a",
-          "decodedRgbaSha256": "fd3a51d7580c15817f65cb9d3a6c6001d9fa60bed5ef60649e211c4a4229ea9b",
-          "maxLinearQuantizationError": 0.00012209935739182498
+          "bytes": 146226,
+          "fileSha256": "dea22d5e55cdc59db5d8afb836b7ffcd5138697973beab13339098ec659358c7",
+          "decodedRgbaSha256": "3a60708d5abfdb1d9afbe3967649eda384c2146c6c473d1c0f4058723c206a87",
+          "maxLinearQuantizationError": 0.00012210011782760335
         },
         {
           "width": 1648,
@@ -1028,20 +1028,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.000002460809637384246,
+            -2.460809637384246e-06,
             -0.053974735656279665
           ],
           "coverageCentroidTanTheta": [
-            -0.0000024687425509878485,
+            -2.4687425509878485e-06,
             -0.05397480318689058
           ],
-          "centroidErrorTanTheta": 6.799495958448633e-8,
-          "coverageAreaRelativeError": -9.300104185649971e-7,
+          "centroidErrorTanTheta": 6.799495958448633e-08,
+          "coverageAreaRelativeError": -9.300104185649971e-07,
           "file": "aspheric_20_8192.png",
-          "bytes": 371046,
-          "fileSha256": "5feaf663e473a16f4664a44f10ad957c455c7fbff28b13055e133c2c11609bc1",
-          "decodedRgbaSha256": "467944366322b3d5647e2078357edf30600aa69e5df5dffb0b5d0bdb1b74f9d5",
-          "maxLinearQuantizationError": 0.00012209989496020368
+          "bytes": 442177,
+          "fileSha256": "d0d4bcd1e8beb98b4b2acc6efb9932047cb51a91ad305cf2f7d1282d078ecc46",
+          "decodedRgbaSha256": "a257337788750c00f37371148254163514f8d1d530f100df7027c69ebf072b8b",
+          "maxLinearQuantizationError": 0.00012210006006874163
         }
       ]
     },
@@ -1078,22 +1078,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000022856423131327985,
+            -2.2856423131327985e-06,
             -0.056673558642218826
           ],
           "coverageCentroidTanTheta": [
-            -0.0000022795754611308983,
+            -2.2795754611308983e-06,
             -0.056673317758196166
           ],
-          "centroidErrorTanTheta": 2.409604097475209e-7,
-          "coverageAreaRelativeError": -7.687033315439962e-7,
+          "centroidErrorTanTheta": 2.409604097475209e-07,
+          "coverageAreaRelativeError": -7.687033315439962e-07,
           "file": "aspheric_21_4096.png",
-          "bytes": 131301,
-          "fileSha256": "f7028eff1cb9ba3dcc0d37b8f42265cde907b8298f3ddb5b681da5f1a40069ea",
-          "decodedRgbaSha256": "b7865a7addba670dad009538cb0d4f97538ec5a57441f3f902ad6075aef7e47c",
-          "maxLinearQuantizationError": 0.0001220996041503275
+          "bytes": 157154,
+          "fileSha256": "e2513d791ab61dbad6fd8552ebff101d12eb129575ff48433658dc3f1e4433dd",
+          "decodedRgbaSha256": "1327850de78217f89e806c5b7e2ad687475f702d5dbe196bedee5b0fe56d5c9e",
+          "maxLinearQuantizationError": 0.00012210012140285303
         },
         {
           "width": 1719,
@@ -1123,22 +1123,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000002221177757030454,
+            -2.221177757030454e-06,
             -0.056673563168455586
           ],
           "coverageCentroidTanTheta": [
-            -0.000002305794184491948,
+            -2.305794184491948e-06,
             -0.05667342086527061
           ],
-          "centroidErrorTanTheta": 1.655600684085116e-7,
-          "coverageAreaRelativeError": -7.147104851279451e-7,
+          "centroidErrorTanTheta": 1.655600684085116e-07,
+          "coverageAreaRelativeError": -7.147104851279451e-07,
           "file": "aspheric_21_8192.png",
-          "bytes": 395547,
-          "fileSha256": "c83c4be3ebd2d6e268bf52593df2f1b97657cff59b905a2505f76e79c9f5d7b4",
-          "decodedRgbaSha256": "09fea2cd754db016b44c2387101951d7a92bac4046a579b06e916cd42cd43d2f",
-          "maxLinearQuantizationError": 0.00012210008647817183
+          "bytes": 475062,
+          "fileSha256": "2f0184564b489a6fb7c8127d188575126b584cd75d2854ce844ab574125f3236",
+          "decodedRgbaSha256": "3d3937477529e0ef82aa7ac15f4e0179281cff45525e6db8722f64e46ad434a5",
+          "maxLinearQuantizationError": 0.0001221000561563157
         }
       ]
     },
@@ -1175,22 +1175,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000034864586987773597,
+            -3.4864586987773597e-06,
             -0.05937205821049415
           ],
           "coverageCentroidTanTheta": [
-            -0.0000035939682969005112,
+            -3.5939682969005112e-06,
             -0.059372146257471524
           ],
-          "centroidErrorTanTheta": 1.3896252701209344e-7,
-          "coverageAreaRelativeError": -6.901625770883157e-7,
+          "centroidErrorTanTheta": 1.3896252701209344e-07,
+          "coverageAreaRelativeError": -6.901625770883157e-07,
           "file": "aspheric_22_4096.png",
-          "bytes": 139464,
-          "fileSha256": "3ddd37a605d89b03ab8944ed004412905bb25546601a85d3c0eefb00282e2cbb",
-          "decodedRgbaSha256": "00392a454719c98e5f6513548535f43c1cd327e6f707a11f236354c4c7f3b5e2",
-          "maxLinearQuantizationError": 0.0001220997124493639
+          "bytes": 167043,
+          "fileSha256": "9f03dda778bab8d5f27cccb20d68ff04eed65ecfe338b875ee28369f70283585",
+          "decodedRgbaSha256": "4292555dd91ddb19d633a7f670918a0491e04886d04977128eb6ae3f4de1af23",
+          "maxLinearQuantizationError": 0.00012209954219144503
         },
         {
           "width": 1789,
@@ -1220,22 +1220,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000036447550928239597,
+            -3.6447550928239597e-06,
             -0.05937206497391229
           ],
           "coverageCentroidTanTheta": [
-            -0.0000036963526393441776,
+            -3.6963526393441776e-06,
             -0.05937227559766187
           ],
-          "centroidErrorTanTheta": 2.1685172512854905e-7,
-          "coverageAreaRelativeError": -7.184469853482867e-7,
+          "centroidErrorTanTheta": 2.1685172512854905e-07,
+          "coverageAreaRelativeError": -7.184469853482867e-07,
           "file": "aspheric_22_8192.png",
-          "bytes": 425025,
-          "fileSha256": "1b6d3634a82bc8a0ffc676173ce238bfefe4821a6d23e428ebfe34febb9faa1d",
-          "decodedRgbaSha256": "a97192e6e53d34cf178f0ce46d508e2e793c3779b622a9298132c0a2438c422f",
-          "maxLinearQuantizationError": 0.00012210008146840146
+          "bytes": 510342,
+          "fileSha256": "04c419057bc197e07fda3bf4980c793acd96935d20c5cff7bf4336b370fc8ac3",
+          "decodedRgbaSha256": "30d934bb88b80fc78069d06e9c73b9c0fb54bd0bd9f85044d99448de5b1b6928",
+          "maxLinearQuantizationError": 0.00012210008448143572
         }
       ]
     },
@@ -1274,20 +1274,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000026668740455234477,
+            -2.6668740455234477e-06,
             -0.06207183966763426
           ],
           "coverageCentroidTanTheta": [
-            -0.000002539913534101407,
+            -2.539913534101407e-06,
             -0.062071966662048506
           ],
-          "centroidErrorTanTheta": 1.7957325165752182e-7,
-          "coverageAreaRelativeError": -7.071470116137846e-7,
+          "centroidErrorTanTheta": 1.7957325165752182e-07,
+          "coverageAreaRelativeError": -7.071470116137846e-07,
           "file": "aspheric_23_4096.png",
-          "bytes": 149469,
-          "fileSha256": "a37bf810b93a9436b90f92bdc5548de18615448b9a481e5b5e157a27faadbac0",
-          "decodedRgbaSha256": "57ce8151aa498705d90fa2d234e45e77623ec6f4f1f1a69290c4e4706d02a31b",
-          "maxLinearQuantizationError": 0.00012209973908683391
+          "bytes": 179191,
+          "fileSha256": "2b23d9f5ebf6c5ac4eb698d523901b75a2f97621438da83716ec42904ec47a67",
+          "decodedRgbaSha256": "3d1bd93d229bf6e35f4c3b014983c5d175b7a902257715a61f7d035717ba77c6",
+          "maxLinearQuantizationError": 0.00012210010585478326
         },
         {
           "width": 1859,
@@ -1319,20 +1319,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000026875538709326316,
+            -2.6875538709326316e-06,
             -0.062071669896503964
           ],
           "coverageCentroidTanTheta": [
-            -0.000002749151278234673,
+            -2.749151278234673e-06,
             -0.06207166384136169
           ],
-          "centroidErrorTanTheta": 6.189430776995499e-8,
-          "coverageAreaRelativeError": -6.246349105731852e-7,
+          "centroidErrorTanTheta": 6.189430776995499e-08,
+          "coverageAreaRelativeError": -6.246349105731852e-07,
           "file": "aspheric_23_8192.png",
-          "bytes": 451070,
-          "fileSha256": "b976f35e155837a2e0e7b7499fa7cb5ebb52d3bd1d0837a869452939ef0fdcb5",
-          "decodedRgbaSha256": "8228e88e3e0ad217f3309923e85cc8a7b2b95696dac9d55c882137833fc235c3",
-          "maxLinearQuantizationError": 0.0001221001150767398
+          "bytes": 547655,
+          "fileSha256": "07525b53166c7870072746a0836a87169bdb57c3c2d9c2c60c2065e598a526c3",
+          "decodedRgbaSha256": "452f05707f7418b4c8c99c751654e82e1461c8642954e1a74e61ec7fe265bc23",
+          "maxLinearQuantizationError": 0.00012210007006163703
         }
       ]
     },
@@ -1369,22 +1369,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000037576869333395666,
+            -3.7576869333395937e-06,
             -0.06476899890981717
           ],
           "coverageCentroidTanTheta": [
-            -0.0000037533820266420414,
+            -3.7533820266420414e-06,
             -0.06476866916104426
           ],
-          "centroidErrorTanTheta": 3.29776872231308e-7,
-          "coverageAreaRelativeError": -5.512087577486113e-7,
+          "centroidErrorTanTheta": 3.2977687223130835e-07,
+          "coverageAreaRelativeError": -5.512087577486113e-07,
           "file": "aspheric_24_4096.png",
-          "bytes": 158902,
-          "fileSha256": "2ae47ce9ade1ba81e379ae5bcae2c17e15e3cb07ccb7d016c62e27e52fa1b39b",
-          "decodedRgbaSha256": "b628b58ac251b4fc11fe2385d18a4bd966113c1c5e477685b7e32a9449252545",
-          "maxLinearQuantizationError": 0.00012209972746990427
+          "bytes": 190004,
+          "fileSha256": "d49dba24465dc77d0b4f0802fe008d9d47b79fc2df5ac671bf24e00eddc54c35",
+          "decodedRgbaSha256": "a7738df7482da424a03cc4630deff59c889cea8c52f5f74a416b745df66cfb19",
+          "maxLinearQuantizationError": 0.0001220997324410389
         },
         {
           "width": 1929,
@@ -1414,22 +1414,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004083343880972095,
+            -4.083343880972095e-06,
             -0.06476888818361325
           ],
           "coverageCentroidTanTheta": [
-            -0.000004062377916846932,
+            -4.062377916846932e-06,
             -0.0647689274520393
           ],
-          "centroidErrorTanTheta": 4.45149518290078e-8,
-          "coverageAreaRelativeError": -5.901024178189829e-7,
+          "centroidErrorTanTheta": 4.45149518290078e-08,
+          "coverageAreaRelativeError": -5.901024178189829e-07,
           "file": "aspheric_24_8192.png",
-          "bytes": 479761,
-          "fileSha256": "f2f3213bdc6a1040688ab05a93aac04956fa2998998464719e7bdf18bf77616d",
-          "decodedRgbaSha256": "2eb4164781f7b61b87234801883003ed389eb9ff8fa9d8e2b435aeaba35c1742",
-          "maxLinearQuantizationError": 0.0001221000223251556
+          "bytes": 578371,
+          "fileSha256": "1533eb73cb2dfba3c36e416d85fb7c53e5b1e81b496d6aeb3f5dc4ceca1a437c",
+          "decodedRgbaSha256": "6489068f0a7afff633bdce525e6770e404c967d4f9582f3eba768e235da96a30",
+          "maxLinearQuantizationError": 0.0001221000760545099
         }
       ]
     },
@@ -1466,22 +1466,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004819066046606289,
+            -4.819066046606276e-06,
             -0.06746713894200562
           ],
           "coverageCentroidTanTheta": [
-            -0.000004684968776443218,
+            -4.684968776443218e-06,
             -0.06746708065034661
           ],
-          "centroidErrorTanTheta": 1.4621899799870972e-7,
-          "coverageAreaRelativeError": -5.664660569504321e-7,
+          "centroidErrorTanTheta": 1.462189979986973e-07,
+          "coverageAreaRelativeError": -5.664660569504321e-07,
           "file": "aspheric_25_4096.png",
-          "bytes": 168392,
-          "fileSha256": "f4fdea3d05659e12b6ca99dbefc03d391854bba9ece40643e1bc04c1bf0ac55d",
-          "decodedRgbaSha256": "84b89901b6c66ae1bf2758dc0f420c267af8ef21c29b0eb1853aedc648830540",
-          "maxLinearQuantizationError": 0.00012209931395651668
+          "bytes": 201295,
+          "fileSha256": "e89d9740cf8fd7bc323689b76e79402631af939b6eea929d57b784aa6897536e",
+          "decodedRgbaSha256": "1335572b22b646c8a6a5703fec8bd5ef3ef31bff40d10775f8330166cd252ccd",
+          "maxLinearQuantizationError": 0.00012209996460110784
         },
         {
           "width": 1999,
@@ -1511,22 +1511,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004970374022903728,
+            -4.970374022903728e-06,
             -0.06746686790761874
           ],
           "coverageCentroidTanTheta": [
-            -0.000004863249852899347,
+            -4.863249852899347e-06,
             -0.06746704297590217
           ],
-          "centroidErrorTanTheta": 2.0524251913460734e-7,
-          "coverageAreaRelativeError": -4.967592435178858e-7,
+          "centroidErrorTanTheta": 2.0524251913460734e-07,
+          "coverageAreaRelativeError": -4.967592435178858e-07,
           "file": "aspheric_25_8192.png",
-          "bytes": 508082,
-          "fileSha256": "515dd1c5d969487f228376bdbdaf2178f490dea612c166f95566dd9056f2a509",
-          "decodedRgbaSha256": "8365c397219e2bf7e0629ed658546b46da018bbe12d448cc04b77ae350e21e4f",
-          "maxLinearQuantizationError": 0.00012210006963775388
+          "bytes": 611829,
+          "fileSha256": "5aca2feb3fc954f57dce51e392c3f71eff6d76d0e5221aab6ed8eecf47f1b92e",
+          "decodedRgbaSha256": "9334fe385444f07b32992c93b5e2d398159a2480741924cf2098e4afd08863c5",
+          "maxLinearQuantizationError": 0.00012210011043367608
         }
       ]
     },
@@ -1563,22 +1563,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 0.9999999999999997,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004049719415373904,
+            -4.049719415373947e-06,
             -0.07016633986556263
           ],
           "coverageCentroidTanTheta": [
-            -0.000003912135482547852,
+            -3.912135482547852e-06,
             -0.07016637103188947
           ],
-          "centroidErrorTanTheta": 1.4106976465743224e-7,
-          "coverageAreaRelativeError": -3.944271679268141e-7,
+          "centroidErrorTanTheta": 1.4106976465747353e-07,
+          "coverageAreaRelativeError": -3.944271679268141e-07,
           "file": "aspheric_26_4096.png",
-          "bytes": 177008,
-          "fileSha256": "f96c0be62a8798d2651fc33caf510f42c2462e91b8af47771e658be2878074b0",
-          "decodedRgbaSha256": "eb12ea53dbc4ad797ff95c447bf60ab6156f92a79e35fd03cad19ae51375fec7",
-          "maxLinearQuantizationError": 0.0001220996241306782
+          "bytes": 213692,
+          "fileSha256": "532c099cfa46880cae4263c135612dabd14de078bc44e56316136e86fcbf80e0",
+          "decodedRgbaSha256": "e23c8f875085996d62002d2bcd0ca9ea9216b8a71829bbfb882b7b382cf69691",
+          "maxLinearQuantizationError": 0.00012209996781192833
         },
         {
           "width": 2069,
@@ -1610,20 +1610,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004008897686504651,
+            -4.008897686504651e-06,
             -0.0701664068352038
           ],
           "coverageCentroidTanTheta": [
-            -0.000003998904455017629,
+            -3.998904455017629e-06,
             -0.07016635169489199
           ],
-          "centroidErrorTanTheta": 5.60385462092522e-8,
-          "coverageAreaRelativeError": -4.316850413799145e-7,
+          "centroidErrorTanTheta": 5.60385462092522e-08,
+          "coverageAreaRelativeError": -4.316850413799145e-07,
           "file": "aspheric_26_8192.png",
-          "bytes": 537541,
-          "fileSha256": "ab7291566ad88771b6c552c326f3e425ffae9b15cef53dd51653fc25f13bc37d",
-          "decodedRgbaSha256": "76492b024b1e2da7f3f4009546e64c59be4ff62f072f6f64bcbfbc46c231c2ae",
-          "maxLinearQuantizationError": 0.0001221001155536916
+          "bytes": 647433,
+          "fileSha256": "78895ad04ad75cabc492fe1f88d1a4acacf92b46435f38d10fdf4ee7b732a13f",
+          "decodedRgbaSha256": "d3871e1ca48aa24ea31a144b1366790c95af5884470cf9762d4d559aa3b9d830",
+          "maxLinearQuantizationError": 0.00012209997019163588
         }
       ]
     },
@@ -1660,22 +1660,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000003447351568815345,
+            -3.447351568815345e-06,
             -0.07286419426172858
           ],
           "coverageCentroidTanTheta": [
-            -0.0000036885706466299953,
+            -3.6885706466299953e-06,
             -0.07286407111230211
           ],
-          "centroidErrorTanTheta": 2.7083652770566517e-7,
-          "coverageAreaRelativeError": -4.893861718091586e-7,
+          "centroidErrorTanTheta": 2.7083652770566517e-07,
+          "coverageAreaRelativeError": -4.893861718091586e-07,
           "file": "aspheric_27_4096.png",
-          "bytes": 186820,
-          "fileSha256": "0ffa1b10b97fc9442c329d5c3675ac3bb8dd9ad11372b8a0e6f13c85ae28d921",
-          "decodedRgbaSha256": "f1e18be327a60647ece955836f9e100e519f053c3324f5cf02cd18ae72930518",
-          "maxLinearQuantizationError": 0.00012209977245569714
+          "bytes": 223261,
+          "fileSha256": "4fdedac433050ac41f2d95abbd242f0cd8547b3982197c215286af9374a78937",
+          "decodedRgbaSha256": "acc40e031560192594ef625fd6247ec3f37145b86cd88a2e0f35e426599ac7af",
+          "maxLinearQuantizationError": 0.00012210006760660086
         },
         {
           "width": 2139,
@@ -1705,22 +1705,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000034652549263567676,
+            -3.4652549263567676e-06,
             -0.07286423515763354
           ],
           "coverageCentroidTanTheta": [
-            -0.0000035280170891643096,
+            -3.5280170891643096e-06,
             -0.072864285561725
           ],
-          "centroidErrorTanTheta": 8.049634473566701e-8,
-          "coverageAreaRelativeError": -5.175194380813153e-7,
+          "centroidErrorTanTheta": 8.049634473566701e-08,
+          "coverageAreaRelativeError": -5.175194380813153e-07,
           "file": "aspheric_27_8192.png",
-          "bytes": 566667,
-          "fileSha256": "721b1f9f08ad2c3e33376f9ad50289e66811b94c16b1f4ca5e314d9580bbb7c9",
-          "decodedRgbaSha256": "b73ef01b2eee8375899862bc8d8bcd765dcf631a16f5bbc5f0d29e19c692322c",
-          "maxLinearQuantizationError": 0.0001221000549213036
+          "bytes": 683454,
+          "fileSha256": "bc22be4a1f9dacdb035952383b47155d2218ce4aba225dd8b459fd4f08a5a35c",
+          "decodedRgbaSha256": "5b38d40c6d957bbd5667a329efdbba29ec2283467200b1bf2d5dc30cc0dc7c40",
+          "maxLinearQuantizationError": 0.00012210007426805003
         }
       ]
     },
@@ -1757,22 +1757,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004192152824856319,
+            -4.192152824856319e-06,
             -0.07556406986113515
           ],
           "coverageCentroidTanTheta": [
-            -0.000004125470774949776,
+            -4.125470774949776e-06,
             -0.07556406780837603
           ],
-          "centroidErrorTanTheta": 6.671363878342147e-8,
-          "coverageAreaRelativeError": -3.543337676603642e-7,
+          "centroidErrorTanTheta": 6.671363878342147e-08,
+          "coverageAreaRelativeError": -3.543337676603642e-07,
           "file": "aspheric_28_4096.png",
-          "bytes": 195724,
-          "fileSha256": "3a4e44ef3f37221cdf9e988094894a2e7a95be9a75a9e5555055eee32e706f9b",
-          "decodedRgbaSha256": "c24db441cce22850bcffd1e4a5e0ccaa2a956ce4fc3fe4010173d09236a03b4e",
-          "maxLinearQuantizationError": 0.00012209985240829724
+          "bytes": 234441,
+          "fileSha256": "6440c2b62cf1b8940f0e3a287f2f4c6ba2997faf9c746b43ee3fd03561a80cc1",
+          "decodedRgbaSha256": "e0bc676acf41971c67342e7e7ce01cfc1e0f61fc5c752c6573bceffa8acd6c46",
+          "maxLinearQuantizationError": 0.00012209999775780744
         },
         {
           "width": 2209,
@@ -1802,21 +1802,21 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004191517047974412,
+            -4.191517047974412e-06,
             -0.07556418494014272
           ],
           "coverageCentroidTanTheta": [
-            -0.000004156851793729003,
+            -4.156851793729003e-06,
             -0.07556423815230463
           ],
-          "centroidErrorTanTheta": 6.3507590312837e-8,
-          "coverageAreaRelativeError": -3.986275863843147e-7,
+          "centroidErrorTanTheta": 6.3507590312837e-08,
+          "coverageAreaRelativeError": -3.986275863843147e-07,
           "file": "aspheric_28_8192.png",
-          "bytes": 599077,
-          "fileSha256": "32ae8456fd1930efed7609f02500f0ab16536edc485a2a91beeec815f1502800",
-          "decodedRgbaSha256": "d01fd59e13bfac472100437a19140b5ff962eeec494b85bdbac0798da2fffb34",
+          "bytes": 726328,
+          "fileSha256": "48e3647b907db0540909af6bf44ced03dff6b7f7085dd48109be7bd3105cacbd",
+          "decodedRgbaSha256": "1703b6e362172da5006647554d202b3e9135ebab41b64eb67865ae4017048079",
           "maxLinearQuantizationError": 0.0001221001111489789
         }
       ]
@@ -1854,22 +1854,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004775892030536736,
+            -4.7758920305367635e-06,
             -0.07826282120474665
           ],
           "coverageCentroidTanTheta": [
-            -0.000004813070821504524,
+            -4.813070821504524e-06,
             -0.07826272015641464
           ],
-          "centroidErrorTanTheta": 1.076709241128124e-7,
-          "coverageAreaRelativeError": -3.820914180607815e-7,
+          "centroidErrorTanTheta": 1.0767092411280303e-07,
+          "coverageAreaRelativeError": -3.820914180607815e-07,
           "file": "aspheric_29_4096.png",
-          "bytes": 208366,
-          "fileSha256": "d1ee7252c68ccc1acf31718c08abff74b44872de59264383511d114d2d8658e4",
-          "decodedRgbaSha256": "c11fad16d3c1e46c3fd3cf57afb1abc280531503a1c8be1dc79584996d8b1855",
-          "maxLinearQuantizationError": 0.0001220997229260945
+          "bytes": 249350,
+          "fileSha256": "08a12a31c433d135ba227d7e733bca61313eaa96431de970aa42cac62ed13c39",
+          "decodedRgbaSha256": "5daa66b392e7a4eac03973b71b1269764a842d89e288e1615a86ab9409683a65",
+          "maxLinearQuantizationError": 0.0001220997815374325
         },
         {
           "width": 2280,
@@ -1899,27 +1899,27 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004615101239732931,
+            -4.615101239732931e-06,
             -0.07826293237629356
           ],
           "coverageCentroidTanTheta": [
-            -0.000004492896410709727,
+            -4.492896410709727e-06,
             -0.07826281529761142
           ],
-          "centroidErrorTanTheta": 1.6923781506441025e-7,
-          "coverageAreaRelativeError": -3.8490091358589495e-7,
+          "centroidErrorTanTheta": 1.6923781506441025e-07,
+          "coverageAreaRelativeError": -3.8490091358589495e-07,
           "file": "aspheric_29_8192.png",
-          "bytes": 629999,
-          "fileSha256": "095306338ab1c049fe6c89290c12b97d2ecce3c1edfce4e0be321061c6ba8441",
-          "decodedRgbaSha256": "809085282e145e3f97be42e8ce08e72fa270f59a2dbcf8c6532229ab67474adc",
-          "maxLinearQuantizationError": 0.00012209970492882416
+          "bytes": 764028,
+          "fileSha256": "372e39e5e58edde2e04ed289a71995414946d315b97ccb054cdf0fade3543baa",
+          "decodedRgbaSha256": "e3315c57b2ab570a77aa81c6a553ec6bade5c23be69764c218adb2634cb77610",
+          "maxLinearQuantizationError": 0.00012210010932245385
         }
       ]
     },
     {
-      "objectVergenceD": 3,
+      "objectVergenceD": 3.0,
       "psfSha256": "3d92e794d530c26e5f0112d323f4955d25acd564966201676e1b8299f58295ff",
       "retinalMmPerTanTheta": 16.718003105359152,
       "levels": [
@@ -1951,22 +1951,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000044148961242529425,
+            -4.4148961242529425e-06,
             -0.08096279669795542
           ],
           "coverageCentroidTanTheta": [
-            -0.000004708807519118593,
+            -4.708807519118593e-06,
             -0.08096283999636948
           ],
-          "centroidErrorTanTheta": 2.970835920952178e-7,
-          "coverageAreaRelativeError": -3.8338131691517674e-7,
+          "centroidErrorTanTheta": 2.970835920952178e-07,
+          "coverageAreaRelativeError": -3.8338131691517674e-07,
           "file": "aspheric_30_4096.png",
-          "bytes": 218700,
-          "fileSha256": "afe3c16b08f59204de23345c2cc7043ade85ce1e824d5fbaf02d8737c62c42c9",
-          "decodedRgbaSha256": "69fe4f83616065ca39e9803df7f17be8ed4fd742dd1ea1c4e84281a9380fad8c",
-          "maxLinearQuantizationError": 0.00012209996537970724
+          "bytes": 261943,
+          "fileSha256": "d95ae5b8677337d556fd4351a42d5932fc94e61c670674d59c8c954358d19ce1",
+          "decodedRgbaSha256": "b295fbac746821cfedcd64eaa96972b77b01b25e059ee30835f8262f70ac7aaa",
+          "maxLinearQuantizationError": 0.00012210006673276166
         },
         {
           "width": 2352,
@@ -1996,22 +1996,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004585088336066755,
+            -4.585088336066748e-06,
             -0.08096261977488005
           ],
           "coverageCentroidTanTheta": [
-            -0.000004636505491638101,
+            -4.636505491638101e-06,
             -0.08096263944893807
           ],
-          "centroidErrorTanTheta": 5.505263341644799e-8,
-          "coverageAreaRelativeError": -3.4198431908549765e-7,
+          "centroidErrorTanTheta": 5.5052633416454325e-08,
+          "coverageAreaRelativeError": -3.4198431908549765e-07,
           "file": "aspheric_30_8192.png",
-          "bytes": 658536,
-          "fileSha256": "05e0b35bb73bd477e0a871a4372ca828afc6a6b625345e0602169ecef9db0262",
-          "decodedRgbaSha256": "4974369fe4739fc13fbfabb833ae567fa467fd9e739fd90aa53e12e03a33377b",
-          "maxLinearQuantizationError": 0.00012210001321905084
+          "bytes": 800231,
+          "fileSha256": "dd4fae71d12b112584fe2f13860a41fa2573605ad4af8e4f38fddea1e84c9f21",
+          "decodedRgbaSha256": "6f28c55d1238d09ffd5a0128e618ec508b5d4a6978306a667335dd897bf5e0fa",
+          "maxLinearQuantizationError": 0.00012210011349633731
         }
       ]
     },
@@ -2048,22 +2048,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000050674768742444985,
+            -5.0674768742444985e-06,
             -0.08366134101566028
           ],
           "coverageCentroidTanTheta": [
-            -0.000005020322883477542,
+            -5.020322883477542e-06,
             -0.08366109676974325
           ],
-          "centroidErrorTanTheta": 2.487560387862789e-7,
-          "coverageAreaRelativeError": -3.2370032176931574e-7,
+          "centroidErrorTanTheta": 2.487560387862789e-07,
+          "coverageAreaRelativeError": -3.2370032176931574e-07,
           "file": "aspheric_31_4096.png",
-          "bytes": 228329,
-          "fileSha256": "62e6d4116ab033cb1b0287537c0399c445c0222faeb1f3ec4a68df5faf60e49b",
-          "decodedRgbaSha256": "307ae7b953b0b3329c1af3e1ddbc9e02756366b251cce21ec4ea12da8b350f91",
-          "maxLinearQuantizationError": 0.00012210004968560284
+          "bytes": 274067,
+          "fileSha256": "cbf704b30a100e29e576d7e8f6bcb45b5079b4ed58fd7b25b5ece0543584a251",
+          "decodedRgbaSha256": "3bf313465207067be0e2e2ff52f99232c490fa94a444ec6807e6940d99f77c78",
+          "maxLinearQuantizationError": 0.00012209995796730322
         },
         {
           "width": 2422,
@@ -2093,22 +2093,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004971940901293419,
+            -4.971940901293419e-06,
             -0.08366125318140563
           ],
           "coverageCentroidTanTheta": [
-            -0.000004976189210467356,
+            -4.976189210467356e-06,
             -0.08366114461723131
           ],
-          "centroidErrorTanTheta": 1.086472644661506e-7,
-          "coverageAreaRelativeError": -3.2829815488355507e-7,
+          "centroidErrorTanTheta": 1.086472644661506e-07,
+          "coverageAreaRelativeError": -3.2829815488355507e-07,
           "file": "aspheric_31_8192.png",
-          "bytes": 693439,
-          "fileSha256": "ba57df211fdf2346b0c8f43dc4607e973fbeb72c1db98128111069714f7a0b30",
-          "decodedRgbaSha256": "c94b347509651592e2802a506f0e783215629cac2f2a40f09cf26f36c1bab5bd",
-          "maxLinearQuantizationError": 0.00012210010619484457
+          "bytes": 840857,
+          "fileSha256": "bfe4433076e08a6d10810e471eb481c20da2a87e94d3efeaa86caa026f1439c2",
+          "decodedRgbaSha256": "63e5f37589e8a068c7c3317be5bd4b99d2cdfd35c997ff1700bbb978b0449629",
+          "maxLinearQuantizationError": 0.0001221000998156141
         }
       ]
     },
@@ -2145,22 +2145,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005461565635241831,
+            -5.461565635241831e-06,
             -0.08636015755799865
           ],
           "coverageCentroidTanTheta": [
-            -0.000005629351981473911,
+            -5.629351981473911e-06,
             -0.08636002588978543
           ],
-          "centroidErrorTanTheta": 2.1328097982427303e-7,
-          "coverageAreaRelativeError": -3.05566938973989e-7,
+          "centroidErrorTanTheta": 2.1328097982427303e-07,
+          "coverageAreaRelativeError": -3.05566938973989e-07,
           "file": "aspheric_32_4096.png",
-          "bytes": 236758,
-          "fileSha256": "4b5a15b770d3c6528f00c41f439c652cfe2de2458bbc74c59a72be251bf0d617",
-          "decodedRgbaSha256": "1b608d871a34ca11b136e079766d8f6847cb5a6dd50d1cefae20c3ac981f67c7",
-          "maxLinearQuantizationError": 0.00012209981921884605
+          "bytes": 287497,
+          "fileSha256": "e05c38fefaf226f805566f62a9936f7f2fcb1235f3bd2b757c7947cffbf3a0c1",
+          "decodedRgbaSha256": "236affe5052584ec29c416c74dcfed25bd245c76e5907df1d69e4a60071fb8dd",
+          "maxLinearQuantizationError": 0.00012209973091951992
         },
         {
           "width": 2492,
@@ -2192,20 +2192,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005389331632846259,
+            -5.389331632846259e-06,
             -0.08636013896991787
           ],
           "coverageCentroidTanTheta": [
-            -0.00000546958988965938,
+            -5.46958988965938e-06,
             -0.08635981143934403
           ],
-          "centroidErrorTanTheta": 3.372204984705266e-7,
-          "coverageAreaRelativeError": -3.214719489497142e-7,
+          "centroidErrorTanTheta": 3.372204984705266e-07,
+          "coverageAreaRelativeError": -3.214719489497142e-07,
           "file": "aspheric_32_8192.png",
-          "bytes": 719720,
-          "fileSha256": "daaacb5b1417652b3b0e02404641b784db790c9bee3fbfadcae1b3ab78f569cd",
-          "decodedRgbaSha256": "d335bf14ffb8dd2916ce488771cabccc213f782f8b8367f30d53042c8f8c54e6",
-          "maxLinearQuantizationError": 0.00012210010887692135
+          "bytes": 878117,
+          "fileSha256": "512b08387fc80a86c1c575800c9f3cb7c62d4da2c52755956b2de8c31f026378",
+          "decodedRgbaSha256": "2ca4d7a80a67e9b548512ede088c9ae2d11698a7c6ceec84b201ac88ee36885c",
+          "maxLinearQuantizationError": 0.00012210006643609272
         }
       ]
     },
@@ -2244,20 +2244,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005449524444674997,
+            -5.449524444674997e-06,
             -0.08905999712920548
           ],
           "coverageCentroidTanTheta": [
-            -0.000005576521477871018,
+            -5.576521477871018e-06,
             -0.08905996799925715
           ],
-          "centroidErrorTanTheta": 1.302950510580182e-7,
-          "coverageAreaRelativeError": -3.1717321369306717e-7,
+          "centroidErrorTanTheta": 1.302950510580182e-07,
+          "coverageAreaRelativeError": -3.1717321369306717e-07,
           "file": "aspheric_33_4096.png",
-          "bytes": 249114,
-          "fileSha256": "9c2d84f1cf0a2f29405c7f1d53d103dd7442dec467db43f1a5cba2c5baf04afd",
-          "decodedRgbaSha256": "677448ad5402201be6bbe525cd3ef466b7c0b8d84f4de68655d2197cac1078f2",
-          "maxLinearQuantizationError": 0.00012209960738762682
+          "bytes": 298562,
+          "fileSha256": "1178ec5afd3fd1632c8f410e1f10712b47ef3d9cab88aa0d6c17d20856a80633",
+          "decodedRgbaSha256": "cef90c25ba666249b51248f148400f3c054216e804284e85c46a5e25163e2945",
+          "maxLinearQuantizationError": 0.0001220998744836388
         },
         {
           "width": 2562,
@@ -2287,22 +2287,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005429563367061849,
+            -5.429563367061839e-06,
             -0.089059900333387
           ],
           "coverageCentroidTanTheta": [
-            -0.000005498776474352025,
+            -5.498776474352025e-06,
             -0.08905976826166556
           ],
-          "centroidErrorTanTheta": 1.4910866448120785e-7,
-          "coverageAreaRelativeError": -3.105914436751789e-7,
+          "centroidErrorTanTheta": 1.4910866448121256e-07,
+          "coverageAreaRelativeError": -3.105914436751789e-07,
           "file": "aspheric_33_8192.png",
-          "bytes": 755039,
-          "fileSha256": "69fa9ccd8800cc09863911592c6ed0cf9cca6dd867afe1a242a794ea2ba2343a",
-          "decodedRgbaSha256": "916409873832d8c9794bc65e46eb2c5008ba23681eefeb7f49b59d3dc41d3183",
-          "maxLinearQuantizationError": 0.00012210007885349317
+          "bytes": 902498,
+          "fileSha256": "0ed97be4ee224a80e0b441c17f9cf11b46dc0a1dec440a705438968519c55913",
+          "decodedRgbaSha256": "aba3aa0a639af10fb219714f416c8ce50f62bb00d29078c986031358f961e8e0",
+          "maxLinearQuantizationError": 0.00012209999369394708
         }
       ]
     },
@@ -2341,20 +2341,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.000006459381635737503,
+            -6.459381635737503e-06,
             -0.09175806717809189
           ],
           "coverageCentroidTanTheta": [
-            -0.000006595337220566787,
+            -6.595337220566787e-06,
             -0.09175807189992832
           ],
-          "centroidErrorTanTheta": 1.3603755652612458e-7,
-          "coverageAreaRelativeError": -2.588067523623394e-7,
+          "centroidErrorTanTheta": 1.3603755652612458e-07,
+          "coverageAreaRelativeError": -2.588067523623394e-07,
           "file": "aspheric_34_4096.png",
-          "bytes": 261724,
-          "fileSha256": "69dad5792d5bcff96c90469971fd2867b9e0f232ca373eddfbc265752079b300",
-          "decodedRgbaSha256": "071ea6e37aaee1317f4ee50b1c96d42dd82b4ec53ffba41197661975b4927f7c",
-          "maxLinearQuantizationError": 0.00012210005877399954
+          "bytes": 314354,
+          "fileSha256": "269025a0979ec55dccbc58c8a8cd551a8d527316e034ceec479ce3034b50e5ce",
+          "decodedRgbaSha256": "02477676d95573d9143f103e83513cc80c3ebe8c2ba98cd98d315df7a5bd914d",
+          "maxLinearQuantizationError": 0.00012209986570554943
         },
         {
           "width": 2632,
@@ -2384,22 +2384,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000006267285788214884,
+            -6.267285788214884e-06,
             -0.09175841615133638
           ],
           "coverageCentroidTanTheta": [
-            -0.0000064115377989201535,
+            -6.4115377989201535e-06,
             -0.09175829026198666
           ],
-          "centroidErrorTanTheta": 1.914595805021467e-7,
-          "coverageAreaRelativeError": -3.0954799268290145e-7,
+          "centroidErrorTanTheta": 1.914595805021467e-07,
+          "coverageAreaRelativeError": -3.0954799268290145e-07,
           "file": "aspheric_34_8192.png",
-          "bytes": 787092,
-          "fileSha256": "d84883d5b00ae3553402e8bf388116a26ebedb403cf0eea75909c80a3bf24e09",
-          "decodedRgbaSha256": "dcdae1d94143a75ca02020d9d6f4c0f1541a2660e207b7affdf6be217b1d9dad",
-          "maxLinearQuantizationError": 0.00012210010675162142
+          "bytes": 957027,
+          "fileSha256": "df5a28d1e7503b6a6a348c7832cb4895d587e185386aa132a8e0eda664c0cfc0",
+          "decodedRgbaSha256": "fe260eb49cd9488fe83e4eede1aa1f0e864e95eb08412cda22fadc20dd46436f",
+          "maxLinearQuantizationError": 0.00012210011682167732
         }
       ]
     },
@@ -2436,22 +2436,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005502181889495713,
+            -5.502181889495726e-06,
             -0.09445632552271918
           ],
           "coverageCentroidTanTheta": [
-            -0.000005692999974228306,
+            -5.692999974228306e-06,
             -0.09445645931976729
           ],
-          "centroidErrorTanTheta": 2.3305190740108415e-7,
-          "coverageAreaRelativeError": -2.455635720322036e-7,
+          "centroidErrorTanTheta": 2.3305190740107306e-07,
+          "coverageAreaRelativeError": -2.455635720322036e-07,
           "file": "aspheric_35_4096.png",
-          "bytes": 273866,
-          "fileSha256": "93ffcb3fb5003eef01fa00a0c3a1f70c195e73d9b24232cd76e7ab8b458e34ef",
-          "decodedRgbaSha256": "607c2f9a9742efbedb8f02fdea65f09e803e05951279223687463d63dc4d4249",
-          "maxLinearQuantizationError": 0.00012209998131129662
+          "bytes": 329028,
+          "fileSha256": "6ceb58ffd58d2f65228c74f092e1e70aba0ff01c2633a76897625fb05195afe1",
+          "decodedRgbaSha256": "1aaafc3707f9cf55a0687eb6b32bfa00d1d08fc00748d2b49a146c2c3a3d1516",
+          "maxLinearQuantizationError": 0.00012210005262813795
         },
         {
           "width": 2702,
@@ -2481,22 +2481,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005654888689347594,
+            -5.654888689347608e-06,
             -0.09445619544595461
           ],
           "coverageCentroidTanTheta": [
-            -0.000005613450238367652,
+            -5.613450238367652e-06,
             -0.09445620637695672
           ],
-          "centroidErrorTanTheta": 4.2855945055537736e-8,
-          "coverageAreaRelativeError": -2.544990004293979e-7,
+          "centroidErrorTanTheta": 4.285594505555083e-08,
+          "coverageAreaRelativeError": -2.544990004293979e-07,
           "file": "aspheric_35_8192.png",
-          "bytes": 825515,
-          "fileSha256": "d36a6011a4a03d4df775d833a8037f241e2613723dc93c36e10c2db2e5179a07",
-          "decodedRgbaSha256": "b215caf4fc6139e7c7a1611d5635dc27db030c6c8dbdff911a04b4841d2147e2",
-          "maxLinearQuantizationError": 0.00012210011335347216
+          "bytes": 1002897,
+          "fileSha256": "ab4d35a5f1bf484cd00ffa8789324d885e54879bfba6f8aaa52cdbe753e852c3",
+          "decodedRgbaSha256": "dd7c7b0169dfe69a21eae1d15e042868e74f98f2019915d8644071ffa518bf31",
+          "maxLinearQuantizationError": 0.0001221001133532897
         }
       ]
     },
@@ -2535,20 +2535,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004880299141946577,
+            -4.880299141946577e-06,
             -0.09715517170212379
           ],
           "coverageCentroidTanTheta": [
-            -0.000004633805739057297,
+            -4.633805739057297e-06,
             -0.09715506532184463
           ],
-          "centroidErrorTanTheta": 2.6846929332989837e-7,
-          "coverageAreaRelativeError": -2.010384748674099e-7,
+          "centroidErrorTanTheta": 2.6846929332989837e-07,
+          "coverageAreaRelativeError": -2.010384748674099e-07,
           "file": "aspheric_36_4096.png",
-          "bytes": 285249,
-          "fileSha256": "11946318ce9f99dad0030c0bcbf632682e4016fc9ce8cb65ea4035635ab3b806",
-          "decodedRgbaSha256": "204699a877e45f448c0ccb2546abb77f1f7fda31de0b05488f3471f59afda7b4",
-          "maxLinearQuantizationError": 0.00012210011957036748
+          "bytes": 343808,
+          "fileSha256": "bb0bafd4495d30ce50b96d95537f96543908b9498c96540c32afbf1d1c26c808",
+          "decodedRgbaSha256": "09be71baa8ecda1e33dcb8b8baba439fbb169c902df18d66ad5a3ea29fad0755",
+          "maxLinearQuantizationError": 0.00012210005809785545
         },
         {
           "width": 2772,
@@ -2578,22 +2578,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005224746477690199,
+            -5.224746477690199e-06,
             -0.09715511234813798
           ],
           "coverageCentroidTanTheta": [
-            -0.000005442980292164828,
+            -5.442980292164828e-06,
             -0.09715511331878328
           ],
-          "centroidErrorTanTheta": 2.1823597304854587e-7,
-          "coverageAreaRelativeError": -2.2711027225508218e-7,
+          "centroidErrorTanTheta": 2.1823597304854587e-07,
+          "coverageAreaRelativeError": -2.2711027225508218e-07,
           "file": "aspheric_36_8192.png",
-          "bytes": 869296,
-          "fileSha256": "52d7f9a733aa9fe750d8e62d80541c552e123eb4303730496972ba6bef538a9e",
-          "decodedRgbaSha256": "dd9ce596f44b21ae605f0e5efadb61bee9c79401d976d2992adc9cbd9a85ce5b",
-          "maxLinearQuantizationError": 0.0001221000940745398
+          "bytes": 1052606,
+          "fileSha256": "be67c509db51cc503a590dcdae9e165fda90a99150106aef4c803a9605a178d2",
+          "decodedRgbaSha256": "2b912a278d795200bbf7a217de675f14c723ff0c283de3f85d19faee8e0d2393",
+          "maxLinearQuantizationError": 0.0001221001045064174
         }
       ]
     },
@@ -2630,22 +2630,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005680487658652104,
+            -5.6804876586521315e-06,
             -0.09985448358765636
           ],
           "coverageCentroidTanTheta": [
-            -0.000005718051547602439,
+            -5.718051547602439e-06,
             -0.09985469376432146
           ],
-          "centroidErrorTanTheta": 2.1350708724889238e-7,
-          "coverageAreaRelativeError": -3.0681950413669057e-7,
+          "centroidErrorTanTheta": 2.1350708724888761e-07,
+          "coverageAreaRelativeError": -3.0681950413669057e-07,
           "file": "aspheric_37_4096.png",
-          "bytes": 295720,
-          "fileSha256": "6e168313840fc55685e0e2bc33dcff883dcfba2fd7af05040808dd2b4509d30a",
-          "decodedRgbaSha256": "df4bcd87db3fe5c68a225cf0ab3b817f8ca46c0dd76957d7465eef5b4edaa47e",
-          "maxLinearQuantizationError": 0.0001220993593776809
+          "bytes": 354878,
+          "fileSha256": "945dcae4ad8c8c386d795a20ab0ab9e34d1de1fa0044e19923bdb79caae5b14b",
+          "decodedRgbaSha256": "8899da1d24783c547cebc40cbd504ccc062b6ff5a71949bc9445cf545cd7e284",
+          "maxLinearQuantizationError": 0.00012209971418322756
         },
         {
           "width": 2843,
@@ -2677,20 +2677,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005748115587027144,
+            -5.748115587027151e-06,
             -0.09985442754166743
           ],
           "coverageCentroidTanTheta": [
-            -0.000005772569939656277,
+            -5.772569939656277e-06,
             -0.09985439190590112
           ],
-          "centroidErrorTanTheta": 4.321947712564809e-8,
-          "coverageAreaRelativeError": -2.465344410840231e-7,
+          "centroidErrorTanTheta": 4.3219477125644256e-08,
+          "coverageAreaRelativeError": -2.465344410840231e-07,
           "file": "aspheric_37_8192.png",
-          "bytes": 891465,
-          "fileSha256": "33efc68fc77fad15f4add4c55f7fc4bb5cbaef58f20033119e8d5eee225afce2",
-          "decodedRgbaSha256": "31d96cc90704692af196a5b56f45c4953ad46033d09d88d2af073d05bd9515eb",
-          "maxLinearQuantizationError": 0.00012210009163682312
+          "bytes": 1098522,
+          "fileSha256": "58e87c6059296145c05a348420645b2797389d993be5849a0c9d59afd2c0a4cd",
+          "decodedRgbaSha256": "d1d91760b0aef510b760014c2f29f01f4c632b9419f44ca87130d8ecf802dc72",
+          "maxLinearQuantizationError": 0.00012210011803759357
         }
       ]
     },
@@ -2729,20 +2729,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005178727943558225,
+            -5.178727943558225e-06,
             -0.10255264391150896
           ],
           "coverageCentroidTanTheta": [
-            -0.000005081308764988257,
+            -5.081308764988257e-06,
             -0.10255263924700134
           ],
-          "centroidErrorTanTheta": 9.753078480486587e-8,
-          "coverageAreaRelativeError": -1.7656763695583777e-7,
+          "centroidErrorTanTheta": 9.753078480486587e-08,
+          "coverageAreaRelativeError": -1.7656763695583777e-07,
           "file": "aspheric_38_4096.png",
-          "bytes": 308546,
-          "fileSha256": "cc2ecc86bde44bec2d2dc3ddc88e546ac986f762da9bef35f98be29e9a9b8132",
-          "decodedRgbaSha256": "70a2481de5886f76a027a91bc2749818a39e045df21a0b3eb55f02cf445740b2",
-          "maxLinearQuantizationError": 0.00012209996309231474
+          "bytes": 367613,
+          "fileSha256": "1fccfecc6799fc3878c0f728d3e9ebda5f6462e13c811e2c07bb222accdddda3",
+          "decodedRgbaSha256": "7d5363ba1260f57063db5af08a00c924c1f0bf22c925f7e8343f30ebb01d1ff6",
+          "maxLinearQuantizationError": 0.0001221001179701614
         },
         {
           "width": 2913,
@@ -2772,22 +2772,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005442913403827771,
+            -5.442913403827776e-06,
             -0.10255267500530918
           ],
           "coverageCentroidTanTheta": [
-            -0.000005402312926410825,
+            -5.402312926410825e-06,
             -0.10255272277214521
           ],
-          "centroidErrorTanTheta": 6.269026551733363e-8,
-          "coverageAreaRelativeError": -2.1555422258234813e-7,
+          "centroidErrorTanTheta": 6.269026551733692e-08,
+          "coverageAreaRelativeError": -2.1555422258234813e-07,
           "file": "aspheric_38_8192.png",
-          "bytes": 939837,
-          "fileSha256": "1d6063ea1915ed32632cbd07a1292fe8ee85015678a3f3132f7c4f5e434146dd",
-          "decodedRgbaSha256": "2a030fdee9deb3afafd9ac953ab0c7eab4fc6f94c656ed216b2dba78a37e3130",
-          "maxLinearQuantizationError": 0.00012210004752993852
+          "bytes": 1142307,
+          "fileSha256": "09a2c3a42407e71b1f2f3cba71b8e9ea8fbc83042145a21055f18cf992aab365",
+          "decodedRgbaSha256": "7011ef837262d3ac4697c7c87995fe62a0de8b6f416d371c248136614d87d191",
+          "maxLinearQuantizationError": 0.00012210011222013595
         }
       ]
     },
@@ -2824,21 +2824,21 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000006326954912477212,
+            -6.326954912477212e-06,
             -0.10525180453256358
           ],
           "coverageCentroidTanTheta": [
-            -0.00000631795303155548,
+            -6.31795303155548e-06,
             -0.10525197707084864
           ],
-          "centroidErrorTanTheta": 1.7277295411109681e-7,
-          "coverageAreaRelativeError": -2.0682396262294844e-7,
+          "centroidErrorTanTheta": 1.7277295411109681e-07,
+          "coverageAreaRelativeError": -2.0682396262294844e-07,
           "file": "aspheric_39_4096.png",
-          "bytes": 321491,
-          "fileSha256": "63fc89ee94a6b0ca2ae22807822c2ba5508dc8142c1d471af41cf602c5c8a835",
-          "decodedRgbaSha256": "72a7de89461bc8fe824f6c2b439edd73052f87371b5f1bf0a2122d47a212ff61",
+          "bytes": 378614,
+          "fileSha256": "902e699d5456c92ff996853a8698f5dc7fb9663f09320ad1e43ffe1cb1890eaf",
+          "decodedRgbaSha256": "eade6c6ad99e51771edaea1032350304f12276a20815b67adf0a2e1cd086b75a",
           "maxLinearQuantizationError": 0.00012209999861184623
         },
         {
@@ -2869,27 +2869,27 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000006168592290940647,
+            -6.168592290940647e-06,
             -0.10525165606102349
           ],
           "coverageCentroidTanTheta": [
-            -0.000006166180525018876,
+            -6.166180525018876e-06,
             -0.10525164297338047
           ],
-          "centroidErrorTanTheta": 1.3308005666066688e-8,
-          "coverageAreaRelativeError": -1.6232137689531356e-7,
+          "centroidErrorTanTheta": 1.3308005666066688e-08,
+          "coverageAreaRelativeError": -1.6232137689531356e-07,
           "file": "aspheric_39_8192.png",
-          "bytes": 973090,
-          "fileSha256": "1719b29f17b468462e80c383ec034fd4c1332332a998048d58fffdd383114ac7",
-          "decodedRgbaSha256": "5636e67e4e489597bd990cc1c91b018dda6ba8eeab6e84e42574b38d38fd473b",
-          "maxLinearQuantizationError": 0.00012210006426671693
+          "bytes": 1182833,
+          "fileSha256": "9701a2e11a5ca44519ffd7a89f71a3f69e6398eaeeb78362edf8a0f54e4a177b",
+          "decodedRgbaSha256": "cefac1a17bc6b385d85fc9da0f5ce1b5dc8d44977afc14cc258cdc4236ab1a46",
+          "maxLinearQuantizationError": 0.00012210012107150003
         }
       ]
     },
     {
-      "objectVergenceD": 4,
+      "objectVergenceD": 4.0,
       "psfSha256": "98544d75e83ab2a2bdaeb301127e4b98ef0029c6c2d42511f1e05de6cf1a72c4",
       "retinalMmPerTanTheta": 16.66986348790436,
       "levels": [
@@ -2921,22 +2921,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000007520412456602206,
+            -7.520412456602206e-06,
             -0.10795029827354961
           ],
           "coverageCentroidTanTheta": [
-            -0.000007619430045174002,
+            -7.619430045174002e-06,
             -0.10795016774785937
           ],
-          "centroidErrorTanTheta": 1.6383357000261666e-7,
-          "coverageAreaRelativeError": -1.7654435069403007e-7,
+          "centroidErrorTanTheta": 1.6383357000261666e-07,
+          "coverageAreaRelativeError": -1.7654435069403007e-07,
           "file": "aspheric_40_4096.png",
-          "bytes": 331690,
-          "fileSha256": "8488c521c3c119a83546f4011e6c334438277c0b106979fd7692021dba7850c5",
-          "decodedRgbaSha256": "63af30b7e09cc8ac029a861bef012c87f822ecf06b88a41e28110813aa9c234a",
-          "maxLinearQuantizationError": 0.00012209990883882416
+          "bytes": 399494,
+          "fileSha256": "841af84d7705b3538dd2b874fc52585f7c4812f6d8c33623c880c02ee2b46f25",
+          "decodedRgbaSha256": "e377b431ea8e30d133327c427d2888363008374662b4e207b1fd23c8df452423",
+          "maxLinearQuantizationError": 0.000122100022804994
         },
         {
           "width": 3053,
@@ -2966,22 +2966,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.00000743110861575636,
+            -7.43110861575636e-06,
             -0.10795050034019874
           ],
           "coverageCentroidTanTheta": [
-            -0.000007319520076811886,
+            -7.319520076811886e-06,
             -0.10795027376243177
           ],
-          "centroidErrorTanTheta": 2.525658062895839e-7,
-          "coverageAreaRelativeError": -1.5339888304044536e-7,
+          "centroidErrorTanTheta": 2.525658062895839e-07,
+          "coverageAreaRelativeError": -1.5339888304044536e-07,
           "file": "aspheric_40_8192.png",
-          "bytes": 1014594,
-          "fileSha256": "a6a0d4ec115c7dfe688e1f3fa0b9cfccdeef3cc5582a0b6d9df61b1e31eebc79",
-          "decodedRgbaSha256": "1cf5c5a42123afc543fffe004263786c47b9c888c00f26d517cd3f53e05c5ee7",
-          "maxLinearQuantizationError": 0.00012210012047517382
+          "bytes": 1212589,
+          "fileSha256": "1840d35a2434fde73cee2f7380fa56e60cf3e9104c967f0ad2f4dc40a7784df9",
+          "decodedRgbaSha256": "67ac652fbb2a1bd7f19ece532dd10b104d6eb2d353591e1676d74eef057fa13c",
+          "maxLinearQuantizationError": 0.0001221001204747247
         }
       ]
     }

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import DistanceStep from '../components/DistanceStep.svelte';
   import IolScene from '../components/IolScene.svelte';
   import SheetSelect from '../components/SheetSelect.svelte';
   import {
@@ -21,15 +23,33 @@
 
   const acuityOptions = Object.entries(acuityIols).map(([value, {label}]) => ({value, label}));
   const physicsOptions = Object.entries(physicsIols).map(([value, {label}]) => ({value, label}));
-  const distances = [{label: 'Far', cm: 100, defocus: -1}, {label: 'Mid', cm: 50, defocus: -2},
-    {label: 'Near', cm: 25, defocus: -4}];
-  const titles = {about: 'About the simulation', settings: 'Settings', calibrate: 'Screen calibration'};
+  const introKey = 'iol-simulator-intro-seen';
+  const titles = {about: 'IOL Vision Simulator', settings: 'Settings', calibrate: 'Screen calibration'};
+
+  onMount(() => {
+    try {
+      if (!localStorage.getItem(introKey)) panel = 'about';
+    } catch {
+      panel = 'about';
+    }
+  });
 
   $: options = $simulationMethod === 'physics' ? physicsOptions : acuityOptions;
   $: selection = $simulationMethod === 'physics' ? $physicsSelection : $acuitySelection;
   $: cardPpm = calculateCssPixelsPerMillimeterFromCreditCardShortEdge(cardShortEdgePx);
   $: calibrationErrors = validateDisplayParams(viewingDraft, calculatePPIFromPixelsPerMillimeter(cardPpm)).errors;
   $: shownDistance = Math.round(-100 / (displayedDefocus ?? $masterDefocus));
+
+  function closePanel() {
+    if (panel === 'about') {
+      try { localStorage.setItem(introKey, '1'); } catch { /* Storage can be unavailable. */ }
+    }
+    panel = null;
+  }
+
+  function focusPanelButton(node: HTMLButtonElement) {
+    node.focus({ preventScroll: true });
+  }
 
   function openCalibration() {
     cardShortEdgePx = Math.round(calculateCreditCardShortEdgePixelsFromCssPixelsPerMillimeter($effectiveCssPxPerMm));
@@ -66,15 +86,14 @@
   <meta name="description" content="Compare intraocular lens models on a physically calibrated display using optrace optics." />
 </svelte:head>
 
-<svelte:window on:keydown={event => { if (event.key === 'Escape') panel = null; }} />
+<svelte:window on:keydown={event => { if (event.key === 'Escape' && panel) closePanel(); }} />
 
-<div class="app-shell">
+<div class="app-shell" inert={panel !== null}>
   <header class="top-bar">
-    <div>
-      <h1>IOL Vision Simulator</h1>
-      <p>{$simulationMethod === 'physics' ? 'Physics-based (optrace)' : 'Acuity-derived'}</p>
+    <div class="methods" role="group" aria-label="Simulation method">
+      <button type="button" aria-pressed={$simulationMethod === 'physics'} on:click={() => simulationMethod.set('physics')}>Physics-based (optrace)</button>
+      <button type="button" aria-pressed={$simulationMethod === 'acuity'} on:click={() => simulationMethod.set('acuity')}>Acuity-derived</button>
     </div>
-    <button class:calibrated={$hasCalibration} class="calibrate" type="button" on:click={openCalibration}>Calibrate</button>
   </header>
 
   <div class="selectors" class:dual={$splitViewEnabled}>
@@ -99,37 +118,31 @@
   <section class="controls" aria-label="Simulated object distance">
     <div class="distance-heading"><span>Object distance</span><output>{shownDistance} cm</output></div>
     <div class="distance-adjust">
-      <button type="button" aria-label="Move simulated object closer by 0.1 D" disabled={$masterDefocus <= -4} on:click={() => stepDistance(-1)}>−</button>
-      <input class="range" type="range" aria-label="Holding distance" aria-valuetext={`${Math.round(-100 / $masterDefocus)} cm`}
+      <DistanceStep direction={-1} disabled={panel !== null || $masterDefocus <= -4} step={stepDistance} />
+      <input class="range" type="range" aria-label="Object distance" aria-valuetext={`${Math.round(-100 / $masterDefocus)} cm`}
         min="-4" max="-1" step="0.1" bind:value={$masterDefocus} />
-      <button type="button" aria-label="Move simulated object farther by 0.1 D" disabled={$masterDefocus >= -1} on:click={() => stepDistance(1)}>+</button>
-    </div>
-    <div class="presets" aria-label="Distance presets">
-      {#each distances as distance}
-        <button type="button" aria-pressed={$masterDefocus === distance.defocus} on:click={() => masterDefocus.set(distance.defocus)}>
-          {distance.label} <span>{distance.cm} cm</span>
-        </button>
-      {/each}
+      <DistanceStep direction={1} disabled={panel !== null || $masterDefocus >= -1} step={stepDistance} />
     </div>
   </section>
 
   <nav class="actions" aria-label="Simulator controls">
+    <button type="button" on:click={openCalibration}>Calibrate</button>
     <button type="button" aria-pressed={$splitViewEnabled} on:click={() => splitViewEnabled.update(value => !value)}>Compare</button>
     <button type="button" on:click={() => panel = 'settings'}>Settings</button>
-    <button type="button" on:click={() => panel = 'about'}>About</button>
   </nav>
 </div>
 
 {#if panel}
+  {#key panel}
   <div class="overlay">
-    <button class="backdrop" type="button" aria-label="Close panel" on:click={() => panel = null}></button>
+    <button class="backdrop" type="button" tabindex="-1" aria-label="Close panel" on:click={closePanel}></button>
     <section class="panel" role="dialog" aria-modal="true" aria-label={titles[panel]}>
       <header class="panel-header">
         <h2>{titles[panel]}</h2>
         {#if panel === 'calibrate'}
-          <button type="button" disabled={calibrationErrors.length > 0} on:click={saveCalibration}>Done</button>
+          <button type="button" use:focusPanelButton disabled={calibrationErrors.length > 0} on:click={saveCalibration}>Done</button>
         {:else}
-          <button type="button" on:click={() => panel = null}>Done</button>
+          <button type="button" use:focusPanelButton on:click={closePanel}>{panel === 'about' ? 'Start' : 'Done'}</button>
         {/if}
       </header>
       {#if panel === 'calibrate'}
@@ -143,11 +156,6 @@
         {#each calibrationErrors as error}<p class="calibration-error">{error}</p>{/each}
         <p class="note">Keep this distance, avoid browser zoom, and make sure you can focus on the screen. Use consistent brightness and room lighting when comparing lenses.</p>
       {:else if panel === 'settings'}
-        <div class="field-title" id="method-label">Simulation Method</div>
-        <div class="methods" role="group" aria-labelledby="method-label">
-          <button type="button" aria-pressed={$simulationMethod === 'physics'} on:click={() => simulationMethod.set('physics')}>Physics-based (optrace)</button>
-          <button type="button" aria-pressed={$simulationMethod === 'acuity'} on:click={() => simulationMethod.set('acuity')}>Acuity-derived</button>
-        </div>
         {#if $simulationMethod === 'acuity'}
           <label for="target-refraction-left">{$splitViewEnabled ? 'Left target refraction' : 'Target refraction'} <span>{$targetRefraction.toFixed(2)} D</span></label>
           <input id="target-refraction-left" class="range" type="range" min="-3" max=".5" step=".25" bind:value={$targetRefraction} />
@@ -159,10 +167,11 @@
         {:else}
           <p class="note">Physics-based rendering uses fixed distance-corrected optical models.</p>
         {/if}
+        <button type="button" class="about-link" on:click={() => panel = 'about'}>About the simulation</button>
       {:else}
-        <p>A display-calibrated, interactive simulator that brings optrace optical simulations to ordinary phones and computers.</p>
-        <p>Physics-based rendering uses point-spread functions for a 3 mm pupil and an average cornea. Acuity-derived rendering maps clinical defocus curves to equivalent Gaussian blur.</p>
-        <p class="note">The illustration compares modeled image formation and provides a research demonstration.</p>
+        <p>Compare how intraocular lenses render near objects and distant scenes on a calibrated screen.</p>
+        <p><strong>Physics-based</strong> uses optrace point-spread functions. <strong>Acuity-derived</strong> estimates blur from clinical defocus curves.</p>
+        <p class="note">Tap Calibrate with a credit card ready. Choose a lens, adjust the object distance, then tap Compare for a split view.</p>
         <div class="papers">
           <a href="https://doi.org/10.1167/tvst.13.8.33" target="_blank" rel="noreferrer">Mendroch et al. · Functional Design Analysis (2024)</a>
           <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12758424/" target="_blank" rel="noreferrer">Mendroch et al. · Polychromatic Virtual Retinal Imaging (2025)</a>
@@ -170,51 +179,47 @@
       {/if}
     </section>
   </div>
+  {/key}
 {/if}
 
 <style>
-  .app-shell{height:100dvh;max-width:1100px;margin:auto;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;background:#fff;color:#172b35}
+  .app-shell,.overlay{--ink:#172b35;--muted:#526571;--line:#e2e8f0;--accent:#1d4ed8;--active:#dbeafe}
+  .app-shell{height:100dvh;max-width:1100px;margin:auto;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;background:#fff;color:var(--ink)}
   .top-bar,.selectors,.controls,.actions{padding-inline:clamp(.65rem,3vw,1.25rem)}
-  .top-bar{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding-block:.58rem .42rem}
-  h1{font-size:clamp(1.05rem,3.7vw,1.5rem);font-weight:750;line-height:1.15;margin:0}
-  .top-bar p{font-size:.73rem;color:#526571;margin:.22rem 0 0}
+  .top-bar{padding-block:calc(env(safe-area-inset-top,0px) + .32rem) .24rem}
+  .methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.2rem;padding:.16rem;border:1px solid var(--line);border-radius:.65rem;background:#f8fafc}
+  .methods button,.actions button{min-height:44px;border-radius:.52rem;font-size:.82rem;font-weight:650;touch-action:manipulation}
+  .methods button{padding-inline:.2rem;line-height:1.15}
   button{cursor:pointer;color:inherit}
-  button:focus-visible,.range:focus-visible{outline:2px solid #116c74;outline-offset:2px}
+  button:focus-visible,.range:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
   button:disabled{cursor:default;opacity:.45}
-  .calibrate,.panel-header button{border:1px solid #185c61;border-radius:.6rem;min-height:44px;padding:0 .85rem;background:#185c61;color:#fff;font-size:.81rem;font-weight:650}
-  .calibrate.calibrated{background:#eaf4f2;color:#174c51;border-color:#c5dedb}
-  .selectors{display:grid;grid-template-columns:minmax(0,1fr);align-items:end;gap:.55rem;min-height:64px;padding-bottom:.4rem}
+  .panel-header button{border-radius:.55rem;min-height:44px;padding:0 .85rem;background:#172b35;color:#fff;font-size:.81rem;font-weight:650}
+  .selectors{display:grid;grid-template-columns:minmax(0,1fr);align-items:end;gap:.42rem;padding-block:.12rem .38rem}
   .selectors.dual{grid-template-columns:repeat(2,minmax(0,1fr))}
   .selectors>div{min-width:0}
-  .side-label{display:block;color:#526571;font-size:.69rem;font-weight:650;margin-bottom:.1rem}
+  .side-label{display:block;color:var(--muted);font-size:.69rem;font-weight:650;margin-bottom:.1rem}
   .scene-area{overflow:hidden;background:#edf0ed}
-  .controls{padding-top:.32rem;border-top:1px solid #dce5e6}
-  .distance-heading{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:#526571;font-weight:600}
-  output{font-size:.96rem;color:#172b35;font-variant-numeric:tabular-nums;font-weight:700}
-  .distance-adjust{display:grid;grid-template-columns:50px minmax(0,1fr) 50px;gap:.65rem;align-items:center}
-  .distance-adjust button{height:50px;border-radius:.65rem;background:#eaf4f2;font-size:1.42rem;font-weight:650;color:#174c51}
-  .range{width:100%;height:44px;accent-color:#185c61;margin:0}
-  .presets,.actions,.methods{display:grid;gap:.35rem}
-  .presets,.actions{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .presets button,.actions button,.methods button{min-height:44px;border-radius:.6rem;font-size:.8rem;font-weight:650}
-  .presets span{color:#526571;font-weight:500;margin-left:.15rem;white-space:nowrap}
-  .actions{padding-bottom:env(safe-area-inset-bottom,0px);border-top:1px solid #dce5e6}
-  button[aria-pressed="true"]{background:#eaf4f2;color:#174c51}
+  .controls{padding-block:.18rem .26rem;border-top:1px solid var(--line)}
+  .distance-heading{display:flex;justify-content:center;align-items:baseline;gap:.45rem;font-size:.8rem;color:var(--muted);font-weight:600}
+  output{min-width:3.1em;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:700}
+  .distance-adjust{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:.62rem;align-items:center}
+  .range{width:100%;height:44px;accent-color:var(--accent);margin:0}
+  .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.25rem;padding-bottom:env(safe-area-inset-bottom,0px);border-top:1px solid var(--line)}
+  button[aria-pressed="true"]{background:var(--active);color:var(--accent)}
   .overlay{position:fixed;inset:0;z-index:60;display:grid;align-items:end;justify-items:center}
   .backdrop{position:absolute;inset:0;background:#13242c80}
-  .panel{position:relative;width:min(100%,38rem);max-height:90dvh;overflow:auto;padding:1rem 1rem max(1rem,env(safe-area-inset-bottom));border-radius:1rem 1rem 0 0;background:white;color:#172b35}
+  .panel{position:relative;width:min(100%,38rem);max-height:90dvh;overflow:auto;padding:1rem 1rem max(1rem,env(safe-area-inset-bottom));border-radius:1rem 1rem 0 0;background:white;color:var(--ink)}
   .panel-header{display:flex;align-items:center;justify-content:space-between;gap:1rem}
   .panel h2{font-size:1.15rem;font-weight:750;margin:0}
   .panel p{font-size:.9rem;line-height:1.45;margin:.65rem 0}
-  .panel .note{color:#526571;font-size:.81rem}
-  .field-title,.panel label{display:flex;justify-content:space-between;font-weight:650;font-size:.84rem;margin:.7rem 0 .2rem}
-  .panel label span{color:#526571;font-variant-numeric:tabular-nums}
-  .card-stage{display:grid;place-items:center;min-height:50px;overflow:hidden;background:#f1f6f6;border-radius:.55rem}
-  .card-guide{height:20px;border:solid #185c61;border-width:0 2px 2px;max-width:none}
+  .panel .note{color:var(--muted);font-size:.81rem}
+  .panel label{display:flex;justify-content:space-between;font-weight:650;font-size:.84rem;margin:.7rem 0 .2rem}
+  .panel label span{color:var(--muted);font-variant-numeric:tabular-nums}
+  .card-stage{display:grid;place-items:center;min-height:50px;overflow:hidden;background:#f1f5f9;border-radius:.55rem}
+  .card-guide{height:20px;border:solid var(--accent);border-width:0 2px 2px;max-width:none}
   .calibration-error{color:#a22626}
-  .methods{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .methods button{border:1px solid #cddbdd;padding:.35rem}
-  .papers{display:grid;gap:.5rem;font-size:.82rem;color:#185c61}
-  .papers a{text-decoration:underline;text-underline-offset:.15em}
-  @media(min-width:720px){.panel{border-radius:1rem;margin-bottom:1rem}.scene-area{border-inline:1px solid #dce5e6}}
+  .papers{display:grid;gap:.5rem;font-size:.82rem;color:var(--accent)}
+  .papers a,.about-link{text-decoration:underline;text-underline-offset:.15em}
+  .about-link{min-height:44px;font-size:.82rem;color:var(--accent)}
+  @media(min-width:720px){.panel{border-radius:1rem;margin-bottom:1rem}.scene-area{border-inline:1px solid var(--line)}}
 </style>

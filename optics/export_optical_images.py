@@ -32,8 +32,15 @@ MINIMUM_DENSITIES = {
     'aspheric_monofocal_dc_v1': {10: 8192},
     'spherical_monofocal_dc_v1': dict.fromkeys([10, 11, 12, 13, 14, 15, 16, 19], 8192),
     'vivity_inspired_v2_1_dc_v1': {
-        10: 16384, 11: 16384, 12: 12288, 13: 8192, 14: 8192, 15: 8192, 16: 8192,
+        10: 16384, 11: 16384, 13: 8192, 14: 8192, 15: 8192, 16: 8192,
     },
+}
+# (source density, maximum output density). Keep smaller levels available
+# where the credit card artwork passes the dense-reference convergence gate.
+LEVEL_OVERRIDES = {
+    ('spherical_monofocal_dc_v1', 17): [(4096, 2010), (5120, 3005), (8192, None)],
+    ('vivity_inspired_v2_1_dc_v1', 12): [(12288, 7100), (16384, None)],
+    ('vivity_inspired_v2_1_dc_v1', 18): [(4096, 2010), (5120, 3005), (8192, None)],
 }
 CARD = json.loads((PUBLIC / 'reading-card.json').read_text('utf8'))
 WIDTH_MM, HEIGHT_MM = CARD['objectWidthMm'], CARD['objectHeightMm']
@@ -41,6 +48,12 @@ WIDTH_MM, HEIGHT_MM = CARD['objectWidthMm'], CARD['objectHeightMm']
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def covers_output(level, pixels_per_tan_theta):
+    return (max(pixels_per_tan_theta) <= level.get('maxOutputDensity', float('inf'))
+            and all(source + 1e-7 >= target
+                    for source, target in zip(level['pixelsPerTanTheta'], pixels_per_tan_theta)))
 
 
 def read_psf(entry):
@@ -108,10 +121,15 @@ def export_model(page, library, model, output, demands, densities):
         node = {'objectVergenceD': demand, 'psfSha256': source['sha256'],
                 'retinalMmPerTanTheta': source['retinalMmPerTanTheta'], 'levels': []}
         start = time.perf_counter()
-        minimum = MINIMUM_DENSITIES.get(model, {}).get(round(demand * 10), DENSITIES[0])
-        levels = densities or [density for density in DENSITIES if density >= minimum] or [minimum]
-        for density in levels:
+        node_key = round(demand * 10)
+        minimum = MINIMUM_DENSITIES.get(model, {}).get(node_key, DENSITIES[0])
+        defaults = [density for density in DENSITIES if density >= minimum] or [minimum]
+        configured = LEVEL_OVERRIDES.get((model, node_key), [(density, None) for density in defaults])
+        levels = [(density, None) for density in densities] if densities else configured
+        for density, max_output in levels:
             fg, alpha, metadata = optical_layer(page, source, energy, demand, density)
+            if max_output is not None:
+                metadata['maxOutputDensity'] = max_output
             rgb, error = pack(fg, alpha)
             coverage=(((rgb[:,:,1].astype(np.uint16)&15)<<8)|rgb[:,:,2])/4095
             mass=coverage.sum();px,py=metadata['pixelsPerTanTheta'];x0,_,y0,_=metadata['extentTanTheta']

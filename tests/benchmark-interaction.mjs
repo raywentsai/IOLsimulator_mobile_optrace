@@ -4,7 +4,7 @@ const [baseline, candidate] = process.argv.slice(2);
 if (!baseline || !candidate) throw new Error('Pass the baseline and candidate app URLs in that order');
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? 'playwright');
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
-const slider = '[aria-label="Holding distance"]';
+const slider = 'input[aria-label="Object distance"], input[aria-label="Holding distance"]';
 const physicsLabels = {
   zcb00: ['aspheric_monofocal_dc_v1', 'Alcon Aspheric Monofocal'],
   vivity: ['vivity_inspired_v2_1_dc_v1', 'Synthetic Refractive EDOF']
@@ -27,7 +27,18 @@ async function setup(page, url, { split, lens, distance, card }) {
   url.searchParams.set('diagnostics', '1');
   await page.goto(url.href);
   await waitForFrame(page, { backgroundReady: true });
+  if (await button(page, 'Start').count()) await button(page, 'Start').click();
   if (await button(page, 'Done').count()) await button(page, 'Done').click();
+  const topMethod = page.getByRole('group', { name: 'Simulation method' });
+  let hasRegistry = true;
+  if (await topMethod.count()) {
+    await topMethod.getByRole('button', { name: 'Physics-based (optrace)', exact: true }).click();
+  } else {
+    await button(page, 'Settings').click();
+    hasRegistry = await button(page, 'Physics-based (optrace)').count() > 0;
+    await button(page, hasRegistry ? 'Physics-based (optrace)' : 'Physics-based (OPTrace PSF)').click();
+    await button(page, 'Done').click();
+  }
   if (card !== undefined) {
     await button(page, 'Calibrate').click();
     for (const [id, value] of [['calibrate-card-size', card], ['calibrate-viewing-distance', distance]]) {
@@ -38,10 +49,6 @@ async function setup(page, url, { split, lens, distance, card }) {
     }
     await button(page, 'Done').click();
   }
-  await button(page, 'Settings').click();
-  const hasRegistry = await button(page, 'Physics-based (optrace)').count() > 0;
-  await button(page, hasRegistry ? 'Physics-based (optrace)' : 'Physics-based (OPTrace PSF)').click();
-  await button(page, 'Done').click();
   if (lens !== 'zcb00') {
     await button(page, 'Primary IOL').click();
     await button(page, hasRegistry ? physicsLabels[lens][1] : 'Vivity-like EDOF').click();

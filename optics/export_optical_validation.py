@@ -4,7 +4,7 @@ import hashlib
 import json
 import numpy as np
 import pymupdf
-from export_optical_images import PUBLIC, MODELS, read_psf, optical_layer, raster_card
+from export_optical_images import PUBLIC, MODELS, read_psf, optical_layer, raster_card, covers_output
 from angular_sampling import resample
 from validate_library import encode, decode
 
@@ -19,8 +19,7 @@ def model_fixtures(page, psfs, model):
         infinity=next(e for e in psfs['entries'] if e['model']==model and e['objectVergenceD']==0)
         energy=read_psf(near)
         fg,alpha,metadata=optical_layer(page,near,energy,demand,4096)
-        level=next(level for level in node['levels'] if all(
-            source + 1e-7 >= target for source, target in zip(level['pixelsPerTanTheta'], metadata['pixelsPerTanTheta'])))
+        level=next(level for level in node['levels'] if covers_output(level, metadata['pixelsPerTanTheta']))
         compare_dynamic=level['density']==metadata['density']
         if not compare_dynamic:
             # Validate browser resampling against the dense, unquantized oracle.

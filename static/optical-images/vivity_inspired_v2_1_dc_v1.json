@@ -3,7 +3,7 @@
   "model": "vivity_inspired_v2_1_dc_v1",
   "identity": {
     "label": "Synthetic Refractive EDOF",
-    "reference": "Synthetic Vivity-like optical model informed by Garzón et al.'s radial-power data",
+    "reference": "Synthetic Vivity-like optical model informed by Garz\u00f3n et al.'s radial-power data",
     "source": "https://doi.org/10.5281/zenodo.18084296"
   },
   "encoding": "opaque-rgb-f12-a12",
@@ -14,7 +14,7 @@
     85.6,
     53.98
   ],
-  "cardSvgCanonicalSha256": "0a765c8faa4a000a0bbecf1963739a137327d4bd67897c4d87cb94e53c5e580e",
+  "cardSvgCanonicalSha256": "494b2286f7bad516ea7c43c062e69a7ecfca92b4e778a8a05918726f448834b5",
   "assumptions": "existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y",
   "background": "independent infinity PSF; never blur background with a near node",
   "software": {
@@ -24,7 +24,7 @@
   },
   "entries": [
     {
-      "objectVergenceD": 1,
+      "objectVergenceD": 1.0,
       "psfSha256": "9f63fedab9ac8044588dbba69ac8a53d0bb0eb842f336bbafdfa81499b3c2df5",
       "retinalMmPerTanTheta": 16.80946277187097,
       "levels": [
@@ -56,22 +56,22 @@
             491,
             491
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -3.981431906750745e-7,
+            -3.981431906750711e-07,
             -0.02698846455784515
           ],
           "coverageCentroidTanTheta": [
-            -4.0939767788852045e-7,
+            -4.0939767788852045e-07,
             -0.026988334816638617
           ],
-          "centroidErrorTanTheta": 1.3022843066984614e-7,
-          "coverageAreaRelativeError": -0.0000034761109760639286,
+          "centroidErrorTanTheta": 1.3022843066984643e-07,
+          "coverageAreaRelativeError": -3.4761109760639286e-06,
           "file": "vivity_10_16384.png",
-          "bytes": 501762,
-          "fileSha256": "e5eec926d032864bf3c4b612c3e30948b6159e909e9a4896d4357c2bc4cdb81d",
-          "decodedRgbaSha256": "d278ce847b8ead7489c774f410b86ad571e62a2d2720a01fd2ce9bd8052fc84a",
-          "maxLinearQuantizationError": 0.0001221001146362033
+          "bytes": 578180,
+          "fileSha256": "bb93cebf383510095ef8d83921f586ca515530f43b5d2294cf19727a1967dc82",
+          "decodedRgbaSha256": "5f39b497eb4336d3f8ce55184dbfb030f9e02bcc2cabd66e1ef6c14fd9af445b",
+          "maxLinearQuantizationError": 0.00012210011715485525
         }
       ]
     },
@@ -108,21 +108,21 @@
             491,
             491
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -4.2743271134999856e-7,
+            -4.2743271134999856e-07,
             -0.029687288193531763
           ],
           "coverageCentroidTanTheta": [
-            -4.4572354275524134e-7,
+            -4.4572354275524134e-07,
             -0.029687366280679667
           ],
-          "centroidErrorTanTheta": 8.020073055331049e-8,
-          "coverageAreaRelativeError": -0.0000029715435763133513,
+          "centroidErrorTanTheta": 8.020073055331049e-08,
+          "coverageAreaRelativeError": -2.9715435763133513e-06,
           "file": "vivity_11_16384.png",
-          "bytes": 565226,
-          "fileSha256": "a0a32b6068ae7474f9df69f0709f112ace79742c7f4162239898470c108aa63e",
-          "decodedRgbaSha256": "b7df26bc630bb8c5155bbc39cb95c3c041d86ddbef1fe265bb90f07a806e53f5",
+          "bytes": 653274,
+          "fileSha256": "87254ed39821599d57d3244107244f2aabfad56177425d7afcb4579866a50a21",
+          "decodedRgbaSha256": "9b5de121fc0a8a41531be8e6ecf88b9162497e005156dbeb781c9745439efea7",
           "maxLinearQuantizationError": 0.00012210004723811618
         }
       ]
@@ -160,22 +160,68 @@
             369,
             369
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -8.316329765222568e-7,
+            -8.316329765222568e-07,
             -0.032384819855370055
           ],
+          "maxOutputDensity": 7100,
           "coverageCentroidTanTheta": [
-            -8.830499247526266e-7,
+            -8.830499247526266e-07,
             -0.03238473910749485
           ],
-          "centroidErrorTanTheta": 9.572837570733775e-8,
-          "coverageAreaRelativeError": -0.000002030561523702623,
+          "centroidErrorTanTheta": 9.572837570733775e-08,
+          "coverageAreaRelativeError": -2.030561523702623e-06,
           "file": "vivity_12_12288.png",
-          "bytes": 397065,
-          "fileSha256": "7cbbd78035ecc70445e3b270aae1a94e294c91e37dba011bf73f751730f89295",
-          "decodedRgbaSha256": "bebbb963706416692d1091834f9f3e0f30479fed66e08d173d4a3fa797b0f4ec",
-          "maxLinearQuantizationError": 0.00012210010033220087
+          "bytes": 464336,
+          "fileSha256": "2e25aeb3fe91f5d16b180c247ea7375e88a3357b2d779f8f72c317858fcf7ca1",
+          "decodedRgbaSha256": "d7db1c548283e1103085d29feafcce4e8c118524735739b62fec2deccfe976ec",
+          "maxLinearQuantizationError": 0.00012210011780455776
+        },
+        {
+          "width": 2173,
+          "height": 1551,
+          "density": 16384,
+          "pixelsPerTanTheta": [
+            16384.345794392528,
+            16379.523280227244
+          ],
+          "extentTanTheta": [
+            -0.06631329768270944,
+            0.06631329768270944,
+            -0.07973370028275212,
+            0.014957700282752121
+          ],
+          "cardPixels": [
+            1683,
+            1061
+          ],
+          "cardExtentTanTheta": [
+            -0.05135999999999999,
+            0.05135999999999999,
+            -0.064776,
+            0
+          ],
+          "kernelPixels": [
+            491,
+            491
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -8.666900012501018e-07,
+            -0.032384829859829566
+          ],
+          "coverageCentroidTanTheta": [
+            -9.210804999742641e-07,
+            -0.03238481892956681
+          ],
+          "centroidErrorTanTheta": 5.547789645803747e-08,
+          "coverageAreaRelativeError": -2.013596291927655e-06,
+          "file": "vivity_12_16384.png",
+          "bytes": 732167,
+          "fileSha256": "dc2639a6d7f72499db91a06d6c16dc2d372015dcbde8bcaecadc4c119c765b59",
+          "decodedRgbaSha256": "d39a314c0f4c828fecb558ac5773012804ed56b375b43e62a9ac8a4b08a82abe",
+          "maxLinearQuantizationError": 0.00012210005668489288
         }
       ]
     },
@@ -214,20 +260,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -2.402681881986732e-7,
+            -2.402681881986732e-07,
             -0.03508260436738541
           ],
           "coverageCentroidTanTheta": [
-            -3.34898289462438e-7,
+            -3.34898289462438e-07,
             -0.03508255118374823
           ],
-          "centroidErrorTanTheta": 1.0855116456798606e-7,
-          "coverageAreaRelativeError": -0.0000025034716110150512,
+          "centroidErrorTanTheta": 1.0855116456798606e-07,
+          "coverageAreaRelativeError": -2.5034716110150512e-06,
           "file": "vivity_13_8192.png",
-          "bytes": 231346,
-          "fileSha256": "628a55726edd540cb0783307d04e758b8f8de9d97440d4861d897e62efd108a7",
-          "decodedRgbaSha256": "4f297a74ca33e7d80cb5793a716177223608eda6bfe5532fc87922aa78788698",
-          "maxLinearQuantizationError": 0.0001221000345347223
+          "bytes": 270214,
+          "fileSha256": "6f576a580986d3842cdbeb4cf2eaa59e1afb9bc7b8d680a406b56892e62eef9f",
+          "decodedRgbaSha256": "dae85aa2fa73790a7a98f7392ecddb946c68543a6d38ad462dcacfed81c7d51e",
+          "maxLinearQuantizationError": 0.00012210000269097243
         }
       ]
     },
@@ -264,22 +310,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            1.532872603891065e-7,
+            1.532872603891065e-07,
             -0.0377828706853919
           ],
           "coverageCentroidTanTheta": [
-            2.2485109387376634e-7,
+            2.2485109387376634e-07,
             -0.037782919820823845
           ],
-          "centroidErrorTanTheta": 8.680825384421308e-8,
-          "coverageAreaRelativeError": -0.0000018074236064480331,
+          "centroidErrorTanTheta": 8.680825384421308e-08,
+          "coverageAreaRelativeError": -1.8074236064480331e-06,
           "file": "vivity_14_8192.png",
-          "bytes": 251752,
-          "fileSha256": "77ca56972d329e383c5083ec409b24d2745ab85c2f6b43fd710303013e061085",
-          "decodedRgbaSha256": "aee651f4cc0ce15f0adf5b7804618bde5f819319e69af9d6d418bdc1162c00bb",
-          "maxLinearQuantizationError": 0.000122099996740066
+          "bytes": 296312,
+          "fileSha256": "b2549d96c6c3dc00b5cc96885238b9dc8a12a83566bb8751d81641e534fe17a5",
+          "decodedRgbaSha256": "f6ac830fe8e46d74e7cda3fe7ce38adc533af218e894a873b7f914307fa32e8e",
+          "maxLinearQuantizationError": 0.00012210002409908307
         }
       ]
     },
@@ -316,22 +362,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -6.128838754010078e-7,
+            -6.128838754010078e-07,
             -0.040480547702744576
           ],
           "coverageCentroidTanTheta": [
-            -6.041531401358718e-7,
+            -6.041531401358718e-07,
             -0.04048052296352272
           ],
-          "centroidErrorTanTheta": 2.6234611421518606e-8,
-          "coverageAreaRelativeError": -0.0000013794725010063402,
+          "centroidErrorTanTheta": 2.6234611421518606e-08,
+          "coverageAreaRelativeError": -1.3794725010063402e-06,
           "file": "vivity_15_8192.png",
-          "bytes": 275489,
-          "fileSha256": "4c2eb98143888b60223ae8613a8f86ff26b5cdc8eaeeca7d77bbe3eaf5a4ad54",
-          "decodedRgbaSha256": "20a7d53c7a9cfdbe4ae086b1e0644f9a35971a470e0023d6c32cf8ba095a993f",
-          "maxLinearQuantizationError": 0.00012210010988555897
+          "bytes": 323917,
+          "fileSha256": "0e5c1b33b64499bd72a45a75e82c2ecdc336cf4b3b66bd3f2e716e3bac7e497e",
+          "decodedRgbaSha256": "0eb6cb54ac2feb33b12353314bac3e794631d0c7eb22951b892fae11e4cfa7e3",
+          "maxLinearQuantizationError": 0.00012209998678014422
         }
       ]
     },
@@ -368,22 +414,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -4.146804826898162e-7,
+            -4.146804826898162e-07,
             -0.04318035970379368
           ],
           "coverageCentroidTanTheta": [
-            -4.44807044181622e-7,
+            -4.44807044181622e-07,
             -0.043180313600816825
           ],
-          "centroidErrorTanTheta": 5.507353431559106e-8,
-          "coverageAreaRelativeError": -0.0000012788314549538882,
+          "centroidErrorTanTheta": 5.507353431559106e-08,
+          "coverageAreaRelativeError": -1.2788314549538882e-06,
           "file": "vivity_16_8192.png",
-          "bytes": 297820,
-          "fileSha256": "1a637bd3e119352461916cadce6869ae0bed0f39101073015c8bcdc1240d4964",
-          "decodedRgbaSha256": "4449f2b80633ff5b4b9533d2cbf1b3a52959c7665210af39f247133c9c9f7fb8",
-          "maxLinearQuantizationError": 0.0001220998967191778
+          "bytes": 352486,
+          "fileSha256": "8eae27f751716f41a5287ce862390cfe67d0188df48fdeacfb20ebcd0f854e48",
+          "decodedRgbaSha256": "6340db258805be8c91daa92b9a3ad6551105aaaaf8fa4fbd48997510bc108874",
+          "maxLinearQuantizationError": 0.00012210003846421227
         }
       ]
     },
@@ -420,22 +466,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -9.42797133547137e-7,
+            -9.42797133547137e-07,
             -0.0458798915475689
           ],
           "coverageCentroidTanTheta": [
-            -0.0000010998779107601148,
+            -1.0998779107601148e-06,
             -0.04587980653630848
           ],
-          "centroidErrorTanTheta": 1.7860930817859823e-7,
-          "coverageAreaRelativeError": -0.000001053752124779983,
+          "centroidErrorTanTheta": 1.7860930817859823e-07,
+          "coverageAreaRelativeError": -1.053752124779983e-06,
           "file": "vivity_17_4096.png",
-          "bytes": 106807,
-          "fileSha256": "dea25252f1fbf0176c2cd90aefb311eaf8c10c6ff2ce3ab9d0f88f489c1d6672",
-          "decodedRgbaSha256": "05c68f83f48c85ff77363f74c9025d6b5ae58d6dd98588e308e5f5c10d086b4a",
-          "maxLinearQuantizationError": 0.000122099732590919
+          "bytes": 125239,
+          "fileSha256": "01781981dc3638bc209423e07d1b1d39f512071e2f836f9a365cfd8721f69778",
+          "decodedRgbaSha256": "798fc939f20055db060875dd3b5a86c75c78a3f0bba9c734aa71d382bdf67ee1",
+          "maxLinearQuantizationError": 0.00012209977076071965
         },
         {
           "width": 1438,
@@ -465,22 +511,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000012514535323613756,
+            -1.2514535323613756e-06,
             -0.04587964057258706
           ],
           "coverageCentroidTanTheta": [
-            -0.0000012293889710992504,
+            -1.2293889710992504e-06,
             -0.045879611381938565
           ],
-          "centroidErrorTanTheta": 3.6591512995282326e-8,
-          "coverageAreaRelativeError": -0.0000011978666216716505,
+          "centroidErrorTanTheta": 3.6591512995282326e-08,
+          "coverageAreaRelativeError": -1.1978666216716505e-06,
           "file": "vivity_17_8192.png",
-          "bytes": 323195,
-          "fileSha256": "c254dc88b5baa8b69acf22034b867b10a4dfaa4012f02765eb61003ec003b072",
-          "decodedRgbaSha256": "2529e926c60c537b69bec247996d3d2a5f8ad14bd1f98e9ba98af606e3d7fc72",
-          "maxLinearQuantizationError": 0.00012209988234412883
+          "bytes": 380923,
+          "fileSha256": "b7fefe7224fd2e326a010b86dc4a24ec099039ef14d8bb31c5e745027dd25ddf",
+          "decodedRgbaSha256": "c9cd225d7f7ab67940a8c2da883e8476e91043f20a3d1b3f67881dccaf2afae1",
+          "maxLinearQuantizationError": 0.0001221001040947467
         }
       ]
     },
@@ -517,22 +563,69 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000015264070849313072,
+            -1.5264070849313072e-06,
             -0.04857832900693838
           ],
+          "maxOutputDensity": 2010,
           "coverageCentroidTanTheta": [
-            -0.0000017475193892730446,
+            -1.7475193892730446e-06,
             -0.04857845878962854
           ],
-          "centroidErrorTanTheta": 2.5638681283865257e-7,
-          "coverageAreaRelativeError": -0.0000013321533760546345,
+          "centroidErrorTanTheta": 2.5638681283865257e-07,
+          "coverageAreaRelativeError": -1.3321533760546345e-06,
           "file": "vivity_18_4096.png",
-          "bytes": 114745,
-          "fileSha256": "f850c5dd7c52f36664e553434895a3bdea61c8577e5c65d8d0006b98209fa31f",
-          "decodedRgbaSha256": "1137147cbffff8bd3b48b23d3be5f3a43c7debd57bc69750d0aa860db785f41c",
-          "maxLinearQuantizationError": 0.0001220994490170879
+          "bytes": 135424,
+          "fileSha256": "e812fc159ecb6fb07dca177256815fca8023db5c6b7e4f79bad387871cf0e0ff",
+          "decodedRgbaSha256": "df63b805123ec1006a0b94c495114f306cf7e80ecda70f0a4123ba58f32a6382",
+          "maxLinearQuantizationError": 0.0001220992869463977
+        },
+        {
+          "width": 943,
+          "height": 651,
+          "density": 5120,
+          "pixelsPerTanTheta": [
+            5120.716510903427,
+            5115.063192128772
+          ],
+          "extentTanTheta": [
+            -0.09207695817490494,
+            0.09207695817490494,
+            -0.11221757746478873,
+            0.015053577464788732
+          ],
+          "cardPixels": [
+            789,
+            497
+          ],
+          "cardExtentTanTheta": [
+            -0.07704,
+            0.07704,
+            -0.097164,
+            0
+          ],
+          "kernelPixels": [
+            155,
+            155
+          ],
+          "kernelEnergy": 1.0,
+          "expectedCoverageCentroidTanTheta": [
+            -1.2544219098646931e-06,
+            -0.04857833370504878
+          ],
+          "maxOutputDensity": 3005,
+          "coverageCentroidTanTheta": [
+            -1.3978309433830769e-06,
+            -0.04857840184978266
+          ],
+          "centroidErrorTanTheta": 1.5877611801127456e-07,
+          "coverageAreaRelativeError": -1.252970016074606e-06,
+          "file": "vivity_18_5120.png",
+          "bytes": 193494,
+          "fileSha256": "11aee0587567de51a7128d0dcf9d537c1ec05595140308a580e8feb509e256d1",
+          "decodedRgbaSha256": "7bc2d269b541e660560e8bf4235160493e2e6c10e80ff67236c927980220e16c",
+          "maxLinearQuantizationError": 0.00012209996902398657
         },
         {
           "width": 1508,
@@ -562,22 +655,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000001400169913198341,
+            -1.400169913198341e-06,
             -0.04857837453276073
           ],
           "coverageCentroidTanTheta": [
-            -0.0000013704221272784722,
+            -1.3704221272784722e-06,
             -0.0485785333104836
           ],
-          "centroidErrorTanTheta": 1.6154038518416677e-7,
-          "coverageAreaRelativeError": -0.0000013044406963480526,
+          "centroidErrorTanTheta": 1.6154038518416677e-07,
+          "coverageAreaRelativeError": -1.3044406963480526e-06,
           "file": "vivity_18_8192.png",
-          "bytes": 346975,
-          "fileSha256": "c77c3404c4b8ecfc9a4e8a03b7e1f6a7a1c0d50f0c59dd96c96b6b64b348a51c",
-          "decodedRgbaSha256": "a8f49cfc7335b8a4d99bdad454ccbdb781100f84aab9c85e17ac6cd68c7c22c5",
-          "maxLinearQuantizationError": 0.00012209991905787199
+          "bytes": 410528,
+          "fileSha256": "28c3d02bf58a3ef1260c1a545c43f5f77f2359783b31d2626d63d256e304c940",
+          "decodedRgbaSha256": "9bd9bef1c274b2edc82bd4b4238e270299f63de3c3473af74bb99018f01ea697",
+          "maxLinearQuantizationError": 0.000122099974533052
         }
       ]
     },
@@ -614,22 +707,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.00000283105720390745,
+            -2.83105720390746e-06,
             -0.051276466500328646
           ],
           "coverageCentroidTanTheta": [
-            -0.0000026757647673349957,
+            -2.6757647673349957e-06,
             -0.0512763730920552
           ],
-          "centroidErrorTanTheta": 1.8122043594861472e-7,
-          "coverageAreaRelativeError": -0.0000010310327771545502,
+          "centroidErrorTanTheta": 1.8122043594862343e-07,
+          "coverageAreaRelativeError": -1.0310327771545502e-06,
           "file": "vivity_19_4096.png",
-          "bytes": 122629,
-          "fileSha256": "c9ff8afdbdc34b3a3b53d0af57a228bf8b7cc6137a86528bfcf168f58cbedb6e",
-          "decodedRgbaSha256": "370961557148a346b4fc4808f30ba9705cb883eb63d408263cf39c99c13c50f8",
-          "maxLinearQuantizationError": 0.000122098953604044
+          "bytes": 144822,
+          "fileSha256": "4daead639f8d89ef935507304cb60dbed0c940d373052a33d734d3185ceb1a4b",
+          "decodedRgbaSha256": "db3817f309ef6c4c8ae9854aa9849d6861aeecfdb4da20033d58287f3da73bf1",
+          "maxLinearQuantizationError": 0.00012209901795723344
         },
         {
           "width": 1578,
@@ -661,25 +754,25 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000025581938613742886,
+            -2.5581938613742886e-06,
             -0.051276400817844146
           ],
           "coverageCentroidTanTheta": [
-            -0.0000025361407642357964,
+            -2.5361407642357964e-06,
             -0.051276432943885626
           ],
-          "centroidErrorTanTheta": 3.8966930012052814e-8,
-          "coverageAreaRelativeError": -9.384930019784576e-7,
+          "centroidErrorTanTheta": 3.8966930012052814e-08,
+          "coverageAreaRelativeError": -9.384930019784576e-07,
           "file": "vivity_19_8192.png",
-          "bytes": 372652,
-          "fileSha256": "de7a2bf3c23a4528c33bf1f10cb2a955858d53e2f6f80aa2d7b9c3d2353c6491",
-          "decodedRgbaSha256": "f3fc335bf934f83c4bee241c8c85eaed8f35e992d1939a8d88bbd8b45959507f",
-          "maxLinearQuantizationError": 0.0001221000794300684
+          "bytes": 439223,
+          "fileSha256": "8d6c266089ce579ee9c8405f27f5aeff1bbfac820f0d19491bf62d28ab57771c",
+          "decodedRgbaSha256": "fcad4796a4396acd843545c48cf8dbdf116ab4a07bb61601823e18301a33a0c7",
+          "maxLinearQuantizationError": 0.00012209996314677764
         }
       ]
     },
     {
-      "objectVergenceD": 2,
+      "objectVergenceD": 2.0,
       "psfSha256": "7ff0c537f203fdfb17fed35ddcc75ace482eb1c25028e98bb10078bfb0c66e4a",
       "retinalMmPerTanTheta": 16.760772620289114,
       "levels": [
@@ -711,22 +804,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000019664574712614335,
+            -1.9664574712614335e-06,
             -0.05397411319826154
           ],
           "coverageCentroidTanTheta": [
-            -0.0000021003416181238676,
+            -2.1003416181238676e-06,
             -0.05397425472475391
           ],
-          "centroidErrorTanTheta": 1.9481969310729924e-7,
-          "coverageAreaRelativeError": -0.0000010119774386252445,
+          "centroidErrorTanTheta": 1.9481969310729924e-07,
+          "coverageAreaRelativeError": -1.0119774386252445e-06,
           "file": "vivity_20_4096.png",
-          "bytes": 131934,
-          "fileSha256": "b77bd701d9185075f52c9728248e5be9608052cb16f79339f9122a79e553abf4",
-          "decodedRgbaSha256": "f6291d1ed9749f0869ec5b08229043c96472651728d733cefe919460e524fe1f",
-          "maxLinearQuantizationError": 0.00012209888447944905
+          "bytes": 156215,
+          "fileSha256": "59311a7b9ab67c51733749ce718131b5c3ed0fadbf8af2d098fbb98046886893",
+          "decodedRgbaSha256": "fc59398c05d5891d0bf296ef07adad4e7e1b9840c61f88afbc5f9f6803e6dcdd",
+          "maxLinearQuantizationError": 0.0001221001149807055
         },
         {
           "width": 1648,
@@ -756,22 +849,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000019426902393590428,
+            -1.9426902393590428e-06,
             -0.05397424566472588
           ],
           "coverageCentroidTanTheta": [
-            -0.0000020056869224267393,
+            -2.0056869224267393e-06,
             -0.053974102482092154
           ],
-          "centroidErrorTanTheta": 1.564284139119329e-7,
-          "coverageAreaRelativeError": -0.0000010647831150123466,
+          "centroidErrorTanTheta": 1.564284139119329e-07,
+          "coverageAreaRelativeError": -1.0647831150123466e-06,
           "file": "vivity_20_8192.png",
-          "bytes": 398615,
-          "fileSha256": "b35cd7ec8b8dbe701f6ccd136d190c4d56d0ffbad1e04fe49816cba461bcdf6a",
-          "decodedRgbaSha256": "d1840a209c65ae8386ebd6301fcd804f4f59a52fb47a4005235382f09c850df3",
-          "maxLinearQuantizationError": 0.00012210003174717432
+          "bytes": 473428,
+          "fileSha256": "58ab3dd40d85c1fdf91e37f94efc8292cedb43b1bd7af4fb45464325ed99dc79",
+          "decodedRgbaSha256": "86af927b7d2841fabd7efe1fd7a4cf452c4d4c72e91dd4ca54806e147fd4ff40",
+          "maxLinearQuantizationError": 0.000122100119453461
         }
       ]
     },
@@ -808,22 +901,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000001946694877859162,
+            -1.946694877859162e-06,
             -0.05667340119019245
           ],
           "coverageCentroidTanTheta": [
-            -0.0000020529086890917196,
+            -2.0529086890917196e-06,
             -0.05667329154919535
           ],
-          "centroidErrorTanTheta": 1.5265163589622506e-7,
-          "coverageAreaRelativeError": -7.286592510480361e-7,
+          "centroidErrorTanTheta": 1.5265163589622506e-07,
+          "coverageAreaRelativeError": -7.286592510480361e-07,
           "file": "vivity_21_4096.png",
-          "bytes": 141549,
-          "fileSha256": "93d4770c7d664adc2674ec7fe4706c17b69a8d39b10ed541f71ab30d75f8cf2a",
-          "decodedRgbaSha256": "35038f918fff8d0fe154b7d2e8dcfd0d38116c83536aaa3666e06790a7945b53",
-          "maxLinearQuantizationError": 0.00012210005730639573
+          "bytes": 166829,
+          "fileSha256": "ec35f56f4061fb4e686cc297c3530f58fa3ece2ae9754ff2907e1d392378a791",
+          "decodedRgbaSha256": "d18f8f1f147888ed2352c3569179a7eafce669a2501a0fb9242853bbf971fac5",
+          "maxLinearQuantizationError": 0.00012209968063492393
         },
         {
           "width": 1719,
@@ -853,22 +946,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000020569805800962854,
+            -2.0569805800962854e-06,
             -0.05667310941671649
           ],
           "coverageCentroidTanTheta": [
-            -0.000001989143641048003,
+            -1.989143641048003e-06,
             -0.05667302687946986
           ],
-          "centroidErrorTanTheta": 1.0683748115856063e-7,
-          "coverageAreaRelativeError": -8.042946708641807e-7,
+          "centroidErrorTanTheta": 1.0683748115856063e-07,
+          "coverageAreaRelativeError": -8.042946708641807e-07,
           "file": "vivity_21_8192.png",
-          "bytes": 425523,
-          "fileSha256": "6415bd3e3da48bd65935ee080cc333c5275ae7e9447fc567b1a40e652bf65ab4",
-          "decodedRgbaSha256": "edc12a4334a6a5b9080199e4f952bff1b5f1b616eaf144f6ad6365918d5ad039",
-          "maxLinearQuantizationError": 0.00012209993794352436
+          "bytes": 508514,
+          "fileSha256": "cd5f6b7cf74a70178a67e5d27eb4ed85115a03bf6ac38db047bdcd97920ed146",
+          "decodedRgbaSha256": "e00f54890a6f87bfd24926bf0c28f327e4eefbfd839bbc71b1d30f2168fd029c",
+          "maxLinearQuantizationError": 0.00012210007393567896
         }
       ]
     },
@@ -907,20 +1000,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000025511945341240375,
+            -2.5511945341240375e-06,
             -0.05937213270751493
           ],
           "coverageCentroidTanTheta": [
-            -0.000002601173333433069,
+            -2.601173333433069e-06,
             -0.059372050527155315
           ],
-          "centroidErrorTanTheta": 9.618467594558876e-8,
-          "coverageAreaRelativeError": -6.869040192203357e-7,
+          "centroidErrorTanTheta": 9.618467594558876e-08,
+          "coverageAreaRelativeError": -6.869040192203357e-07,
           "file": "vivity_22_4096.png",
-          "bytes": 151305,
-          "fileSha256": "255ccd3f7a88c2ed2432651fc173f667928ffa484e56324595d7dc41a4a2caf9",
-          "decodedRgbaSha256": "c9ad0a539af8582e2f534da7c9df94c1f6cd45d1f6b74329f0b0c517c2453884",
-          "maxLinearQuantizationError": 0.0001220999075243201
+          "bytes": 177081,
+          "fileSha256": "db21f9bfe516caad6d7f9b06f041f2c5ec7ba7ec87f4a752376ec7f58c4eaca5",
+          "decodedRgbaSha256": "6333a479d3d0fe419d68194c10a40f7a41bb976e16357219edc7e108028e996b",
+          "maxLinearQuantizationError": 0.00012209986660616234
         },
         {
           "width": 1789,
@@ -950,21 +1043,21 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000025783031144405914,
+            -2.5783031144405914e-06,
             -0.059372073312629836
           ],
           "coverageCentroidTanTheta": [
-            -0.0000025828915892242106,
+            -2.5828915892242106e-06,
             -0.05937219894347917
           ],
-          "centroidErrorTanTheta": 1.2571461492363703e-7,
-          "coverageAreaRelativeError": -6.857533373372249e-7,
+          "centroidErrorTanTheta": 1.2571461492363703e-07,
+          "coverageAreaRelativeError": -6.857533373372249e-07,
           "file": "vivity_22_8192.png",
-          "bytes": 456840,
-          "fileSha256": "5b130ac03012952304e5f89504cda650d5f4306cbf586c922b594a4ff300c87b",
-          "decodedRgbaSha256": "36ed0eb8d631d67fd871ac2da7d41811caa84e585eee281844820faff3167fd5",
+          "bytes": 544187,
+          "fileSha256": "36768d9007970060025f53f23d36c295cb1f7b48911640baf6f6985d17c16dc7",
+          "decodedRgbaSha256": "826b5ff14ec94e3f461805ac215a77332b8d8f7d593d8d4d90dddd1632e99161",
           "maxLinearQuantizationError": 0.00012210005556269462
         }
       ]
@@ -1002,22 +1095,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000002167965000315268,
+            -2.167965000315268e-06,
             -0.06207149930338065
           ],
           "coverageCentroidTanTheta": [
-            -0.0000019614516639340748,
+            -1.9614516639340748e-06,
             -0.06207176929724497
           ],
-          "centroidErrorTanTheta": 3.3991829146792497e-7,
-          "coverageAreaRelativeError": -5.672652374499876e-7,
+          "centroidErrorTanTheta": 3.3991829146792497e-07,
+          "coverageAreaRelativeError": -5.672652374499876e-07,
           "file": "vivity_23_4096.png",
-          "bytes": 160113,
-          "fileSha256": "b1a4e1e202f4b7f42d6aff4babb77565337ccc3422a554adaa356d15fb8bce04",
-          "decodedRgbaSha256": "393705bc4ad9fda022517636ef19a61ee361d88fa8cab8aef88204f6532f631a",
-          "maxLinearQuantizationError": 0.0001221000718003573
+          "bytes": 191291,
+          "fileSha256": "f6fecba67ab9c02e2f2defad1aadb59bc17bcb9d17d421a5a476c06ac6ab20f2",
+          "decodedRgbaSha256": "6f7368104e6be61113fa3bf165b6b5e29a6a15e6f1c47757c1c4af0374b570ae",
+          "maxLinearQuantizationError": 0.00012210005342250252
         },
         {
           "width": 1859,
@@ -1047,22 +1140,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000002399467222943573,
+            -2.399467222943573e-06,
             -0.06207166718486355
           ],
           "coverageCentroidTanTheta": [
-            -0.000002266877159146557,
+            -2.266877159146557e-06,
             -0.06207179117623546
           ],
-          "centroidErrorTanTheta": 1.8153232583978047e-7,
-          "coverageAreaRelativeError": -5.342742359637498e-7,
+          "centroidErrorTanTheta": 1.8153232583978047e-07,
+          "coverageAreaRelativeError": -5.342742359637498e-07,
           "file": "vivity_23_8192.png",
-          "bytes": 483809,
-          "fileSha256": "4a3e9adb4d0742f8847384d529e5d138d0aeb941568e0187aa43c5983b4f8eac",
-          "decodedRgbaSha256": "134cc9729354a9fc904ef19229826c6776746cf81f003d4e98ccd49b3bc9c0d3",
-          "maxLinearQuantizationError": 0.00012210012074898025
+          "bytes": 583802,
+          "fileSha256": "35b2e3dad6f4aee5005ffee1e2a7ee8fe6cab829f52410378578b72a48efaf7f",
+          "decodedRgbaSha256": "fdb04c176c3c20ad42751908c2ea3787982e756b7239cc82a87fd7b4887eb359",
+          "maxLinearQuantizationError": 0.00012210002960622024
         }
       ]
     },
@@ -1099,22 +1192,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004731003829645294,
+            -4.731003829645287e-06,
             -0.06476812812049879
           ],
           "coverageCentroidTanTheta": [
-            -0.000004999569507919029,
+            -4.999569507919029e-06,
             -0.06476803314444794
           ],
-          "centroidErrorTanTheta": 2.848648342292207e-7,
-          "coverageAreaRelativeError": -5.889403097425472e-7,
+          "centroidErrorTanTheta": 2.848648342292271e-07,
+          "coverageAreaRelativeError": -5.889403097425472e-07,
           "file": "vivity_24_4096.png",
-          "bytes": 170041,
-          "fileSha256": "cbd124266f898e1bffaf6c80b192481acc3d50213f03a0c35098109d15183b62",
-          "decodedRgbaSha256": "c0c6569a6b6edded3efdc0520ddccc79e204d31b99a5d0f3b155d86bb35beec8",
-          "maxLinearQuantizationError": 0.00012209943071406215
+          "bytes": 203115,
+          "fileSha256": "346e4925b90e87c06090059228cbdd6d5efb2bc24bc54601354ba16813368164",
+          "decodedRgbaSha256": "1c3544a6694dafa9c8024dd4662f9592183a6d65b92b190a35685aa555c8413a",
+          "maxLinearQuantizationError": 0.0001221000098889924
         },
         {
           "width": 1929,
@@ -1144,22 +1237,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004439802398984462,
+            -4.439802398984462e-06,
             -0.06476835451401558
           ],
           "coverageCentroidTanTheta": [
-            -0.000004442412245097723,
+            -4.442412245097723e-06,
             -0.06476824282655833
           ],
-          "centroidErrorTanTheta": 1.1171794575981863e-7,
-          "coverageAreaRelativeError": -5.322546025032793e-7,
+          "centroidErrorTanTheta": 1.1171794575981863e-07,
+          "coverageAreaRelativeError": -5.322546025032793e-07,
           "file": "vivity_24_8192.png",
-          "bytes": 514839,
-          "fileSha256": "f59fd171b5aa6f4852be2fee8e8ad2c2bac1811f36845b34cf52304ad9058782",
-          "decodedRgbaSha256": "50208781c58f37f1cc5ded307f7c4d607d14984417bba65bb729b9811c75fbfa",
-          "maxLinearQuantizationError": 0.00012210006626940662
+          "bytes": 619576,
+          "fileSha256": "cc705ab456cd6f59dfa8636fae861f398416f086c20d10ea0f7250b6639c7a00",
+          "decodedRgbaSha256": "a1f92639380ca2df9aa83e8d64b45d8c52b368d1149e17f5efb526e8f130a547",
+          "maxLinearQuantizationError": 0.00012209991563375276
         }
       ]
     },
@@ -1196,22 +1289,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004059874979039709,
+            -4.059874979039695e-06,
             -0.06746652651066523
           ],
           "coverageCentroidTanTheta": [
-            -0.000003960988218649943,
+            -3.960988218649943e-06,
             -0.06746637893438405
           ],
-          "centroidErrorTanTheta": 1.7764388575948582e-7,
-          "coverageAreaRelativeError": -4.7633501309984894e-7,
+          "centroidErrorTanTheta": 1.7764388575947825e-07,
+          "coverageAreaRelativeError": -4.7633501309984894e-07,
           "file": "vivity_25_4096.png",
-          "bytes": 180733,
-          "fileSha256": "b172122a56988327ab7b509dedd5af07856016690f1cab35907701798f05031e",
-          "decodedRgbaSha256": "1174ad80598a128f681f5432798e7f0d6f0088bd90cbd70dccfc4c540cb9cd30",
-          "maxLinearQuantizationError": 0.0001220990347569062
+          "bytes": 213985,
+          "fileSha256": "b51d8c2883d55d9f6b30a72a3888d751c1eb5fa0ee607ef03eb85a7cf2e6777b",
+          "decodedRgbaSha256": "aed8355206adbbaeb5c19ec924db712de6518df28d28da5827ced73fe7abdcc4",
+          "maxLinearQuantizationError": 0.0001220991328917398
         },
         {
           "width": 1999,
@@ -1243,20 +1336,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.00000398782623575477,
+            -3.98782623575477e-06,
             -0.06746649909759384
           ],
           "coverageCentroidTanTheta": [
-            -0.000003902814306002983,
+            -3.902814306002983e-06,
             -0.06746642817347182
           ],
-          "centroidErrorTanTheta": 1.1071250735307036e-7,
-          "coverageAreaRelativeError": -4.687976430384211e-7,
+          "centroidErrorTanTheta": 1.1071250735307036e-07,
+          "coverageAreaRelativeError": -4.687976430384211e-07,
           "file": "vivity_25_8192.png",
-          "bytes": 547171,
-          "fileSha256": "67fa6012054f083a9de5c5e2e0fc3f49e2e559a146856edc5d031d6f6647a677",
-          "decodedRgbaSha256": "7acbc2d4ff5c0350546d4e25ecf2abc41e0893cd77e8df03a8e875edf42243b3",
-          "maxLinearQuantizationError": 0.00012210010655766546
+          "bytes": 657946,
+          "fileSha256": "eb38389534d11cd4dbfbf45cbe0aa2755c8558bafbbd4dc6b2c2d24fcfc4b7b6",
+          "decodedRgbaSha256": "1e564e14a76d9ca2e902bc65e4fe140a32e98f56e314efee2edbf177eac4b6e4",
+          "maxLinearQuantizationError": 0.0001221001139024569
         }
       ]
     },
@@ -1293,22 +1386,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000037003197856865025,
+            -3.7003197856865025e-06,
             -0.07016563169854197
           ],
           "coverageCentroidTanTheta": [
-            -0.0000036501263516385887,
+            -3.6501263516385887e-06,
             -0.07016565417396106
           ],
-          "centroidErrorTanTheta": 5.4995684240045217e-8,
-          "coverageAreaRelativeError": -5.038609158791729e-7,
+          "centroidErrorTanTheta": 5.4995684240045217e-08,
+          "coverageAreaRelativeError": -5.038609158791729e-07,
           "file": "vivity_26_4096.png",
-          "bytes": 191798,
-          "fileSha256": "c04943c3ced69bc80c0fd4c9208f4819cd3fe8f56d39221cc138ca3fbe237b69",
-          "decodedRgbaSha256": "d8038c7d73a12dabaf0764f33398a377501f0ad5616ff25e8cd00a9e2196c257",
-          "maxLinearQuantizationError": 0.00012209985211109053
+          "bytes": 227847,
+          "fileSha256": "47aa224bc905621376464f051a516735e581676076feb386502df9ad14c33e18",
+          "decodedRgbaSha256": "051ece3d5b925527567282f2d2788d1e660efeacea6dc06dee4c86d6aa4b2c17",
+          "maxLinearQuantizationError": 0.0001220995508585121
         },
         {
           "width": 2069,
@@ -1340,20 +1433,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.000003615402922821839,
+            -3.615402922821839e-06,
             -0.07016559452575989
           ],
           "coverageCentroidTanTheta": [
-            -0.0000035190538101874317,
+            -3.5190538101874317e-06,
             -0.07016567482286679
           ],
-          "centroidErrorTanTheta": 1.2542239385775984e-7,
-          "coverageAreaRelativeError": -4.6581448476246123e-7,
+          "centroidErrorTanTheta": 1.2542239385775984e-07,
+          "coverageAreaRelativeError": -4.6581448476246123e-07,
           "file": "vivity_26_8192.png",
-          "bytes": 581220,
-          "fileSha256": "e541cb5b6f002621852acf74b2e4473f4252f19427a8e1fc55480847d61712cb",
-          "decodedRgbaSha256": "9a942d87120e05a29feb740cfd470c66876607c339f1abf450f8387cbecc551f",
-          "maxLinearQuantizationError": 0.0001221001204948502
+          "bytes": 695179,
+          "fileSha256": "3280a2c2660340f655bdad684d53301e15abe2c620bca28b5f37e93936c8dae1",
+          "decodedRgbaSha256": "379ee91ef6e7615c1e34c2bc94bea7a7b25f65ffca0aadb7afbef4e534c99911",
+          "maxLinearQuantizationError": 0.00012210009786883802
         }
       ]
     },
@@ -1390,22 +1483,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000002902508123891152,
+            -2.902508123891152e-06,
             -0.07286353648576134
           ],
           "coverageCentroidTanTheta": [
-            -0.000002868956497779837,
+            -2.868956497779837e-06,
             -0.07286356950213507
           ],
-          "centroidErrorTanTheta": 4.707220569655042e-8,
-          "coverageAreaRelativeError": -4.1206920387004686e-7,
+          "centroidErrorTanTheta": 4.707220569655042e-08,
+          "coverageAreaRelativeError": -4.1206920387004686e-07,
           "file": "vivity_27_4096.png",
-          "bytes": 203126,
-          "fileSha256": "91843ad633747b515ff13aa1751eb5cc380d08f328ac7f8e62a91cc44ae3679d",
-          "decodedRgbaSha256": "9d495fadaea9dfdd53d6ceb21f0dd95e01104b1f3fc246700d52d1335ee7502a",
-          "maxLinearQuantizationError": 0.00012209980397320905
+          "bytes": 238919,
+          "fileSha256": "7812d20890d2c049c80ab6765c22e0c19bf93d005fbe01f3fe4cbee674383b75",
+          "decodedRgbaSha256": "945570eb6c72679343665e7ac7bf7c5ec22b589a364b82075d28a00a1793764a",
+          "maxLinearQuantizationError": 0.00012210011173663382
         },
         {
           "width": 2139,
@@ -1435,22 +1528,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000029491857799591977,
+            -2.9491857799591977e-06,
             -0.07286354376729595
           ],
           "coverageCentroidTanTheta": [
-            -0.0000029725233574136196,
+            -2.9725233574136196e-06,
             -0.07286357224522381
           ],
-          "centroidErrorTanTheta": 3.6818947524563315e-8,
-          "coverageAreaRelativeError": -4.092617184037195e-7,
+          "centroidErrorTanTheta": 3.6818947524563315e-08,
+          "coverageAreaRelativeError": -4.092617184037195e-07,
           "file": "vivity_27_8192.png",
-          "bytes": 614858,
-          "fileSha256": "e76052c0f6250559a09dd16a8a7bd785cde5f0a304e463c181013865621c6ce3",
-          "decodedRgbaSha256": "945f338361ac6b1a3a62c314e7f590029d6a52b670d4fe9682541d5e1aee6fb1",
-          "maxLinearQuantizationError": 0.00012210005353252562
+          "bytes": 737262,
+          "fileSha256": "aba7d8cf4a5d873bb5de3efd11d97cf07b929fcd4d5318d68d79a9f93d276203",
+          "decodedRgbaSha256": "fc29d179548f8c49cbff8f342e1d3323d4de25d0262663dd690e680dba36119c",
+          "maxLinearQuantizationError": 0.00012210007518198562
         }
       ]
     },
@@ -1487,22 +1580,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000003987681443800306,
+            -3.987681443800299e-06,
             -0.0755635648099736
           ],
           "coverageCentroidTanTheta": [
-            -0.000003992291490049356,
+            -3.992291490049356e-06,
             -0.0755633751685172
           ],
-          "centroidErrorTanTheta": 1.8969748156409412e-7,
-          "coverageAreaRelativeError": -3.374607311368294e-7,
+          "centroidErrorTanTheta": 1.8969748156409428e-07,
+          "coverageAreaRelativeError": -3.374607311368294e-07,
           "file": "vivity_28_4096.png",
-          "bytes": 211559,
-          "fileSha256": "f0e338551711a85f51cbf6354e7abe1e79eee8efae2b0470ce7168ffaa24948a",
-          "decodedRgbaSha256": "f70bd2e688196006780278dfa2beae60948e19b1551481c9ff71fa328f269745",
-          "maxLinearQuantizationError": 0.00012209997449436072
+          "bytes": 252409,
+          "fileSha256": "45a3519e684936a4c7fd0bf05a156635f923a8cbfdd4590a51409cb810d77e97",
+          "decodedRgbaSha256": "ad035ceba9ecce9e06f1eba7dc272798d999cc80b058f8ef05672804496a7123",
+          "maxLinearQuantizationError": 0.0001220999037708781
         },
         {
           "width": 2209,
@@ -1532,22 +1625,22 @@
             247,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004047004914929503,
+            -4.047004914929503e-06,
             -0.07556363904544697
           ],
           "coverageCentroidTanTheta": [
-            -0.000003834411593334568,
+            -3.834411593334568e-06,
             -0.07556359411341029
           ],
-          "centroidErrorTanTheta": 2.1728968752911508e-7,
-          "coverageAreaRelativeError": -3.5149969679348914e-7,
+          "centroidErrorTanTheta": 2.1728968752911508e-07,
+          "coverageAreaRelativeError": -3.5149969679348914e-07,
           "file": "vivity_28_8192.png",
-          "bytes": 650358,
-          "fileSha256": "654495c91740ef0b54a479a68e0426afae2347f47d3f04bc8ad2bbe1dd8a1bc6",
-          "decodedRgbaSha256": "bc0d1c326b0654d41a2071eafb6dec57fb5bf94501cdbf40e802d6b95768764a",
-          "maxLinearQuantizationError": 0.00012210008964574914
+          "bytes": 781844,
+          "fileSha256": "6be643f5c8d94609463300f11f89eab46f8334c2523247acea4d6f0d436e450e",
+          "decodedRgbaSha256": "4717ee1bcaebd3b9f64fe266171329903526bccca5868341f1cb331e5af7e33c",
+          "maxLinearQuantizationError": 0.00012210009634228136
         }
       ]
     },
@@ -1584,22 +1677,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000036256490139361305,
+            -3.6256490139361305e-06,
             -0.07826270840769163
           ],
           "coverageCentroidTanTheta": [
-            -0.0000034356640537134964,
+            -3.4356640537134964e-06,
             -0.07826271320282481
           ],
-          "centroidErrorTanTheta": 1.9004546406848068e-7,
-          "coverageAreaRelativeError": -2.9031455761607816e-7,
+          "centroidErrorTanTheta": 1.9004546406848068e-07,
+          "coverageAreaRelativeError": -2.9031455761607816e-07,
           "file": "vivity_29_4096.png",
-          "bytes": 224856,
-          "fileSha256": "c30a36274ac972c1822568c0cb29f3387bd2f9e0e99ff350f811edd0189349bb",
-          "decodedRgbaSha256": "8e2960bd759599672e68ff67f55e06c1234962cd77ca7d4f6651b4f717032313",
-          "maxLinearQuantizationError": 0.00012210007835278258
+          "bytes": 267088,
+          "fileSha256": "25c3062a8fdc7b05894b9eae0ecb44d04862184be692985b493fd5b82246c27b",
+          "decodedRgbaSha256": "ec21e8d9ce0d0298c051a1a4c15ff3f963a6df7c3ce4ea4d0d60b5802f8dad34",
+          "maxLinearQuantizationError": 0.0001220999125586264
         },
         {
           "width": 2282,
@@ -1629,27 +1722,27 @@
             249,
             247
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000037173443262873534,
+            -3.7173443262873534e-06,
             -0.0782628250789544
           ],
           "coverageCentroidTanTheta": [
-            -0.000003625643250509567,
+            -3.625643250509567e-06,
             -0.07826288383483349
           ],
-          "centroidErrorTanTheta": 1.0890978204515438e-7,
-          "coverageAreaRelativeError": -3.360156880516385e-7,
+          "centroidErrorTanTheta": 1.0890978204515438e-07,
+          "coverageAreaRelativeError": -3.360156880516385e-07,
           "file": "vivity_29_8192.png",
-          "bytes": 687073,
-          "fileSha256": "5548e8b23476440d4e12cb3f25514241fad50919875da57d636e6f6cb72b01d9",
-          "decodedRgbaSha256": "79767b7f7e7b2d5c1567d62108990ba152a703364d388b1e7173eb54d0005605",
-          "maxLinearQuantizationError": 0.0001220999198190409
+          "bytes": 825487,
+          "fileSha256": "7720e506834b46f2ac14549e1a646cbb616747d8946390b8a016402e92c7da4f",
+          "decodedRgbaSha256": "8a09de6c897b865f024b9cf6e75e7845d01a7b365fc5765bbafb48fc734cbcdc",
+          "maxLinearQuantizationError": 0.00012210006341994983
         }
       ]
     },
     {
-      "objectVergenceD": 3,
+      "objectVergenceD": 3.0,
       "psfSha256": "3e7836c91399e20e1413cb89558e800fa9662174afcd02e6c9bd2d1a1765c49c",
       "retinalMmPerTanTheta": 16.712363725007613,
       "levels": [
@@ -1681,22 +1774,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000041684984646848155,
+            -4.1684984646848155e-06,
             -0.08096225313497069
           ],
           "coverageCentroidTanTheta": [
-            -0.000004223353779082911,
+            -4.223353779082911e-06,
             -0.08096219395305251
           ],
-          "centroidErrorTanTheta": 8.069451627088463e-8,
-          "coverageAreaRelativeError": -3.140575719484673e-7,
+          "centroidErrorTanTheta": 8.069451627088463e-08,
+          "coverageAreaRelativeError": -3.140575719484673e-07,
           "file": "vivity_30_4096.png",
-          "bytes": 236426,
-          "fileSha256": "aafdc3ad9495af70cbd99fb3d4b8846589a4404cdd13799d6df24fabef3ae09c",
-          "decodedRgbaSha256": "8844c6be212cbe829b63ff6571a7ad799fe7289a1ac2a2fc98cae332446bd8ec",
-          "maxLinearQuantizationError": 0.00012209994736012142
+          "bytes": 281202,
+          "fileSha256": "51daf34b86fe2f7d0fb62283e66acfe574f85da056f6ca2ada920fad1e4f5486",
+          "decodedRgbaSha256": "3e6f245ce4b8a486a9e68ab64205b4ee8b37e457b92453dba1f5d66093881967",
+          "maxLinearQuantizationError": 0.00012209904016180495
         },
         {
           "width": 2352,
@@ -1726,22 +1819,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000040489913392203045,
+            -4.0489913392203045e-06,
             -0.08096217193999117
           ],
           "coverageCentroidTanTheta": [
-            -0.00000409895559802552,
+            -4.09895559802552e-06,
             -0.0809623206878381
           ],
-          "centroidErrorTanTheta": 1.569151016437283e-7,
-          "coverageAreaRelativeError": -3.189812818327198e-7,
+          "centroidErrorTanTheta": 1.569151016437283e-07,
+          "coverageAreaRelativeError": -3.189812818327198e-07,
           "file": "vivity_30_8192.png",
-          "bytes": 717391,
-          "fileSha256": "2c175f65a80688c06b00a6154681e5876c2c0c0854d3fbe2fc5924dd1b8e1e03",
-          "decodedRgbaSha256": "88eb17bb97ad3b7442e0fcca0c628fe9f6cef9e14121e929613f7d39f4162a3a",
-          "maxLinearQuantizationError": 0.00012210008371293934
+          "bytes": 866631,
+          "fileSha256": "37d20446df6483cbdbbf7a70f22b36af90faf2312dfd7f91bc896c189cd54b56",
+          "decodedRgbaSha256": "762cd58ff8ccd7b1428401ea320526bd4b3316521ff29074034b1b21517f96e2",
+          "maxLinearQuantizationError": 0.00012209999908452396
         }
       ]
     },
@@ -1778,22 +1871,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.00000470873677196818,
+            -4.70873677196818e-06,
             -0.08366029412734717
           ],
           "coverageCentroidTanTheta": [
-            -0.000004610902515500461,
+            -4.610902515500461e-06,
             -0.08366045041366378
           ],
-          "centroidErrorTanTheta": 1.8438263068482902e-7,
-          "coverageAreaRelativeError": -3.3255534570564294e-7,
+          "centroidErrorTanTheta": 1.8438263068482902e-07,
+          "coverageAreaRelativeError": -3.3255534570564294e-07,
           "file": "vivity_31_4096.png",
-          "bytes": 248572,
-          "fileSha256": "adcd97a87888651c5e2c7669f4c2f83d2ae84f87df721793d8a9355d29f415ab",
-          "decodedRgbaSha256": "2a59d7da5ec98faa4ae94e296db0eaeb5023a2f686aed78e7a74b8efdf180227",
-          "maxLinearQuantizationError": 0.00012210001544687987
+          "bytes": 295367,
+          "fileSha256": "9f4c2dd36a80f1072af5a60a7c5a46b9ecf5970fecef7c0ebf502a466a15b237",
+          "decodedRgbaSha256": "5523448ab3bd6cfcf8d739b863891e476d81fea4ed1b030f91ad6e9324159c94",
+          "maxLinearQuantizationError": 0.00012210005051416228
         },
         {
           "width": 2422,
@@ -1823,22 +1916,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004644813411912675,
+            -4.644813411912675e-06,
             -0.08366036540890771
           ],
           "coverageCentroidTanTheta": [
-            -0.000004645542643427245,
+            -4.645542643427245e-06,
             -0.08366032943257704
           ],
-          "centroidErrorTanTheta": 3.59837205925822e-8,
-          "coverageAreaRelativeError": -3.160904119559049e-7,
+          "centroidErrorTanTheta": 3.59837205925822e-08,
+          "coverageAreaRelativeError": -3.160904119559049e-07,
           "file": "vivity_31_8192.png",
-          "bytes": 758590,
-          "fileSha256": "87b3e74cae4b79f5c744b9966dfc74fe52c37a3419494e4a4be90fb575768f8e",
-          "decodedRgbaSha256": "08c83b5732ceff3394e7d28855eb7743164f222297930594f46161d5e31e20be",
-          "maxLinearQuantizationError": 0.00012210005008272962
+          "bytes": 909285,
+          "fileSha256": "b21a16c7d2ec333b630d6c2bfab634e04f755f1e3c2ce22d2441347258750505",
+          "decodedRgbaSha256": "6182505958afadfa2d98cf7f052416d1c18f94bbf536fca064d0b70124255cb9",
+          "maxLinearQuantizationError": 0.00012210007196722383
         }
       ]
     },
@@ -1875,22 +1968,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004164170165495514,
+            -4.164170165495501e-06,
             -0.08636045542539426
           ],
           "coverageCentroidTanTheta": [
-            -0.000004129818931156127,
+            -4.129818931156127e-06,
             -0.08636049034484852
           ],
-          "centroidErrorTanTheta": 4.898342154612655e-8,
-          "coverageAreaRelativeError": -3.086410531594197e-7,
+          "centroidErrorTanTheta": 4.898342154611705e-08,
+          "coverageAreaRelativeError": -3.086410531594197e-07,
           "file": "vivity_32_4096.png",
-          "bytes": 258930,
-          "fileSha256": "b68981695e901d1097a5142eb630815139291bed32293f821061f01cc3112d1d",
-          "decodedRgbaSha256": "2b9ea6fcbcf5437ac25b5a563f3403e19c2aa31a7cef1faa25917562ef270c37",
-          "maxLinearQuantizationError": 0.00012209986542754958
+          "bytes": 309453,
+          "fileSha256": "b9e333c25a07cf3fa9b181eba7cc2d21debcaf2d266575fc993d0a6fd8127f0c",
+          "decodedRgbaSha256": "8ee60e2c22bb6ab965b51f926eed5f40db0288b264b9121cdaccd454af9d29aa",
+          "maxLinearQuantizationError": 0.00012209984909293417
         },
         {
           "width": 2492,
@@ -1922,20 +2015,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000042479240281512605,
+            -4.2479240281512605e-06,
             -0.08636032639004464
           ],
           "coverageCentroidTanTheta": [
-            -0.00000424207050037026,
+            -4.24207050037026e-06,
             -0.08636036351986782
           ],
-          "centroidErrorTanTheta": 3.7588396580257643e-8,
-          "coverageAreaRelativeError": -3.797675798278277e-7,
+          "centroidErrorTanTheta": 3.7588396580257643e-08,
+          "coverageAreaRelativeError": -3.797675798278277e-07,
           "file": "vivity_32_8192.png",
-          "bytes": 793620,
-          "fileSha256": "86e25a933332749cab04816bde4577bc710f605e4ce2930e1e973e4f56793502",
-          "decodedRgbaSha256": "40742307d3c522d62fe41ad8cbde0975e0fe540bcdc3b081ce02565718a688d1",
-          "maxLinearQuantizationError": 0.00012210011325552994
+          "bytes": 953708,
+          "fileSha256": "8ca9beb69e2fc858362d40a72970ef24f231653516d0500d408357ad50128e7b",
+          "decodedRgbaSha256": "6bce95b4796ecf13c6ecf5450793a5f1673ff687ce96dbb82e8f7bde6273f664",
+          "maxLinearQuantizationError": 0.00012210005106768238
         }
       ]
     },
@@ -1972,22 +2065,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004900825905222924,
+            -4.900825905222924e-06,
             -0.08905927801668152
           ],
           "coverageCentroidTanTheta": [
-            -0.000004639956492119805,
+            -4.639956492119805e-06,
             -0.08905930788654906
           ],
-          "centroidErrorTanTheta": 2.6257391279311597e-7,
-          "coverageAreaRelativeError": -2.816104922587215e-7,
+          "centroidErrorTanTheta": 2.6257391279311597e-07,
+          "coverageAreaRelativeError": -2.816104922587215e-07,
           "file": "vivity_33_4096.png",
-          "bytes": 272562,
-          "fileSha256": "7ce2eb26c7b11622c7172b44933778e66b788a0c0511dced4deb49871118e249",
-          "decodedRgbaSha256": "691b5739564b41f516bd9b6e61186ccffadf7815f641cb097f1d4c15ef424730",
-          "maxLinearQuantizationError": 0.000122099784282792
+          "bytes": 322284,
+          "fileSha256": "4ef6cdf5560d0a44b7c759fd6ece27698066f22e72715ff3af357904055d612d",
+          "decodedRgbaSha256": "76a4b6842b36599cf5da355a9e44f91dcc67ac527d4f3870f00e20a35573de2c",
+          "maxLinearQuantizationError": 0.0001220998921362959
         },
         {
           "width": 2562,
@@ -2019,20 +2112,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000049376548312026276,
+            -4.9376548312026276e-06,
             -0.08905936140646734
           ],
           "coverageCentroidTanTheta": [
-            -0.000005044766736474888,
+            -5.044766736474888e-06,
             -0.08905917680220908
           ],
-          "centroidErrorTanTheta": 2.1342842457571824e-7,
-          "coverageAreaRelativeError": -3.0740885792468475e-7,
+          "centroidErrorTanTheta": 2.1342842457571824e-07,
+          "coverageAreaRelativeError": -3.0740885792468475e-07,
           "file": "vivity_33_8192.png",
-          "bytes": 835527,
-          "fileSha256": "c9529ded62d1995bb85664fd46df64b0c46e56f43143f94cb00e3c38a8b91439",
-          "decodedRgbaSha256": "f1e6b9e3308547b68720a51350c1db5c68a82ffa17913c81055cc4d3e1847853",
-          "maxLinearQuantizationError": 0.00012210007204993545
+          "bytes": 980996,
+          "fileSha256": "0df8ce144caa4b8552261a66536e7c88a33d666a80387517fb1dd688a3324314",
+          "decodedRgbaSha256": "533cedb4ccb6bd413b56e465efd0df1c2893e9fd397ebd1257bf9a47c6b61b8a",
+          "maxLinearQuantizationError": 0.00012210011219038197
         }
       ]
     },
@@ -2071,20 +2164,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000057679834240573624,
+            -5.767983424057376e-06,
             -0.09175759853122395
           ],
           "coverageCentroidTanTheta": [
-            -0.000005932223085078846,
+            -5.932223085078846e-06,
             -0.09175733217629033
           ],
-          "centroidErrorTanTheta": 3.1292110334351845e-7,
-          "coverageAreaRelativeError": -2.7951129266678976e-7,
+          "centroidErrorTanTheta": 3.129211033435113e-07,
+          "coverageAreaRelativeError": -2.7951129266678976e-07,
           "file": "vivity_34_4096.png",
-          "bytes": 285256,
-          "fileSha256": "74703cbfb853a160e20aba7740c8bd3473f40a36c60823ad1634eb6716f520dd",
-          "decodedRgbaSha256": "6987fe540df8d28da9d9828c24984f166dbd89a4d7972ca00a4dba22cd155530",
-          "maxLinearQuantizationError": 0.00012209993494860516
+          "bytes": 339701,
+          "fileSha256": "17d630011ae2a8b2261c880ff7a4f621cb4eee80c2af3768ba5e241d7a432213",
+          "decodedRgbaSha256": "94a6102586dddbd86ee322183e295fc5f5fe99c9f29ebdfce084fc39c1986571",
+          "maxLinearQuantizationError": 0.0001220999281383861
         },
         {
           "width": 2632,
@@ -2114,22 +2207,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000058560330371889415,
+            -5.8560330371889415e-06,
             -0.0917576208508576
           ],
           "coverageCentroidTanTheta": [
-            -0.000005949358107728678,
+            -5.949358107728678e-06,
             -0.09175748849599198
           ],
-          "centroidErrorTanTheta": 1.619486932497597e-7,
-          "coverageAreaRelativeError": -3.0382319504695943e-7,
+          "centroidErrorTanTheta": 1.619486932497597e-07,
+          "coverageAreaRelativeError": -3.0382319504695943e-07,
           "file": "vivity_34_8192.png",
-          "bytes": 871877,
-          "fileSha256": "7ac1398756b89dd2cfd52028a176bd33721a19a1698837e05e94842d584decef",
-          "decodedRgbaSha256": "233a1c64da442fbdf23bf7b4b423a544a6cf589d4bcc8f133d5020f89fd28e36",
-          "maxLinearQuantizationError": 0.00012210010953406236
+          "bytes": 1044444,
+          "fileSha256": "8e9209516572fbf4a80468b3dc223b7b5b8dcce005f51ea94efe886d2b990c96",
+          "decodedRgbaSha256": "704b78fd1d78ad7481e149c10856d8781659bbc4be2f3c8dc61caa2f047a2e1c",
+          "maxLinearQuantizationError": 0.00012210012008839755
         }
       ]
     },
@@ -2166,22 +2259,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004445791632723784,
+            -4.445791632723784e-06,
             -0.0944556277539784
           ],
           "coverageCentroidTanTheta": [
-            -0.000004361867989263512,
+            -4.361867989263512e-06,
             -0.09445547945307478
           ],
-          "centroidErrorTanTheta": 1.704005162670141e-7,
-          "coverageAreaRelativeError": -2.545632841188805e-7,
+          "centroidErrorTanTheta": 1.704005162670141e-07,
+          "coverageAreaRelativeError": -2.545632841188805e-07,
           "file": "vivity_35_4096.png",
-          "bytes": 298797,
-          "fileSha256": "ecd5d24391d21f37249adcf42a19e328d384123e2294dd26c1695b06bb7baa74",
-          "decodedRgbaSha256": "af1fade8cb83ecd65edd59554c987e8d93100daae0b269fed854f7de40d55a46",
-          "maxLinearQuantizationError": 0.00012209855920365404
+          "bytes": 354747,
+          "fileSha256": "81ea2e96702f3f9df3d2cdad1292e699131fc5b396ed598bc25deaf615c57def",
+          "decodedRgbaSha256": "335efbec60353577dfb7ea9ac9b05527adab27cc03cecd5daabb52fa728b67fb",
+          "maxLinearQuantizationError": 0.0001220997589740369
         },
         {
           "width": 2702,
@@ -2213,20 +2306,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.00000448175194577947,
+            -4.48175194577947e-06,
             -0.09445565588543263
           ],
           "coverageCentroidTanTheta": [
-            -0.000004645949081493103,
+            -4.645949081493103e-06,
             -0.09445580371803752
           ],
-          "centroidErrorTanTheta": 2.209415724715917e-7,
-          "coverageAreaRelativeError": -2.8908360816259915e-7,
+          "centroidErrorTanTheta": 2.209415724715917e-07,
+          "coverageAreaRelativeError": -2.8908360816259915e-07,
           "file": "vivity_35_8192.png",
-          "bytes": 912582,
-          "fileSha256": "81810694c29480e37975495cd902687de2b1c5eead4afb7bd649a2eeda815e0e",
-          "decodedRgbaSha256": "d0a57e650cafa6b57dd138bac0ab5157f834ff017d37742c79312f8e5bf405ba",
-          "maxLinearQuantizationError": 0.00012210005581025918
+          "bytes": 1093545,
+          "fileSha256": "717a8b5225e25dd3b7dcdff7f609bd0c4c609de6bcb9aae4f024614914ebb1be",
+          "decodedRgbaSha256": "b0eaed223dda4d306b580d2671a4c74cff74b466261bab15c548bb11ac49b0b6",
+          "maxLinearQuantizationError": 0.0001220999912946441
         }
       ]
     },
@@ -2265,20 +2358,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.0000047241712306982775,
+            -4.7241712306982775e-06,
             -0.09715442756086021
           ],
           "coverageCentroidTanTheta": [
-            -0.000004656185072321781,
+            -4.656185072321781e-06,
             -0.09715434872428061
           ],
-          "centroidErrorTanTheta": 1.0410246881549347e-7,
-          "coverageAreaRelativeError": -2.0906056641400994e-7,
+          "centroidErrorTanTheta": 1.0410246881549347e-07,
+          "coverageAreaRelativeError": -2.0906056641400994e-07,
           "file": "vivity_36_4096.png",
-          "bytes": 311816,
-          "fileSha256": "5b1ab2d45c36a3f6aab2d2a0752dffa4e746c9c105a7da4cfeca5ebd77ac439c",
-          "decodedRgbaSha256": "e519db1e69363e079aa84476ab23d2eb1628f36f79f0a92ee9dc9caadd93bb06",
-          "maxLinearQuantizationError": 0.00012209975932253592
+          "bytes": 370786,
+          "fileSha256": "e979ab3ed08ffb977858b831ba8dcff57f60946f10e2a2a17cf5b8c1a730ddca",
+          "decodedRgbaSha256": "2452fc5fe3aa9df09c504798fe0912320becfc7d80ac1273d9d63d0d12d9054a",
+          "maxLinearQuantizationError": 0.00012209992725986663
         },
         {
           "width": 2772,
@@ -2310,20 +2403,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004728106562439668,
+            -4.728106562439668e-06,
             -0.09715424536592109
           ],
           "coverageCentroidTanTheta": [
-            -0.0000046309112097374145,
+            -4.6309112097374145e-06,
             -0.09715411617839344
           ],
-          "centroidErrorTanTheta": 1.616674175170592e-7,
-          "coverageAreaRelativeError": -2.399942373720876e-7,
+          "centroidErrorTanTheta": 1.616674175170592e-07,
+          "coverageAreaRelativeError": -2.399942373720876e-07,
           "file": "vivity_36_8192.png",
-          "bytes": 963039,
-          "fileSha256": "35e29569bfe6027f6a4d92a8434c6454b83cb6a20ae916d2a76b7881b303353a",
-          "decodedRgbaSha256": "b58d8d56340762dd1baf454c0c35efc27fa0e24cf1fd4400b1453f77f22204b7",
-          "maxLinearQuantizationError": 0.00012210003538570824
+          "bytes": 1145845,
+          "fileSha256": "c42abe95aaa3851b74031719244f1099d6fc9f8937a444e4632be53a1fec3a39",
+          "decodedRgbaSha256": "52c72d65f73a8cf14ac4b1ba55b696a0df6d54845fc2bce567d96f5314d08e5a",
+          "maxLinearQuantizationError": 0.00012210010456403797
         }
       ]
     },
@@ -2362,20 +2455,20 @@
           ],
           "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005034012078077872,
+            -5.034012078077872e-06,
             -0.09985447581167675
           ],
           "coverageCentroidTanTheta": [
-            -0.000005008390975985987,
+            -5.008390975985987e-06,
             -0.09985452858601766
           ],
-          "centroidErrorTanTheta": 5.866491226462898e-8,
-          "coverageAreaRelativeError": -2.2533855537076874e-7,
+          "centroidErrorTanTheta": 5.866491226462898e-08,
+          "coverageAreaRelativeError": -2.2533855537076874e-07,
           "file": "vivity_37_4096.png",
-          "bytes": 325073,
-          "fileSha256": "8c26de06c8448d245fe43872f143e9b40264f7e3eb0edfa95af5b85b814c4c40",
-          "decodedRgbaSha256": "4ba73f39f3a2f9bed5f7d3afe8bf134c9ae9a506fb1bdff7f79baea3325f6641",
-          "maxLinearQuantizationError": 0.0001221000358564428
+          "bytes": 385835,
+          "fileSha256": "cc651abe6e5c455c4aa10cf0c0f1b66917e30a6ff1ac441d136911e9b512b4f4",
+          "decodedRgbaSha256": "cc6e98275d6e5acce6dd4c2a184c88a86fd586b48595edca079f14f48a4ddafb",
+          "maxLinearQuantizationError": 0.00012210008977631137
         },
         {
           "width": 2843,
@@ -2407,20 +2500,20 @@
           ],
           "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005201246432533173,
+            -5.201246432533173e-06,
             -0.09985444733619359
           ],
           "coverageCentroidTanTheta": [
-            -0.000005136184959594039,
+            -5.136184959594039e-06,
             -0.0998546088942913
           ],
-          "centroidErrorTanTheta": 1.741666276865377e-7,
-          "coverageAreaRelativeError": -1.8165090165389586e-7,
+          "centroidErrorTanTheta": 1.741666276865377e-07,
+          "coverageAreaRelativeError": -1.8165090165389586e-07,
           "file": "vivity_37_8192.png",
-          "bytes": 983817,
-          "fileSha256": "4d065b65499af75eee5fe27dba184aa0e12a9f947b7ff58206f04f1fe85e124a",
-          "decodedRgbaSha256": "861eb536c7863e1984917e450371e4ec7266c54970b28f7b169d2af7c0d95fb3",
-          "maxLinearQuantizationError": 0.0001221001034232838
+          "bytes": 1201568,
+          "fileSha256": "488eb8192ddcd2d9c8104d69a257edb694224a464979870b926e2c91cf03a295",
+          "decodedRgbaSha256": "98399088d85cef316a799e21a462228c08cf8c50b5ebb5d51313d90a58b0b56b",
+          "maxLinearQuantizationError": 0.00012210001488732747
         }
       ]
     },
@@ -2457,22 +2550,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004821125735284288,
+            -4.821125735284285e-06,
             -0.10255222939035037
           ],
           "coverageCentroidTanTheta": [
-            -0.000004828733476738608,
+            -4.828733476738608e-06,
             -0.10255232837598963
           ],
-          "centroidErrorTanTheta": 9.927756296715542e-8,
-          "coverageAreaRelativeError": -1.9970258058332746e-7,
+          "centroidErrorTanTheta": 9.927756296715569e-08,
+          "coverageAreaRelativeError": -1.9970258058332746e-07,
           "file": "vivity_38_4096.png",
-          "bytes": 339140,
-          "fileSha256": "628936367844360c9dbf11c8e062507c6f831c5f7692468e5e20fccd3c3a2c88",
-          "decodedRgbaSha256": "bbaa7509a1382867cd1d3ddf535067675de95c23f8a0183d46f5dbb9152d4db1",
-          "maxLinearQuantizationError": 0.00012209942704177745
+          "bytes": 400446,
+          "fileSha256": "577758d30c79ddbdc3026baf6cc0be4e49ae6cbea0d5a4c3fac7ec30151d8b23",
+          "decodedRgbaSha256": "5a2a3923cd7ab2a382ec22b597fa6619adc2d06f020c0b99f46f6446369dbbbc",
+          "maxLinearQuantizationError": 0.00012209959141817883
         },
         {
           "width": 2913,
@@ -2504,20 +2597,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.000004747201657392242,
+            -4.747201657392242e-06,
             -0.10255226840725305
           ],
           "coverageCentroidTanTheta": [
-            -0.0000047396885441478365,
+            -4.7396885441478365e-06,
             -0.10255244010823757
           ],
-          "centroidErrorTanTheta": 1.7186528140841464e-7,
-          "coverageAreaRelativeError": -1.9379153670673332e-7,
+          "centroidErrorTanTheta": 1.7186528140841464e-07,
+          "coverageAreaRelativeError": -1.9379153670673332e-07,
           "file": "vivity_38_8192.png",
-          "bytes": 1045178,
-          "fileSha256": "d9b510a4ae9f7380ff49ac9dbca5395b948b803d3fdb1d7f8b66801cda2d7c59",
-          "decodedRgbaSha256": "3347a242624cce5308cea48141b5d1ea014d178e3e2bba1ba5859df969eb89af",
-          "maxLinearQuantizationError": 0.00012210011928059927
+          "bytes": 1249863,
+          "fileSha256": "3d49272ae3972247e6e5d4d4b9f68ab59466fa8e047350ea11b9da367ba6603c",
+          "decodedRgbaSha256": "430ef29bb91a1c1f255dd3b11e94dd6a82eca41b068c9c78592586c9903d9dca",
+          "maxLinearQuantizationError": 0.0001221001090340179
         }
       ]
     },
@@ -2554,22 +2647,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000006112469634230582,
+            -6.112469634230582e-06,
             -0.10525116751410374
           ],
           "coverageCentroidTanTheta": [
-            -0.000006082398209890001,
+            -6.082398209890001e-06,
             -0.10525121386224198
           ],
-          "centroidErrorTanTheta": 5.5248895740605584e-8,
-          "coverageAreaRelativeError": -1.7553095832401056e-7,
+          "centroidErrorTanTheta": 5.5248895740605584e-08,
+          "coverageAreaRelativeError": -1.7553095832401056e-07,
           "file": "vivity_39_4096.png",
-          "bytes": 352727,
-          "fileSha256": "6ec692b0063786e4871f20c32a57f3085e3963b403bcdac06582ea930269cd11",
-          "decodedRgbaSha256": "b1d032d2acb1e364a1b7c531ef5a924c25367aaafe30db486a0bf74d230fee01",
-          "maxLinearQuantizationError": 0.00012209826870024365
+          "bytes": 409066,
+          "fileSha256": "a169bac98905ce26fc3fbf84bd5f88d116d242e920b431c2c19e04c260eaae28",
+          "decodedRgbaSha256": "f8c06372239de11a367407c87811daee3cee6bf20315fcc292ab07ed49c1b053",
+          "maxLinearQuantizationError": 0.00012209995106093885
         },
         {
           "width": 2983,
@@ -2601,25 +2694,25 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -0.000005965613517203456,
+            -5.965613517203451e-06,
             -0.10525116034823091
           ],
           "coverageCentroidTanTheta": [
-            -0.000006167415225840182,
+            -6.167415225840182e-06,
             -0.10525116467804597
           ],
-          "centroidErrorTanTheta": 2.018481530932931e-7,
-          "coverageAreaRelativeError": -1.7500273441495295e-7,
+          "centroidErrorTanTheta": 2.0184815309329819e-07,
+          "coverageAreaRelativeError": -1.7500273441495295e-07,
           "file": "vivity_39_8192.png",
-          "bytes": 1079929,
-          "fileSha256": "6840b4d914027da1207431a2ccc7f010d9bd1a141d26d9992a6efe7384df69be",
-          "decodedRgbaSha256": "371c3b328c13c536f3bca6619082773a63a88746998e218d9e7e06ca0cf80419",
-          "maxLinearQuantizationError": 0.00012210008666091454
+          "bytes": 1292675,
+          "fileSha256": "897bb809d7a0a50425b15da27d76ea7c11bd2db233995f99268ef33a52ed27f0",
+          "decodedRgbaSha256": "3c9bed324f9c55bede13a8cc28012e74e963090cd9597686c1a9fef4b368064e",
+          "maxLinearQuantizationError": 0.00012210012057978226
         }
       ]
     },
     {
-      "objectVergenceD": 4,
+      "objectVergenceD": 4.0,
       "psfSha256": "7d2336bab82412f8ecf843fa1e3cb1c2ec2f744721838cd4b346320a88786336",
       "retinalMmPerTanTheta": 16.664233656049717,
       "levels": [
@@ -2651,22 +2744,22 @@
             125,
             125
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000007448305013593934,
+            -7.448305013593934e-06,
             -0.10795050996174804
           ],
           "coverageCentroidTanTheta": [
-            -0.000007559164421652455,
+            -7.559164421652455e-06,
             -0.10795078900492813
           ],
-          "centroidErrorTanTheta": 3.002580635220294e-7,
-          "coverageAreaRelativeError": -1.767413867481693e-7,
+          "centroidErrorTanTheta": 3.002580635220294e-07,
+          "coverageAreaRelativeError": -1.767413867481693e-07,
           "file": "vivity_40_4096.png",
-          "bytes": 365275,
-          "fileSha256": "c552baacbe50f0929adfb57ffcbd5de79962a2d899524e1f07716ba249454dd4",
-          "decodedRgbaSha256": "7d2959dbc6e394499b07442d24828294d6d400899884bec5c772d82fce4ce192",
-          "maxLinearQuantizationError": 0.00012209996509060517
+          "bytes": 433804,
+          "fileSha256": "8f3316bbb60acc6da4c6d18dbb0d0cd8cded956169a7f23a2f5bd582802f755e",
+          "decodedRgbaSha256": "86c9d05919aa4747e35542aeb8c9f41cc9fcac8ac7befa23b9b49d53a3cc90f5",
+          "maxLinearQuantizationError": 0.0001220998030977416
         },
         {
           "width": 3053,
@@ -2696,22 +2789,22 @@
             249,
             249
           ],
-          "kernelEnergy": 1,
+          "kernelEnergy": 1.0,
           "expectedCoverageCentroidTanTheta": [
-            -0.000007588704757239153,
+            -7.588704757239153e-06,
             -0.1079506213008179
           ],
           "coverageCentroidTanTheta": [
-            -0.0000074956638252103806,
+            -7.4956638252103806e-06,
             -0.1079505847327501
           ],
-          "centroidErrorTanTheta": 9.996918832880451e-8,
-          "coverageAreaRelativeError": -1.5502293304603398e-7,
+          "centroidErrorTanTheta": 9.996918832880451e-08,
+          "coverageAreaRelativeError": -1.5502293304603398e-07,
           "file": "vivity_40_8192.png",
-          "bytes": 1128605,
-          "fileSha256": "6c9446d37887e8c1b0af3d3f623431fdd44132c39465c771d2c1ca7ce807dd2b",
-          "decodedRgbaSha256": "641924e0d4ebf2554496eec4561c379969d915df605eafb46337344236a1f6ab",
-          "maxLinearQuantizationError": 0.0001220999801940792
+          "bytes": 1322866,
+          "fileSha256": "dac5c16b50b83e8f40d2e5838f6db9dae3852d7bf07fe8ce335150b52256f0f0",
+          "decodedRgbaSha256": "389f3689e97a414dc316ade9bc1df39089b3c2ae78e9b2eadd47b7e285a1ad85",
+          "maxLinearQuantizationError": 0.00012209993561761227
         }
       ]
     }
