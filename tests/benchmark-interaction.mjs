@@ -5,7 +5,10 @@ if (!baseline || !candidate) throw new Error('Pass the baseline and candidate ap
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? 'playwright');
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const slider = '[aria-label="Holding distance"]';
-const labels = { zcb00: 'Aspheric Monofocal', vivity: 'Vivity-like EDOF' };
+const physicsLabels = {
+  zcb00: ['aspheric_monofocal_dc_v1', 'Alcon Aspheric Monofocal'],
+  vivity: ['vivity_inspired_v2_1_dc_v1', 'Synthetic Refractive EDOF']
+};
 
 function button(page, name) {
   return page.getByRole('button', { name, exact: true });
@@ -25,12 +28,6 @@ async function setup(page, url, { split, lens, distance, card }) {
   await page.goto(url.href);
   await button(page, 'Done').click();
   await waitForFrame(page, { backgroundReady: true });
-  if (lens !== 'zcb00') {
-    await button(page, 'Primary IOL').click();
-    await button(page, labels[lens]).click();
-    await button(page, 'Done').click();
-  }
-  if (split) await button(page, 'Compare').click();
   if (card !== undefined) {
     await button(page, 'Calibrate').click();
     for (const [id, value] of [['calibrate-card-size', card], ['calibrate-viewing-distance', distance]]) {
@@ -42,9 +39,17 @@ async function setup(page, url, { split, lens, distance, card }) {
     await button(page, 'Done').click();
   }
   await button(page, 'Settings').click();
-  await button(page, 'Physics-based (OPTrace PSF)').click();
+  const hasRegistry = await button(page, 'Physics-based (optrace)').count() > 0;
+  await button(page, hasRegistry ? 'Physics-based (optrace)' : 'Physics-based (OPTrace PSF)').click();
   await button(page, 'Done').click();
-  await waitForFrame(page, { engine: 'psf', lens, compareLens: split ? 'vivity' : null, viewingDistanceM: distance });
+  if (lens !== 'zcb00') {
+    await button(page, 'Primary IOL').click();
+    await button(page, hasRegistry ? physicsLabels[lens][1] : 'Vivity-like EDOF').click();
+    await button(page, 'Done').click();
+  }
+  if (split) await button(page, 'Compare').click();
+  await waitForFrame(page, { engine: 'psf', lens: hasRegistry ? physicsLabels[lens][0] : lens,
+    compareLens: split ? (hasRegistry ? physicsLabels.vivity[0] : 'vivity') : null, viewingDistanceM: distance });
 }
 
 async function drive(page, values, interval = 0) {

@@ -1,0 +1,16 @@
+{
+  "spherical_monofocal_dc_v1": {
+    "label": "Synthetic Spherical Monofocal",
+    "reference": "Paraxially matched synthetic control with a frozen quadratic sag correction"
+  },
+  "aspheric_monofocal_dc_v1": {
+    "label": "Alcon Aspheric Monofocal",
+    "reference": "Alcon AcrySof IQ SN60WF reference geometry from the published optrace example, with the project's frozen distance correction",
+    "source": "https://github.com/drocheam/optrace/blob/adad608acedb08c2d99688613fa01034865c9d47/examples/IOL_target_imaging.py"
+  },
+  "vivity_inspired_v2_1_dc_v1": {
+    "label": "Synthetic Refractive EDOF",
+    "reference": "Synthetic Vivity-like optical model informed by Garzón et al.'s radial-power data",
+    "source": "https://doi.org/10.5281/zenodo.18084296"
+  }
+}

@@ -11,12 +11,6 @@ export interface PsfEntry {
   sha256: string;
 }
 
-export const PSF_MODELS: Record<string, string> = {
-  envista: 'spherical_monofocal_dc_v1',
-  zcb00: 'aspheric_monofocal_dc_v1',
-  vivity: 'vivity_inspired_v2_1_dc_v1'
-};
-
 export function objectVergence(defocusD: number): number {
   if (!Number.isFinite(defocusD) || defocusD > -1 || defocusD < -4) {
     throw new Error('Near PSF requires UI defocus in [-4, -1] D');

@@ -1,6 +1,11 @@
 {
   "version": 1,
   "model": "vivity_inspired_v2_1_dc_v1",
+  "identity": {
+    "label": "Synthetic Refractive EDOF",
+    "reference": "Synthetic Vivity-like optical model informed by Garzón et al.'s radial-power data",
+    "source": "https://doi.org/10.5281/zenodo.18084296"
+  },
   "encoding": "opaque-rgb-f12-a12",
   "coordinates": "tan(theta), x right/y down; card bottom centre is (0,0)",
   "channels": "R=f>>4; G=((f&15)<<4)|(a>>8); B=a&255; f,a in [0,4095]",

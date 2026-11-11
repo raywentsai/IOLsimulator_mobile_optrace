@@ -129,7 +129,7 @@ def export_model(page, library, model, output, demands, densities):
         entries.append(node)
         print(f'{model} {demand:.1f} D: {sum(x["bytes"] for x in node["levels"])} bytes, '
               f'{time.perf_counter() - start:.2f}s', flush=True)
-    result = {'version': 1, 'model': model, 'encoding': 'opaque-rgb-f12-a12',
+    result = {'version': 1, 'model': model, 'identity': library['modelIdentities'][model], 'encoding': 'opaque-rgb-f12-a12',
               'coordinates': 'tan(theta), x right/y down; card bottom centre is (0,0)',
               'channels': 'R=f>>4; G=((f&15)<<4)|(a>>8); B=a&255; f,a in [0,4095]',
               'radiometry': 'linear photopic radiance, premultiplied foreground + coverage; no RGB gamma encoding',

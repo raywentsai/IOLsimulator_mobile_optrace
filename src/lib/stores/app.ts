@@ -22,6 +22,7 @@ import {
   type LensCurve
 } from '../optics/mapping';
 import { loadIOLCurves } from '../data/loader';
+import { acuityIols, type AcuityIolId, type PhysicsIolId } from '../data/iol-models';
 import { defocusToDistance, distanceToDefocus } from '../optics/formulas';
 
 // ========== Display Calibration Stores ==========
@@ -71,10 +72,14 @@ export const DEFAULT_MASTER_DEFOCUS_D = distanceToDefocus(DEFAULT_HOLDING_DISTAN
 export const masterDefocus = writable(DEFAULT_MASTER_DEFOCUS_D);
 
 // ========== IOL Mode Parameters ==========
-export const selectedLensId = writable('zcb00');
-export const selectedCompareLensId = writable('vivity');
-export type BlurEngine = 'gaussian' | 'psf';
-export const blurEngine = writable<BlurEngine>('gaussian');
+export type SimulationMethod = 'acuity' | 'physics';
+export const simulationMethod = writable<SimulationMethod>('acuity');
+export const acuitySelection = writable<{ primary: AcuityIolId; compare: AcuityIolId }>({
+  primary: 'acrysof_iq_vivity', compare: 'sn60wf'
+});
+export const physicsSelection = writable<{ primary: PhysicsIolId; compare: PhysicsIolId }>({
+  primary: 'aspheric_monofocal_dc_v1', compare: 'vivity_inspired_v2_1_dc_v1'
+});
 export const targetRefraction = writable(0.0);
 export const compareTargetRefraction = writable(0.0);
 
@@ -164,21 +169,15 @@ export const calibrationVersion = writable(1);
 const lensData = loadIOLCurves();
 export const availableLenses = writable<LensCurve[]>(lensData);
 
-// Get IOL curves only
-export const iolCurves: Readable<LensCurve[]> = derived(
-  availableLenses,
-  ($lenses) => $lenses.filter(lens => lens.type === 'IOL')
-);
-
-// Selected lens curve
+// Only the acuity registry can select a clinical curve.
 export const selectedLensCurve: Readable<LensCurve | undefined> = derived(
-  [selectedLensId, availableLenses],
-  ([$lensId, $lenses]) => $lenses.find(lens => lens.id === $lensId)
+  [acuitySelection, availableLenses],
+  ([$selection, $lenses]) => $lenses.find(lens => lens.type === 'IOL' && lens.id === acuityIols[$selection.primary].curveId)
 );
 
 export const selectedCompareLensCurve: Readable<LensCurve | undefined> = derived(
-  [selectedCompareLensId, availableLenses],
-  ([$lensId, $lenses]) => $lenses.find(lens => lens.id === $lensId)
+  [acuitySelection, availableLenses],
+  ([$selection, $lenses]) => $lenses.find(lens => lens.type === 'IOL' && lens.id === acuityIols[$selection.compare].curveId)
 );
 
 function findCurveById(lenses: LensCurve[], id: string): LensCurve | undefined {
@@ -239,15 +238,13 @@ function resolveCurveLogMAR(curve: LensCurve | undefined, defocus: number): numb
 }
 
 export const activePrimaryCurve: Readable<LensCurve | undefined> = derived(
-  [simulationMode, selectedLensCurve, selectedPresbyopiaCurve],
-  ([$mode, $selectedLensCurve, $selectedPresbyopiaCurve]) =>
-    $mode === 'IOL' ? $selectedLensCurve : $selectedPresbyopiaCurve
+  [simulationMode, simulationMethod, selectedLensCurve, selectedPresbyopiaCurve],
+  ([$mode, $method, $iol, $phakic]) => $mode === 'IOL' ? ($method === 'acuity' ? $iol : undefined) : $phakic
 );
 
 export const activeCompareCurve: Readable<LensCurve | undefined> = derived(
-  [simulationMode, selectedCompareLensCurve, selectedComparePresbyopiaCurve],
-  ([$mode, $selectedCompareLensCurve, $selectedComparePresbyopiaCurve]) =>
-    $mode === 'IOL' ? $selectedCompareLensCurve : $selectedComparePresbyopiaCurve
+  [simulationMode, simulationMethod, selectedCompareLensCurve, selectedComparePresbyopiaCurve],
+  ([$mode, $method, $iol, $phakic]) => $mode === 'IOL' ? ($method === 'acuity' ? $iol : undefined) : $phakic
 );
 
 export const compareDefocus: Readable<number> = derived(

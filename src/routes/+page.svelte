@@ -5,13 +5,12 @@
   import SheetSelect from '../components/SheetSelect.svelte';
   import {
     simulationMode,
-    blurEngine,
-    selectedLensId,
-    selectedCompareLensId,
+    simulationMethod,
+    acuitySelection,
+    physicsSelection,
     presbyopiaProfile,
     presbyopiaCompareProfile,
     splitViewEnabled,
-    iolCurves,
     masterDefocus,
     targetRefraction,
     compareTargetRefraction,
@@ -33,6 +32,7 @@
     type SimulationMode,
     type PresbyopiaProfile
   } from '../lib/stores/app';
+  import { acuityIols, physicsIols, type AcuityIolId, type PhysicsIolId } from '../lib/data/iol-models';
   import { calculateAccommodationFromAge } from '../lib/optics/formulas';
   import {
     DEFAULT_CSS_PX_PER_MM,
@@ -84,16 +84,8 @@
       detail: 'Explore conditions in settings.'
     }
   ] as const;
-  const LANDING_REFERENCE_GROUPS = [
-    {
-      lenses: '1-piece Monofocal (TECNIS ZCB00)',
-      citation: 'Corbett D, Black D, Roberts TV, et al. Quality of vision clinical outcomes for a new fully-refractive extended depth of focus Intraocular Lens. Eye (Lond). 2024;38(Suppl 1):9-14. doi:10.1038/s41433-024-03039-8'
-    },
-    {
-      lenses: 'enVista Monofocal, AcrySof IQ Vivity',
-      citation: "Pantanelli SM, O'Rourke T, Bolognia O, Scruggs K, Longenecker A, Lehman E. Vision and patient-reported outcomes with nondiffractive EDOF or neutral aspheric monofocal intraocular lenses. J Cataract Refract Surg. 2023;49(4):360-366. doi:10.1097/j.jcrs.0000000000001123"
-    }
-  ] as const;
+  const acuityOptions = Object.entries(acuityIols).map(([value, {label}]) => ({value,label}));
+  const physicsOptions = Object.entries(physicsIols).map(([value, {label}]) => ({value,label}));
 
   let activePanel: Panel = 'landing';
   let patientAge = PRESBYOPIA_DEFAULT_AGE;
@@ -124,7 +116,8 @@
   $: if ($simulationMode === 'Presbyopia' && !ALLOWED_PRESBYOPIA_PROFILES.includes($presbyopiaCompareProfile)) {
     presbyopiaCompareProfile.set('normal');
   }
-  $: iolOptions = $iolCurves.map((lens) => ({ value: lens.id, label: lens.label }));
+  $: iolOptions = $simulationMethod === 'physics' ? physicsOptions : acuityOptions;
+  $: iolSelection = $simulationMethod === 'physics' ? $physicsSelection : $acuitySelection;
   $: targetRefractionLabel = formatTargetRefractionLabel($targetRefraction);
   $: targetRefractionLeftLabel = formatTargetRefractionLabel($targetRefraction);
   $: targetRefractionRightLabel = formatTargetRefractionLabel($compareTargetRefraction);
@@ -218,12 +211,12 @@
     compareTargetRefraction.set(clampedValue);
   }
 
-  function handlePrimaryLensChange(event: CustomEvent<{ value: string }>): void {
-    selectedLensId.set(event.detail.value);
-  }
-
-  function handleCompareLensChange(event: CustomEvent<{ value: string }>): void {
-    selectedCompareLensId.set(event.detail.value);
+  function selectIol(side: 'primary' | 'compare', id: string): void {
+    if ($simulationMethod === 'physics' && Object.hasOwn(physicsIols, id)) {
+      physicsSelection.update(selection => ({ ...selection, [side]: id as PhysicsIolId }));
+    } else if ($simulationMethod === 'acuity' && Object.hasOwn(acuityIols, id)) {
+      acuitySelection.update(selection => ({ ...selection, [side]: id as AcuityIolId }));
+    }
   }
 
   function handlePrimaryPresbyopiaProfileChange(event: CustomEvent<{ value: string }>): void {
@@ -350,18 +343,18 @@
       <div class="selector-row {$splitViewEnabled ? 'dual' : 'single'}">
         <SheetSelect
           options={iolOptions}
-          value={$selectedLensId}
+          value={iolSelection.primary}
           ariaLabel="Primary IOL"
           title="Select primary IOL"
-          on:change={handlePrimaryLensChange}
+          on:change={event => selectIol('primary', event.detail.value)}
         />
         {#if $splitViewEnabled}
           <SheetSelect
             options={iolOptions}
-            value={$selectedCompareLensId}
+            value={iolSelection.compare}
             ariaLabel="Comparison IOL"
             title="Select comparison IOL"
-            on:change={handleCompareLensChange}
+            on:change={event => selectIol('compare', event.detail.value)}
           />
         {/if}
       </div>
@@ -471,21 +464,18 @@
               </div>
 
               <div class="settings-section">
-                <h3 class="section-title">Gaussian Curve Sources</h3>
-                <p class="landing-disclaimer">Legacy commercial curves: enVista → Spherical, TECNIS ZCB00 → Aspheric, Vivity → Vivity-like. These curves do not clinically validate the physics models.</p>
-                <ul class="landing-reference-list">
-                  {#each LANDING_REFERENCE_GROUPS as group}
-                    <li>
-                      <strong>{group.lenses}</strong>
-                      <br />
-                      {group.citation}
-                    </li>
-                  {/each}
-                </ul>
+                <h3 class="section-title">Acuity-derived</h3>
+                <p class="landing-disclaimer">Clinical defocus curves determine equivalent Gaussian blur. The legacy Vivity curve is available and awaits source re-extraction. Model-specific curves for SN60AT and SN60WF are pending.</p>
+                <p class="landing-disclaimer">Vivity study reference: Pantanelli et al. J Cataract Refract Surg. 2023;49(4):360–366. doi:10.1097/j.jcrs.0000000000001123</p>
               </div>
               <div class="settings-section">
-                <h3 class="section-title">Physics Model Source</h3>
-                <p class="landing-disclaimer">OPTrace geometric ray tracing with frozen distance correction, 3 mm pupil and average cornea. Vivity-like EDOF is synthetic; the spherical control includes a quadratic correction. Monochrome photopic PSFs approximate local retinal image formation, not clinical acuity.</p>
+                <h3 class="section-title">Physics-based (optrace)</h3>
+                <p class="landing-disclaimer">optrace PSFs and precomputed optical images model local retinal image formation at a 3 mm pupil with an average cornea and frozen distance correction.</p>
+                <ul class="landing-reference-list">
+                  {#each Object.values(physicsIols) as model}
+                    <li><strong>{model.label}</strong><br />{model.reference}</li>
+                  {/each}
+                </ul>
               </div>
             </div>
           {/if}
@@ -517,16 +507,16 @@
 
             {#if $simulationMode === 'IOL'}
               <div class="settings-section">
-                <h3 class="section-title">Blur Engine</h3>
-                <div class="segmented-control" role="radiogroup" aria-label="Blur Engine">
-                  <button class:active={$blurEngine==='gaussian'} aria-pressed={$blurEngine==='gaussian'} on:click={()=>blurEngine.set('gaussian')}>Acuity-based (Gaussian)</button>
-                  <button class:active={$blurEngine==='psf'} aria-pressed={$blurEngine==='psf'} on:click={()=>blurEngine.set('psf')}>Physics-based (OPTrace PSF)</button>
+                <h3 class="section-title">Simulation Method</h3>
+                <div class="segmented-control" role="group" aria-label="Simulation Method">
+                  <button class:active={$simulationMethod==='acuity'} aria-pressed={$simulationMethod==='acuity'} on:click={()=>simulationMethod.set('acuity')}>Acuity-derived</button>
+                  <button class:active={$simulationMethod==='physics'} aria-pressed={$simulationMethod==='physics'} on:click={()=>simulationMethod.set('physics')}>Physics-based (optrace)</button>
                 </div>
               </div>
               <div class="settings-section">
                 <h3 class="section-title">Vision</h3>
-                {#if $blurEngine === 'psf'}
-                  <p class="control-helper">Fixed distance-corrected models. Target refraction is not applied in physics mode.</p>
+                {#if $simulationMethod === 'physics'}
+                  <p class="control-helper">Physics-based rendering uses fixed distance-corrected optical models.</p>
                 {:else}
                 {#if $splitViewEnabled}
                   <div class="control-block">

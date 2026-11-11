@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defocusFromAccommodation, logMARFromLensCurve, sigmaFromLogMAR } from '../src/lib/optics/mapping.ts';
 import { resolveBlurPolicy } from '../src/lib/render/blur-policy.ts';
+import { acuityIols, physicsIols } from '../src/lib/data/iol-models.ts';
 import { calculateCssPixelsPerMillimeterFromCreditCardShortEdge, calculateCreditCardShortEdgePixelsFromCssPixelsPerMillimeter, parseCalibrationSnapshot, serializeCalibrationSnapshot } from '../src/lib/optics/calibration.ts';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -58,12 +59,15 @@ test('legacy blur policy preserves full sigma at full resolution for extreme wor
   assert.equal(policy.sigmaTexelUsedBlurGrid, policy.sigmaTexelUsedFull / policy.downsampleFactor);
 });
 
-test('IOL selection contains exactly the three supported legacy models', () => {
-  assert.deepEqual(curves.filter(curve => curve.type === 'IOL').map(({ id, label }) => ({ id, label })), [
-    { id: 'envista', label: 'Spherical Monofocal' },
-    { id: 'zcb00', label: 'Aspheric Monofocal' },
-    { id: 'vivity', label: 'Vivity-like EDOF' }
+test('acuity models resolve only their own clinical data and physics models have separate identities', () => {
+  assert.deepEqual(Object.entries(acuityIols).map(([id, model]) => [id, model.curveId]), [
+    ['sn60at', null], ['sn60wf', null], ['acrysof_iq_vivity', 'vivity']
   ]);
+  const curve = curves.find(curve => curve.id === acuityIols.acrysof_iq_vivity.curveId);
+  assert.equal(curve.type, 'IOL');
+  assert.equal(curve.manufacturer, 'Alcon');
+  assert.equal(curve.label, acuityIols.acrysof_iq_vivity.label);
+  assert.ok(Object.keys(physicsIols).every(id => !Object.hasOwn(acuityIols, id) && !curves.some(curve => curve.id === id)));
   for (const curve of curves) {
     assert.equal(curve.defocus_D.length, curve.logMAR.length);
     assert.ok(curve.logMAR.every(Number.isFinite));

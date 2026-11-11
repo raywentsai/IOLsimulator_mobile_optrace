@@ -8,7 +8,7 @@
   "spectrum": "D65 380-780 nm; photopic Y; dispersive FdC materials",
   "rays": 1500000,
   "seed": 28106701,
-  "diffraction": "OPTrace HURB approximation, not full wave optics",
+  "diffraction": "optrace HURB approximation, not full wave optics",
   "backendCommit": "adad608acedb08c2d99688613fa01034865c9d47",
   "backendSources": {
     "src/iol_sim/geometry.py": "dfb87acadd291b272ce65725481fd9268a56da74db95978eda1ada157cb87b85",
@@ -24,6 +24,22 @@
     "optrace": "1.8.3",
     "numpy": "2.5.4",
     "scipy": "1.18.1"
+  },
+  "modelIdentities": {
+    "spherical_monofocal_dc_v1": {
+      "label": "Synthetic Spherical Monofocal",
+      "reference": "Paraxially matched synthetic control with a frozen quadratic sag correction"
+    },
+    "aspheric_monofocal_dc_v1": {
+      "label": "Alcon Aspheric Monofocal",
+      "reference": "Alcon AcrySof IQ SN60WF reference geometry from the published optrace example, with the project's frozen distance correction",
+      "source": "https://github.com/drocheam/optrace/blob/adad608acedb08c2d99688613fa01034865c9d47/examples/IOL_target_imaging.py"
+    },
+    "vivity_inspired_v2_1_dc_v1": {
+      "label": "Synthetic Refractive EDOF",
+      "reference": "Synthetic Vivity-like optical model informed by Garzón et al.'s radial-power data",
+      "source": "https://doi.org/10.5281/zenodo.18084296"
+    }
   },
   "models": {
     "spherical_monofocal_dc_v1": {

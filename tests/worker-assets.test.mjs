@@ -10,10 +10,10 @@ import {OPTICAL_CACHE_BYTES,unpackOpticalImage,renderOpticalImage,renderOpticalI
 import {blurBackground,packBackgroundRgb,renderScene,sceneTarget} from '../src/lib/render/psf/scene.ts';
 import {gpuSampling} from '../src/lib/render/psf/gpu-display.ts';
 import {opticalWorkingSet} from '../src/lib/render/psf/optical-images.ts';
-import {PSF_MODELS} from '../src/lib/render/psf/geometry.ts';
+import {physicsIols} from '../src/lib/data/iol-models.ts';
 import {readRgbPng} from './png-helper.mjs';
-const libraries=Object.values(PSF_MODELS).map(model=>JSON.parse(fs.readFileSync(`static/optical-images/${model}.json`)));
-const library=libraries.find(value=>value.model===PSF_MODELS.zcb00);
+const libraries=Object.keys(physicsIols).map(model=>JSON.parse(fs.readFileSync(`static/optical-images/${model}.json`)));
+const library=libraries.find(value=>value.model==='aspheric_monofocal_dc_v1');
 const fixtures=JSON.parse(fs.readFileSync('static/validation/optical-image-reference.json')).cases;
 const energy=e=>{const a=gunzipSync(fs.readFileSync('static/psf/'+e.file));return new Float32Array(a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength));};
 const packed=level=>({key:opticalImageKey(level),level,rgba:readRgbPng('static/optical-images/'+level.file).rgba});
@@ -73,7 +73,7 @@ test('both selected lenses fit in the shared budget and the pending side survive
     assert.ok(sizes[0]+sizes[1]<=OPTICAL_CACHE_BYTES);
   }
   const at=(model,demand)=>packed(model.entries.find(e=>e.objectVergenceD===demand).levels.at(-1));
-  const left=at(library,3.9),previous=at(library,4),right=at(libraries.find(m=>m.model===PSF_MODELS.vivity),3.9);
+  const left=at(library,3.9),previous=at(library,4),right=at(libraries.find(m=>m.model==='vivity_inspired_v2_1_dc_v1'),3.9);
   const worker=new FakeWorker();
   const client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(0),reason=>client.dispose(reason));
   try{
@@ -111,7 +111,7 @@ class FakeWorker {
 }
 
 test('inactive Worker retains a recent optical frame only when its layers fit together',async()=>{
-  const vivity=libraries.find(model=>model.model===PSF_MODELS.vivity);
+  const vivity=libraries.find(model=>model.model==='vivity_inspired_v2_1_dc_v1');
   const left=packed(vivity.entries.find(node=>node.objectVergenceD===1.7).levels[0]);
   const right=packed(library.entries.find(node=>node.objectVergenceD===1.7).levels[0]);
   const worker=new FakeWorker(),client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(0),reason=>client.dispose(reason));
@@ -239,7 +239,7 @@ test('mixed split returns one output buffer matching two full renders and transf
 
 test('100 cm comparison retains both eyes at two adjacent dense nodes within the existing cache',async()=>{
   const width=219,height=349,cssPxPerMm=7.780659503519822,mid=Math.floor(width/2);
-  const models=[library,libraries.find(m=>m.model===PSF_MODELS.vivity)];
+  const models=[library,libraries.find(m=>m.model==='vivity_inspired_v2_1_dc_v1')];
   let fullBytes=0;
   const sides=models.map((model,index)=>[3.9,4].map(demand=>{
     const level=model.entries.find(e=>e.objectVergenceD===demand).levels.at(-1);

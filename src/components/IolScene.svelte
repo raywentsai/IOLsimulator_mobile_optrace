@@ -8,18 +8,22 @@
   import {WebGLRenderer,type RenderConfig} from '../lib/render/gl/renderer';
   import {resolveBlurPolicy} from '../lib/render/blur-policy';
   import {manifest,loadPsf,prefetchPsfNeighbors,cancelPsfPrefetch,psfCacheInfo,type PsfManifest} from '../lib/render/psf/library';
-  import {objectVergence,PSF_MODELS,mobileSampling,calibratedCssPxPerMm,type PsfEntry} from '../lib/render/psf/geometry';
+  import {objectVergence,mobileSampling,calibratedCssPxPerMm,type PsfEntry} from '../lib/render/psf/geometry';
   import {PsfDisplay} from '../lib/render/psf/display';
   import {GpuDisplay,GpuDisplayError,gpuSampling,prepareGpuSides} from '../lib/render/psf/gpu-display';
   import {backgroundRegionKey} from '../lib/render/psf/scene';
   import {OpticalImageLoader,opticalDecodeBytes,opticalWorkingSet,type OpticalImageStore} from '../lib/render/psf/optical-images';
   import {OPTICAL_CACHE_BYTES,type OpticalImageRef} from '../lib/render/psf/optical-image-math';
   import {PhysicsWorkerClient} from '../lib/render/psf/worker-client';
-  import {blurEngine,selectedLensId,selectedCompareLensId,masterDefocus,cssPxPerMmCal,calibrationScale,currentViewportScale,viewingDistance,splitViewEnabled,
-    blurSigma,compareBlurSigma,backgroundBlurSigma,compareBackgroundBlurSigma,currentVADecimal,compareVADecimal,type BlurEngine} from '../lib/stores/app';
+  import {simulationMethod,physicsSelection,acuitySelection,selectedLensCurve,selectedCompareLensCurve,
+    masterDefocus,cssPxPerMmCal,calibrationScale,currentViewportScale,viewingDistance,splitViewEnabled,
+    blurSigma,compareBlurSigma,backgroundBlurSigma,compareBackgroundBlurSigma,currentVADecimal,compareVADecimal} from '../lib/stores/app';
+  import type {AcuityIolId,PhysicsIolId} from '../lib/data/iol-models';
 
-  type SceneConfiguration={
-    key:string;engine:BlurEngine;lens:string;compareLens:string|null;ppm:number;distance:number;
+  type SceneModels={method:'acuity';lens:AcuityIolId;compareLens:AcuityIolId|null}|
+    {method:'physics';lens:PhysicsIolId;compareLens:PhysicsIolId|null};
+  type SceneConfiguration=SceneModels&{
+    key:string;engine:'gaussian'|'psf';ppm:number;distance:number;
     cssWidth:number;cssHeight:number;dpr:number;displayWidth:number;displayHeight:number;backgroundReady:boolean;
   };
   type FrameRequest={scene:SceneConfiguration;defocus:number;direction:number;sigmas:number[];scheduledAt:number;startedAt?:number};
@@ -47,7 +51,7 @@
   let backgroundController=new AbortController(),backgroundAssetHandle:LoadedImage|null=null,pendingBackground:LoadedImage|null=null;
   let renderController=new AbortController();
   let diagnostics=false,profile:Record<string,unknown>={};
-  let displayedEngine:BlurEngine|null=null,displayedBackground=false;
+  let displayedScene:SceneConfiguration|null=null;
   let configuration:SceneConfiguration|null=null,request:FrameRequest|null=null;
   let queued=false,backgroundRevision=0,viewportRevision=0,preparedVersion=0;
   const warmFrames=new Map<number,WarmFrame>();
@@ -60,7 +64,7 @@
   let backgroundTexture='',cardTexture='';
   const cardCanvas=typeof document!=='undefined'?document.createElement('canvas'):null;
   const CARD_HEIGHT_MM=28,ASPECT=1528/1170;
-  const NO_SIGMAS:number[]=[];
+  const NO_SIGMAS=[0,0,0,0];
   const backgroundErrorLabels={stalled:'Background download stalled',timeout:'Background download timed out',transfer:'Background download failed',
     decode:'Background image could not be decoded',native:'Browser could not load the background image',upload:'Background texture upload failed',cancelled:'Background download cancelled'};
   const cpuOpticalStore:OpticalImageStore={
@@ -92,6 +96,7 @@
     event.preventDefault();
     if(!gpuDisplay)return;
     disableGpu('Graphics context lost');gpuVisible=false;
+    displayedScene=null;
     gpuCanvas.width=1;gpuCanvas.height=1;
     retryRendering();
   }
@@ -125,21 +130,23 @@
   }
 
   function readConfiguration(previous:SceneConfiguration|null):SceneConfiguration {
-    const engine=backgroundLoading&&!backgroundReady?'gaussian':$blurEngine;
-    const lens=$selectedLensId,compareLens=$splitViewEnabled?$selectedCompareLensId:null;
+    const models:SceneModels=$simulationMethod==='physics'?
+      {method:'physics',lens:$physicsSelection.primary,compareLens:$splitViewEnabled?$physicsSelection.compare:null}:
+      {method:'acuity',lens:$acuitySelection.primary,compareLens:$splitViewEnabled?$acuitySelection.compare:null};
+    const engine=models.method==='physics'&&(!backgroundLoading||backgroundReady)?'psf':'gaussian';
     const ppm=calibratedCssPxPerMm($cssPxPerMmCal,$calibrationScale,$currentViewportScale),distance=$viewingDistance;
     const cssWidth=Math.max(1,host.clientWidth),cssHeight=Math.max(1,host.clientHeight);
     const dpr=devicePixelRatio||1,displayScale=dpr*(window.visualViewport?.scale??1);
     const displayWidth=Math.max(1,Math.round(cssWidth*displayScale)),displayHeight=Math.max(1,Math.round(cssHeight*displayScale));
-    const key=JSON.stringify([engine,lens,compareLens,ppm,distance,cssWidth,cssHeight,dpr,displayWidth,displayHeight,backgroundRevision]);
+    const key=JSON.stringify([models.method,engine,models.lens,models.compareLens,ppm,distance,cssWidth,cssHeight,dpr,displayWidth,displayHeight,backgroundRevision]);
     if(previous?.key===key)return previous;
     warmFrames.clear();
-    return {key,engine,lens,compareLens,ppm,distance,cssWidth,cssHeight,dpr,displayWidth,displayHeight,backgroundReady};
+    return {...models,key,engine,ppm,distance,cssWidth,cssHeight,dpr,displayWidth,displayHeight,backgroundReady};
   }
 
   function opticalRequest({scene,defocus}:FrameRequest) {
-    return scene.engine==='psf'?{
-      models:[PSF_MODELS[scene.lens],...(scene.compareLens===null?[]:[PSF_MODELS[scene.compareLens]])],
+    return scene.engine==='psf'&&scene.method==='physics'?{
+      models:scene.compareLens===null?[scene.lens]:[scene.lens,scene.compareLens],
       demand:objectVergence(defocus)
     }:undefined;
   }
@@ -156,7 +163,7 @@
 
   function schedule(scene:SceneConfiguration,defocus:number):void {
     if(disposed)return;
-    const sigmas=scene.engine==='gaussian'?[$blurSigma,$compareBlurSigma,$backgroundBlurSigma,$compareBackgroundBlurSigma]:NO_SIGMAS;
+    const sigmas=scene.method==='acuity'?[$blurSigma,$compareBlurSigma,$backgroundBlurSigma,$compareBackgroundBlurSigma]:NO_SIGMAS;
     const previous=request;
     if(previous?.scene===scene&&previous.defocus===defocus&&(sigmas===NO_SIGMAS||sigmas.every((sigma,i)=>Object.is(sigma,previous.sigmas[i]))))return;
     const direction=previous?.scene===scene?Math.sign(previous.defocus-defocus):0;
@@ -186,9 +193,10 @@
   }
 
   function sceneSides(scene:SceneConfiguration,library:PsfManifest,demand:number):SceneSide[] {
+    if(scene.method!=='physics')throw new Error('A physics model is required');
     const {lens,compareLens}=scene;
     return [...new Set(compareLens===null?[lens]:[lens,compareLens])].map(lensId=>{
-      const model=PSF_MODELS[lensId];
+      const model=lensId;
       const near=library.entries.find(entry=>entry.model===model&&entry.objectVergenceD===demand);
       const infinity=library.entries.find(entry=>entry.model===model&&entry.objectVergenceD===0);
       if(!near||!infinity)throw new Error('Requested PSF is missing');
@@ -286,7 +294,7 @@
 
   function presentFrame(frame:FrameRequest,renderedGpu:boolean):void {
     if(gpuVisible&&!renderedGpu){gpuCanvas.width=1;gpuCanvas.height=1;}
-    gpuVisible=renderedGpu;displayedEngine=frame.scene.engine;displayedBackground=frame.scene.backgroundReady;
+    gpuVisible=renderedGpu;displayedScene=frame.scene;
     displayedDefocus=frame.defocus;
     if(renderedGpu)fallbackMessage='';
     error='';status='';opticalProgress=null;
@@ -295,7 +303,7 @@
   function report(frame:FrameRequest,metrics:Record<string,unknown>,start:number,submittedAtMs:number,width:number,height:number,demand:number):void {
     const {scene,scheduledAt}=frame;
     renderMs=submittedAtMs-start;
-    profile={...metrics,engine:scene.engine,backgroundReady:scene.backgroundReady,queueMs:start-scheduledAt,renderMs,
+    profile={...metrics,method:scene.method,engine:scene.engine,backgroundReady:scene.backgroundReady,queueMs:start-scheduledAt,renderMs,
       submittedAtMs,inputToSubmitMs:submittedAtMs-scheduledAt,width,height,objectVergenceD:demand,lens:scene.lens,
       compareLens:scene.compareLens,cssPxPerMm:scene.ppm,viewingDistanceM:scene.distance,
       psfCache:psfCacheInfo(),workerAssets:worker?.info(),gpuAssets:gpuDisplay?.info(),opticalLoads:opticalImages.info()};
@@ -601,7 +609,7 @@
     observer?.disconnect();resetWorker('Scene disposed');gpuDisplay?.dispose();psfDisplay?.dispose();renderer?.dispose();
   });
   $: if(ready) {
-    void [$blurEngine,$selectedLensId,$selectedCompareLensId,$splitViewEnabled,$cssPxPerMmCal,$calibrationScale,$currentViewportScale,$viewingDistance,
+    void [$simulationMethod,$physicsSelection,$acuitySelection,$splitViewEnabled,$cssPxPerMmCal,$calibrationScale,$currentViewportScale,$viewingDistance,
       backgroundLoading,backgroundReady,backgroundRevision,viewportRevision];
     configuration=readConfiguration(configuration);
   }
@@ -609,25 +617,36 @@
     void [$blurSigma,$compareBlurSigma,$backgroundBlurSigma,$compareBackgroundBlurSigma];
     schedule(configuration,$masterDefocus);
   }
-  $: physicsLabel=backgroundLoading?'Gaussian preview':gpuRequested&&displayedEngine==='psf'?`OPTrace PSF · ${gpuVisible?'GPU':'CPU'}`:'OPTrace PSF';
+  $: matchingScene=displayedScene!==null&&displayedScene.method===configuration?.method&&
+    displayedScene.lens===configuration.lens&&displayedScene.compareLens===configuration.compareLens;
+  $: physicsLabel=displayedScene?.engine==='gaussian'?'Reading chart preview':
+    gpuRequested?`optrace PSF · ${gpuVisible?'GPU':'CPU'}`:'optrace PSF';
+  $: missingPrimary=$simulationMethod==='acuity'&&!$selectedLensCurve;
+  $: missingCompare=$simulationMethod==='acuity'&&$splitViewEnabled&&!$selectedCompareLensCurve;
 </script>
 
-<div class="scene" bind:this={host} data-scene-state={!ready?'initializing':displayedBackground?'complete':'partial'}>
+<div class="scene" bind:this={host} data-scene-state={!ready?'initializing':displayedScene?.backgroundReady?'complete':'partial'}>
   <canvas bind:this={canvas} data-render-ms={diagnostics?Math.round(renderMs):undefined} data-profile={diagnostics?JSON.stringify(profile):undefined} aria-label="IOL vision simulation canvas (WebGL)"></canvas>
   <canvas bind:this={gpuCanvas} class="gpu-canvas" class:visible={gpuVisible} aria-hidden="true"></canvas>
   <div class="loading-stack">
     {#if !ready&&status}<LoadingProgress label={status} detail="Controls are available while the scene loads." />{/if}
-    {#if backgroundLoading}<LoadingProgress label="Loading background" progress={backgroundProgress} detail={$blurEngine==='psf'?'Physics will start after the background loads.':ready?'Near chart is available. The complete scene is still loading.':'The chart loads separately.'} />{/if}
+    {#if backgroundLoading}<LoadingProgress label="Loading background" progress={backgroundProgress} detail={$simulationMethod==='physics'?'Physics-based rendering will start after the background loads.':ready?'Near chart is available. The complete scene is still loading.':'The chart loads separately.'} />{/if}
     {#if ready&&status}<div class="status"><LoadingProgress label={status} progress={opticalProgress} /></div>{/if}
     {#if backgroundError}<div class="error" role="alert" data-background-error={backgroundError.code}><strong>{backgroundErrorLabels[backgroundError.code]}</strong><p>{ready?'The near chart remains available on a neutral background.':'Controls remain available. The background can be retried separately from the chart.'}</p><details><summary>Error details</summary>{backgroundError.message}</details><button on:click={()=>void startBackgroundLoad()}>Retry background</button></div>{/if}
-    {#if error}<div class="error" role="alert"><p>{error}</p><button on:click={()=>ready?retryRendering():void initializeScene()}>{ready?'Retry rendering':'Retry chart'}</button>{#if $blurEngine==='psf'}<button on:click={()=>blurEngine.set('gaussian')}>Use Gaussian</button>{/if}</div>{/if}
+    {#if error}<div class="error" role="alert"><p>{error}</p><button on:click={()=>ready?retryRendering():void initializeScene()}>{ready?'Retry rendering':'Retry chart'}</button>{#if $simulationMethod==='physics'}<button on:click={()=>simulationMethod.set('acuity')}>Use Acuity-derived</button>{/if}</div>{/if}
     {#if fallbackMessage&&!status}<div class="notice" role="status">{fallbackMessage}</div>{/if}
   </div>
-  <div class="readout">
-    <span>{$blurEngine==='psf'?physicsLabel:`VA ~ ${$currentVADecimal.toFixed(2)}`}</span>
-    {#if $splitViewEnabled}<span>{$blurEngine==='psf'?physicsLabel:`VA ~ ${$compareVADecimal.toFixed(2)}`}</span>{/if}
-  </div>
-  {#if displayedDefocus!==null}
+  {#if ready&&!matchingScene}
+    <div class="scene-mask"></div>
+  {:else if matchingScene}
+    {#if missingPrimary}<div class="scene-mask" class:left={$splitViewEnabled}>Clinical defocus curve pending</div>{/if}
+    {#if missingCompare}<div class="scene-mask right">Clinical defocus curve pending</div>{/if}
+    <div class="readout">
+      <span>{missingPrimary?'':$simulationMethod==='physics'?physicsLabel:`VA ~ ${$currentVADecimal.toFixed(2)} · legacy curve`}</span>
+      {#if $splitViewEnabled}<span>{missingCompare?'':$simulationMethod==='physics'?physicsLabel:`VA ~ ${$compareVADecimal.toFixed(2)} · legacy curve`}</span>{/if}
+    </div>
+  {/if}
+  {#if matchingScene&&displayedDefocus!==null&&(!missingPrimary||($splitViewEnabled&&!missingCompare))}
     <span class="distance">{displayedDefocus.toFixed(1)} D / {Math.round(-100/displayedDefocus)} cm</span>
   {/if}
 </div>
@@ -647,5 +666,8 @@
   .notice{color:#4b5563}
   .readout{position:absolute;inset:.5rem .5rem auto;display:flex;gap:1rem;font-size:.7rem;pointer-events:none}
   .readout span{flex:1;color:white;text-shadow:0 1px 3px black}
+  .scene-mask{position:absolute;inset:0;display:grid;place-items:center;background:#eee;color:#374151;text-align:center;padding:.5rem;font-size:.8rem}
+  .scene-mask.left{right:50%}
+  .scene-mask.right{left:50%}
   .distance{position:absolute;bottom:.5rem;right:.5rem;background:#374151aa;color:white;border-radius:5px;padding:2px 5px;font-size:.65rem}
 </style>

@@ -7,7 +7,7 @@ import {readRgbPng} from './png-helper.mjs';
 import {unpackOpticalImage,renderOpticalImage,angularAreaWeights,angularDisplayDensity} from '../src/lib/render/psf/optical-image-math.ts';
 import {renderScene} from '../src/lib/render/psf/scene.ts';
 import {srgbToLinear} from '../src/lib/render/psf/convolve.ts';
-import {PSF_MODELS} from '../src/lib/render/psf/geometry.ts';
+import {physicsIols} from '../src/lib/data/iol-models.ts';
 import {opticalWorkingSet} from '../src/lib/render/psf/optical-images.ts';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const psfs=JSON.parse(fs.readFileSync('static/psf/manifest.json')).entries;
@@ -23,7 +23,7 @@ test('optical cache planning includes both eyes and each adjacent slider transit
   assert.deepEqual(opticalWorkingSet([oversized]).selections,[null]);
 });
 
-for(const model of Object.values(PSF_MODELS))test(`31 optical nodes authenticate original PSFs and numeric PNG samples: ${model}`,()=>{
+for(const model of Object.keys(physicsIols))test(`31 optical nodes authenticate original PSFs and numeric PNG samples: ${model}`,()=>{
   const library=JSON.parse(fs.readFileSync(`static/optical-images/${model}.json`));
   assert.equal(library.model,model);assert.equal(library.entries.length,31);
   assert.deepEqual(library.entries.map(e=>e.objectVergenceD),Array.from({length:31},(_,i)=>(i+10)/10));

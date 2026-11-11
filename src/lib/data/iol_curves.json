@@ -1,7 +1,7 @@
 [
   {
     "id": "envista",
-    "label": "Spherical Monofocal",
+    "label": "Bausch + Lomb enVista",
     "type": "IOL",
     "manufacturer": "Bausch & Lomb",
     "model": "enVista",
@@ -41,7 +41,7 @@
   },
   {
     "id": "zcb00",
-    "label": "Aspheric Monofocal",
+    "label": "TECNIS Monofocal ZCB00",
     "type": "IOL",
     "manufacturer": "Johnson & Johnson Vision",
     "model": "TECNIS Monofocal ZCB00",
@@ -89,7 +89,7 @@
   },
   {
     "id": "vivity",
-    "label": "Vivity-like EDOF",
+    "label": "Alcon AcrySof IQ Vivity",
     "type": "IOL",
     "manufacturer": "Alcon",
     "model": "AcrySof IQ Vivity",
@@ -125,7 +125,7 @@
       0.41,
       0.56
     ],
-    "notes": "Non-diffractive EDOF"
+    "notes": "Legacy Vivity family curve pending source re-extraction. Pantanelli et al., doi:10.1097/j.jcrs.0000000000001123, names DFT015 in the introduction and DAT015 in the methods."
   },
   {
     "id": "phakic_young_model",

@@ -1,4 +1,4 @@
-"""Reproducible OPTrace library export; original research is read-only.
+"""Reproducible optrace library export; original research is read-only.
 
 Run: uv run --project optics python optics/export_psfs.py --reference PATH
 Every exported vergence is traced directly (never extrapolated/interpolated).
@@ -134,9 +134,10 @@ def export(reference=None, only=None):
         'orientation': 'upright display x-right/y-down; optical inversion included; no centroid recentering',
         'captureFractionDefinition': 'radiant W in +/-0.25 mm divided by radiant W in the 4x4 mm reference detector; photopic Y is normalized separately within the exported window',
         'pupilMm': 3., 'cornea': 'average', 'spectrum': 'D65 380-780 nm; photopic Y; dispersive FdC materials',
-        'rays': RAYS, 'seed': SEED, 'diffraction': 'OPTrace HURB approximation, not full wave optics',
+        'rays': RAYS, 'seed': SEED, 'diffraction': 'optrace HURB approximation, not full wave optics',
         'backendCommit': 'adad608acedb08c2d99688613fa01034865c9d47', 'backendSources': sources(),
         'software': {'python':platform.python_version(), **{p:importlib.metadata.version(p) for p in ('optrace','numpy','scipy')}},
+        'modelIdentities': json.loads((ROOT.parent / 'src/lib/data/physics-models.json').read_text('utf8')),
         'models': {n: read_model(n) for n in MODELS}, 'eye': read_model('eye'), 'entries': entries})
 
 
