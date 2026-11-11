@@ -1,4 +1,4 @@
-"""Preconvolve the existing ETDRS card with authenticated IOL PSFs.
+"""Preconvolve the reading card with authenticated IOL PSFs.
 
 No ray tracing. Coordinates are tan(theta), not screen/device pixels. PNG RGB
 stores two linear 12-bit channels (premultiplied radiance and coverage); alpha
@@ -29,12 +29,14 @@ DENSITIES = [4096, 8192]
 # Minimum source grids that pass the dense-reference convergence gate.
 # The exceptions are confined to nodes with a sharper low-vergence response.
 MINIMUM_DENSITIES = {
+    'aspheric_monofocal_dc_v1': {10: 8192},
     'spherical_monofocal_dc_v1': dict.fromkeys([10, 11, 12, 13, 14, 15, 16, 19], 8192),
     'vivity_inspired_v2_1_dc_v1': {
-        10: 16384, 11: 16384, 12: 12288, 13: 8192, 14: 8192, 15: 8192, 16: 8192, 17: 8192,
+        10: 16384, 11: 16384, 12: 12288, 13: 8192, 14: 8192, 15: 8192, 16: 8192,
     },
 }
-HEIGHT_MM, ASPECT = 28., 1528 / 1170
+CARD = json.loads((PUBLIC / 'reading-card.json').read_text('utf8'))
+WIDTH_MM, HEIGHT_MM = CARD['objectWidthMm'], CARD['objectHeightMm']
 
 
 def sha(data):
@@ -62,7 +64,7 @@ def raster_card(page, width, height):
 
 def optical_layer(page, entry, energy, demand, density):
     angular_h = HEIGHT_MM * demand / 1000
-    angular_w = angular_h * ASPECT
+    angular_w = WIDTH_MM * demand / 1000
     cw, ch = max(1, round(angular_w * density)), max(1, round(angular_h * density))
     px, py = cw / angular_w, ch / angular_h
     # The existing independent area-overlap PSF sampler is used unchanged.
@@ -133,8 +135,8 @@ def export_model(page, library, model, output, demands, densities):
               'coordinates': 'tan(theta), x right/y down; card bottom centre is (0,0)',
               'channels': 'R=f>>4; G=((f&15)<<4)|(a>>8); B=a&255; f,a in [0,4095]',
               'radiometry': 'linear photopic radiance, premultiplied foreground + coverage; no RGB gamma encoding',
-              'physicalCardMm': [HEIGHT_MM * ASPECT, HEIGHT_MM],
-              'cardSvgCanonicalSha256': sha((PUBLIC / 'reading-card.svg').read_text('utf8').replace('\r\n', '\n').encode()),
+              'physicalCardMm': [WIDTH_MM, HEIGHT_MM],
+              'cardSvgCanonicalSha256': CARD['assetSha256'],
               'assumptions': 'existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y',
               'background': 'independent infinity PSF; never blur background with a near node',
               'software': {'pymupdf': pymupdf.VersionBind, 'numpy': np.__version__, 'scipy': scipy.__version__},
@@ -151,6 +153,7 @@ def main():
     parser.add_argument('--densities', nargs='+', type=int, help='Override release densities for an offline experiment')
     args = parser.parse_args()
     library = json.loads((PUBLIC / 'psf/manifest.json').read_text('utf8'))
+    assert sha((PUBLIC / 'reading-card.svg').read_text('utf8').encode()) == CARD['assetSha256']
     args.output.mkdir(parents=True, exist_ok=True)
     with pymupdf.open(PUBLIC / 'reading-card.svg') as doc:
         for model in args.models:

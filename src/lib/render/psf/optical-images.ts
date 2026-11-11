@@ -1,10 +1,11 @@
 import {loadPngAsset,downloadBlob,allowSpeculativeLoads,waitForAsset,ManifestCache,type ProgressListener,type AssetProgress} from '../asset-loading.ts';
+import readingCard from '../../../../static/reading-card.json' with { type: 'json' };
 import type {PsfEntry} from './geometry';
 import {OPTICAL_CACHE_BYTES,validatePackedOpticalImage,opticalImageKey,opticalColumns,cropOpticalPixels,packedOpticalBytes,
   type PackedOpticalImageLayer,type OpticalImageRef,type OpticalImageLevel} from './optical-image-math.ts';
 
 interface OpticalNode {objectVergenceD:number;psfSha256:string;levels:OpticalImageLevel[]}
-interface OpticalLibrary {version:number;model:string;encoding:string;physicalCardMm:[number,number];entries:OpticalNode[]}
+interface OpticalLibrary {version:number;model:string;encoding:string;physicalCardMm:[number,number];cardSvgCanonicalSha256:string;entries:OpticalNode[]}
 export interface OpticalImageStore {
   getOptical:(key:string)=>OpticalImageRef|undefined;
   sliceOptical?:(selection:OpticalImageRef)=>Promise<OpticalImageRef|undefined>|undefined;
@@ -25,8 +26,8 @@ function supportsOpticalDensity(px:number,py:number):boolean {
   return Math.min(px,py)>=128&&Math.max(px,py)<=8192;
 }
 
-const packedBytes=(layer:OpticalImageRef)=>packedOpticalBytes(layer.level,layer.columns);
-export function opticalDecodeBytes(layer:OpticalImageRef):number {
+const packedBytes=(layer:Pick<OpticalImageRef,'level'|'columns'>)=>packedOpticalBytes(layer.level,layer.columns);
+export function opticalDecodeBytes(layer:Pick<OpticalImageRef,'level'|'columns'>):number {
   return packedOpticalBytes(layer.level)+(layer.columns?packedBytes(layer):0);
 }
 type OpticalNodes=readonly [current:OpticalSelection|null,previous:OpticalSelection|null,next:OpticalSelection|null];
@@ -60,7 +61,7 @@ export class OpticalImageLoader {
     this.cancel();this.store=store;
   }
   cancel(keep?:OpticalRequest):void {
-    this.manifests.cancel(url=>keep?.models.some(model=>url.endsWith(`/${model}.json`))??false);
+    this.manifests.cancel(url=>keep?.models.some(model=>url.split('?')[0].endsWith(`/${model}.json`))??false);
     for(const [key,item]of this.pending){
       const {model,demand}=item.selection;
       if(keep?.demand===demand&&keep.models.includes(model))continue;
@@ -92,7 +93,7 @@ export class OpticalImageLoader {
         if(controller.signal.aborted)throw new Error('Optical image loading cancelled');
         if(sliced)return sliced;
       }
-      const asset=await loadPngAsset(`${base}/optical-images/${level.file}`,controller.signal,{totalMs:18000,expectedBytes:level.bytes,priority:listener?'high':'low',onProgress:p=>{if(item){item.progress=p;for(const fn of item.listeners)fn(p);}}});
+      const asset=await loadPngAsset(`${base}/optical-images/${level.file}?v=${level.fileSha256}`,controller.signal,{totalMs:18000,expectedBytes:level.bytes,priority:listener?'high':'low',onProgress:p=>{if(item){item.progress=p;for(const fn of item.listeners)fn(p);}}});
       let rgba:Uint8ClampedArray<ArrayBuffer>;
       try{
         const image=asset.image;
@@ -117,11 +118,13 @@ export class OpticalImageLoader {
   }
   async select(base:string,entry:PsfEntry,px:number,py:number,signal?:AbortSignal,visible?:VisibleColumns):Promise<OpticalSelection|null> {
     if(!supportsOpticalDensity(px,py))return null;
-    const url=`${base}/optical-images/${entry.model}.json`;
+    const url=`${base}/optical-images/${entry.model}.json?v=${readingCard.assetSha256}`;
     const manifest=await this.manifests.get(url,async downloadSignal=>{
       const result=JSON.parse(await (await downloadBlob(url,downloadSignal,{totalMs:12000})).text()) as OpticalLibrary;
       if(result.version!==1||result.model!==entry.model||result.encoding!=='opaque-rgb-f12-a12'||result.entries.length!==31||
-        Math.abs(result.physicalCardMm[1]-28)>1e-9||Math.abs(result.physicalCardMm[0]-28*1528/1170)>1e-9)throw new Error('Incompatible optical image library');
+        result.cardSvgCanonicalSha256!==readingCard.assetSha256||
+        result.physicalCardMm[0]!==readingCard.objectWidthMm||result.physicalCardMm[1]!==readingCard.objectHeightMm)
+        throw new Error('Incompatible optical image library');
       for(let d=10;d<=40;d++)if(!result.entries.some(e=>e.objectVergenceD===d/10))throw new Error('Incomplete optical image nodes');
       return result;
     },signal);
@@ -130,11 +133,14 @@ export class OpticalImageLoader {
     const level=selectLevel(node,px,py);
     if(!level)return null;
     const columns=visible?opticalColumns(level,px,visible.width,visible.cardWidth,visible.left,visible.right):undefined;
+    if(opticalDecodeBytes({level,columns})>OPTICAL_CACHE_BYTES)return null;
     return {key:opticalImageKey(level,columns),level,columns,model:entry.model,demand:entry.objectVergenceD};
   }
   async prefetch(base:string,current:OpticalSelection[],neighbors:OpticalSelection[],signal?:AbortSignal):Promise<void> {
     if(!allowSpeculativeLoads())return;
-    const small=neighbors.filter(node=>opticalDecodeBytes(node)<=2*1024*1024);
+    // Directional GPU prefetch decodes one asset at a time, including its crop.
+    const decodeBudget=(signal?6:2)*1024*1024;
+    const small=neighbors.filter(node=>opticalDecodeBytes(node)<=decodeBudget);
     if(signal&&small.length!==neighbors.length)return;
     if([...current,...small].reduce((sum,node)=>sum+packedBytes(node),0)>OPTICAL_CACHE_BYTES)return;
     const pending=small.filter(node=>!this.store.getOptical(node.key)).slice(0,2);

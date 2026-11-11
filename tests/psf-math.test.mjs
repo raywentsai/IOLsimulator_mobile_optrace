@@ -1,3 +1,4 @@
+import card from '../static/reading-card.json' with { type: 'json' };
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {convolvePair,reflectIndex,srgbToLinear,linearToSrgb} from '../src/lib/render/psf/convolve.ts';
@@ -137,7 +138,7 @@ test('linear luminance encoding round trips and preserves black/white energy',()
 
 test('extreme supported calibrations fit the mobile FFT memory bound without changing angular scale',()=>{
   for(const [cssWidth,cssHeight] of [[390,622],[640,640],[1280,720]])for(const ppm of [2,7.8])for(const distance of [.2,1])for(const demand of [1,4]) {
-    const sampling=mobileSampling(cssWidth,cssHeight,ppm,distance,demand,28,1528/1170,17);
+    const sampling=mobileSampling(cssWidth,cssHeight,ppm,distance,demand,card.objectHeightMm,card.objectWidthMm/card.objectHeightMm,17);
     assert.ok(sampling.width<=640&&sampling.height<=640);
     assert.equal(sampling.scaleX,sampling.width/cssWidth);
     assert.equal(sampling.scaleY,sampling.height/cssHeight);
@@ -146,8 +147,8 @@ test('extreme supported calibrations fit the mobile FFT memory bound without cha
     const energy=new Float32Array([0,0,0,0,1,0,0,0,0]);
     const kernel=scalePsf(energy,{width:3,height:3,retinalExtentMm:[-.25,.25,-.25,.25]},px,py);
     const p2=n=>2**Math.ceil(Math.log2(n)),rx=kernel.width>>1,ry=kernel.height>>1;
-    const cw=Math.max(1,Math.round(28*1528/1170*distance*demand*ppm*sampling.scaleX));
-    const ch=Math.max(1,Math.round(28*distance*demand*ppm*sampling.scaleY));
+    const cw=Math.max(1,Math.round(card.objectWidthMm*distance*demand*ppm*sampling.scaleX));
+    const ch=Math.max(1,Math.round(card.objectHeightMm*distance*demand*ppm*sampling.scaleY));
     assert.ok(p2(sampling.width+4*rx)*p2(sampling.height+4*ry)<=2097152);
     assert.ok(p2(cw+6*rx)*p2(ch+6*ry)<=2097152);
     assert.ok(Math.abs(px/sampling.scaleX/ppm/(distance*1000)-1/17)<1e-12);

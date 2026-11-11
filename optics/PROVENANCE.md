@@ -8,7 +8,7 @@ optrace is pinned to `adad608acedb08c2d99688613fa01034865c9d47`, version 1.8.3. 
 
 **Synthetic Refractive EDOF** approximates Vivity-like optical behavior using Garzón et al.'s public NIMO data. The model uses relative radial-power extraction, smoothing, tapering, integration onto an assumed anterior surface, base-power and quartic corrections, and frozen distance correction. The model JSON records the derivation parameters and dataset hash. [NIMO data](https://doi.org/10.5281/zenodo.18084296) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) · [Related article](https://doi.org/10.1007/s00417-024-06469-y)
 
-The ETDRS source is the public-domain Wikimedia vector https://commons.wikimedia.org/wiki/File:ETDRS_Chart_2.svg, also used by the optrace image preset. `export_card.py` applies the same seven-row crop as offline v3.1, adds white backing and records source/output hashes plus physical dimensions in `static/reading-card.json`. The chart and background are illustrative display assets.
+The Phase 12 scene uses an original ID-1 reading card and a generated streetscape. `static/reading-card.json` records physical dimensions and the card hash. The image manifests bind the card hash to the existing PSF hashes. [Scene provenance and scale](../docs/phase12-demo-redesign.md)
 
 Method references:
 

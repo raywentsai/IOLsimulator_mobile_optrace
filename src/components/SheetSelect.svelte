@@ -73,25 +73,24 @@
   .selector-pill {
     width: 100%;
     min-width: 0;
-    min-height: 2.5rem;
-    padding: 0.45rem 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 999px;
+    min-height: 44px;
+    padding: 0.36rem 0.65rem;
+    border: 1px solid #cddbdd;
+    border-radius: 0.6rem;
     background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.55rem;
-    color: #111827;
+    gap: 0.35rem;
+    color: #172b35;
+    text-align: left;
   }
 
   .selector-label {
     min-width: 0;
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.15;
   }
 
   .selector-chevron {

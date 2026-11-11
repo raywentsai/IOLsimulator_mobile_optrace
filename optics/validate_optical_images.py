@@ -24,6 +24,8 @@ def compare_model(page, psfs, model, args):
     rows = []
     for node in library['entries']:
         demand = node['objectVergenceD']
+        if args.demands and demand not in args.demands:
+            continue
         entry = next(e for e in psfs['entries'] if e['model'] == model and e['objectVergenceD'] == demand)
         energy = read_psf(entry)
         rf, ra, reference = optical_layer(page, entry, energy, demand, args.reference_density)
@@ -58,6 +60,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--library', type=Path, default=PUBLIC / 'optical-images')
     parser.add_argument('--models', nargs='+', choices=MODELS, default=list(MODELS))
+    parser.add_argument('--demands', nargs='+', type=float, help='Restrict the audit to selected object vergences')
     parser.add_argument('--source-density', type=int, default=0)
     parser.add_argument('--reference-density', type=int, default=16384)
     args = parser.parse_args()

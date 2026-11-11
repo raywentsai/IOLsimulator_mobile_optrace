@@ -11,11 +11,11 @@
   "channels": "R=f>>4; G=((f&15)<<4)|(a>>8); B=a&255; f,a in [0,4095]",
   "radiometry": "linear photopic radiance, premultiplied foreground + coverage; no RGB gamma encoding",
   "physicalCardMm": [
-    36.567521367521366,
-    28.0
+    85.6,
+    53.98
   ],
-  "cardSvgCanonicalSha256": "96fbd1abc5e3810196f8eda664ebe330ec261079eccb3efff9cbbd8660e5b65c",
-  "assumptions": "existing frozen Aspheric model, existing PSFs; on-axis shift-invariant scalar-Y",
+  "cardSvgCanonicalSha256": "0a765c8faa4a000a0bbecf1963739a137327d4bd67897c4d87cb94e53c5e580e",
+  "assumptions": "existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y",
   "background": "independent infinity PSF; never blur background with a near node",
   "software": {
     "pymupdf": "1.28.2",
@@ -24,99 +24,54 @@
   },
   "entries": [
     {
-      "objectVergenceD": 1.0,
+      "objectVergenceD": 1,
       "psfSha256": "8d58cb71e7f214e9eedfd00128adccaf3535c570a3be86a1418202b5dc3d7a4a",
       "retinalMmPerTanTheta": 16.815121297998083,
       "levels": [
         {
-          "width": 274,
-          "height": 239,
-          "density": 4096,
-          "pixelsPerTanTheta": [
-            4102.000747943156,
-            4107.142857142857
-          ],
-          "extentTanTheta": [
-            -0.03339833618233618,
-            0.03339833618233618,
-            -0.04309565217391305,
-            0.015095652173913045
-          ],
-          "cardPixels": [
-            150,
-            115
-          ],
-          "cardExtentTanTheta": [
-            -0.018283760683760683,
-            0.018283760683760683,
-            -0.028,
-            0
-          ],
-          "kernelPixels": [
-            125,
-            125
-          ],
-          "kernelEnergy": 1.0,
-          "expectedCoverageCentroidTanTheta": [
-            -6.952828016922777e-07,
-            -0.013998557480195474
-          ],
-          "coverageCentroidTanTheta": [
-            -6.969994359020156e-07,
-            -0.013998520606035321
-          ],
-          "centroidErrorTanTheta": 3.6914096493801395e-08,
-          "coverageAreaRelativeError": -1.831855744893751e-05,
-          "file": "aspheric_10_4096.png",
-          "bytes": 36714,
-          "fileSha256": "d4ce07215490017ba6e5cfb3db322ef965c221992da43f0565df7fa9aef09477",
-          "decodedRgbaSha256": "9e6a1c92b226120a5e171146596b36d3c2fd286ef391cf45606acd68f956ed42",
-          "maxLinearQuantizationError": 0.000122099475887023
-        },
-        {
-          "width": 546,
-          "height": 475,
+          "width": 947,
+          "height": 688,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8204.001495886312,
-            8178.571428571428
+            8189.252336448599,
+            8188.217858466099
           ],
           "extentTanTheta": [
-            -0.03327644444444444,
-            0.03327644444444444,
-            -0.043039301310043666,
-            0.015039301310043668
+            -0.05781968616262482,
+            0.05781968616262482,
+            -0.06900158371040724,
+            0.01502158371040724
           ],
           "cardPixels": [
-            300,
-            229
+            701,
+            442
           ],
           "cardExtentTanTheta": [
-            -0.018283760683760683,
-            0.018283760683760683,
-            -0.028,
+            -0.0428,
+            0.0428,
+            -0.05398,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -6.883369660818245e-07,
-            -0.013998713602148693
+            -6.863259834958762e-7,
+            -0.02698871714385984
           ],
           "coverageCentroidTanTheta": [
-            -7.026001282528188e-07,
-            -0.013998706942151055
+            -6.617687133323843e-7,
+            -0.026988787480937616
           ],
-          "centroidErrorTanTheta": 1.5741453670491906e-08,
-          "coverageAreaRelativeError": -1.771251552906694e-05,
+          "centroidErrorTanTheta": 7.450076528501529e-8,
+          "coverageAreaRelativeError": -0.0000039966803672131235,
           "file": "aspheric_10_8192.png",
-          "bytes": 111039,
-          "fileSha256": "a2217deacc429e9bbc887d6e5b320836ca21678c2505cdc75d2eb48e3df053a7",
-          "decodedRgbaSha256": "72f485808d049a300e84abed038fe0dbeccd8b0cd842ffecbf527a9bf0769c7c",
-          "maxLinearQuantizationError": 0.00012210003969237437
+          "bytes": 157085,
+          "fileSha256": "dc1327a7f0a7cedb490e3d5cfde4474ab6fd3a30f23014110340464515ba6d1c",
+          "decodedRgbaSha256": "08803c3b51a73aa9cca23eff9ed3d978144c96a7a3d6e80b8bc5f826ef311ddc",
+          "maxLinearQuantizationError": 0.00012210001114651078
         }
       ]
     },
@@ -126,94 +81,94 @@
       "retinalMmPerTanTheta": 16.810238597653598,
       "levels": [
         {
-          "width": 289,
-          "height": 250,
+          "width": 510,
+          "height": 367,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4090.9090909090905
+            4099.405267629567,
+            4092.424803799387
           ],
           "extentTanTheta": [
-            -0.03522671225071226,
-            0.03522671225071226,
-            -0.04595555555555556,
-            0.015155555555555558
+            -0.06220414507772021,
+            0.06220414507772021,
+            -0.07452794238683128,
+            0.015149942386831275
           ],
           "cardPixels": [
-            165,
-            126
+            386,
+            243
           ],
           "cardExtentTanTheta": [
-            -0.020112136752136755,
-            0.020112136752136755,
-            -0.030800000000000004,
+            -0.04708,
+            0.04708,
+            -0.059378,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -1.2668014368548608e-06,
-            -0.015398086386961466
+            -0.0000012669713885170114,
+            -0.029687084307582146
           ],
           "coverageCentroidTanTheta": [
-            -1.254113382420967e-06,
-            -0.015398223969883332
+            -0.0000011674681080311852,
+            -0.029687190217837178
           ],
-          "centroidErrorTanTheta": 1.3816673664277542e-07,
-          "coverageAreaRelativeError": -1.2650488841137175e-05,
+          "centroidErrorTanTheta": 1.4531993995401818e-7,
+          "coverageAreaRelativeError": -0.000002832574955591305,
           "file": "aspheric_11_4096.png",
-          "bytes": 41621,
-          "fileSha256": "1819bf437e62454597c470536fb1c4a40e6509a15450c62efb8ce6b33c8e63e4",
-          "decodedRgbaSha256": "040b6758b6a4448a60a8bd8b4f4aec9b031cce692361c8d6a27c9a404de88b8f",
-          "maxLinearQuantizationError": 0.00012209982355532775
+          "bytes": 59273,
+          "fileSha256": "01880c880a585f50999d42f7da81dcaf068595d78f6b72a9e6c258e55741a192",
+          "decodedRgbaSha256": "a9578f857b7d6dc1507eb58f8c892bf977ab012fb94e0e0910b459a28ab4a3a3",
+          "maxLinearQuantizationError": 0.0001221001122716503
         },
         {
-          "width": 576,
-          "height": 498,
+          "width": 1017,
+          "height": 732,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8204.001495886312,
-            8181.818181818181
+            8188.19031435854,
+            8184.849607598774
           ],
           "extentTanTheta": [
-            -0.03510482051282052,
-            0.03510482051282052,
-            -0.04583333333333334,
-            0.015033333333333334
+            -0.06210163424124513,
+            0.06210163424124513,
+            -0.07440576543209876,
+            0.015027765432098765
           ],
           "cardPixels": [
-            330,
-            252
+            771,
+            486
           ],
           "cardExtentTanTheta": [
-            -0.020112136752136755,
-            0.020112136752136755,
-            -0.030800000000000004,
+            -0.04708,
+            0.04708,
+            -0.059378,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -8.387494516822794e-07,
-            -0.015398151813551279
+            -8.404207197042001e-7,
+            -0.029687152021338318
           ],
           "coverageCentroidTanTheta": [
-            -8.094148815547673e-07,
-            -0.015398189497145543
+            -8.618092520719914e-7,
+            -0.029687120708574585
           ],
-          "centroidErrorTanTheta": 4.775531678493861e-08,
-          "coverageAreaRelativeError": -1.2856044602216343e-05,
+          "centroidErrorTanTheta": 3.792042311765972e-8,
+          "coverageAreaRelativeError": -0.0000029535569397998174,
           "file": "aspheric_11_8192.png",
-          "bytes": 124782,
-          "fileSha256": "927d8293ee5f1cba57e52952d775b4d8d939e0847a4714c57c1fa3f53d10c4a1",
-          "decodedRgbaSha256": "3870c8e52cadda4c8623cc7f7eab4c47ec15b64c5cd7087a480533d0df93c6ae",
-          "maxLinearQuantizationError": 0.00012209976853999518
+          "bytes": 175617,
+          "fileSha256": "984f9e04b24043b8be17a7b1eb8f398d6ef5267d8320026980045eb66d1cc7a0",
+          "decodedRgbaSha256": "ce4f100750a8d168fb15a16834a08ff02b9647a4e09f5836f0d4ff665e358c22",
+          "maxLinearQuantizationError": 0.00012210008404989203
         }
       ]
     },
@@ -223,94 +178,94 @@
       "retinalMmPerTanTheta": 16.805358732119693,
       "levels": [
         {
-          "width": 304,
-          "height": 262,
+          "width": 545,
+          "height": 389,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4107.142857142857
+            4098.520249221185,
+            4091.0213659380015
           ],
           "extentTanTheta": [
-            -0.037055088319088325,
-            0.037055088319088325,
-            -0.04869565217391305,
-            0.015095652173913045
+            -0.06648741092636579,
+            0.06648741092636579,
+            -0.0799311396226415,
+            0.015155139622641511
           ],
           "cardPixels": [
-            180,
-            138
+            421,
+            265
           ],
           "cardExtentTanTheta": [
-            -0.021940512820512823,
-            0.021940512820512823,
-            -0.033600000000000005,
+            -0.05135999999999999,
+            0.05135999999999999,
+            -0.064776,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -1.1135593176821725e-06,
-            -0.016796793611559706
+            -0.0000011179866433029035,
+            -0.032384749279025446
           ],
           "coverageCentroidTanTheta": [
-            -1.092562123502219e-06,
-            -0.016796899362858254
+            -0.0000010317487618031092,
+            -0.03238493453461225
           ],
-          "centroidErrorTanTheta": 1.0781567283100705e-07,
-          "coverageAreaRelativeError": -1.1354721499823306e-05,
+          "centroidErrorTanTheta": 2.0434432863854467e-7,
+          "coverageAreaRelativeError": -0.0000022392044980446,
           "file": "aspheric_12_4096.png",
-          "bytes": 46356,
-          "fileSha256": "17c0d89b37f2252b2371a5a541089dc87a1b35c69550b8133515ef449d3973f3",
-          "decodedRgbaSha256": "098e20bf5bbebeb3d79f531474e6fbc0a14efab5e3075a32de068849029fbc02",
-          "maxLinearQuantizationError": 0.0001220985981403575
+          "bytes": 65387,
+          "fileSha256": "45e1009a1f16c7ca44bbb925af7851165a63f4dc07a2c1ea2fa34a0aa71bf8c0",
+          "decodedRgbaSha256": "2ea83faaa7e8847329f4814ae22bbbb174a902a362deb07281afa7972b1a66fb",
+          "maxLinearQuantizationError": 0.00012210010322921683
         },
         {
-          "width": 605,
-          "height": 521,
+          "width": 1087,
+          "height": 777,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8181.212602842183,
-            8184.523809523808
+            8187.305295950157,
+            8197.480548351241
           ],
           "extentTanTheta": [
-            -0.036974958931504896,
-            0.036974958931504896,
-            -0.04862836363636364,
-            0.015028363636363638
+            -0.06638325802615933,
+            0.06638325802615933,
+            -0.07978061016949153,
+            0.015004610169491527
           ],
           "cardPixels": [
-            359,
-            275
+            841,
+            531
           ],
           "cardExtentTanTheta": [
-            -0.021940512820512823,
-            0.021940512820512823,
-            -0.033600000000000005,
+            -0.05135999999999999,
+            0.05135999999999999,
+            -0.064776,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -1.0354533444638586e-06,
-            -0.016796761202309128
+            -0.000001034877301893479,
+            -0.0323847604885806
           ],
           "coverageCentroidTanTheta": [
-            -1.058443137467332e-06,
-            -0.01679672818666364
+            -9.854490226254295e-7,
+            -0.03238475883095859
           ],
-          "centroidErrorTanTheta": 4.023137369460883e-08,
-          "coverageAreaRelativeError": -1.1027041667888149e-05,
+          "centroidErrorTanTheta": 4.945606638332176e-8,
+          "coverageAreaRelativeError": -0.0000024848140824929033,
           "file": "aspheric_12_8192.png",
-          "bytes": 138629,
-          "fileSha256": "b934b9268c5b62e533ae45152b42467185f10bd9eb5d5a61ac2684ab3fb31072",
-          "decodedRgbaSha256": "19ab99c3eeec2f2fdd16da31026d1d3d566218e40faaace7f06d647a0e502e3c",
-          "maxLinearQuantizationError": 0.00012210000170997937
+          "bytes": 193736,
+          "fileSha256": "c2c298fe4dec663dd7503e2d460db5c4b8656a198766a5659f0e2939255a8bb1",
+          "decodedRgbaSha256": "8bba1fa84a68502364ebfc5a5fd9d7dbe391abc901367f68a3f88955c34a9f9d",
+          "maxLinearQuantizationError": 0.00012209955256292648
         }
       ]
     },
@@ -320,94 +275,94 @@
       "retinalMmPerTanTheta": 16.80048169892832,
       "levels": [
         {
-          "width": 319,
-          "height": 273,
+          "width": 580,
+          "height": 411,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4093.4065934065934
+            4097.771387491013,
+            4089.8338415937533
           ],
           "extentTanTheta": [
-            -0.03888346438746439,
-            0.03888346438746439,
-            -0.051546308724832214,
-            0.015146308724832214
+            -0.0707701754385965,
+            0.0707701754385965,
+            -0.0853335400696864,
+            0.015159540069686409
           ],
           "cardPixels": [
-            195,
-            149
+            456,
+            287
           ],
           "cardExtentTanTheta": [
-            -0.02376888888888889,
-            0.02376888888888889,
-            -0.0364,
+            -0.05564,
+            0.05564,
+            -0.07017399999999999,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -5.317986186550684e-07,
-            -0.0181953630941329
+            -5.363779589307427e-7,
+            -0.03508237067591241
           ],
           "coverageCentroidTanTheta": [
-            -5.186183114358214e-07,
-            -0.01819544289305858
+            -3.9572206354839175e-7,
+            -0.03508257582255996
           ],
-          "centroidErrorTanTheta": 8.088009049507673e-08,
-          "coverageAreaRelativeError": -9.018305352936906e-06,
+          "centroidErrorTanTheta": 2.4873525666335564e-7,
+          "coverageAreaRelativeError": -0.000002000295416748621,
           "file": "aspheric_13_4096.png",
-          "bytes": 51502,
-          "fileSha256": "5e5e40fcc2dc28bb3582a02b24c28a546f7915d85413f47ce675f813f434e2f2",
-          "decodedRgbaSha256": "f87a4ed51f2902baa9f575c53bb9ecea8a4b7f7ab09bce3da74e24ac9b4a7174",
-          "maxLinearQuantizationError": 0.00012209924612116563
+          "bytes": 71402,
+          "fileSha256": "9ada9e33ad36fb36f6b953544df42df8e61270349bd5bc301a69746583d2f3f9",
+          "decodedRgbaSha256": "2365d659369eb5b9daacbec2310107f9e8bc4767db9558e16f0209168b7c3e96",
+          "maxLinearQuantizationError": 0.0001220998898024961
         },
         {
-          "width": 635,
-          "height": 544,
+          "width": 1158,
+          "height": 821,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8182.965594614809,
-            8186.813186813187
+            8195.542774982026,
+            8193.917975318496
           ],
           "extentTanTheta": [
-            -0.038800114253070554,
-            0.038800114253070554,
-            -0.051424161073825504,
-            0.015024161073825504
+            -0.07064815789473684,
+            0.07064815789473684,
+            -0.08518513391304346,
+            0.015011133913043474
           ],
           "cardPixels": [
-            389,
-            298
+            912,
+            575
           ],
           "cardExtentTanTheta": [
-            -0.02376888888888889,
-            0.02376888888888889,
-            -0.0364,
+            -0.05564,
+            0.05564,
+            -0.07017399999999999,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 0.9999999999999998,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.749596219617224e-07,
-            -0.018195594534662143
+            -5.689477821097508e-7,
+            -0.03508259550957652
           ],
           "coverageCentroidTanTheta": [
-            -5.850373178931725e-07,
-            -0.018195618452868146
+            -5.923564293032489e-7,
+            -0.035082664332862085
           ],
-          "centroidErrorTanTheta": 2.5954585985312694e-08,
-          "coverageAreaRelativeError": -1.0665670333365185e-05,
+          "centroidErrorTanTheta": 7.269531896347792e-8,
+          "coverageAreaRelativeError": -0.0000023009027586562425,
           "file": "aspheric_13_8192.png",
-          "bytes": 153050,
-          "fileSha256": "4efad5953f321009ff35b18f27b769a914054e9c5f905a275df9568f7a3a1121",
-          "decodedRgbaSha256": "731596e478b6d1372b1ab56e813cb25742b0e6f2c0ae784f4791e5ed79578687",
-          "maxLinearQuantizationError": 0.0001220998978805031
+          "bytes": 210881,
+          "fileSha256": "d7669aa20c5e32fcbdd62dfee8812a69a5f008d8ece81925f8178b0aab72aedc",
+          "decodedRgbaSha256": "29144e33a0d50d3cf932e63c4311f78c1ff32279cd7f11f4ce00e3e312f9a626",
+          "maxLinearQuantizationError": 0.00012210003206358788
         }
       ]
     },
@@ -417,94 +372,94 @@
       "retinalMmPerTanTheta": 16.795607495614306,
       "levels": [
         {
-          "width": 334,
-          "height": 285,
+          "width": 615,
+          "height": 434,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4107.142857142857
+            4097.129506008011,
+            4102.048377706029
           ],
           "extentTanTheta": [
-            -0.040711840455840455,
-            0.040711840455840455,
-            -0.054295652173913043,
-            0.015095652173913045
+            -0.07505254582484724,
+            0.07505254582484724,
+            -0.09068639999999999,
+            0.015114399999999998
           ],
           "cardPixels": [
-            210,
-            161
+            491,
+            310
           ],
           "cardExtentTanTheta": [
-            -0.025597264957264956,
-            0.025597264957264956,
-            -0.0392,
+            -0.059919999999999994,
+            0.059919999999999994,
+            -0.07557199999999999,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -2.7750967776258296e-07,
-            -0.019597369411106118
+            -2.816733429180669e-7,
+            -0.03778336203989553
           ],
           "coverageCentroidTanTheta": [
-            -2.8402771693910316e-07,
-            -0.019597466665632318
+            -2.199025505096082e-7,
+            -0.03778347555955799
           ],
-          "centroidErrorTanTheta": 9.747270233782102e-08,
-          "coverageAreaRelativeError": -8.443362480514693e-06,
+          "centroidErrorTanTheta": 1.2923755088460274e-7,
+          "coverageAreaRelativeError": -0.000001914006250047784,
           "file": "aspheric_14_4096.png",
-          "bytes": 57368,
-          "fileSha256": "a5fb38edaa25032a3796c70a067ecce258b152690f0db7710c84c634821720dd",
-          "decodedRgbaSha256": "d052d47bf22b5276e5cd2090c30a161dd0118e5801380a45513bfe0d12a9e350",
-          "maxLinearQuantizationError": 0.00012209733723134164
+          "bytes": 77871,
+          "fileSha256": "d3efcab302c625b2a38fe2f323abd4f670333b42ee51541b70feed1b7efb2622",
+          "decodedRgbaSha256": "6205aba3004c783e965a174a6893571c69fbd13b67067a470323920c80bd1a4d",
+          "maxLinearQuantizationError": 0.00012209990989653363
         },
         {
-          "width": 665,
-          "height": 567,
+          "width": 1228,
+          "height": 865,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8184.468158991345,
-            8188.775510204082
+            8194.259012016022,
+            8190.864341290427
           ],
           "extentTanTheta": [
-            -0.04062573077943006,
-            0.04062573077943006,
-            -0.05422056074766355,
-            0.015020560747663551
+            -0.07493050916496945,
+            0.07493050916496945,
+            -0.09058873021001614,
+            0.015016730210016153
           ],
           "cardPixels": [
-            419,
-            321
+            982,
+            619
           ],
           "cardExtentTanTheta": [
-            -0.025597264957264956,
-            0.025597264957264956,
-            -0.0392,
+            -0.059919999999999994,
+            0.059919999999999994,
+            -0.07557199999999999,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -4.5407196843329635e-07,
-            -0.01959735946441102
+            -4.5152883501952986e-7,
+            -0.03778335859785679
           ],
           "coverageCentroidTanTheta": [
-            -4.3192789251353935e-07,
-            -0.01959741129822584
+            -4.321371123650741e-7,
+            -0.03778347640733153
           ],
-          "centroidErrorTanTheta": 5.6365809292097974e-08,
-          "coverageAreaRelativeError": -8.787642896579406e-06,
+          "centroidErrorTanTheta": 1.1939477060244642e-7,
+          "coverageAreaRelativeError": -0.000001951647895181985,
           "file": "aspheric_14_8192.png",
-          "bytes": 167719,
-          "fileSha256": "41d98c926c66bc75ce95c9f39c7eeafbd00c3e1a309b1189a26709123502fc6c",
-          "decodedRgbaSha256": "e668f9e4d707afcca8cbe6fb7a891c14739b272e6a743ee6dfe6464c3648d3a5",
-          "maxLinearQuantizationError": 0.00012210000718997083
+          "bytes": 230384,
+          "fileSha256": "3549e2294e167a648c5127eb81ab74bde7dd5a2dd7a947fd25b4e5cb1e56ad24",
+          "decodedRgbaSha256": "0d8b03b51a704e6e2f10344c1bad8cca069800420a7ce1b4fe0585a8bc817e8e",
+          "maxLinearQuantizationError": 0.00012210010300728324
         }
       ]
     },
@@ -514,94 +469,94 @@
       "retinalMmPerTanTheta": 16.79073611971532,
       "levels": [
         {
-          "width": 349,
-          "height": 296,
+          "width": 650,
+          "height": 456,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4095.238095238095
+            4096.573208722742,
+            4100.284055823145
           ],
           "extentTanTheta": [
-            -0.04254021652421653,
-            0.04254021652421653,
-            -0.057139534883720935,
-            0.015139534883720931
+            -0.07933460076045626,
+            0.07933460076045626,
+            -0.09609090361445782,
+            0.01512090361445783
           ],
           "cardPixels": [
-            225,
-            172
+            526,
+            332
           ],
           "cardExtentTanTheta": [
-            -0.027425641025641028,
-            0.027425641025641028,
-            -0.042,
+            -0.0642,
+            0.0642,
+            -0.08097,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -1.0447602071322023e-06,
-            -0.020996061383671064
+            -0.0000010305201310851342,
+            -0.04048106915353992
           ],
           "coverageCentroidTanTheta": [
-            -1.0588704440858833e-06,
-            -0.02099592765482737
+            -0.0000010311629438448693,
+            -0.0404810160838775
           ],
-          "centroidErrorTanTheta": 1.3447119551185156e-07,
-          "coverageAreaRelativeError": -6.7896502004005654e-06,
+          "centroidErrorTanTheta": 5.307355535272263e-8,
+          "coverageAreaRelativeError": -0.0000017507599164856558,
           "file": "aspheric_15_4096.png",
-          "bytes": 62701,
-          "fileSha256": "64634e1daaf17a20043da1a1350b9dffe9b6a178a941e81420475447fd985adb",
-          "decodedRgbaSha256": "f1fd300b6aca4a3b94138e4093a3b332bfde2920abe1a605622f4e9b8f68f36e",
-          "maxLinearQuantizationError": 0.00012209935716026542
+          "bytes": 85485,
+          "fileSha256": "5e882369bee66882de870d019b90687bc4b352a1e2c20d9f4440d127872bcc9e",
+          "decodedRgbaSha256": "3c3c47bae5481d85e57db95050ce35337d9ad25179711582166a0ed7ca681d2a",
+          "maxLinearQuantizationError": 0.00012209936847562552
         },
         {
-          "width": 695,
-          "height": 590,
+          "width": 1298,
+          "height": 909,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8185.770381451009,
-            8190.47619047619
+            8193.146417445483,
+            8188.217858466099
           ],
           "extentTanTheta": [
-            -0.042451716064188225,
-            0.042451716064188225,
-            -0.05701744186046512,
-            0.015017441860465117
+            -0.0792125475285171,
+            0.0792125475285171,
+            -0.09599158371040724,
+            0.01502158371040724
           ],
           "cardPixels": [
-            449,
-            344
+            1052,
+            663
           ],
           "cardExtentTanTheta": [
-            -0.027425641025641028,
-            0.027425641025641028,
-            -0.042,
+            -0.0642,
+            0.0642,
+            -0.08097,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -9.999013975644204e-07,
-            -0.020995911851364422
+            -9.95242430417457e-7,
+            -0.04048091232305808
           ],
           "coverageCentroidTanTheta": [
-            -1.0800214308591e-06,
-            -0.02099584289263949
+            -0.0000010451008209555427,
+            -0.04048078907981094
           ],
-          "centroidErrorTanTheta": 1.0570962812981328e-07,
-          "coverageAreaRelativeError": -7.334418428817102e-06,
+          "centroidErrorTanTheta": 1.3294644437983446e-7,
+          "coverageAreaRelativeError": -0.0000016224557285449137,
           "file": "aspheric_15_8192.png",
-          "bytes": 185672,
-          "fileSha256": "d8372834d1b441fd9cdd293e877a40e1d472a959d893c8758b8264f7c06128b4",
-          "decodedRgbaSha256": "22a401ca3c4ee5a33b15113b12bf32faa21fedfcc61a0d79ff6963d181e60f83",
-          "maxLinearQuantizationError": 0.00012210009347600475
+          "bytes": 253836,
+          "fileSha256": "0b653be4368742fa5009790c7018a9547a13139288b66f628c9f28df3bed068d",
+          "decodedRgbaSha256": "5a242693eef332c5a3e62c75d574e7337a3c7ef5c22dbf68ee8dddc82bbe5d8e",
+          "maxLinearQuantizationError": 0.00012210011988142422
         }
       ]
     },
@@ -611,94 +566,94 @@
       "retinalMmPerTanTheta": 16.785867568771902,
       "levels": [
         {
-          "width": 364,
-          "height": 308,
+          "width": 685,
+          "height": 478,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943155,
-            4107.142857142857
+            4096.086448598131,
+            4098.7402741756205
           ],
           "extentTanTheta": [
-            -0.044368592592592605,
-            0.044368592592592605,
-            -0.05989565217391305,
-            0.015095652173913045
+            -0.08361639928698752,
+            0.08361639928698752,
+            -0.10149459887005649,
+            0.015126598870056497
           ],
           "cardPixels": [
-            240,
-            184
+            561,
+            354
           ],
           "cardExtentTanTheta": [
-            -0.0292540170940171,
-            0.0292540170940171,
-            -0.044800000000000006,
+            -0.06848,
+            0.06848,
+            -0.086368,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -8.215986886267148e-07,
-            -0.022396428106481327
+            -8.143077699023549e-7,
+            -0.04318042625481157
           ],
           "coverageCentroidTanTheta": [
-            -7.663244286560286e-07,
-            -0.02239640360764764
+            -7.118213639497993e-7,
+            -0.04318052226827797
           ],
-          "centroidErrorTanTheta": 6.046020730489031e-08,
-          "coverageAreaRelativeError": -5.856160747330641e-06,
+          "centroidErrorTanTheta": 1.4043521330189292e-7,
+          "coverageAreaRelativeError": -0.0000013440026732647326,
           "file": "aspheric_16_4096.png",
-          "bytes": 68779,
-          "fileSha256": "24c01074d3284950e42617720cae03d9b273f4e97d34ae72cddbcdc5f2d99a8d",
-          "decodedRgbaSha256": "7951dad1399ec0a81091c07ab9bb93315d2ff71cc77ece50edec87f9c32c8b2b",
-          "maxLinearQuantizationError": 0.00012209902642457138
+          "bytes": 92748,
+          "fileSha256": "b4a61d3d5f42571c751183cdf29705e7f4a0aaa47eab54cb24206f80c5d44a39",
+          "decodedRgbaSha256": "e62a3e58bf5aa1126f396185b98df46743a6284134f46d6c2d1a4f9ea56518c3",
+          "maxLinearQuantizationError": 0.000122100041771267
         },
         {
-          "width": 725,
-          "height": 613,
+          "width": 1368,
+          "height": 954,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8186.909826103214,
-            8191.964285714284
+            8192.172897196262,
+            8197.480548351241
           ],
           "extentTanTheta": [
-            -0.04427800082079832,
-            0.04427800082079832,
-            -0.059814713896457775,
-            0.015014713896457768
+            -0.08349433155080213,
+            0.08349433155080213,
+            -0.10137261016949153,
+            0.015004610169491527
           ],
           "cardPixels": [
-            479,
-            367
+            1122,
+            708
           ],
           "cardExtentTanTheta": [
-            -0.0292540170940171,
-            0.0292540170940171,
-            -0.044800000000000006,
+            -0.06848,
+            0.06848,
+            -0.086368,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 0.9999999999999998,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -8.134110688395479e-07,
-            -0.022396317837002924
+            -8.110535758729644e-7,
+            -0.0431803166477678
           ],
           "coverageCentroidTanTheta": [
-            -8.040445460666345e-07,
-            -0.022396330396955905
+            -7.12488475196874e-7,
+            -0.04318026396874271
           ],
-          "centroidErrorTanTheta": 1.5667934379693004e-08,
-          "coverageAreaRelativeError": -5.606549666858918e-06,
+          "centroidErrorTanTheta": 1.1175937882830068e-7,
+          "coverageAreaRelativeError": -0.0000012782166322056199,
           "file": "aspheric_16_8192.png",
-          "bytes": 202363,
-          "fileSha256": "7cb809dce53e56943dcb6ad994e64d695ac6550531755c0f8ed1ff5ecdaee7d9",
-          "decodedRgbaSha256": "e8fc2a1870098fd943d220d17ed80c38fa7e36f61ca61f6aca73a0f5d1a69703",
-          "maxLinearQuantizationError": 0.00012209993394549925
+          "bytes": 276080,
+          "fileSha256": "47fa6fceead97711d2f9d50a26f23085eacce58ee9200cffe2d9fe17479420fa",
+          "decodedRgbaSha256": "07af88579f6cd01008eab54afdfc8904f25e56ca9e89474ca9241df9d996baa8",
+          "maxLinearQuantizationError": 0.0001220997708455407
         }
       ]
     },
@@ -708,94 +663,94 @@
       "retinalMmPerTanTheta": 16.781001840327434,
       "levels": [
         {
-          "width": 379,
-          "height": 319,
+          "width": 720,
+          "height": 500,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4096.638655462185
+            4095.6569543705336,
+            4097.378113898394
           ],
           "extentTanTheta": [
-            -0.04619696866096867,
-            0.04619696866096867,
-            -0.06273435897435897,
-            0.015134358974358974
+            -0.0878979865771812,
+            0.0878979865771812,
+            -0.10689762765957445,
+            0.015131627659574466
           ],
           "cardPixels": [
-            255,
-            195
+            596,
+            376
           ],
           "cardExtentTanTheta": [
-            -0.031082393162393165,
-            0.031082393162393165,
-            -0.0476,
+            -0.07275999999999999,
+            0.07275999999999999,
+            -0.09176599999999999,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -1.3812379615467519e-06,
-            -0.023797101770002743
+            -0.0000013941698926609082,
+            -0.04588010379731736
           ],
           "coverageCentroidTanTheta": [
-            -1.381323356871018e-06,
-            -0.023797155817840542
+            -0.0000013298491865108099,
+            -0.04588032323466807
           ],
-          "centroidErrorTanTheta": 5.404790526108521e-08,
-          "coverageAreaRelativeError": -4.724396881150561e-06,
+          "centroidErrorTanTheta": 2.2866985836557768e-7,
+          "coverageAreaRelativeError": -0.000001097340630473731,
           "file": "aspheric_17_4096.png",
-          "bytes": 74107,
-          "fileSha256": "6c10a3aea0a6aacb3b849f5151591ba57191e3c2dc6aa45cc8dd6ffd631ed185",
-          "decodedRgbaSha256": "99a52afec869f8e5ed42970f0f78b483f0eea618ec5c9dbf70d11a1f9e9f1882",
-          "maxLinearQuantizationError": 0.0001220985446082068
+          "bytes": 100458,
+          "fileSha256": "36d0652609f08a3c57d216ad3d5a3fd1afd5650fe3068e8b3c0ab1dcd79e7405",
+          "decodedRgbaSha256": "23c91d075c384cd7bb11e44fec47e4e4860606d0c2ca196decd7658248eb86a2",
+          "maxLinearQuantizationError": 0.00012209952293019554
         },
         {
-          "width": 755,
-          "height": 636,
+          "width": 1438,
+          "height": 998,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8187.915218443398,
-            8193.27731092437
+            8191.313908741067,
+            8194.756227796788
           ],
           "extentTanTheta": [
-            -0.046104532097459405,
-            0.046104532097459405,
-            -0.06261230769230769,
-            0.015012307692307693
+            -0.08777590604026844,
+            0.08777590604026844,
+            -0.10677559840425531,
+            0.015009598404255317
           ],
           "cardPixels": [
-            509,
-            390
+            1192,
+            752
           ],
           "cardExtentTanTheta": [
-            -0.031082393162393165,
-            0.031082393162393165,
-            -0.0476,
+            -0.07275999999999999,
+            0.07275999999999999,
+            -0.09176599999999999,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -1.2983421242124882e-06,
-            -0.02379699425923748
+            -0.0000013009092370266867,
+            -0.04587999306315437
           ],
           "coverageCentroidTanTheta": [
-            -1.298277524072774e-06,
-            -0.023797032893232522
+            -0.0000013063456278529991,
+            -0.0458799698085483
           ],
-          "centroidErrorTanTheta": 3.863404905041636e-08,
-          "coverageAreaRelativeError": -5.4348731998166144e-06,
+          "centroidErrorTanTheta": 2.388160482208744e-8,
+          "coverageAreaRelativeError": -0.0000012400929865208354,
           "file": "aspheric_17_8192.png",
-          "bytes": 219408,
-          "fileSha256": "9924b9be51dd4e900799c824aaa51d961fa489135e8b040f40ff520bca79b6f9",
-          "decodedRgbaSha256": "48d68221a9464ee63758eaa8b1c9734894c066fc65e5d3d5ca5ea07309f3f1e2",
-          "maxLinearQuantizationError": 0.00012210010533997284
+          "bytes": 299592,
+          "fileSha256": "dab6ef4f79f0dde9449f03461955682617d86d447fa9c9ad49afd4752f22f82c",
+          "decodedRgbaSha256": "ab06b5ad62d68f6ab996257013b219ed1624fbf2e2aa15e150a58960235958d7",
+          "maxLinearQuantizationError": 0.00012210010173752117
         }
       ]
     },
@@ -805,94 +760,94 @@
       "retinalMmPerTanTheta": 16.77613893192815,
       "levels": [
         {
-          "width": 394,
-          "height": 330,
+          "width": 755,
+          "height": 522,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4087.3015873015875
+            4095.27518172378,
+            4096.167304763081
           ],
           "extentTanTheta": [
-            -0.04802534472934473,
-            0.04802534472934473,
-            -0.06556893203883495,
-            0.01516893203883495
+            -0.09217939778129952,
+            0.09217939778129952,
+            -0.11230010050251256,
+            0.015136100502512562
           ],
           "cardPixels": [
-            270,
-            206
+            631,
+            398
           ],
           "cardExtentTanTheta": [
-            -0.03291076923076923,
-            0.03291076923076923,
-            -0.0504,
+            -0.07704,
+            0.07704,
+            -0.097164,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -1.8376681365530878e-06,
-            -0.025196834555935167
+            -0.0000018416248492994538,
+            -0.04857882857882256
           ],
           "coverageCentroidTanTheta": [
-            -1.762938251448049e-06,
-            -0.025196831371069737
+            -0.0000018758630846449485,
+            -0.04857908054999356
           ],
-          "centroidErrorTanTheta": 7.479772119270837e-08,
-          "coverageAreaRelativeError": -5.466186695834985e-06,
+          "centroidErrorTanTheta": 2.5428670389331693e-7,
+          "coverageAreaRelativeError": -0.0000012640871451807811,
           "file": "aspheric_18_4096.png",
-          "bytes": 79444,
-          "fileSha256": "645ffb0e4953b8653827e846dfd0657e5d6485b4d59b2057298facf0141bcd32",
-          "decodedRgbaSha256": "e41abd0fee05d3451fe4582f74b3029b9190fdd57666a8f23130500ba0eafbf1",
-          "maxLinearQuantizationError": 0.00012210006638502247
+          "bytes": 107219,
+          "fileSha256": "fedd5fccc647f08ec9f6a47e46fcce42eb03df80f265eda5cf5878740b54168e",
+          "decodedRgbaSha256": "958ae582070ccf403035aa2396a2e0f025a80ff30d63fd863b4420810b143f0e",
+          "maxLinearQuantizationError": 0.00012209992202560915
         },
         {
-          "width": 785,
-          "height": 659,
+          "width": 1508,
+          "height": 1042,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8188.808900523561,
-            8194.444444444445
+            8190.55036344756,
+            8192.334609526162
           ],
           "extentTanTheta": [
-            -0.047931268731268725,
-            0.047931268731268725,
-            -0.06541016949152542,
-            0.015010169491525423
+            -0.0920573058637084,
+            0.0920573058637084,
+            -0.1121780351758794,
+            0.015014035175879396
           ],
           "cardPixels": [
-            539,
-            413
+            1262,
+            796
           ],
           "cardExtentTanTheta": [
-            -0.03291076923076923,
-            0.03291076923076923,
-            -0.0504,
+            -0.07704,
+            0.07704,
+            -0.097164,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -1.6919012242450124e-06,
-            -0.025196750923088478
+            -0.000001692883445529599,
+            -0.04857875114951589
           ],
           "coverageCentroidTanTheta": [
-            -1.5851356474225283e-06,
-            -0.025196828480655797
+            -0.0000016650214308280204,
+            -0.048578746446932136
           ],
-          "centroidErrorTanTheta": 1.3196236070487793e-07,
-          "coverageAreaRelativeError": -5.667110475227055e-06,
+          "centroidErrorTanTheta": 2.8256081773391106e-8,
+          "coverageAreaRelativeError": -0.0000012823191711808235,
           "file": "aspheric_18_8192.png",
-          "bytes": 237169,
-          "fileSha256": "91c5924826a470752b3dbf1914559e20c572052d262778adf939099bcbd8a232",
-          "decodedRgbaSha256": "b46d7c46e6864a460658c953b74679ff916a885c011edef9b18ad998ed4fd9fc",
-          "maxLinearQuantizationError": 0.00012209991995615344
+          "bytes": 321473,
+          "fileSha256": "596f6a6e022add931eda901ac4849b32504d86dc177b11b4a4397e8d50e06490",
+          "decodedRgbaSha256": "dc63e9411225baf49a2ca7c4d79c4a8e698c414b3ee0655d20970d2074a9fc03",
+          "maxLinearQuantizationError": 0.000122099998532188
         }
       ]
     },
@@ -902,169 +857,169 @@
       "retinalMmPerTanTheta": 16.771278841123134,
       "levels": [
         {
-          "width": 409,
-          "height": 342,
+          "width": 790,
+          "height": 544,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4097.744360902256
+            4094.933595671422,
+            4095.0839492209598
           ],
           "extentTanTheta": [
-            -0.049853720797720796,
-            0.049853720797720796,
-            -0.06833027522935779,
-            0.015130275229357799
+            -0.09646066066066064,
+            0.09646066066066064,
+            -0.11770210476190475,
+            0.01514010476190476
           ],
           "cardPixels": [
-            285,
-            218
+            666,
+            420
           ],
           "cardExtentTanTheta": [
-            -0.0347391452991453,
-            0.0347391452991453,
-            -0.0532,
+            -0.08131999999999999,
+            0.08131999999999999,
+            -0.10256199999999999,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0000000000000002,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -2.8314318175745825e-06,
-            -0.026595784816016835
+            -0.0000028518892548337895,
+            -0.05127679337938658
           ],
           "coverageCentroidTanTheta": [
-            -2.777826094730299e-06,
-            -0.026595777248212327
+            -0.0000026834441052348897,
+            -0.05127677388943821
           ],
-          "centroidErrorTanTheta": 5.413728093218489e-08,
-          "coverageAreaRelativeError": -3.2033349270932376e-06,
+          "centroidErrorTanTheta": 1.6956894323808122e-7,
+          "coverageAreaRelativeError": -7.787309374007734e-7,
           "file": "aspheric_19_4096.png",
-          "bytes": 85393,
-          "fileSha256": "31cbb15fbe541b10d96fb02369fd2051e075f13777b42f46de01c8b828d70534",
-          "decodedRgbaSha256": "87ac1675afbbedc53801faaa9451472caa557ac37602e8dcedfa10be36f3ad54",
-          "maxLinearQuantizationError": 0.00012209965772648533
+          "bytes": 115371,
+          "fileSha256": "fcc55a9cfdcb514134d7e011d87c2d4c91b38d9bd8194d905d0c2d8e05d4377f",
+          "decodedRgbaSha256": "0df2295ceb1076156cd75ddbc5241a927544f5ab5891bbd08e59469cb214b73f",
+          "maxLinearQuantizationError": 0.0001220995659773072
         },
         {
-          "width": 815,
-          "height": 682,
+          "width": 1578,
+          "height": 1086,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8189.6085108058105,
-            8195.488721804511
+            8189.867191342844,
+            8190.1678984419195
           ],
           "extentTanTheta": [
-            -0.0497581782404278,
-            0.0497581782404278,
-            -0.06820825688073394,
-            0.015008256880733945
+            -0.09633855855855855,
+            0.09633855855855855,
+            -0.11758000714285713,
+            0.015018007142857141
           ],
           "cardPixels": [
-            569,
-            436
+            1332,
+            840
           ],
           "cardExtentTanTheta": [
-            -0.0347391452991453,
-            0.0347391452991453,
-            -0.0532,
+            -0.08131999999999999,
+            0.08131999999999999,
+            -0.10256199999999999,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -2.7256201402092946e-06,
-            -0.0265958310834799
+            -0.0000027257448022766762,
+            -0.051276825773246736
           ],
           "coverageCentroidTanTheta": [
-            -2.71193082119326e-06,
-            -0.02659589128693317
+            -0.000002692179810877733,
+            -0.05127680509676882
           ],
-          "centroidErrorTanTheta": 6.174020765193875e-08,
-          "coverageAreaRelativeError": -4.192325341656478e-06,
+          "centroidErrorTanTheta": 3.9422397019127425e-8,
+          "coverageAreaRelativeError": -9.544255574756022e-7,
           "file": "aspheric_19_8192.png",
-          "bytes": 255440,
-          "fileSha256": "34cda9197a5595d6c26981e99b18ee209fa654379b1b6343e8448ed8187bd6ae",
-          "decodedRgbaSha256": "a5a701b77788c2678b790378e33b247002034552bb14a82cad81591295716b9c",
-          "maxLinearQuantizationError": 0.00012209994533659988
+          "bytes": 345203,
+          "fileSha256": "c16e9d15e03da79f6b5ac1d9c7a2cd2fd2519832193b295b812a021170eb73df",
+          "decodedRgbaSha256": "fd28d8b2d98e268a1c598ca6dedcd661b32d39b0a2d50dfe5339fb73f6c81589",
+          "maxLinearQuantizationError": 0.00012209956589037674
         }
       ]
     },
     {
-      "objectVergenceD": 2.0,
+      "objectVergenceD": 2,
       "psfSha256": "b678a9efc63a81604f4b6415e616d1f1c14a56b21b9334f419976df9346e77ad",
       "retinalMmPerTanTheta": 16.76642156546429,
       "levels": [
         {
-          "width": 424,
-          "height": 353,
+          "width": 825,
+          "height": 566,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4089.285714285714
+            4094.6261682242994,
+            4094.1089292330494
           ],
           "extentTanTheta": [
-            -0.051682096866096865,
-            0.051682096866096865,
-            -0.07116157205240176,
-            0.015161572052401748
+            -0.10074179743223965,
+            0.10074179743223965,
+            -0.12310371040723982,
+            0.01514371040723982
           ],
           "cardPixels": [
-            300,
-            229
+            701,
+            442
           ],
           "cardExtentTanTheta": [
-            -0.036567521367521366,
-            0.036567521367521366,
-            -0.056,
+            -0.0856,
+            0.0856,
+            -0.10796,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 0.9999999999999999,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -2.329055411207706e-06,
-            -0.02799498219076896
+            -0.0000023331246593865345,
+            -0.053974978493810576
           ],
           "coverageCentroidTanTheta": [
-            -2.331245430877764e-06,
-            -0.027995046286694813
+            -0.0000025423220769807996,
+            -0.05397504493433837
           ],
-          "centroidErrorTanTheta": 6.413332906476583e-08,
-          "coverageAreaRelativeError": -4.1837509086040114e-06,
+          "centroidErrorTanTheta": 2.1949465428969955e-7,
+          "coverageAreaRelativeError": -9.536547512789539e-7,
           "file": "aspheric_20_4096.png",
-          "bytes": 91250,
-          "fileSha256": "c209ac1c08db5705c5e8bf21d9d11fb10f1396694c68f1f640d4deee1a249624",
-          "decodedRgbaSha256": "aafad10a22dbeaa176f72db73d0b9234746e657045db9c7e602efd7b5a5eb327",
-          "maxLinearQuantizationError": 0.0001220994236574846
+          "bytes": 123202,
+          "fileSha256": "888cff21bf45af256dce03bc4cda2d9b58d4720fe2624224bd9ee55ce33c0a4a",
+          "decodedRgbaSha256": "fd3a51d7580c15817f65cb9d3a6c6001d9fa60bed5ef60649e211c4a4229ea9b",
+          "maxLinearQuantizationError": 0.00012209935739182498
         },
         {
-          "width": 845,
-          "height": 705,
+          "width": 1648,
+          "height": 1130,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8190.328160059836,
-            8196.42857142857
+            8189.252336448599,
+            8188.217858466099
           ],
           "extentTanTheta": [
-            -0.05158523465034316,
-            0.05158523465034316,
-            -0.07100653594771242,
-            0.01500653594771242
+            -0.10061968616262482,
+            0.10061968616262482,
+            -0.12298158371040724,
+            0.01502158371040724
           ],
           "cardPixels": [
-            599,
-            459
+            1402,
+            884
           ],
           "cardExtentTanTheta": [
-            -0.036567521367521366,
-            0.036567521367521366,
-            -0.056,
+            -0.0856,
+            0.0856,
+            -0.10796,
             0
           ],
           "kernelPixels": [
@@ -1073,20 +1028,20 @@
           ],
           "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -2.4599858906294234e-06,
-            -0.027994743374845588
+            -0.000002460809637384246,
+            -0.053974735656279665
           ],
           "coverageCentroidTanTheta": [
-            -2.5001658245506747e-06,
-            -0.027994785404332572
+            -0.0000024687425509878485,
+            -0.05397480318689058
           ],
-          "centroidErrorTanTheta": 5.8145548979218075e-08,
-          "coverageAreaRelativeError": -4.047488416980549e-06,
+          "centroidErrorTanTheta": 6.799495958448633e-8,
+          "coverageAreaRelativeError": -9.300104185649971e-7,
           "file": "aspheric_20_8192.png",
-          "bytes": 274399,
-          "fileSha256": "aace80aede1f5ac90dda5bdce3dcffea4df9d303195ce8a208b60135daba679a",
-          "decodedRgbaSha256": "6010025bb5da6620b33c4b25a3dfbba8eea96160fd3f04d5078d7f87b52b6cee",
-          "maxLinearQuantizationError": 0.0001221001159026347
+          "bytes": 371046,
+          "fileSha256": "5feaf663e473a16f4664a44f10ad957c455c7fbff28b13055e133c2c11609bc1",
+          "decodedRgbaSha256": "467944366322b3d5647e2078357edf30600aa69e5df5dffb0b5d0bdb1b74f9d5",
+          "maxLinearQuantizationError": 0.00012209989496020368
         }
       ]
     },
@@ -1096,94 +1051,94 @@
       "retinalMmPerTanTheta": 16.761567102506376,
       "levels": [
         {
-          "width": 439,
-          "height": 365,
+          "width": 860,
+          "height": 588,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4098.639455782312
+            4094.348019581664,
+            4093.226768291607
           ],
           "extentTanTheta": [
-            -0.05351047293447294,
-            0.05351047293447294,
-            -0.07392697095435685,
-            0.015126970954356849
+            -0.10502282608695652,
+            0.10502282608695652,
+            -0.12850497413793102,
+            0.015146974137931033
           ],
           "cardPixels": [
-            315,
-            241
+            736,
+            464
           ],
           "cardExtentTanTheta": [
-            -0.03839589743589744,
-            0.03839589743589744,
-            -0.058800000000000005,
+            -0.08988,
+            0.08988,
+            -0.113358,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -2.2926408451046997e-06,
-            -0.02939454823427476
+            -0.0000022856423131327985,
+            -0.056673558642218826
           ],
           "coverageCentroidTanTheta": [
-            -2.2618662652213257e-06,
-            -0.029394404905756674
+            -0.0000022795754611308983,
+            -0.056673317758196166
           ],
-          "centroidErrorTanTheta": 1.465951529332838e-07,
-          "coverageAreaRelativeError": -3.390463773733643e-06,
+          "centroidErrorTanTheta": 2.409604097475209e-7,
+          "coverageAreaRelativeError": -7.687033315439962e-7,
           "file": "aspheric_21_4096.png",
-          "bytes": 98200,
-          "fileSha256": "9787949241af83c72387c7e519d9cd1fb7ac3ca93928cbd2fc0b4714c870dd6e",
-          "decodedRgbaSha256": "c8d67b86d8048dc50e2fcc4ece0a42edd1958462895589d5c01ecefb05788e8a",
-          "maxLinearQuantizationError": 0.0001220997524502554
+          "bytes": 131301,
+          "fileSha256": "f7028eff1cb9ba3dcc0d37b8f42265cde907b8298f3ddb5b681da5f1a40069ea",
+          "decodedRgbaSha256": "b7865a7addba670dad009538cb0d4f97538ec5a57441f3f902ad6075aef7e47c",
+          "maxLinearQuantizationError": 0.0001220996041503275
         },
         {
-          "width": 875,
-          "height": 728,
+          "width": 1719,
+          "height": 1175,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8190.979271289667,
-            8197.278911564625
+            8194.259012016022,
+            8195.275145997635
           ],
           "extentTanTheta": [
-            -0.053412416941828716,
-            0.053412416941828716,
-            -0.07380497925311204,
-            0.015004979253112035
+            -0.10489050916496945,
+            0.10489050916496945,
+            -0.12836664800861142,
+            0.015008648008611411
           ],
           "cardPixels": [
-            629,
-            482
+            1473,
+            929
           ],
           "cardExtentTanTheta": [
-            -0.03839589743589744,
-            0.03839589743589744,
-            -0.058800000000000005,
+            -0.08988,
+            0.08988,
+            -0.113358,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -2.223073672424641e-06,
-            -0.029394563321532192
+            -0.000002221177757030454,
+            -0.056673563168455586
           ],
           "coverageCentroidTanTheta": [
-            -2.2916735391680245e-06,
-            -0.02939454422183247
+            -0.000002305794184491948,
+            -0.05667342086527061
           ],
-          "centroidErrorTanTheta": 7.120913036013357e-08,
-          "coverageAreaRelativeError": -3.4433766432639956e-06,
+          "centroidErrorTanTheta": 1.655600684085116e-7,
+          "coverageAreaRelativeError": -7.147104851279451e-7,
           "file": "aspheric_21_8192.png",
-          "bytes": 295593,
-          "fileSha256": "0f9ed209e3f80ee2b94e38933ac6a79f747fdae567bdd46d0e2e3aae43b5bbba",
-          "decodedRgbaSha256": "4915532147f756901c3f12dc7a19d5bf1c6df86c42cd9cdaa64a34db55309fdd",
-          "maxLinearQuantizationError": 0.00012210002430179667
+          "bytes": 395547,
+          "fileSha256": "c83c4be3ebd2d6e268bf52593df2f1b97657cff59b905a2505f76e79c9f5d7b4",
+          "decodedRgbaSha256": "09fea2cd754db016b44c2387101951d7a92bac4046a579b06e916cd42cd43d2f",
+          "maxLinearQuantizationError": 0.00012210008647817183
         }
       ]
     },
@@ -1193,94 +1148,94 @@
       "retinalMmPerTanTheta": 16.756715449806975,
       "levels": [
         {
-          "width": 454,
-          "height": 376,
+          "width": 895,
+          "height": 610,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4102.000747943156,
-            4090.9090909090905
+            4094.09515717927,
+            4092.424803799387
           ],
           "extentTanTheta": [
-            -0.05533884900284901,
-            0.05533884900284901,
-            -0.07675555555555556,
-            0.015155555555555558
+            -0.10930376134889752,
+            0.10930376134889752,
+            -0.1339059423868313,
+            0.015149942386831275
           ],
           "cardPixels": [
-            330,
-            252
+            771,
+            486
           ],
           "cardExtentTanTheta": [
-            -0.04022427350427351,
-            0.04022427350427351,
-            -0.06160000000000001,
+            -0.09416,
+            0.09416,
+            -0.118756,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -3.4835874512299147e-06,
-            -0.030794054619103162
+            -0.0000034864586987773597,
+            -0.05937205821049415
           ],
           "coverageCentroidTanTheta": [
-            -3.486145071065631e-06,
-            -0.03079409907090202
+            -0.0000035939682969005112,
+            -0.059372146257471524
           ],
-          "centroidErrorTanTheta": 4.452531685225576e-08,
-          "coverageAreaRelativeError": -3.5208765366556705e-06,
+          "centroidErrorTanTheta": 1.3896252701209344e-7,
+          "coverageAreaRelativeError": -6.901625770883157e-7,
           "file": "aspheric_22_4096.png",
-          "bytes": 105032,
-          "fileSha256": "5f58affff010a07021b068fca7aec184f928bd1884b7ea949e3eb9ef520822c8",
-          "decodedRgbaSha256": "58c366b1e9b1896a71a26f8f0ae6cf2836a727532bab23c92d87b026ad486b82",
-          "maxLinearQuantizationError": 0.00012209933368040327
+          "bytes": 139464,
+          "fileSha256": "3ddd37a605d89b03ab8944ed004412905bb25546601a85d3c0eefb00282e2cbb",
+          "decodedRgbaSha256": "00392a454719c98e5f6513548535f43c1cd327e6f707a11f236354c4c7f3b5e2",
+          "maxLinearQuantizationError": 0.0001220997124493639
         },
         {
-          "width": 905,
-          "height": 751,
+          "width": 1789,
+          "height": 1219,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8191.571190589514,
-            8198.051948051947
+            8193.500424808837,
+            8193.270234767086
           ],
           "extentTanTheta": [
-            -0.05523970792316772,
-            0.05523970792316772,
-            -0.07660356435643566,
-            0.015003564356435645
+            -0.10917189889825016,
+            0.10917189889825016,
+            -0.1337683206577595,
+            0.015012320657759506
           ],
           "cardPixels": [
-            659,
-            505
+            1543,
+            973
           ],
           "cardExtentTanTheta": [
-            -0.04022427350427351,
-            0.04022427350427351,
-            -0.06160000000000001,
+            -0.09416,
+            0.09416,
+            -0.118756,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 0.9999999999999999,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -3.6469444807765867e-06,
-            -0.030794063995351974
+            -0.0000036447550928239597,
+            -0.05937206497391229
           ],
           "coverageCentroidTanTheta": [
-            -3.6668182984011877e-06,
-            -0.030794240147312503
+            -0.0000036963526393441776,
+            -0.05937227559766187
           ],
-          "centroidErrorTanTheta": 1.7726951747274848e-07,
-          "coverageAreaRelativeError": -3.0892382040237365e-06,
+          "centroidErrorTanTheta": 2.1685172512854905e-7,
+          "coverageAreaRelativeError": -7.184469853482867e-7,
           "file": "aspheric_22_8192.png",
-          "bytes": 315727,
-          "fileSha256": "0974fa7d14e63deb64efa0d84459c78d23928835411ba200ccd2e5001a37364b",
-          "decodedRgbaSha256": "bf5718343808d6c345d25f1f783571e97352113917bb02cff07a7a9a300a7d2b",
-          "maxLinearQuantizationError": 0.0001221000489297695
+          "bytes": 425025,
+          "fileSha256": "1b6d3634a82bc8a0ffc676173ce238bfefe4821a6d23e428ebfe34febb9faa1d",
+          "decodedRgbaSha256": "a97192e6e53d34cf178f0ce46d508e2e793c3779b622a9298132c0a2438c422f",
+          "maxLinearQuantizationError": 0.00012210008146840146
         }
       ]
     },
@@ -1290,94 +1245,94 @@
       "retinalMmPerTanTheta": 16.7518666049265,
       "levels": [
         {
-          "width": 468,
-          "height": 388,
+          "width": 930,
+          "height": 633,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4090.1108907027424,
-            4099.378881987579
+            4093.864282811866,
+            4099.747088293571
           ],
           "extentTanTheta": [
-            -0.05721116279069766,
-            0.05721116279069766,
-            -0.0795242424242424,
-            0.015124242424242419
+            -0.11358461538461537,
+            0.11358461538461537,
+            -0.13927688408644398,
+            0.015122884086444006
           ],
           "cardPixels": [
-            344,
-            264
+            806,
+            509
           ],
           "cardExtentTanTheta": [
-            -0.042052649572649564,
-            0.042052649572649564,
-            -0.06439999999999999,
+            -0.09843999999999999,
+            0.09843999999999999,
+            -0.12415399999999999,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -2.670111525727334e-06,
-            -0.03219484069326835
+            -0.0000026668740455234477,
+            -0.06207183966763426
           ],
           "coverageCentroidTanTheta": [
-            -2.6081361017580535e-06,
-            -0.03219496592439493
+            -0.000002539913534101407,
+            -0.062071966662048506
           ],
-          "centroidErrorTanTheta": 1.3972755004156968e-07,
-          "coverageAreaRelativeError": -2.971296575893234e-06,
+          "centroidErrorTanTheta": 1.7957325165752182e-7,
+          "coverageAreaRelativeError": -7.071470116137846e-7,
           "file": "aspheric_23_4096.png",
-          "bytes": 111994,
-          "fileSha256": "2c0fc402c7eb66a80e8e0ab2deec7345e4199e28f03824b9f68d716528066cc6",
-          "decodedRgbaSha256": "b21f2de4ea95c14a40fbeb51d0d67b87371c0c03785e2a167542510949800e7f",
-          "maxLinearQuantizationError": 0.0001220990007321232
+          "bytes": 149469,
+          "fileSha256": "a37bf810b93a9436b90f92bdc5548de18615448b9a481e5b5e157a27faadbac0",
+          "decodedRgbaSha256": "57ce8151aa498705d90fa2d234e45e77623ec6f4f1f1a69290c4e4706d02a31b",
+          "maxLinearQuantizationError": 0.00012209973908683391
         },
         {
-          "width": 935,
-          "height": 774,
+          "width": 1859,
+          "height": 1263,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8192.1116386459,
-            8198.757763975158
+            8192.807801706624,
+            8191.43966364354
           ],
           "extentTanTheta": [
-            -0.05706709339684665,
-            0.05706709339684665,
-            -0.07940227272727271,
-            0.015002272727272722
+            -0.11345316800991939,
+            0.11345316800991939,
+            -0.13916967551622417,
+            0.015015675516224188
           ],
           "cardPixels": [
-            689,
-            528
+            1613,
+            1017
           ],
           "cardExtentTanTheta": [
-            -0.042052649572649564,
-            0.042052649572649564,
-            -0.06439999999999999,
+            -0.09843999999999999,
+            0.09843999999999999,
+            -0.12415399999999999,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -2.6875749201281374e-06,
-            -0.03219466927625206
+            -0.0000026875538709326316,
+            -0.062071669896503964
           ],
           "coverageCentroidTanTheta": [
-            -2.757557853049152e-06,
-            -0.032194569058119314
+            -0.000002749151278234673,
+            -0.06207166384136169
           ],
-          "centroidErrorTanTheta": 1.222345492522619e-07,
-          "coverageAreaRelativeError": -2.8031958365648535e-06,
+          "centroidErrorTanTheta": 6.189430776995499e-8,
+          "coverageAreaRelativeError": -6.246349105731852e-7,
           "file": "aspheric_23_8192.png",
-          "bytes": 335920,
-          "fileSha256": "967f91a98ad7dcdfbfbc2e9d327e35eaf09e37f3260e623689033e33d829251e",
-          "decodedRgbaSha256": "db756e81d6595279321801227e57141667747932cceea8981c97b26f1a1232f5",
-          "maxLinearQuantizationError": 0.00012210012050906105
+          "bytes": 451070,
+          "fileSha256": "b976f35e155837a2e0e7b7499fa7cb5ebb52d3bd1d0837a869452939ef0fdcb5",
+          "decodedRgbaSha256": "8228e88e3e0ad217f3309923e85cc8a7b2b95696dac9d55c882137833fc235c3",
+          "maxLinearQuantizationError": 0.0001221001150767398
         }
       ]
     },
@@ -1387,94 +1342,94 @@
       "retinalMmPerTanTheta": 16.747020565428176,
       "levels": [
         {
-          "width": 483,
-          "height": 399,
+          "width": 965,
+          "height": 655,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4090.6063014210913,
-            4092.261904761904
+            4093.6526479750787,
+            4098.7402741756205
           ],
           "extentTanTheta": [
-            -0.05903770302121278,
-            0.05903770302121278,
-            -0.08235054545454547,
-            0.015150545454545456
+            -0.11786539833531508,
+            0.11786539833531508,
+            -0.1446785988700565,
+            0.015126598870056497
           ],
           "cardPixels": [
-            359,
-            275
+            841,
+            531
           ],
           "cardExtentTanTheta": [
-            -0.043881025641025646,
-            0.043881025641025646,
-            -0.06720000000000001,
+            -0.10271999999999998,
+            0.10271999999999998,
+            -0.129552,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 0.9999999999999998,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -3.760166013465252e-06,
-            -0.03359301306440696
+            -0.0000037576869333395666,
+            -0.06476899890981717
           ],
           "coverageCentroidTanTheta": [
-            -3.7575604163673665e-06,
-            -0.0335927885262479
+            -0.0000037533820266420414,
+            -0.06476866916104426
           ],
-          "centroidErrorTanTheta": 2.2455327655115453e-07,
-          "coverageAreaRelativeError": -2.483434238254034e-06,
+          "centroidErrorTanTheta": 3.29776872231308e-7,
+          "coverageAreaRelativeError": -5.512087577486113e-7,
           "file": "aspheric_24_4096.png",
-          "bytes": 118474,
-          "fileSha256": "0726d85ee2b92fb9d74e1708f9418f6181fd4b9734e2fa6eb3267b5dda9378e9",
-          "decodedRgbaSha256": "24f90e2cc699c8e5078bbe9cd76ce231ffdbc8a24e62dd0a50a8654031927177",
-          "maxLinearQuantizationError": 0.00012209982978849494
+          "bytes": 158902,
+          "fileSha256": "2ae47ce9ade1ba81e379ae5bcae2c17e15e3cb07ccb7d016c62e27e52fa1b39b",
+          "decodedRgbaSha256": "b628b58ac251b4fc11fe2385d18a4bd966113c1c5e477685b7e32a9449252545",
+          "maxLinearQuantizationError": 0.00012209972746990427
         },
         {
-          "width": 965,
-          "height": 797,
+          "width": 1929,
+          "height": 1307,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8192.607049364247,
-            8199.404761904761
+            8192.172897196264,
+            8189.761640113622
           ],
           "extentTanTheta": [
-            -0.05889456153489534,
-            0.05889456153489534,
-            -0.08220108892921961,
-            0.015001088929219602
+            -0.11773433155080211,
+            0.11773433155080211,
+            -0.1445707521206409,
+            0.015018752120640905
           ],
           "cardPixels": [
-            719,
-            551
+            1683,
+            1061
           ],
           "cardExtentTanTheta": [
-            -0.043881025641025646,
-            0.043881025641025646,
-            -0.06720000000000001,
+            -0.10271999999999998,
+            0.10271999999999998,
+            -0.129552,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.083974767638344e-06,
-            -0.033592887366145845
+            -0.000004083343880972095,
+            -0.06476888818361325
           ],
           "coverageCentroidTanTheta": [
-            -4.068872908397117e-06,
-            -0.03359296890114218
+            -0.000004062377916846932,
+            -0.0647689274520393
           ],
-          "centroidErrorTanTheta": 8.292178109738386e-08,
-          "coverageAreaRelativeError": -2.8132688688620178e-06,
+          "centroidErrorTanTheta": 4.45149518290078e-8,
+          "coverageAreaRelativeError": -5.901024178189829e-7,
           "file": "aspheric_24_8192.png",
-          "bytes": 358193,
-          "fileSha256": "f361794cc9d595ee00e333c419d8cd308c9413a8249629f119414ebf200cfdc3",
-          "decodedRgbaSha256": "b006dfd86a4221a5f45c3ecdcbd6ecc32c1048519770158738aacf3f8075d766",
-          "maxLinearQuantizationError": 0.000122099981348045
+          "bytes": 479761,
+          "fileSha256": "f2f3213bdc6a1040688ab05a93aac04956fa2998998464719e7bdf18bf77616d",
+          "decodedRgbaSha256": "2eb4164781f7b61b87234801883003ed389eb9ff8fa9d8e2b435aeaba35c1742",
+          "maxLinearQuantizationError": 0.0001221000223251556
         }
       ]
     },
@@ -1484,94 +1439,94 @@
       "retinalMmPerTanTheta": 16.742177328878054,
       "levels": [
         {
-          "width": 498,
-          "height": 411,
+          "width": 1001,
+          "height": 677,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4091.062079281974,
-            4100.0
+            4098.130841121495,
+            4097.814005187107
           ],
           "extentTanTheta": [
-            -0.060864390511449346,
-            0.060864390511449346,
-            -0.0851219512195122,
-            0.015121951219512195
+            -0.12212884834663626,
+            0.12212884834663626,
+            -0.15008001808318264,
+            0.015130018083182638
           ],
           "cardPixels": [
-            374,
-            287
+            877,
+            553
           ],
           "cardExtentTanTheta": [
-            -0.045709401709401715,
-            0.045709401709401715,
-            -0.07,
+            -0.107,
+            0.107,
+            -0.13495,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.804047592080553e-06,
-            -0.034992141545752566
+            -0.000004819066046606289,
+            -0.06746713894200562
           ],
           "coverageCentroidTanTheta": [
-            -4.720878373216828e-06,
-            -0.03499217199953419
+            -0.000004684968776443218,
+            -0.06746708065034661
           ],
-          "centroidErrorTanTheta": 8.856947432073134e-08,
-          "coverageAreaRelativeError": -2.6663687249239842e-06,
+          "centroidErrorTanTheta": 1.4621899799870972e-7,
+          "coverageAreaRelativeError": -5.664660569504321e-7,
           "file": "aspheric_25_4096.png",
-          "bytes": 126121,
-          "fileSha256": "6a521322300db561e08571d147e550652dc78dec7e9f971c22899def53dabfb8",
-          "decodedRgbaSha256": "b6f52784786992cc4e5afbea651ed34fd1d619cba935e1a826011f774bee7bdf",
-          "maxLinearQuantizationError": 0.00012210011811430999
+          "bytes": 168392,
+          "fileSha256": "f4fdea3d05659e12b6ca99dbefc03d391854bba9ece40643e1bc04c1bf0ac55d",
+          "decodedRgbaSha256": "84b89901b6c66ae1bf2758dc0f420c267af8ef21c29b0eb1853aedc648830540",
+          "maxLinearQuantizationError": 0.00012209931395651668
         },
         {
-          "width": 995,
-          "height": 819,
+          "width": 1999,
+          "height": 1352,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8193.06282722513,
-            8185.714285714285
+            8191.588785046729,
+            8195.628010374214
           ],
           "extentTanTheta": [
-            -0.060722102404345404,
-            0.060722102404345404,
-            -0.08502617801047122,
-            0.015026178010471205
+            -0.12201540216771249,
+            0.12201540216771249,
+            -0.14995800180831825,
+            0.015008001808318261
           ],
           "cardPixels": [
-            749,
-            573
+            1753,
+            1106
           ],
           "cardExtentTanTheta": [
-            -0.045709401709401715,
-            0.045709401709401715,
-            -0.07,
+            -0.107,
+            0.107,
+            -0.13495,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.968659838060968e-06,
-            -0.03499186512446507
+            -0.000004970374022903728,
+            -0.06746686790761874
           ],
           "coverageCentroidTanTheta": [
-            -4.989404730935769e-06,
-            -0.03499193382646716
+            -0.000004863249852899347,
+            -0.06746704297590217
           ],
-          "centroidErrorTanTheta": 7.176569983038301e-08,
-          "coverageAreaRelativeError": -2.253795443940554e-06,
+          "centroidErrorTanTheta": 2.0524251913460734e-7,
+          "coverageAreaRelativeError": -4.967592435178858e-7,
           "file": "aspheric_25_8192.png",
-          "bytes": 378870,
-          "fileSha256": "034a24269f7fcd32f4e2bcb8cd9d5649a8adf3681c4373acf22038c890d842ed",
-          "decodedRgbaSha256": "5f12173173e37b0b692d414783d1e0ee93219010530987913d70d9c11ecb638d",
-          "maxLinearQuantizationError": 0.00012209989224798434
+          "bytes": 508082,
+          "fileSha256": "515dd1c5d969487f228376bdbdaf2178f490dea612c166f95566dd9056f2a509",
+          "decodedRgbaSha256": "8365c397219e2bf7e0629ed658546b46da018bbe12d448cc04b77ae350e21e4f",
+          "maxLinearQuantizationError": 0.00012210006963775388
         }
       ]
     },
@@ -1581,94 +1536,94 @@
       "retinalMmPerTanTheta": 16.73733689284501,
       "levels": [
         {
-          "width": 513,
-          "height": 422,
+          "width": 1036,
+          "height": 699,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4091.4827973074043,
-            4093.4065934065934
+            4097.771387491013,
+            4096.958987659248
           ],
           "extentTanTheta": [
-            -0.06269120822622108,
-            0.06269120822622108,
-            -0.08794630872483222,
-            0.015146308724832214
+            -0.1264101754385965,
+            0.1264101754385965,
+            -0.15548117565217387,
+            0.015133175652173909
           ],
           "cardPixels": [
-            389,
-            298
+            912,
+            575
           ],
           "cardExtentTanTheta": [
-            -0.04753777777777778,
-            0.04753777777777778,
-            -0.0728,
+            -0.11128,
+            0.11128,
+            -0.14034799999999997,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.052648777910957e-06,
-            -0.03639235155179152
+            -0.000004049719415373904,
+            -0.07016633986556263
           ],
           "coverageCentroidTanTheta": [
-            -4.130013248573564e-06,
-            -0.03639244463434653
+            -0.000003912135482547852,
+            -0.07016637103188947
           ],
-          "centroidErrorTanTheta": 1.2103562850785824e-07,
-          "coverageAreaRelativeError": -1.96123623941169e-06,
+          "centroidErrorTanTheta": 1.4106976465743224e-7,
+          "coverageAreaRelativeError": -3.944271679268141e-7,
           "file": "aspheric_26_4096.png",
-          "bytes": 133124,
-          "fileSha256": "a03330cc0d3c4a0353d3c9737bcd58170fd704b11605c3b16aa1cb8a6a5076b2",
-          "decodedRgbaSha256": "0296570d827c655c3f9e6e108d4c2d057fde358b2e962214f3c05d19d2b0a56f",
-          "maxLinearQuantizationError": 0.00012209927085748973
+          "bytes": 177008,
+          "fileSha256": "f96c0be62a8798d2651fc33caf510f42c2462e91b8af47771e658be2878074b0",
+          "decodedRgbaSha256": "eb12ea53dbc4ad797ff95c447bf60ab6156f92a79e35fd03cad19ae51375fec7",
+          "maxLinearQuantizationError": 0.0001220996241306782
         },
         {
-          "width": 1025,
-          "height": 842,
+          "width": 2069,
+          "height": 1396,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8193.48354525056,
-            8186.813186813187
+            8191.049604601006,
+            8193.917975318496
           ],
           "extentTanTheta": [
-            -0.06254970760233919,
-            0.06254970760233919,
-            -0.08782416107382551,
-            0.015024161073825504
+            -0.12629639056500275,
+            0.12629639056500275,
+            -0.15535913391304346,
+            0.015011133913043474
           ],
           "cardPixels": [
-            779,
-            596
+            1823,
+            1150
           ],
           "cardExtentTanTheta": [
-            -0.04753777777777778,
-            0.04753777777777778,
-            -0.0728,
+            -0.11128,
+            0.11128,
+            -0.14034799999999997,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -4.009032153235267e-06,
-            -0.03639240822073998
+            -0.000004008897686504651,
+            -0.0701664068352038
           ],
           "coverageCentroidTanTheta": [
-            -4.078139095161305e-06,
-            -0.03639240397049128
+            -0.000003998904455017629,
+            -0.07016635169489199
           ],
-          "centroidErrorTanTheta": 6.923751899363668e-08,
-          "coverageAreaRelativeError": -1.9003357476510274e-06,
+          "centroidErrorTanTheta": 5.60385462092522e-8,
+          "coverageAreaRelativeError": -4.316850413799145e-7,
           "file": "aspheric_26_8192.png",
-          "bytes": 401023,
-          "fileSha256": "d61afa86cd056eedf4e5d21f25018d3238224288bcd5e1353b0106438a487e99",
-          "decodedRgbaSha256": "c4cb90c80d040eb767d5cf4dcc331628a0ddf0f3b16022ce44dd1c7ed614363b",
-          "maxLinearQuantizationError": 0.00012209998602774608
+          "bytes": 537541,
+          "fileSha256": "ab7291566ad88771b6c552c326f3e425ffae9b15cef53dd51653fc25f13bc37d",
+          "decodedRgbaSha256": "76492b024b1e2da7f3f4009546e64c59be4ff62f072f6f64bcbfbc46c231c2ae",
+          "maxLinearQuantizationError": 0.0001221001155536916
         }
       ]
     },
@@ -1678,94 +1633,94 @@
       "retinalMmPerTanTheta": 16.732499254900713,
       "levels": [
         {
-          "width": 528,
-          "height": 434,
+          "width": 1071,
+          "height": 721,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4091.8723510346535,
-            4100.5291005291
+            4097.438560055382,
+            4096.16730476308
           ],
           "extentTanTheta": [
-            -0.0645181416603199,
-            0.0645181416603199,
-            -0.09072000000000002,
-            0.015120000000000001
+            -0.13069140443505808,
+            0.13069140443505808,
+            -0.1608821005025126,
+            0.015136100502512566
           ],
           "cardPixels": [
-            404,
-            310
+            947,
+            597
           ],
           "cardExtentTanTheta": [
-            -0.04936615384615386,
-            0.04936615384615386,
-            -0.07560000000000001,
+            -0.11556,
+            0.11556,
+            -0.14574600000000001,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -3.456148617674221e-06,
-            -0.03779120949033235
+            -0.000003447351568815345,
+            -0.07286419426172858
           ],
           "coverageCentroidTanTheta": [
-            -3.4394744857061497e-06,
-            -0.037791273591269624
+            -0.0000036885706466299953,
+            -0.07286407111230211
           ],
-          "centroidErrorTanTheta": 6.623410629140969e-08,
-          "coverageAreaRelativeError": -2.084398443513713e-06,
+          "centroidErrorTanTheta": 2.7083652770566517e-7,
+          "coverageAreaRelativeError": -4.893861718091586e-7,
           "file": "aspheric_27_4096.png",
-          "bytes": 140930,
-          "fileSha256": "5c8260d9277dcecc190f75d4f96fa0aabe15c1a65aaba34797c72e077fa5dd45",
-          "decodedRgbaSha256": "445744a8faf13c64415e509a6af3c62cf81ddea62afbfef6291d91d6ab6ebdd7",
-          "maxLinearQuantizationError": 0.0001221000292883634
+          "bytes": 186820,
+          "fileSha256": "0ffa1b10b97fc9442c329d5c3675ac3bb8dd9ad11372b8a0e6f13c85ae28d921",
+          "decodedRgbaSha256": "f1e18be327a60647ece955836f9e100e519f053c3324f5cf02cd18ae72930518",
+          "maxLinearQuantizationError": 0.00012209977245569714
         },
         {
-          "width": 1055,
-          "height": 865,
+          "width": 2139,
+          "height": 1440,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8193.873098977809,
-            8187.830687830687
+            8190.55036344756,
+            8192.33460952616
           ],
           "extentTanTheta": [
-            -0.06437736997242562,
-            0.06437736997242562,
-            -0.09062229402261714,
-            0.015022294022617127
+            -0.1305773058637084,
+            0.1305773058637084,
+            -0.16076003517587942,
+            0.0150140351758794
           ],
           "cardPixels": [
-            809,
-            619
+            1893,
+            1194
           ],
           "cardExtentTanTheta": [
-            -0.04936615384615386,
-            0.04936615384615386,
-            -0.07560000000000001,
+            -0.11556,
+            0.11556,
+            -0.14574600000000001,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -3.4650125552914532e-06,
-            -0.03779123528213515
+            -0.0000034652549263567676,
+            -0.07286423515763354
           ],
           "coverageCentroidTanTheta": [
-            -3.4876537320900904e-06,
-            -0.037791352167206194
+            -0.0000035280170891643096,
+            -0.072864285561725
           ],
-          "centroidErrorTanTheta": 1.1905772851926881e-07,
-          "coverageAreaRelativeError": -2.152480630734921e-06,
+          "centroidErrorTanTheta": 8.049634473566701e-8,
+          "coverageAreaRelativeError": -5.175194380813153e-7,
           "file": "aspheric_27_8192.png",
-          "bytes": 423453,
-          "fileSha256": "9568058286f7b3c12072ea58dc82e9e62e4ffc40977f167de3d70194d3886026",
-          "decodedRgbaSha256": "61dbae4ee22fac4f7649b09826e5d7f2e05fd8b7ba767a4f27fec07fd26f89c5",
-          "maxLinearQuantizationError": 0.00012210002396062514
+          "bytes": 566667,
+          "fileSha256": "721b1f9f08ad2c3e33376f9ad50289e66811b94c16b1f4ca5e314d9580bbb7c9",
+          "decodedRgbaSha256": "b73ef01b2eee8375899862bc8d8bcd765dcf631a16f5bbc5f0d29e19c692322c",
+          "maxLinearQuantizationError": 0.0001221000549213036
         }
       ]
     },
@@ -1775,94 +1730,94 @@
       "retinalMmPerTanTheta": 16.727664412619646,
       "levels": [
         {
-          "width": 543,
-          "height": 445,
+          "width": 1106,
+          "height": 743,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4092.2340794956726,
-            4094.387755102041
+            4097.129506008011,
+            4095.4321706452133
           ],
           "extentTanTheta": [
-            -0.0663451783856557,
-            0.0663451783856557,
-            -0.09354267912772585,
-            0.015142679127725857
+            -0.13497254582484725,
+            0.13497254582484725,
+            -0.16628281744749593,
+            0.015138817447495958
           ],
           "cardPixels": [
-            419,
-            321
+            982,
+            619
           ],
           "cardExtentTanTheta": [
-            -0.05119452991452991,
-            0.05119452991452991,
-            -0.0784,
+            -0.11983999999999999,
+            0.11983999999999999,
+            -0.15114399999999997,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.194671916691031e-06,
-            -0.03919207328916709
+            -0.000004192152824856319,
+            -0.07556406986113515
           ],
           "coverageCentroidTanTheta": [
-            -3.965324346703272e-06,
-            -0.039192023464706204
+            -0.000004125470774949776,
+            -0.07556406780837603
           ],
-          "centroidErrorTanTheta": 2.3469721933081936e-07,
-          "coverageAreaRelativeError": -1.628618941817983e-06,
+          "centroidErrorTanTheta": 6.671363878342147e-8,
+          "coverageAreaRelativeError": -3.543337676603642e-7,
           "file": "aspheric_28_4096.png",
-          "bytes": 148048,
-          "fileSha256": "a4866b741a3c6348e2bc2dcd7b7580b13c07ffaadacf001ae262f8e747503759",
-          "decodedRgbaSha256": "76c84053518c5ed5e29b5290e72288a3e5a432411360de2a33804ce9e3e79701",
-          "maxLinearQuantizationError": 0.00012209996410295076
+          "bytes": 195724,
+          "fileSha256": "3a4e44ef3f37221cdf9e988094894a2e7a95be9a75a9e5555055eee32e706f9b",
+          "decodedRgbaSha256": "c24db441cce22850bcffd1e4a5e0ccaa2a956ce4fc3fe4010173d09236a03b4e",
+          "maxLinearQuantizationError": 0.00012209985240829724
         },
         {
-          "width": 1085,
-          "height": 888,
+          "width": 2209,
+          "height": 1484,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8194.23482743883,
-            8188.775510204082
+            8190.086782376503,
+            8190.864341290427
           ],
           "extentTanTheta": [
-            -0.06620508338172224,
-            0.06620508338172224,
-            -0.09342056074766356,
-            0.015020560747663551
+            -0.13485815588385122,
+            0.13485815588385122,
+            -0.16616073021001612,
+            0.015016730210016153
           ],
           "cardPixels": [
-            839,
-            642
+            1963,
+            1238
           ],
           "cardExtentTanTheta": [
-            -0.05119452991452991,
-            0.05119452991452991,
-            -0.0784,
+            -0.11983999999999999,
+            0.11983999999999999,
+            -0.15114399999999997,
             0
           ],
           "kernelPixels": [
             247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.192034697960727e-06,
-            -0.039192186256919705
+            -0.000004191517047974412,
+            -0.07556418494014272
           ],
           "coverageCentroidTanTheta": [
-            -4.145289494795793e-06,
-            -0.0391921405120464
+            -0.000004156851793729003,
+            -0.07556423815230463
           ],
-          "centroidErrorTanTheta": 6.540418528437375e-08,
-          "coverageAreaRelativeError": -1.8261589113111043e-06,
+          "centroidErrorTanTheta": 6.3507590312837e-8,
+          "coverageAreaRelativeError": -3.986275863843147e-7,
           "file": "aspheric_28_8192.png",
-          "bytes": 446277,
-          "fileSha256": "a2fac7a0b7b194c7aa821303fc6f0e81062b949dadeba03d1eeedc0f793f35d6",
-          "decodedRgbaSha256": "ad84dc24a894c861f25bc64abb772043aa31e9953f1efb047b3bedfccbbdec22",
-          "maxLinearQuantizationError": 0.00012210007935966943
+          "bytes": 599077,
+          "fileSha256": "32ae8456fd1930efed7609f02500f0ab16536edc485a2a91beeec815f1502800",
+          "decodedRgbaSha256": "d01fd59e13bfac472100437a19140b5ff962eeec494b85bdbac0798da2fffb34",
+          "maxLinearQuantizationError": 0.0001221001111489789
         }
       ]
     },
@@ -1872,191 +1827,191 @@
       "retinalMmPerTanTheta": 16.722832363579098,
       "levels": [
         {
-          "width": 558,
-          "height": 457,
+          "width": 1141,
+          "height": 765,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4092.5708611662753,
-            4100.985221674877
+            4096.841766032871,
+            4094.747735432025
           ],
           "extentTanTheta": [
-            -0.0681723076923077,
-            0.0681723076923077,
-            -0.09631831831831833,
-            0.015118318318318318
+            -0.13925360865290068,
+            0.13925360865290068,
+            -0.17168334789391573,
+            0.015141347893915755
           ],
           "cardPixels": [
-            434,
-            333
+            1017,
+            641
           ],
           "cardExtentTanTheta": [
-            -0.05302290598290599,
-            0.05302290598290599,
-            -0.08120000000000001,
+            -0.12412,
+            0.12412,
+            -0.156542,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.760618801047051e-06,
-            -0.04059185327178195
+            -0.000004775892030536736,
+            -0.07826282120474665
           ],
           "coverageCentroidTanTheta": [
-            -4.7562065272004935e-06,
-            -0.04059175195855932
+            -0.000004813070821504524,
+            -0.07826272015641464
           ],
-          "centroidErrorTanTheta": 1.0140925618661586e-07,
-          "coverageAreaRelativeError": -1.5900169508809014e-06,
+          "centroidErrorTanTheta": 1.076709241128124e-7,
+          "coverageAreaRelativeError": -3.820914180607815e-7,
           "file": "aspheric_29_4096.png",
-          "bytes": 156903,
-          "fileSha256": "20021962809b2aa421fde37debd3a1a4262d752ebb045a702a1e170bf63a11ed",
-          "decodedRgbaSha256": "8158e0d9fac29e21dc80a975347865b37d50fe0292597e769976d7b81f79e2d8",
-          "maxLinearQuantizationError": 0.00012210009148283518
+          "bytes": 208366,
+          "fileSha256": "d1ee7252c68ccc1acf31718c08abff74b44872de59264383511d114d2d8658e4",
+          "decodedRgbaSha256": "c11fad16d3c1e46c3fd3cf57afb1abc280531503a1c8be1dc79584996d8b1855",
+          "maxLinearQuantizationError": 0.0001220997229260945
         },
         {
-          "width": 1117,
-          "height": 911,
+          "width": 2280,
+          "height": 1528,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8194.571609109431,
-            8189.655172413793
+            8193.683532065743,
+            8189.49547086405
           ],
           "extentTanTheta": [
-            -0.06815487454879861,
-            0.06815487454879861,
-            -0.09621894736842106,
-            0.015018947368421054
+            -0.1391315634218289,
+            0.1391315634218289,
+            -0.17156124024960998,
+            0.015019240249609983
           ],
           "cardPixels": [
-            869,
-            665
+            2034,
+            1282
           ],
           "cardExtentTanTheta": [
-            -0.05302290598290599,
-            0.05302290598290599,
-            -0.08120000000000001,
+            -0.12412,
+            0.12412,
+            -0.156542,
             0
           ],
           "kernelPixels": [
-            249,
+            247,
             247
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.6149811134310215e-06,
-            -0.04059193235635664
+            -0.000004615101239732931,
+            -0.07826293237629356
           ],
           "coverageCentroidTanTheta": [
-            -4.476059297209235e-06,
-            -0.040591813848481866
+            -0.000004492896410709727,
+            -0.07826281529761142
           ],
-          "centroidErrorTanTheta": 1.8260171797272622e-07,
-          "coverageAreaRelativeError": -1.740167343888821e-06,
+          "centroidErrorTanTheta": 1.6923781506441025e-7,
+          "coverageAreaRelativeError": -3.8490091358589495e-7,
           "file": "aspheric_29_8192.png",
-          "bytes": 470638,
-          "fileSha256": "4de801894cc1e57832575b21e66fa4887d21ef94290388b1d29a0d38bfda92d7",
-          "decodedRgbaSha256": "2e212b7120cebd384b0f4bec3b50edf2137d24de385f4873cd86e2f7006bd79e",
-          "maxLinearQuantizationError": 0.00012209995742185065
+          "bytes": 629999,
+          "fileSha256": "095306338ab1c049fe6c89290c12b97d2ecce3c1edfce4e0be321061c6ba8441",
+          "decodedRgbaSha256": "809085282e145e3f97be42e8ce08e72fa270f59a2dbcf8c6532229ab67474adc",
+          "maxLinearQuantizationError": 0.00012209970492882416
         }
       ]
     },
     {
-      "objectVergenceD": 3.0,
+      "objectVergenceD": 3,
       "psfSha256": "3d92e794d530c26e5f0112d323f4955d25acd564966201676e1b8299f58295ff",
       "retinalMmPerTanTheta": 16.718003105359152,
       "levels": [
         {
-          "width": 573,
-          "height": 468,
+          "width": 1176,
+          "height": 787,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4092.8851907255043,
-            4095.238095238095
+            4096.573208722742,
+            4094.1089292330494
           ],
           "extentTanTheta": [
-            -0.06999952030152476,
-            0.06999952030152476,
-            -0.09913953488372093,
-            0.015139534883720931
+            -0.14353460076045627,
+            0.14353460076045627,
+            -0.17708371040723983,
+            0.01514371040723982
           ],
           "cardPixels": [
-            449,
-            344
+            1052,
+            663
           ],
           "cardExtentTanTheta": [
-            -0.054851282051282056,
-            0.054851282051282056,
-            -0.084,
+            -0.1284,
+            0.1284,
+            -0.16194,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 0.9999999999999999,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.427582339122623e-06,
-            -0.04199279460137603
+            -0.0000044148961242529425,
+            -0.08096279669795542
           ],
           "coverageCentroidTanTheta": [
-            -4.6914011879309085e-06,
-            -0.041992924631877135
+            -0.000004708807519118593,
+            -0.08096283999636948
           ],
-          "centroidErrorTanTheta": 2.9412296102739806e-07,
-          "coverageAreaRelativeError": -1.5494136796911917e-06,
+          "centroidErrorTanTheta": 2.970835920952178e-7,
+          "coverageAreaRelativeError": -3.8338131691517674e-7,
           "file": "aspheric_30_4096.png",
-          "bytes": 164402,
-          "fileSha256": "7c58b3e0fcf6acfc77ef701d1ff02eff86568766d323d122ce5b42f4879a645d",
-          "decodedRgbaSha256": "e05be8d549b63f5ee2f4f3ece7cd5645f06214def020e73f791082251f16f01e",
-          "maxLinearQuantizationError": 0.00012209996267731338
+          "bytes": 218700,
+          "fileSha256": "afe3c16b08f59204de23345c2cc7043ade85ce1e824d5fbaf02d8737c62c42c9",
+          "decodedRgbaSha256": "69fe4f83616065ca39e9803df7f17be8ed4fd742dd1ea1c4e84281a9380fad8c",
+          "maxLinearQuantizationError": 0.00012209996537970724
         },
         {
-          "width": 1147,
-          "height": 934,
+          "width": 2352,
+          "height": 1575,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8194.88593866866,
-            8190.47619047619
+            8193.146417445483,
+            8194.392985056194
           ],
           "extentTanTheta": [
-            -0.06998267020335987,
-            0.06998267020335987,
-            -0.09901744186046513,
-            0.015017441860465117
+            -0.14353460076045627,
+            0.14353460076045627,
+            -0.17707229841748304,
+            0.015132298417483044
           ],
           "cardPixels": [
-            899,
-            688
+            2104,
+            1327
           ],
           "cardExtentTanTheta": [
-            -0.054851282051282056,
-            0.054851282051282056,
-            -0.084,
+            -0.1284,
+            0.1284,
+            -0.16194,
             0
           ],
           "kernelPixels": [
             249,
-            247
+            249
           ],
-          "kernelEnergy": 1.0000000000000002,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.584746761940138e-06,
-            -0.0419926213569998
+            -0.000004585088336066755,
+            -0.08096261977488005
           ],
           "coverageCentroidTanTheta": [
-            -4.6448514618944306e-06,
-            -0.041992701105291456
+            -0.000004636505491638101,
+            -0.08096263944893807
           ],
-          "centroidErrorTanTheta": 9.9861729300778e-08,
-          "coverageAreaRelativeError": -1.604544119460094e-06,
+          "centroidErrorTanTheta": 5.505263341644799e-8,
+          "coverageAreaRelativeError": -3.4198431908549765e-7,
           "file": "aspheric_30_8192.png",
-          "bytes": 494335,
-          "fileSha256": "e6afe4c276a5a74ca3041354a1e619f12e920eaca6c95c2ec77e28054903522d",
-          "decodedRgbaSha256": "7fee92aecf2f9980059effdaeb95bada343405e5a748ee74bdb489f6d3d04c2b",
-          "maxLinearQuantizationError": 0.0001221000324859215
+          "bytes": 658536,
+          "fileSha256": "05e0b35bb73bd477e0a871a4372ca828afc6a6b625345e0602169ecef9db0262",
+          "decodedRgbaSha256": "4974369fe4739fc13fbfabb833ae567fa467fd9e739fd90aa53e12e03a33377b",
+          "maxLinearQuantizationError": 0.00012210001321905084
         }
       ]
     },
@@ -2066,94 +2021,94 @@
       "retinalMmPerTanTheta": 16.71317663554269,
       "levels": [
         {
-          "width": 588,
-          "height": 480,
+          "width": 1211,
+          "height": 809,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4093.179240958332,
-            4101.382488479263
+            4096.3219776906835,
+            4093.511336337234
           ],
           "extentTanTheta": [
-            -0.07182680813439435,
-            0.07182680813439435,
-            -0.10191685393258428,
-            0.015116853932584268
+            -0.14781552897884087,
+            0.14781552897884087,
+            -0.1824839211678832,
+            0.01514592116788321
           ],
           "cardPixels": [
-            464,
-            356
+            1087,
+            685
           ],
           "cardExtentTanTheta": [
-            -0.056679658119658125,
-            0.056679658119658125,
-            -0.0868,
+            -0.13268000000000002,
+            0.13268000000000002,
+            -0.167338,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.0545062285580505e-06,
-            -0.043392333370307574
+            -0.0000050674768742444985,
+            -0.08366134101566028
           ],
           "coverageCentroidTanTheta": [
-            -5.100918692617702e-06,
-            -0.04339228335366887
+            -0.000005020322883477542,
+            -0.08366109676974325
           ],
-          "centroidErrorTanTheta": 6.823328342905028e-08,
-          "coverageAreaRelativeError": -1.5921860651024744e-06,
+          "centroidErrorTanTheta": 2.487560387862789e-7,
+          "coverageAreaRelativeError": -3.2370032176931574e-7,
           "file": "aspheric_31_4096.png",
-          "bytes": 172036,
-          "fileSha256": "56f88df0c67c50c0aa5a1b55e80153d2199a87dcb6618c10efad1ab9675d999e",
-          "decodedRgbaSha256": "5819662fe3c951bca104d9bc9310c6b51066894f76d6553afa6b5bbeeb8b2710",
-          "maxLinearQuantizationError": 0.00012209932256774365
+          "bytes": 228329,
+          "fileSha256": "62e6d4116ab033cb1b0287537c0399c445c0222faeb1f3ec4a68df5faf60e49b",
+          "decodedRgbaSha256": "307ae7b953b0b3329c1af3e1ddbc9e02756366b251cce21ec4ea12da8b350f91",
+          "maxLinearQuantizationError": 0.00012210004968560284
         },
         {
-          "width": 1177,
-          "height": 959,
+          "width": 2422,
+          "height": 1619,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8195.179988901487,
-            8191.244239631336
+            8192.643955381367,
+            8192.998601632624
           ],
           "extentTanTheta": [
-            -0.0718105033442816,
-            0.0718105033442816,
-            -0.1019381153305204,
-            0.015138115330520395
+            -0.14781552897884087,
+            0.14781552897884087,
+            -0.18247287381473376,
+            0.01513487381473377
           ],
           "cardPixels": [
-            929,
-            711
+            2174,
+            1371
           ],
           "cardExtentTanTheta": [
-            -0.056679658119658125,
-            0.056679658119658125,
-            -0.0868,
+            -0.13268000000000002,
+            0.13268000000000002,
+            -0.167338,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 0.9999999999999999,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -4.970086351062811e-06,
-            -0.04339225259826481
+            -0.000004971940901293419,
+            -0.08366125318140563
           ],
           "coverageCentroidTanTheta": [
-            -4.955640322396757e-06,
-            -0.04339218194770632
+            -0.000004976189210467356,
+            -0.08366114461723131
           ],
-          "centroidErrorTanTheta": 7.211233708394172e-08,
-          "coverageAreaRelativeError": -1.4559165771865779e-06,
+          "centroidErrorTanTheta": 1.086472644661506e-7,
+          "coverageAreaRelativeError": -3.2829815488355507e-7,
           "file": "aspheric_31_8192.png",
-          "bytes": 519905,
-          "fileSha256": "8d05301d970bff7d79d82c348cd0d4780042a5730ddb6e1aff6811049fb87144",
-          "decodedRgbaSha256": "d7f15d5ccd5c694047e105dbb52e778ea502f94e612836c7c29fcd3644e1dba4",
-          "maxLinearQuantizationError": 0.0001220999159808415
+          "bytes": 693439,
+          "fileSha256": "ba57df211fdf2346b0c8f43dc4607e973fbeb72c1db98128111069714f7a0b30",
+          "decodedRgbaSha256": "c94b347509651592e2802a506f0e783215629cac2f2a40f09cf26f36c1bab5bd",
+          "maxLinearQuantizationError": 0.00012210010619484457
         }
       ]
     },
@@ -2163,94 +2118,94 @@
       "retinalMmPerTanTheta": 16.70835295171538,
       "levels": [
         {
-          "width": 603,
-          "height": 491,
+          "width": 1246,
+          "height": 832,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4093.454913051607,
-            4095.982142857142
+            4096.086448598131,
+            4098.7402741756205
           ],
           "extentTanTheta": [
-            -0.07365416412397625,
-            0.07365416412397625,
-            -0.10473678474114442,
-            0.015136784741144417
+            -0.1520963992869875,
+            0.1520963992869875,
+            -0.1878625988700565,
+            0.015126598870056497
           ],
           "cardPixels": [
-            479,
-            367
+            1122,
+            708
           ],
           "cardExtentTanTheta": [
-            -0.0585080341880342,
-            0.0585080341880342,
-            -0.08960000000000001,
+            -0.13696,
+            0.13696,
+            -0.172736,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.456231842155393e-06,
-            -0.04479215218473663
+            -0.000005461565635241831,
+            -0.08636015755799865
           ],
           "coverageCentroidTanTheta": [
-            -5.519710794596162e-06,
-            -0.04479217245213056
+            -0.000005629351981473911,
+            -0.08636002588978543
           ],
-          "centroidErrorTanTheta": 6.663591118670884e-08,
-          "coverageAreaRelativeError": -1.3085653585154233e-06,
+          "centroidErrorTanTheta": 2.1328097982427303e-7,
+          "coverageAreaRelativeError": -3.05566938973989e-7,
           "file": "aspheric_32_4096.png",
-          "bytes": 180268,
-          "fileSha256": "590498a1f5ae6575c39910702897140702196a06c949ef0c1ed02dffe4210637",
-          "decodedRgbaSha256": "e2d015cdd2276647a105b13f5aa8329d8298579772c82f19b6ac2c2df7f65279",
-          "maxLinearQuantizationError": 0.00012209952720796443
+          "bytes": 236758,
+          "fileSha256": "4b5a15b770d3c6528f00c41f439c652cfe2de2458bbc74c59a72be251bf0d617",
+          "decodedRgbaSha256": "1b608d871a34ca11b136e079766d8f6847cb5a6dd50d1cefae20c3ac981f67c7",
+          "maxLinearQuantizationError": 0.00012209981921884605
         },
         {
-          "width": 1207,
-          "height": 982,
+          "width": 2492,
+          "height": 1663,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8195.455660994763,
-            8191.964285714284
+            8192.172897196262,
+            8191.691367173027
           ],
           "extentTanTheta": [
-            -0.07363837045355295,
-            0.07363837045355295,
-            -0.10473678474114442,
-            0.015136784741144417
+            -0.1520963992869875,
+            0.1520963992869875,
+            -0.1878732890459364,
+            0.015137289045936395
           ],
           "cardPixels": [
-            959,
-            734
+            2244,
+            1415
           ],
           "cardExtentTanTheta": [
-            -0.0585080341880342,
-            0.0585080341880342,
-            -0.08960000000000001,
+            -0.13696,
+            0.13696,
+            -0.172736,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -5.387156606048734e-06,
-            -0.044792139038166645
+            -0.000005389331632846259,
+            -0.08636013896991787
           ],
           "coverageCentroidTanTheta": [
-            -5.397623381559005e-06,
-            -0.044791864718160976
+            -0.00000546958988965938,
+            -0.08635981143934403
           ],
-          "centroidErrorTanTheta": 2.7451961478186454e-07,
-          "coverageAreaRelativeError": -1.4837839774628492e-06,
+          "centroidErrorTanTheta": 3.372204984705266e-7,
+          "coverageAreaRelativeError": -3.214719489497142e-7,
           "file": "aspheric_32_8192.png",
-          "bytes": 544739,
-          "fileSha256": "fe3076a3485c5932240d5b92105cda427ed3bafc36ced4a05e188fa891849ce2",
-          "decodedRgbaSha256": "8bae24b5c123305855526a58cbe8d64989b4de8ba066393431d90426f09ff4ed",
-          "maxLinearQuantizationError": 0.00012210001836091423
+          "bytes": 719720,
+          "fileSha256": "daaacb5b1417652b3b0e02404641b784db790c9bee3fbfadcae1b3ab78f569cd",
+          "decodedRgbaSha256": "d335bf14ffb8dd2916ce488771cabccc213f782f8b8367f30d53042c8f8c54e6",
+          "maxLinearQuantizationError": 0.00012210010887692135
         }
       ]
     },
@@ -2260,94 +2215,94 @@
       "retinalMmPerTanTheta": 16.70353205146567,
       "levels": [
         {
-          "width": 618,
-          "height": 502,
+          "width": 1281,
+          "height": 854,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4093.7138777452915,
-            4090.909090909091
+            4095.865193996036,
+            4098.038555244928
           ],
           "extentTanTheta": [
-            -0.07548158206166303,
-            0.07548158206166303,
-            -0.10755555555555556,
-            0.015155555555555556
+            -0.156377216940363,
+            0.156377216940363,
+            -0.19326318904109588,
+            0.01512918904109589
           ],
           "cardPixels": [
-            494,
-            378
+            1157,
+            730
           ],
           "cardExtentTanTheta": [
-            -0.060336410256410254,
-            0.060336410256410254,
-            -0.0924,
+            -0.14123999999999998,
+            0.14123999999999998,
+            -0.178134,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -5.44695753414589e-06,
-            -0.04619299391968797
+            -0.000005449524444674997,
+            -0.08905999712920548
           ],
           "coverageCentroidTanTheta": [
-            -5.5494637812237715e-06,
-            -0.04619295659160792
+            -0.000005576521477871018,
+            -0.08905996799925715
           ],
-          "centroidErrorTanTheta": 1.0909132069167698e-07,
-          "coverageAreaRelativeError": -1.4176095404216937e-06,
+          "centroidErrorTanTheta": 1.302950510580182e-7,
+          "coverageAreaRelativeError": -3.1717321369306717e-7,
           "file": "aspheric_33_4096.png",
-          "bytes": 188115,
-          "fileSha256": "97419e450401de23e81a4f17056d68d0b504fbc5dedd37a1301e09414c32b985",
-          "decodedRgbaSha256": "1fba3467b346e7a423eb7e92b6e39b279d43637883af028d97c05422235c6af0",
-          "maxLinearQuantizationError": 0.00012209993807676955
+          "bytes": 249114,
+          "fileSha256": "9c2d84f1cf0a2f29405c7f1d53d103dd7442dec467db43f1a5cba2c5baf04afd",
+          "decodedRgbaSha256": "677448ad5402201be6bbe525cd3ef466b7c0b8d84f4de68655d2197cac1078f2",
+          "maxLinearQuantizationError": 0.00012209960738762682
         },
         {
-          "width": 1237,
-          "height": 1005,
+          "width": 2562,
+          "height": 1707,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8195.714625688448,
-            8192.640692640693
+            8191.730387992072,
+            8190.463359044315
           ],
           "extentTanTheta": [
-            -0.0754662684400197,
-            0.0754662684400197,
-            -0.10753553500660501,
-            0.01513553500660502
+            -0.156377216940363,
+            0.156377216940363,
+            -0.19327355860178203,
+            0.015139558601782042
           ],
           "cardPixels": [
-            989,
-            757
+            2314,
+            1459
           ],
           "cardExtentTanTheta": [
-            -0.060336410256410254,
-            0.060336410256410254,
-            -0.0924,
+            -0.14123999999999998,
+            0.14123999999999998,
+            -0.178134,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.429235264630743e-06,
-            -0.04619290263573965
+            -0.000005429563367061849,
+            -0.089059900333387
           ],
           "coverageCentroidTanTheta": [
-            -5.299741143524179e-06,
-            -0.04619287767898365
+            -0.000005498776474352025,
+            -0.08905976826166556
           ],
-          "centroidErrorTanTheta": 1.3187709077511436e-07,
-          "coverageAreaRelativeError": -1.4498587307398836e-06,
+          "centroidErrorTanTheta": 1.4910866448120785e-7,
+          "coverageAreaRelativeError": -3.105914436751789e-7,
           "file": "aspheric_33_8192.png",
-          "bytes": 567016,
-          "fileSha256": "246806135adc808bb3dfb13fef8362ff675ba16e7717568aba65e6b6f1e91d7f",
-          "decodedRgbaSha256": "f61fd1e1b4a2c0e9c6e504029d7098d48ddb9c2189c33f3c25075eb12b13b186",
-          "maxLinearQuantizationError": 0.0001221000147088036
+          "bytes": 755039,
+          "fileSha256": "69fa9ccd8800cc09863911592c6ed0cf9cca6dd867afe1a242a794ea2ba2343a",
+          "decodedRgbaSha256": "916409873832d8c9794bc65e46eb2c5008ba23681eefeb7f49b59d3dc41d3183",
+          "maxLinearQuantizationError": 0.00012210007885349317
         }
       ]
     },
@@ -2357,94 +2312,94 @@
       "retinalMmPerTanTheta": 16.698713932384816,
       "levels": [
         {
-          "width": 633,
-          "height": 514,
+          "width": 1316,
+          "height": 876,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4093.957609221699,
-            4096.638655462185
+            4095.6569543705336,
+            4097.378113898394
           ],
           "extentTanTheta": [
-            -0.07730905647070677,
-            0.07730905647070677,
-            -0.11033435897435898,
-            0.015134358974358974
+            -0.1606579865771812,
+            0.1606579865771812,
+            -0.19866362765957443,
+            0.015131627659574466
           ],
           "cardPixels": [
-            509,
-            390
+            1192,
+            752
           ],
           "cardExtentTanTheta": [
-            -0.06216478632478633,
-            0.06216478632478633,
-            -0.0952,
+            -0.14551999999999998,
+            0.14551999999999998,
+            -0.18353199999999997,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -6.464729739083762e-06,
-            -0.04759206740745074
+            -0.000006459381635737503,
+            -0.09175806717809189
           ],
           "coverageCentroidTanTheta": [
-            -6.494935663054046e-06,
-            -0.0475919741524336
+            -0.000006595337220566787,
+            -0.09175807189992832
           ],
-          "centroidErrorTanTheta": 9.802497673801519e-08,
-          "coverageAreaRelativeError": -1.2350866211985334e-06,
+          "centroidErrorTanTheta": 1.3603755652612458e-7,
+          "coverageAreaRelativeError": -2.588067523623394e-7,
           "file": "aspheric_34_4096.png",
-          "bytes": 197417,
-          "fileSha256": "a01dd802c05891280134a18f9b8ba99df2d3654accd1d1b936c3feb627a6369e",
-          "decodedRgbaSha256": "e2fe6b17d07c7d554cea41dc0db9abc5aaab8f71c55616065a9f65476ff8f5b7",
-          "maxLinearQuantizationError": 0.00012209930881690312
+          "bytes": 261724,
+          "fileSha256": "69dad5792d5bcff96c90469971fd2867b9e0f232ca373eddfbc265752079b300",
+          "decodedRgbaSha256": "071ea6e37aaee1317f4ee50b1c96d42dd82b4ec53ffba41197661975b4927f7c",
+          "maxLinearQuantizationError": 0.00012210005877399954
         },
         {
-          "width": 1267,
-          "height": 1028,
+          "width": 2632,
+          "height": 1751,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8195.958357164855,
-            8193.27731092437
+            8191.313908741067,
+            8189.307586687882
           ],
           "extentTanTheta": [
-            -0.07729419457654983,
-            0.07729419457654983,
-            -0.11033435897435898,
-            0.015134358974358974
+            -0.1606579865771812,
+            0.1606579865771812,
+            -0.19867369527611442,
+            0.015141695276114435
           ],
           "cardPixels": [
-            1019,
-            780
+            2384,
+            1503
           ],
           "cardExtentTanTheta": [
-            -0.06216478632478633,
-            0.06216478632478633,
-            -0.0952,
+            -0.14551999999999998,
+            0.14551999999999998,
+            -0.18353199999999997,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -6.2718776339682075e-06,
-            -0.04759241800829658
+            -0.000006267285788214884,
+            -0.09175841615133638
           ],
           "coverageCentroidTanTheta": [
-            -6.3452805850004636e-06,
-            -0.04759226675624192
+            -0.0000064115377989201535,
+            -0.09175829026198666
           ],
-          "centroidErrorTanTheta": 1.681225067051554e-07,
-          "coverageAreaRelativeError": -1.2645985317805142e-06,
+          "centroidErrorTanTheta": 1.914595805021467e-7,
+          "coverageAreaRelativeError": -3.0954799268290145e-7,
           "file": "aspheric_34_8192.png",
-          "bytes": 594018,
-          "fileSha256": "bae8d0c00d8373782439b9c104b2580e5722adfb2ef7037c15479685de561062",
-          "decodedRgbaSha256": "46a9f6500a37373d48c24a3291b04608073bcdf847838476a07f0db12d8cf207",
-          "maxLinearQuantizationError": 0.0001220999529493172
+          "bytes": 787092,
+          "fileSha256": "d84883d5b00ae3553402e8bf388116a26ebedb403cf0eea75909c80a3bf24e09",
+          "decodedRgbaSha256": "dcdae1d94143a75ca02020d9d6f4c0f1541a2660e207b7affdf6be217b1d9dad",
+          "maxLinearQuantizationError": 0.00012210010675162142
         }
       ]
     },
@@ -2454,94 +2409,94 @@
       "retinalMmPerTanTheta": 16.69389859206682,
       "levels": [
         {
-          "width": 648,
-          "height": 525,
+          "width": 1351,
+          "height": 898,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4094.187413185169,
-            4091.8367346938776
+            4095.460614152203,
+            4096.755412057376
           ],
           "extentTanTheta": [
-            -0.079136582501468,
-            0.079136582501468,
-            -0.11315211970074814,
-            0.01515211970074813
+            -0.16493871230643845,
+            0.16493871230643845,
+            -0.2040639276485788,
+            0.01513392764857881
           ],
           "cardPixels": [
-            524,
-            401
+            1227,
+            774
           ],
           "cardExtentTanTheta": [
-            -0.0639931623931624,
-            0.0639931623931624,
-            -0.098,
+            -0.1498,
+            0.1498,
+            -0.18893,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.502484084027671e-06,
-            -0.04899132793646209
+            -0.000005502181889495713,
+            -0.09445632552271918
           ],
           "coverageCentroidTanTheta": [
-            -5.578832383778721e-06,
-            -0.04899148356378593
+            -0.000005692999974228306,
+            -0.09445645931976729
           ],
-          "centroidErrorTanTheta": 1.73346262724634e-07,
-          "coverageAreaRelativeError": -9.634406465952594e-07,
+          "centroidErrorTanTheta": 2.3305190740108415e-7,
+          "coverageAreaRelativeError": -2.455635720322036e-7,
           "file": "aspheric_35_4096.png",
-          "bytes": 205547,
-          "fileSha256": "576d2e7aeee1b4ea8e3bf6cbc28b58bcbb8d3aaa30ec65bdf8da38ee3fcdcb73",
-          "decodedRgbaSha256": "d9b5ebe700549558e896b264bd60d811591bf2a27daa7d42043c5d80ef2d7c6c",
-          "maxLinearQuantizationError": 0.0001220998402422513
+          "bytes": 273866,
+          "fileSha256": "93ffcb3fb5003eef01fa00a0c3a1f70c195e73d9b24232cd76e7ab8b458e34ef",
+          "decodedRgbaSha256": "607c2f9a9742efbedb8f02fdea65f09e803e05951279223687463d63dc4d4249",
+          "maxLinearQuantizationError": 0.00012209998131129662
         },
         {
-          "width": 1296,
-          "height": 1051,
+          "width": 2702,
+          "height": 1796,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8188.374826370338,
-            8193.877551020409
+            8190.921228304406,
+            8193.510824114752
           ],
           "extentTanTheta": [
-            -0.079136582501468,
-            0.079136582501468,
-            -0.1131332503113325,
-            0.015133250311332502
+            -0.16493871230643845,
+            0.16493871230643845,
+            -0.2040639276485788,
+            0.01513392764857881
           ],
           "cardPixels": [
-            1048,
-            803
+            2454,
+            1548
           ],
           "cardExtentTanTheta": [
-            -0.0639931623931624,
-            0.0639931623931624,
-            -0.098,
+            -0.1498,
+            0.1498,
+            -0.18893,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.655114773465089e-06,
-            -0.048991195872556424
+            -0.000005654888689347594,
+            -0.09445619544595461
           ],
           "coverageCentroidTanTheta": [
-            -5.623167511790525e-06,
-            -0.048991203240961775
+            -0.000005613450238367652,
+            -0.09445620637695672
           ],
-          "centroidErrorTanTheta": 3.278598673094837e-08,
-          "coverageAreaRelativeError": -1.2019305127841662e-06,
+          "centroidErrorTanTheta": 4.2855945055537736e-8,
+          "coverageAreaRelativeError": -2.544990004293979e-7,
           "file": "aspheric_35_8192.png",
-          "bytes": 620635,
-          "fileSha256": "66661047012baad3a4359138c2859fae21bb6538ae97ac27b02c436fb78d9319",
-          "decodedRgbaSha256": "6450c8f3bc550600cca6c1b738e50020139d0c03f1a89d5b8b916d687bda70d7",
-          "maxLinearQuantizationError": 0.00012210000343670924
+          "bytes": 825515,
+          "fileSha256": "d36a6011a4a03d4df775d833a8037f241e2613723dc93c36e10c2db2e5179a07",
+          "decodedRgbaSha256": "b215caf4fc6139e7c7a1611d5635dc27db030c6c8dbdff911a04b4841d2147e2",
+          "maxLinearQuantizationError": 0.00012210011335347216
         }
       ]
     },
@@ -2551,94 +2506,94 @@
       "retinalMmPerTanTheta": 16.68908602810848,
       "levels": [
         {
-          "width": 663,
-          "height": 537,
+          "width": 1386,
+          "height": 920,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4094.4044502617803,
-            4097.222222222223
+            4095.27518172378,
+            4096.167304763081
           ],
           "extentTanTheta": [
-            -0.08096415584415584,
-            0.08096415584415584,
-            -0.11593220338983051,
-            0.015132203389830507
+            -0.16921939778129952,
+            0.16921939778129952,
+            -0.20946410050251257,
+            0.015136100502512562
           ],
           "cardPixels": [
-            539,
-            413
+            1262,
+            796
           ],
           "cardExtentTanTheta": [
-            -0.06582153846153846,
-            0.06582153846153846,
-            -0.1008,
+            -0.15408,
+            0.15408,
+            -0.194328,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999999,
           "expectedCoverageCentroidTanTheta": [
-            -4.877778770215366e-06,
-            -0.05039117406438819
+            -0.000004880299141946577,
+            -0.09715517170212379
           ],
           "coverageCentroidTanTheta": [
-            -4.842405698041032e-06,
-            -0.050391167167379576
+            -0.000004633805739057297,
+            -0.09715506532184463
           ],
-          "centroidErrorTanTheta": 3.603918649073036e-08,
-          "coverageAreaRelativeError": -9.247723828931242e-07,
+          "centroidErrorTanTheta": 2.6846929332989837e-7,
+          "coverageAreaRelativeError": -2.010384748674099e-7,
           "file": "aspheric_36_4096.png",
-          "bytes": 215058,
-          "fileSha256": "cbb16c6f6d89dc28e7b85f03950ae622ce3300e7e737350f0157520358495382",
-          "decodedRgbaSha256": "fc0a5597cda6a2db2a37c5b271b6750059e32efe73be26c5290a5c266e43b100",
-          "maxLinearQuantizationError": 0.0001220999906561826
+          "bytes": 285249,
+          "fileSha256": "11946318ce9f99dad0030c0bcbf632682e4016fc9ce8cb65ea4035635ab3b806",
+          "decodedRgbaSha256": "204699a877e45f448c0ccb2546abb77f1f7fda31de0b05488f3471f59afda7b4",
+          "maxLinearQuantizationError": 0.00012210011957036748
         },
         {
-          "width": 1326,
-          "height": 1074,
+          "width": 2772,
+          "height": 1840,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8188.808900523561,
-            8194.444444444445
+            8190.55036344756,
+            8192.334609526162
           ],
           "extentTanTheta": [
-            -0.08096415584415584,
-            0.08096415584415584,
-            -0.11593220338983051,
-            0.015132203389830507
+            -0.16921939778129952,
+            0.16921939778129952,
+            -0.20946410050251257,
+            0.015136100502512562
           ],
           "cardPixels": [
-            1078,
-            826
+            2524,
+            1592
           ],
           "cardExtentTanTheta": [
-            -0.06582153846153846,
-            0.06582153846153846,
-            -0.1008,
+            -0.15408,
+            0.15408,
+            -0.194328,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.226055371823299e-06,
-            -0.05039111251829581
+            -0.000005224746477690199,
+            -0.09715511234813798
           ],
           "coverageCentroidTanTheta": [
-            -5.275600263944805e-06,
-            -0.0503910391108885
+            -0.000005442980292164828,
+            -0.09715511331878328
           ],
-          "centroidErrorTanTheta": 8.856265456541493e-08,
-          "coverageAreaRelativeError": -1.0245995322177848e-06,
+          "centroidErrorTanTheta": 2.1823597304854587e-7,
+          "coverageAreaRelativeError": -2.2711027225508218e-7,
           "file": "aspheric_36_8192.png",
-          "bytes": 645119,
-          "fileSha256": "154c6084a012fe79e8e94ac7a1fa0179e331c78eac17b6b5b1674fd432a4e2cb",
-          "decodedRgbaSha256": "1bc5d9b7823c5b31155e7d407e4ae2216df4e2e69b7f74ab82916d3778c469e0",
-          "maxLinearQuantizationError": 0.00012210005116353173
+          "bytes": 869296,
+          "fileSha256": "52d7f9a733aa9fe750d8e62d80541c552e123eb4303730496972ba6bef538a9e",
+          "decodedRgbaSha256": "dd9ce596f44b21ae605f0e5efadb61bee9c79401d976d2992adc9cbd9a85ce5b",
+          "maxLinearQuantizationError": 0.0001221000940745398
         }
       ]
     },
@@ -2648,94 +2603,94 @@
       "retinalMmPerTanTheta": 16.68427623810935,
       "levels": [
         {
-          "width": 678,
-          "height": 548,
+          "width": 1421,
+          "height": 942,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4094.6097556045197,
-            4092.664092664092
+            4095.099772669867,
+            4095.610987052262
           ],
           "extentTanTheta": [
-            -0.08279177265574378,
-            0.08279177265574378,
-            -0.1187490566037736,
-            0.015149056603773588
+            -0.17350004626060136,
+            0.17350004626060136,
+            -0.21486415647921758,
+            0.015138156479217603
           ],
           "cardPixels": [
-            554,
-            424
+            1297,
+            818
           ],
           "cardExtentTanTheta": [
-            -0.06764991452991453,
-            0.06764991452991453,
-            -0.10360000000000001,
+            -0.15835999999999997,
+            0.15835999999999997,
+            -0.199726,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.6794460559058925e-06,
-            -0.05179148693055424
+            -0.000005680487658652104,
+            -0.09985448358765636
           ],
           "coverageCentroidTanTheta": [
-            -5.616279150088049e-06,
-            -0.051791622472837716
+            -0.000005718051547602439,
+            -0.09985469376432146
           ],
-          "centroidErrorTanTheta": 1.4953851878290027e-07,
-          "coverageAreaRelativeError": -1.1799574159976345e-06,
+          "centroidErrorTanTheta": 2.1350708724889238e-7,
+          "coverageAreaRelativeError": -3.0681950413669057e-7,
           "file": "aspheric_37_4096.png",
-          "bytes": 223335,
-          "fileSha256": "c0d5d51a43934804c140666eff90610f60bd83ca9514cf8e93c0c2dfe51bfb41",
-          "decodedRgbaSha256": "cfa89b415ee0c2555468ec283e03aa768b0ab68ae717cc2778727775ce6687d6",
-          "maxLinearQuantizationError": 0.00012209988031663954
+          "bytes": 295720,
+          "fileSha256": "6e168313840fc55685e0e2bc33dcff883dcfba2fd7af05040808dd2b4509d30a",
+          "decodedRgbaSha256": "df4bcd87db3fe5c68a225cf0ab3b817f8ca46c0dd76957d7465eef5b4edaa47e",
+          "maxLinearQuantizationError": 0.0001220993593776809
         },
         {
-          "width": 1356,
-          "height": 1097,
+          "width": 2843,
+          "height": 1884,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8189.219511209039,
-            8194.980694980693
+            8193.356908310181,
+            8191.221974104524
           ],
           "extentTanTheta": [
-            -0.08279177265574378,
-            0.08279177265574378,
-            -0.11873121319199059,
-            0.01513121319199058
+            -0.17349421194605005,
+            0.17349421194605005,
+            -0.21486415647921758,
+            0.015138156479217603
           ],
           "cardPixels": [
-            1108,
-            849
+            2595,
+            1636
           ],
           "cardExtentTanTheta": [
-            -0.06764991452991453,
-            0.06764991452991453,
-            -0.10360000000000001,
+            -0.15835999999999997,
+            0.15835999999999997,
+            -0.199726,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 0.9999999999999998,
           "expectedCoverageCentroidTanTheta": [
-            -5.750877552670839e-06,
-            -0.05179142774078466
+            -0.000005748115587027144,
+            -0.09985442754166743
           ],
           "coverageCentroidTanTheta": [
-            -5.680920950011983e-06,
-            -0.051791591833301724
+            -0.000005772569939656277,
+            -0.09985439190590112
           ],
-          "centroidErrorTanTheta": 1.7838239939260735e-07,
-          "coverageAreaRelativeError": -1.0487694024341465e-06,
+          "centroidErrorTanTheta": 4.321947712564809e-8,
+          "coverageAreaRelativeError": -2.465344410840231e-7,
           "file": "aspheric_37_8192.png",
-          "bytes": 674803,
-          "fileSha256": "4de25e79a66057888d98340525149b3933f9cffc009f3889c2490845ae454005",
-          "decodedRgbaSha256": "86c5cf9223b39461cfcdff5bb8e6036a8d4a2104dd0cee42edb87f9ba9c3bd58",
-          "maxLinearQuantizationError": 0.00012210009221876847
+          "bytes": 891465,
+          "fileSha256": "33efc68fc77fad15f4add4c55f7fc4bb5cbaef58f20033119e8d5eee225afce2",
+          "decodedRgbaSha256": "31d96cc90704692af196a5b56f45c4953ad46033d09d88d2af073d05bd9515eb",
+          "maxLinearQuantizationError": 0.00012210009163682312
         }
       ]
     },
@@ -2745,94 +2700,94 @@
       "retinalMmPerTanTheta": 16.67946921967177,
       "levels": [
         {
-          "width": 693,
-          "height": 560,
+          "width": 1456,
+          "height": 964,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4094.8042554029053,
-            4097.744360902256
+            4094.933595671422,
+            4095.0839492209598
           ],
           "extentTanTheta": [
-            -0.08461942949844531,
-            0.08461942949844531,
-            -0.12153027522935779,
-            0.015130275229357799
+            -0.17778066066066064,
+            0.17778066066066064,
+            -0.22026410476190472,
+            0.01514010476190476
           ],
           "cardPixels": [
-            569,
-            436
+            1332,
+            840
           ],
           "cardExtentTanTheta": [
-            -0.0694782905982906,
-            0.0694782905982906,
-            -0.1064,
+            -0.16263999999999998,
+            0.16263999999999998,
+            -0.20512399999999997,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1.0000000000000002,
           "expectedCoverageCentroidTanTheta": [
-            -5.178241448341148e-06,
-            -0.05319063760135498
+            -0.000005178727943558225,
+            -0.10255264391150896
           ],
           "coverageCentroidTanTheta": [
-            -5.052550084944979e-06,
-            -0.05319078413259926
+            -0.000005081308764988257,
+            -0.10255263924700134
           ],
-          "centroidErrorTanTheta": 1.930536826477291e-07,
-          "coverageAreaRelativeError": -8.691766321122785e-07,
+          "centroidErrorTanTheta": 9.753078480486587e-8,
+          "coverageAreaRelativeError": -1.7656763695583777e-7,
           "file": "aspheric_38_4096.png",
-          "bytes": 233430,
-          "fileSha256": "bea595bcb610df6e62b735fd8ecb91ee80bd3dbe3fe3f5c7991e7ba51682ebb9",
-          "decodedRgbaSha256": "8c4df5dda860952bd0037ec985e9c72f34ffd6c83a8382de782570559782c4d2",
-          "maxLinearQuantizationError": 0.00012209896542858534
+          "bytes": 308546,
+          "fileSha256": "cc2ecc86bde44bec2d2dc3ddc88e546ac986f762da9bef35f98be29e9a9b8132",
+          "decodedRgbaSha256": "70a2481de5886f76a027a91bc2749818a39e045df21a0b3eb55f02cf445740b2",
+          "maxLinearQuantizationError": 0.00012209996309231474
         },
         {
-          "width": 1386,
-          "height": 1120,
+          "width": 2913,
+          "height": 1928,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8189.6085108058105,
-            8195.488721804511
+            8192.941465814069,
+            8190.1678984419195
           ],
           "extentTanTheta": [
-            -0.08461942949844531,
-            0.08461942949844531,
-            -0.12153027522935779,
-            0.015130275229357799
+            -0.1777749793621013,
+            0.1777749793621013,
+            -0.22026410476190472,
+            0.01514010476190476
           ],
           "cardPixels": [
-            1138,
-            872
+            2665,
+            1680
           ],
           "cardExtentTanTheta": [
-            -0.0694782905982906,
-            0.0694782905982906,
-            -0.1064,
+            -0.16263999999999998,
+            0.16263999999999998,
+            -0.20512399999999997,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -5.449639181834481e-06,
-            -0.05319068091674342
+            -0.000005442913403827771,
+            -0.10255267500530918
           ],
           "coverageCentroidTanTheta": [
-            -5.437125706809014e-06,
-            -0.053190770087101893
+            -0.000005402312926410825,
+            -0.10255272277214521
           ],
-          "centroidErrorTanTheta": 9.004409968042358e-08,
-          "coverageAreaRelativeError": -9.513694395613115e-07,
+          "centroidErrorTanTheta": 6.269026551733363e-8,
+          "coverageAreaRelativeError": -2.1555422258234813e-7,
           "file": "aspheric_38_8192.png",
-          "bytes": 707313,
-          "fileSha256": "f51909e89b675b6440a36f81519940614221ba0022502ddd7d5b5d8c1cbfefa7",
-          "decodedRgbaSha256": "489fe34059b920c9cf6e30fee2312e10c6c4895bb604173dd3bb317b2e3cec9b",
-          "maxLinearQuantizationError": 0.00012210004390000861
+          "bytes": 939837,
+          "fileSha256": "1d6063ea1915ed32632cbd07a1292fe8ee85015678a3f3132f7c4f5e434146dd",
+          "decodedRgbaSha256": "2a030fdee9deb3afafd9ac953ab0c7eab4fc6f94c656ed216b2dba78a37e3130",
+          "maxLinearQuantizationError": 0.00012210004752993852
         }
       ]
     },
@@ -2842,191 +2797,191 @@
       "retinalMmPerTanTheta": 16.674664970400823,
       "levels": [
         {
-          "width": 708,
-          "height": 571,
+          "width": 1491,
+          "height": 986,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4094.988780852655,
-            4093.4065934065934
+            4094.7759405703337,
+            4094.583938970749
           ],
           "extentTanTheta": [
-            -0.08644712328767123,
-            0.08644712328767123,
-            -0.12434630872483222,
-            0.015146308724832214
+            -0.18206124359912215,
+            0.18206124359912215,
+            -0.2256639535962877,
+            0.015141953596287703
           ],
           "cardPixels": [
-            584,
-            447
+            1367,
+            862
           ],
           "cardExtentTanTheta": [
-            -0.07130666666666667,
-            0.07130666666666667,
-            -0.1092,
+            -0.16691999999999999,
+            0.16691999999999999,
+            -0.210522,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 0.9999999999999998,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -6.326786514786702e-06,
-            -0.05459080886401948
+            -0.000006326954912477212,
+            -0.10525180453256358
           ],
           "coverageCentroidTanTheta": [
-            -6.269442357135134e-06,
-            -0.05459090372988036
+            -0.00000631795303155548,
+            -0.10525197707084864
           ],
-          "centroidErrorTanTheta": 1.1085072835875954e-07,
-          "coverageAreaRelativeError": -8.877525655703877e-07,
+          "centroidErrorTanTheta": 1.7277295411109681e-7,
+          "coverageAreaRelativeError": -2.0682396262294844e-7,
           "file": "aspheric_39_4096.png",
-          "bytes": 243679,
-          "fileSha256": "2a4103836424a3d54f3a08fc7de53f31584295c69085263ae9c3ef64bf94a5e8",
-          "decodedRgbaSha256": "eaa3f472a1e01b032e21ae26e84e4c3f74cac61788f5ad9500ab7dc44e037912",
-          "maxLinearQuantizationError": 0.00012210000039125646
+          "bytes": 321491,
+          "fileSha256": "63fc89ee94a6b0ca2ae22807822c2ba5508dc8142c1d471af41cf602c5c8a835",
+          "decodedRgbaSha256": "72a7de89461bc8fe824f6c2b439edd73052f87371b5f1bf0a2122d47a212ff61",
+          "maxLinearQuantizationError": 0.00012209999861184623
         },
         {
-          "width": 1416,
-          "height": 1143,
+          "width": 2983,
+          "height": 1973,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8189.97756170531,
-            8195.970695970696
+            8192.547328061348,
+            8193.917975318494
           ],
           "extentTanTheta": [
-            -0.08644712328767123,
-            0.08644712328767123,
-            -0.12432938547486033,
-            0.015129385474860334
+            -0.1820557074954296,
+            0.1820557074954296,
+            -0.2256551756521739,
+            0.015133175652173913
           ],
           "cardPixels": [
-            1168,
-            895
+            2735,
+            1725
           ],
           "cardExtentTanTheta": [
-            -0.07130666666666667,
-            0.07130666666666667,
-            -0.1092,
+            -0.16691999999999999,
+            0.16691999999999999,
+            -0.210522,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -6.165355201065028e-06,
-            -0.05459065927021259
+            -0.000006168592290940647,
+            -0.10525165606102349
           ],
           "coverageCentroidTanTheta": [
-            -6.073092731199231e-06,
-            -0.054590788746372104
+            -0.000006166180525018876,
+            -0.10525164297338047
           ],
-          "centroidErrorTanTheta": 1.5898565730521624e-07,
-          "coverageAreaRelativeError": -6.973078450212e-07,
+          "centroidErrorTanTheta": 1.3308005666066688e-8,
+          "coverageAreaRelativeError": -1.6232137689531356e-7,
           "file": "aspheric_39_8192.png",
-          "bytes": 736602,
-          "fileSha256": "bada0906e7a7a9fc86efa4b4aec33dcf8e5f8c40b8944304ed15d7c1920874d8",
-          "decodedRgbaSha256": "7d3acc49a3b0ea1025d585d8109e3323b186b287160b0d79d7be0d6f4b83d669",
-          "maxLinearQuantizationError": 0.00012210006658278094
+          "bytes": 973090,
+          "fileSha256": "1719b29f17b468462e80c383ec034fd4c1332332a998048d58fffdd383114ac7",
+          "decodedRgbaSha256": "5636e67e4e489597bd990cc1c91b018dda6ba8eeab6e84e42574b38d38fd473b",
+          "maxLinearQuantizationError": 0.00012210006426671693
         }
       ]
     },
     {
-      "objectVergenceD": 4.0,
+      "objectVergenceD": 4,
       "psfSha256": "98544d75e83ab2a2bdaeb301127e4b98ef0029c6c2d42511f1e05de6cf1a72c4",
       "retinalMmPerTanTheta": 16.66986348790436,
       "levels": [
         {
-          "width": 723,
-          "height": 583,
+          "width": 1526,
+          "height": 1008,
           "density": 4096,
           "pixelsPerTanTheta": [
-            4095.164080029918,
-            4098.214285714285
+            4094.6261682242994,
+            4094.1089292330494
           ],
           "extentTanTheta": [
-            -0.08827485124780617,
-            0.08827485124780617,
-            -0.1271285403050109,
-            0.015128540305010894
+            -0.18634179743223964,
+            0.18634179743223964,
+            -0.23106371040723983,
+            0.01514371040723982
           ],
           "cardPixels": [
-            599,
-            459
+            1402,
+            884
           ],
           "cardExtentTanTheta": [
-            -0.07313504273504273,
-            0.07313504273504273,
-            -0.112,
+            -0.1712,
+            0.1712,
+            -0.21592,
             0
           ],
           "kernelPixels": [
             125,
             125
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -7.519567707547458e-06,
-            -0.055990297689045454
+            -0.000007520412456602206,
+            -0.10795029827354961
           ],
           "coverageCentroidTanTheta": [
-            -7.468659803408821e-06,
-            -0.05599028037851176
+            -0.000007619430045174002,
+            -0.10795016774785937
           ],
-          "centroidErrorTanTheta": 5.377052427267957e-08,
-          "coverageAreaRelativeError": -8.348999587237671e-07,
+          "centroidErrorTanTheta": 1.6383357000261666e-7,
+          "coverageAreaRelativeError": -1.7654435069403007e-7,
           "file": "aspheric_40_4096.png",
-          "bytes": 252320,
-          "fileSha256": "5b25f2fa462e879f59028fb8a82c274b667f6feee9ee56e4456940d088c5d754",
-          "decodedRgbaSha256": "92894cb2fc13bbaf1421f72966e5f775cb386b7c86af8bebf1c8df8b5021819a",
-          "maxLinearQuantizationError": 0.0001220998822285853
+          "bytes": 331690,
+          "fileSha256": "8488c521c3c119a83546f4011e6c334438277c0b106979fd7692021dba7850c5",
+          "decodedRgbaSha256": "63af30b7e09cc8ac029a861bef012c87f822ecf06b88a41e28110813aa9c234a",
+          "maxLinearQuantizationError": 0.00012209990883882416
         },
         {
-          "width": 1446,
-          "height": 1166,
+          "width": 3053,
+          "height": 2017,
           "density": 8192,
           "pixelsPerTanTheta": [
-            8190.328160059836,
-            8196.42857142857
+            8192.172897196262,
+            8192.84920340867
           ],
           "extentTanTheta": [
-            -0.08827485124780617,
-            0.08827485124780617,
-            -0.1271285403050109,
-            0.015128540305010894
+            -0.1863363992869875,
+            0.1863363992869875,
+            -0.2310551498021481,
+            0.015135149802148105
           ],
           "cardPixels": [
-            1198,
-            918
+            2805,
+            1769
           ],
           "cardExtentTanTheta": [
-            -0.07313504273504273,
-            0.07313504273504273,
-            -0.112,
+            -0.1712,
+            0.1712,
+            -0.21592,
             0
           ],
           "kernelPixels": [
             249,
             249
           ],
-          "kernelEnergy": 1.0,
+          "kernelEnergy": 1,
           "expectedCoverageCentroidTanTheta": [
-            -7.4290063424903845e-06,
-            -0.05599050018365999
+            -0.00000743110861575636,
+            -0.10795050034019874
           ],
           "coverageCentroidTanTheta": [
-            -7.3774223012807315e-06,
-            -0.05599049471174862
+            -0.000007319520076811886,
+            -0.10795027376243177
           ],
-          "centroidErrorTanTheta": 5.187345295566376e-08,
-          "coverageAreaRelativeError": -7.169925443362146e-07,
+          "centroidErrorTanTheta": 2.525658062895839e-7,
+          "coverageAreaRelativeError": -1.5339888304044536e-7,
           "file": "aspheric_40_8192.png",
-          "bytes": 764901,
-          "fileSha256": "d3b1f6e571a4c7af56194b64272e6808841852963d1c82be825f148ca5538d3c",
-          "decodedRgbaSha256": "1decb5001548b534fbd3e07a878497e4fa73505b9b00a34c5b9855cceb16cee3",
-          "maxLinearQuantizationError": 0.00012209997001633166
+          "bytes": 1014594,
+          "fileSha256": "a6a0d4ec115c7dfe688e1f3fa0b9cfccdeef3cc5582a0b6d9df61b1e31eebc79",
+          "decodedRgbaSha256": "1cf5c5a42123afc543fffe004263786c47b9c888c00f26d517cd3f53e05c5ee7",
+          "maxLinearQuantizationError": 0.00012210012047517382
         }
       ]
     }

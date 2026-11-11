@@ -1,6 +1,6 @@
 /**
  * WebGL renderer for the IOL Vision Simulator
- * Handles Gaussian blur, cataract effects, and rendering pipeline
+ * Handles Gaussian blur and scene composition
  */
 
 import {
@@ -34,22 +34,14 @@ export interface RenderConfig {
   compareBackgroundBlurSigma?: number;
   backgroundBlurDownsampleFactor?: DownsampleFactor;
   compareBackgroundBlurDownsampleFactor?: DownsampleFactor;
-  nsGrade: number;
-  pscRadius: number;
-  pscDensity: number;
-  pscSoftness: number;
-  compareNsGrade?: number;
-  comparePscRadius?: number;
-  comparePscDensity?: number;
-  comparePscSoftness?: number;
   splitView: boolean;
   splitPosition: number;
-  backgroundTextureId?: string;
+  backgroundTextureId: string;
   backgroundNativeWidth?: number;
   backgroundNativeHeight?: number;
-  foregroundScale?: number;
-  foregroundNativeWidth?: number;
-  foregroundNativeHeight?: number;
+  foregroundScale: number;
+  foregroundNativeWidth: number;
+  foregroundNativeHeight: number;
 }
 
 export interface BlurExecutionDiagnostics {
@@ -132,7 +124,6 @@ export class WebGLRenderer {
   private readonly MAX_RESTORE_ATTEMPTS = 3;
   private readonly MIN_BLUR_SIGMA_TEXEL = 0.1;
   private readonly MAX_BLUR_SIGMA_PER_PASS_TEXEL = 10.0;
-  private readonly MAX_PSC_BLUR_SIGMA_TEXEL = 28.0;
   private contextLossHandler?: (event: ContextLossEvent) => void;
   private errorHandler?: (error: WebGLErrorInfo) => void;
   private blurDiagnostics = new Map<string, BlurExecutionDiagnostics>();
@@ -349,8 +340,8 @@ export class WebGLRenderer {
       'copy',
       'horizontalBlur',
       'verticalBlur',
-      'nuclearSclerosis',
-      'pscMask',
+
+
       'positionedForeground',
       'composite',
       'splitView'
@@ -748,184 +739,6 @@ export class WebGLRenderer {
   }
 
   /**
-   * Apply nuclear sclerosis effect
-   */
-  private applyNuclearSclerosis(
-    inputTextureId: string,
-    outputFramebufferId: string,
-    grade: number
-  ): void {
-    if (grade <= 0) {
-      this.copyTexture(inputTextureId, outputFramebufferId);
-      return;
-    }
-
-    const outputFb = this.resources.framebuffers.get(outputFramebufferId)!;
-    const inputTexture = this.resources.textures.get(inputTextureId)!;
-
-    // Calculate NS parameters
-    const intensity = Math.max(0, Math.min(grade, 4)) / 4;
-    const blueLoss = 0.62 * intensity;
-    const redBoost = 0.18 * intensity;
-    const greenLoss = 0.08 * intensity;
-    const contrast = 1.0 - 0.38 * intensity;
-
-    const colorMatrix = [
-      1.0 + redBoost, 0.0, 0.0,
-      0.0, 1.0 - greenLoss, 0.0,
-      0.0, 0.0, 1.0 - blueLoss
-    ];
-
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, outputFb.framebuffer);
-    this.gl.viewport(0, 0, outputFb.width, outputFb.height);
-
-    const nsProgram = this.resources.programs.get('nuclearSclerosis')!;
-    const nsUniforms = this.resources.uniformSetters.get('nuclearSclerosis')!;
-
-    this.gl.useProgram(nsProgram);
-    setupFullscreenQuadAttributes(this.gl, nsProgram, this.resources.vertexBuffer);
-
-    nsUniforms.setTexture('u_image', inputTexture, 0);
-    nsUniforms.setMat3('u_colorMatrix', colorMatrix);
-    nsUniforms.setFloat('u_contrast', contrast);
-
-    renderFullscreenQuad(this.gl);
-  }
-
-  /**
-   * Apply PSC mask effect
-   */
-  private applyPSCMask(
-    sharpTextureId: string,
-    blurredTextureId: string,
-    outputFramebufferId: string,
-    radius: number,
-    density: number,
-    softness: number
-  ): void {
-    if (radius <= 0 || density <= 0) {
-      this.copyTexture(sharpTextureId, outputFramebufferId);
-      return;
-    }
-
-    const outputFb = this.resources.framebuffers.get(outputFramebufferId)!;
-    const sharpTexture = this.resources.textures.get(sharpTextureId)!;
-    const blurredTexture = this.resources.textures.get(blurredTextureId)!;
-
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, outputFb.framebuffer);
-    this.gl.viewport(0, 0, outputFb.width, outputFb.height);
-
-    const pscProgram = this.resources.programs.get('pscMask')!;
-    const pscUniforms = this.resources.uniformSetters.get('pscMask')!;
-
-    this.gl.useProgram(pscProgram);
-    setupFullscreenQuadAttributes(this.gl, pscProgram, this.resources.vertexBuffer);
-
-    pscUniforms.setTexture('u_sharpImage', sharpTexture, 0);
-    pscUniforms.setTexture('u_blurredImage', blurredTexture, 1);
-    pscUniforms.setVec2('u_center', 0.5, 0.5); // Center of screen
-    pscUniforms.setFloat('u_radius', radius);
-    pscUniforms.setFloat('u_density', density);
-    pscUniforms.setFloat('u_softness', softness);
-
-    renderFullscreenQuad(this.gl);
-  }
-
-  private resolvePSCBlurDownsample(
-    width: number,
-    height: number,
-    blurSigma: number
-  ): DownsampleFactor {
-    const pixelCount = width * height;
-    if (pixelCount >= 3_000_000 || blurSigma >= 36) {
-      return 4;
-    }
-    if (pixelCount >= 1_500_000 || blurSigma >= 18) {
-      return 2;
-    }
-    return 1;
-  }
-
-  private applyCataractPostProcess(
-    sourceTextureId: string,
-    outputFramebufferId: string,
-    width: number,
-    height: number,
-    nsGrade: number,
-    pscRadius: number,
-    pscDensity: number,
-    pscSoftness: number,
-    referenceSigma: number,
-    keyPrefix: string
-  ): string {
-    const applyNS = nsGrade > 0;
-    const applyPSC = pscRadius > 0 && pscDensity > 0;
-
-    if (!applyNS && !applyPSC) {
-      return sourceTextureId;
-    }
-
-    let currentTextureId = sourceTextureId;
-
-    if (applyNS) {
-      const nsFramebufferId = applyPSC ? `${keyPrefix}_ns` : outputFramebufferId;
-      this.ensureFramebuffer(nsFramebufferId, width, height);
-      this.applyNuclearSclerosis(currentTextureId, nsFramebufferId, nsGrade);
-      const nsFb = this.resources.framebuffers.get(nsFramebufferId)!;
-      const nsTextureAlias = `${keyPrefix}_ns_texture`;
-      this.resources.textures.set(nsTextureAlias, nsFb.texture);
-      currentTextureId = nsTextureAlias;
-    }
-
-    if (applyPSC) {
-      const safeReferenceSigma = Number.isFinite(referenceSigma) ? Math.max(0, referenceSigma) : 0;
-      const pscBlurSigma = Math.min(
-        this.MAX_PSC_BLUR_SIGMA_TEXEL,
-        Math.max(safeReferenceSigma * 2.4, 1.2) * (2.4 + pscDensity * 9.5)
-      );
-      const pscDownsample = this.resolvePSCBlurDownsample(width, height, pscBlurSigma);
-      const blurWidth = Math.max(1, Math.ceil(width / pscDownsample));
-      const blurHeight = Math.max(1, Math.ceil(height / pscDownsample));
-      const blurSigmaGrid = pscBlurSigma / pscDownsample;
-
-      const pscSourceFramebufferId = `${keyPrefix}_psc_source`;
-      const pscSourceTextureAlias = `${keyPrefix}_psc_source_texture`;
-      this.ensureFramebuffer(pscSourceFramebufferId, blurWidth, blurHeight);
-      this.copyTexture(currentTextureId, pscSourceFramebufferId);
-      const pscSourceFb = this.resources.framebuffers.get(pscSourceFramebufferId)!;
-      this.resources.textures.set(pscSourceTextureAlias, pscSourceFb.texture);
-
-      const pscBlurFramebufferId = `${keyPrefix}_psc_blur`;
-      const pscBlurTextureAlias = `${keyPrefix}_psc_blur_texture`;
-      this.applyGaussianBlur(
-        pscSourceTextureAlias,
-        pscBlurFramebufferId,
-        blurSigmaGrid,
-        blurWidth,
-        blurHeight,
-        pscDownsample
-      );
-      const pscBlurFb = this.resources.framebuffers.get(pscBlurFramebufferId)!;
-      this.resources.textures.set(pscBlurTextureAlias, pscBlurFb.texture);
-
-      this.ensureFramebuffer(outputFramebufferId, width, height);
-      this.applyPSCMask(
-        currentTextureId,
-        pscBlurTextureAlias,
-        outputFramebufferId,
-        pscRadius,
-        pscDensity,
-        pscSoftness
-      );
-    }
-
-    const outputFb = this.resources.framebuffers.get(outputFramebufferId)!;
-    const outputTextureAlias = `${keyPrefix}_cataract_texture`;
-    this.resources.textures.set(outputTextureAlias, outputFb.texture);
-    return outputTextureAlias;
-  }
-
-  /**
    * Main render function
    */
   async render(imageTextureId: string, config: RenderConfig): Promise<void> {
@@ -957,14 +770,6 @@ export class WebGLRenderer {
       compareBackgroundBlurSigma,
       backgroundBlurDownsampleFactor,
       compareBackgroundBlurDownsampleFactor,
-      nsGrade,
-      pscRadius,
-      pscDensity,
-      pscSoftness,
-      compareNsGrade,
-      comparePscRadius,
-      comparePscDensity,
-      comparePscSoftness,
       backgroundTextureId,
       backgroundNativeWidth,
       backgroundNativeHeight,
@@ -1024,361 +829,229 @@ export class WebGLRenderer {
       return 1;
     };
 
-    const rightNsGrade = typeof compareNsGrade === 'number' ? compareNsGrade : nsGrade;
-    const rightPscRadius = typeof comparePscRadius === 'number' ? comparePscRadius : pscRadius;
-    const rightPscDensity = typeof comparePscDensity === 'number' ? comparePscDensity : pscDensity;
-    const rightPscSoftness = typeof comparePscSoftness === 'number' ? comparePscSoftness : pscSoftness;
+    // Keep only a tiny epsilon floor; do not enforce a visible minimum size.
+    const safeScale = Math.max(0.0001, foregroundScale);
+    const displayWidth = Math.max(1, this.canvas.clientWidth);
+    const displayHeight = Math.max(1, this.canvas.clientHeight);
+    const normalizedWidth = (foregroundNativeWidth * safeScale) / displayWidth;
+    const normalizedHeight = (foregroundNativeHeight * safeScale) / displayHeight;
+    const foregroundWidthPxFull = Math.max(1, Math.round(normalizedWidth * width));
+    const foregroundHeightPxFull = Math.max(1, Math.round(normalizedHeight * height));
+    const visibleWidthPxFull = Math.max(1, Math.min(width, foregroundWidthPxFull));
+    const visibleHeightPxFull = Math.max(1, Math.min(height, foregroundHeightPxFull));
+    const backgroundAspect =
+      typeof backgroundNativeWidth === 'number' &&
+      typeof backgroundNativeHeight === 'number' &&
+      backgroundNativeWidth > 0 &&
+      backgroundNativeHeight > 0
+        ? backgroundNativeWidth / backgroundNativeHeight
+        : displayWidth / displayHeight;
 
-    const overlayModeEnabled =
-      typeof backgroundTextureId === 'string' &&
-      typeof foregroundScale === 'number' &&
-      typeof foregroundNativeWidth === 'number' &&
-      typeof foregroundNativeHeight === 'number' &&
-      foregroundNativeWidth > 0 &&
-      foregroundNativeHeight > 0;
+    const processForegroundOverlay = (
+      sigmaFull: number,
+      downsampleFactorInput: number | undefined,
+      outputFramebufferId: string,
+      outputTextureAlias: string,
+      diagnosticsId: string
+    ): string => {
+      const downsampleFactor = normalizeDownsample(downsampleFactorInput);
+      const paddingFullPx = Math.ceil(Math.max(0, sigmaFull) * 3);
+      const localFullWidth = Math.max(1, visibleWidthPxFull + paddingFullPx * 2);
+      const localFullHeight = Math.max(1, visibleHeightPxFull + paddingFullPx);
+      const blurWidth = Math.max(1, Math.ceil(localFullWidth / downsampleFactor));
+      const blurHeight = Math.max(1, Math.ceil(localFullHeight / downsampleFactor));
+      const localNormalizedWidth = (foregroundWidthPxFull / downsampleFactor) / blurWidth;
+      const localNormalizedHeight = (foregroundHeightPxFull / downsampleFactor) / blurHeight;
+      const sigmaBlurGrid = sigmaFull / downsampleFactor;
 
-    if (overlayModeEnabled) {
-      // Keep only a tiny epsilon floor; do not enforce a visible minimum size.
-      const safeScale = Math.max(0.0001, foregroundScale);
-      const displayWidth = Math.max(1, this.canvas.clientWidth);
-      const displayHeight = Math.max(1, this.canvas.clientHeight);
-      const normalizedWidth = (foregroundNativeWidth * safeScale) / displayWidth;
-      const normalizedHeight = (foregroundNativeHeight * safeScale) / displayHeight;
-      const foregroundWidthPxFull = Math.max(1, Math.round(normalizedWidth * width));
-      const foregroundHeightPxFull = Math.max(1, Math.round(normalizedHeight * height));
-      const visibleWidthPxFull = Math.max(1, Math.min(width, foregroundWidthPxFull));
-      const visibleHeightPxFull = Math.max(1, Math.min(height, foregroundHeightPxFull));
-      const backgroundAspect =
-        typeof backgroundNativeWidth === 'number' &&
-        typeof backgroundNativeHeight === 'number' &&
-        backgroundNativeWidth > 0 &&
-        backgroundNativeHeight > 0
-          ? backgroundNativeWidth / backgroundNativeHeight
-          : displayWidth / displayHeight;
+      this.ensureFramebuffer('foregroundLocalSharp', blurWidth, blurHeight);
+      this.positionForeground(
+        imageTextureId,
+        'foregroundLocalSharp',
+        localNormalizedWidth,
+        localNormalizedHeight
+      );
+      const localSharpFb = this.resources.framebuffers.get('foregroundLocalSharp')!;
+      this.resources.textures.set('foreground_local_sharp', localSharpFb.texture);
 
-      const processForegroundOverlay = (
-        sigmaFull: number,
-        downsampleFactorInput: number | undefined,
-        outputFramebufferId: string,
-        outputTextureAlias: string,
-        diagnosticsId: string
-      ): string => {
-        const downsampleFactor = normalizeDownsample(downsampleFactorInput);
-        const paddingFullPx = Math.ceil(Math.max(0, sigmaFull) * 3);
-        const localFullWidth = Math.max(1, visibleWidthPxFull + paddingFullPx * 2);
-        const localFullHeight = Math.max(1, visibleHeightPxFull + paddingFullPx);
-        const blurWidth = Math.max(1, Math.ceil(localFullWidth / downsampleFactor));
-        const blurHeight = Math.max(1, Math.ceil(localFullHeight / downsampleFactor));
-        const localNormalizedWidth = (foregroundWidthPxFull / downsampleFactor) / blurWidth;
-        const localNormalizedHeight = (foregroundHeightPxFull / downsampleFactor) / blurHeight;
-        const sigmaBlurGrid = sigmaFull / downsampleFactor;
+      const processedLocalId = runForegroundDefocusBlur(
+        'foreground_local_sharp',
+        sigmaBlurGrid,
+        blurWidth,
+        blurHeight,
+        downsampleFactor
+      );
 
-        this.ensureFramebuffer('foregroundLocalSharp', blurWidth, blurHeight);
-        this.positionForeground(
-          imageTextureId,
-          'foregroundLocalSharp',
-          localNormalizedWidth,
-          localNormalizedHeight
-        );
-        const localSharpFb = this.resources.framebuffers.get('foregroundLocalSharp')!;
-        this.resources.textures.set('foreground_local_sharp', localSharpFb.texture);
+      this.ensureFramebuffer(outputFramebufferId, width, height);
+      // Do not clamp to 1 here; clamping one axis at close distances distorts aspect ratio.
+      // Let the positioned foreground shader handle >1 normalized sizes for natural cropping.
+      const paddedNormalizedWidth = (blurWidth * downsampleFactor) / width;
+      const paddedNormalizedHeight = (blurHeight * downsampleFactor) / height;
+      this.positionForeground(
+        processedLocalId,
+        outputFramebufferId,
+        paddedNormalizedWidth,
+        paddedNormalizedHeight
+      );
 
-        const processedLocalId = runForegroundDefocusBlur(
-          'foreground_local_sharp',
+      const outputFb = this.resources.framebuffers.get(outputFramebufferId)!;
+      this.resources.textures.set(outputTextureAlias, outputFb.texture);
+
+      const blurDiag = this.blurDiagnostics.get('blurred');
+      if (blurDiag) {
+        this.blurDiagnostics.set(diagnosticsId, {
+          ...blurDiag,
+          outputFramebufferId: diagnosticsId
+        });
+      }
+
+      return outputTextureAlias;
+    };
+
+    const processBackgroundOverlay = (
+      sourceTextureId: string,
+      sigmaFull: number,
+      downsampleFactorInput: number | undefined,
+      sourceFramebufferId: string,
+      outputFramebufferId: string,
+      outputTextureAlias: string,
+      diagnosticsId: string
+    ): string => {
+      const downsampleFactor = normalizeDownsample(downsampleFactorInput);
+      const targetPixelCount = Math.max(
+        1,
+        Math.ceil((width * height) / (downsampleFactor * downsampleFactor))
+      );
+      const blurWidth = Math.max(1, Math.round(Math.sqrt(targetPixelCount * backgroundAspect)));
+      const blurHeight = Math.max(1, Math.round(blurWidth / Math.max(0.0001, backgroundAspect)));
+      const sigmaBlurGrid = Math.max(0, sigmaFull) / downsampleFactor;
+
+      this.ensureFramebuffer(sourceFramebufferId, blurWidth, blurHeight);
+      this.copyTexture(sourceTextureId, sourceFramebufferId);
+      const sourceFb = this.resources.framebuffers.get(sourceFramebufferId)!;
+      const sourceTextureAlias = `${outputTextureAlias}_source`;
+      this.resources.textures.set(sourceTextureAlias, sourceFb.texture);
+
+      if (sigmaBlurGrid > this.MIN_BLUR_SIGMA_TEXEL) {
+        this.applyGaussianBlur(
+          sourceTextureAlias,
+          outputFramebufferId,
           sigmaBlurGrid,
           blurWidth,
           blurHeight,
           downsampleFactor
         );
 
-        this.ensureFramebuffer(outputFramebufferId, width, height);
-        // Do not clamp to 1 here; clamping one axis at close distances distorts aspect ratio.
-        // Let the positioned foreground shader handle >1 normalized sizes for natural cropping.
-        const paddedNormalizedWidth = (blurWidth * downsampleFactor) / width;
-        const paddedNormalizedHeight = (blurHeight * downsampleFactor) / height;
-        this.positionForeground(
-          processedLocalId,
-          outputFramebufferId,
-          paddedNormalizedWidth,
-          paddedNormalizedHeight
-        );
-
         const outputFb = this.resources.framebuffers.get(outputFramebufferId)!;
         this.resources.textures.set(outputTextureAlias, outputFb.texture);
-
-        const blurDiag = this.blurDiagnostics.get('blurred');
-        if (blurDiag) {
-          this.blurDiagnostics.set(diagnosticsId, {
-            ...blurDiag,
-            outputFramebufferId: diagnosticsId
-          });
-        }
-
+      } else {
+        this.resources.textures.set(outputTextureAlias, sourceFb.texture);
+        this.blurDiagnostics.set(diagnosticsId, {
+          outputFramebufferId: diagnosticsId,
+          path: this.getBlurPathFromDownsample(downsampleFactor),
+          requestedSigma: sigmaBlurGrid,
+          sigmaTexelUsed: 0,
+          sigmaPerPass: 0,
+          passCount: 0,
+          kernelTapCount: 0,
+          kernelMaxOffset: 0,
+          downsampleFactor,
+          width: blurWidth,
+          height: blurHeight
+        });
         return outputTextureAlias;
-      };
-
-      const processBackgroundOverlay = (
-        sourceTextureId: string,
-        sigmaFull: number,
-        downsampleFactorInput: number | undefined,
-        sourceFramebufferId: string,
-        outputFramebufferId: string,
-        outputTextureAlias: string,
-        diagnosticsId: string
-      ): string => {
-        const downsampleFactor = normalizeDownsample(downsampleFactorInput);
-        const targetPixelCount = Math.max(
-          1,
-          Math.ceil((width * height) / (downsampleFactor * downsampleFactor))
-        );
-        const blurWidth = Math.max(1, Math.round(Math.sqrt(targetPixelCount * backgroundAspect)));
-        const blurHeight = Math.max(1, Math.round(blurWidth / Math.max(0.0001, backgroundAspect)));
-        const sigmaBlurGrid = Math.max(0, sigmaFull) / downsampleFactor;
-
-        this.ensureFramebuffer(sourceFramebufferId, blurWidth, blurHeight);
-        this.copyTexture(sourceTextureId, sourceFramebufferId);
-        const sourceFb = this.resources.framebuffers.get(sourceFramebufferId)!;
-        const sourceTextureAlias = `${outputTextureAlias}_source`;
-        this.resources.textures.set(sourceTextureAlias, sourceFb.texture);
-
-        if (sigmaBlurGrid > this.MIN_BLUR_SIGMA_TEXEL) {
-          this.applyGaussianBlur(
-            sourceTextureAlias,
-            outputFramebufferId,
-            sigmaBlurGrid,
-            blurWidth,
-            blurHeight,
-            downsampleFactor
-          );
-
-          const outputFb = this.resources.framebuffers.get(outputFramebufferId)!;
-          this.resources.textures.set(outputTextureAlias, outputFb.texture);
-        } else {
-          this.resources.textures.set(outputTextureAlias, sourceFb.texture);
-          this.blurDiagnostics.set(diagnosticsId, {
-            outputFramebufferId: diagnosticsId,
-            path: this.getBlurPathFromDownsample(downsampleFactor),
-            requestedSigma: sigmaBlurGrid,
-            sigmaTexelUsed: 0,
-            sigmaPerPass: 0,
-            passCount: 0,
-            kernelTapCount: 0,
-            kernelMaxOffset: 0,
-            downsampleFactor,
-            width: blurWidth,
-            height: blurHeight
-          });
-          return outputTextureAlias;
-        }
-
-        const blurDiag = this.blurDiagnostics.get(outputFramebufferId);
-        if (blurDiag) {
-          this.blurDiagnostics.set(diagnosticsId, {
-            ...blurDiag,
-            outputFramebufferId: diagnosticsId
-          });
-        }
-
-        return outputTextureAlias;
-      };
-
-      const mainBackgroundSigma = Math.max(0, backgroundBlurSigma ?? 0);
-      const mainBackgroundDownsample = normalizeDownsample(backgroundBlurDownsampleFactor);
-      const mainBackgroundTextureId = processBackgroundOverlay(
-        backgroundTextureId,
-        mainBackgroundSigma,
-        mainBackgroundDownsample,
-        'backgroundMainSource',
-        'backgroundMainBlurred',
-        'background_main_blurred',
-        'backgroundMain'
-      );
-
-      if (config.splitView && typeof compareBlurSigma === 'number') {
-        const leftForegroundId = processForegroundOverlay(
-          blurSigma,
-          blurDownsampleFactor,
-          'compareLeft',
-          'compare_left_foreground',
-          'blurred'
-        );
-
-        // Re-run with compare sigma for right side.
-        const rightForegroundId = processForegroundOverlay(
-          compareBlurSigma,
-          compareBlurDownsampleFactor ?? blurDownsampleFactor,
-          'compareRight',
-          'compare_right_foreground',
-          'compareRight'
-        );
-
-        const rightBackgroundSigma = Math.max(0, compareBackgroundBlurSigma ?? mainBackgroundSigma);
-        const rightBackgroundDownsample = normalizeDownsample(
-          compareBackgroundBlurDownsampleFactor ?? mainBackgroundDownsample
-        );
-        const shouldReuseBackground =
-          rightBackgroundDownsample === mainBackgroundDownsample &&
-          Math.abs(rightBackgroundSigma - mainBackgroundSigma) < 0.0001;
-        const rightBackgroundTextureId = shouldReuseBackground
-          ? mainBackgroundTextureId
-          : processBackgroundOverlay(
-              backgroundTextureId,
-              rightBackgroundSigma,
-              rightBackgroundDownsample,
-              'backgroundCompareSource',
-              'backgroundCompareBlurred',
-              'background_compare_blurred',
-              'backgroundCompare'
-            );
-
-        this.compositeLayers(mainBackgroundTextureId, leftForegroundId, 'compareLeftComposite', backgroundAspect);
-        const leftCompositeFb = this.resources.framebuffers.get('compareLeftComposite')!;
-        this.resources.textures.set('compare_left_composite', leftCompositeFb.texture);
-
-        this.compositeLayers(rightBackgroundTextureId, rightForegroundId, 'compareRightComposite', backgroundAspect);
-        const rightCompositeFb = this.resources.framebuffers.get('compareRightComposite')!;
-        this.resources.textures.set('compare_right_composite', rightCompositeFb.texture);
-
-        const leftFinalTextureId = this.applyCataractPostProcess(
-          'compare_left_composite',
-          'compareLeftCataract',
-          width,
-          height,
-          nsGrade,
-          pscRadius,
-          pscDensity,
-          pscSoftness,
-          blurSigma,
-          'overlay_left'
-        );
-        const rightFinalTextureId = this.applyCataractPostProcess(
-          'compare_right_composite',
-          'compareRightCataract',
-          width,
-          height,
-          rightNsGrade,
-          rightPscRadius,
-          rightPscDensity,
-          rightPscSoftness,
-          compareBlurSigma,
-          'overlay_right'
-        );
-
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
-        this.gl.viewport(0, 0, width, height);
-        this.renderSplitView(leftFinalTextureId, rightFinalTextureId, config.splitPosition);
-        return;
       }
 
-      const processedForegroundId = processForegroundOverlay(
+      const blurDiag = this.blurDiagnostics.get(outputFramebufferId);
+      if (blurDiag) {
+        this.blurDiagnostics.set(diagnosticsId, {
+          ...blurDiag,
+          outputFramebufferId: diagnosticsId
+        });
+      }
+
+      return outputTextureAlias;
+    };
+
+    const mainBackgroundSigma = Math.max(0, backgroundBlurSigma ?? 0);
+    const mainBackgroundDownsample = normalizeDownsample(backgroundBlurDownsampleFactor);
+    const mainBackgroundTextureId = processBackgroundOverlay(
+      backgroundTextureId,
+      mainBackgroundSigma,
+      mainBackgroundDownsample,
+      'backgroundMainSource',
+      'backgroundMainBlurred',
+      'background_main_blurred',
+      'backgroundMain'
+    );
+
+    if (config.splitView && typeof compareBlurSigma === 'number') {
+      const leftForegroundId = processForegroundOverlay(
         blurSigma,
         blurDownsampleFactor,
-        'foregroundSharp',
-        'foreground_sharp',
+        'compareLeft',
+        'compare_left_foreground',
         'blurred'
       );
 
-      this.ensureFramebuffer('mainComposite', width, height);
-      this.compositeLayers(mainBackgroundTextureId, processedForegroundId, 'mainComposite', backgroundAspect);
-      const mainCompositeFb = this.resources.framebuffers.get('mainComposite')!;
-      this.resources.textures.set('main_composite', mainCompositeFb.texture);
-
-      const finalTextureId = this.applyCataractPostProcess(
-        'main_composite',
-        'mainCataract',
-        width,
-        height,
-        nsGrade,
-        pscRadius,
-        pscDensity,
-        pscSoftness,
-        blurSigma,
-        'overlay_main'
-      );
-
-      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
-      this.gl.viewport(0, 0, width, height);
-      this.renderToScreen(finalTextureId);
-      return;
-    }
-
-    // Legacy single-image path (letters mode).
-    if (config.splitView && typeof compareBlurSigma === 'number') {
-      this.applyGaussianBlur(
-        imageTextureId,
-        'compareLeft',
-        blurSigma,
-        width,
-        height,
-        normalizeDownsample(blurDownsampleFactor)
-      );
-      this.applyGaussianBlur(
-        imageTextureId,
+      // Re-run with compare sigma for right side.
+      const rightForegroundId = processForegroundOverlay(
+        compareBlurSigma,
+        compareBlurDownsampleFactor ?? blurDownsampleFactor,
         'compareRight',
-        compareBlurSigma,
-        width,
-        height,
-        normalizeDownsample(compareBlurDownsampleFactor ?? blurDownsampleFactor)
+        'compare_right_foreground',
+        'compareRight'
       );
 
-      const leftFb = this.resources.framebuffers.get('compareLeft')!;
-      const rightFb = this.resources.framebuffers.get('compareRight')!;
-      this.resources.textures.set('compare_left_texture', leftFb.texture);
-      this.resources.textures.set('compare_right_texture', rightFb.texture);
+      const rightBackgroundSigma = Math.max(0, compareBackgroundBlurSigma ?? mainBackgroundSigma);
+      const rightBackgroundDownsample = normalizeDownsample(
+        compareBackgroundBlurDownsampleFactor ?? mainBackgroundDownsample
+      );
+      const shouldReuseBackground =
+        rightBackgroundDownsample === mainBackgroundDownsample &&
+        Math.abs(rightBackgroundSigma - mainBackgroundSigma) < 0.0001;
+      const rightBackgroundTextureId = shouldReuseBackground
+        ? mainBackgroundTextureId
+        : processBackgroundOverlay(
+            backgroundTextureId,
+            rightBackgroundSigma,
+            rightBackgroundDownsample,
+            'backgroundCompareSource',
+            'backgroundCompareBlurred',
+            'background_compare_blurred',
+            'backgroundCompare'
+          );
 
-      const leftFinalTextureId = this.applyCataractPostProcess(
-        'compare_left_texture',
-        'compareLeftCataract',
-        width,
-        height,
-        nsGrade,
-        pscRadius,
-        pscDensity,
-        pscSoftness,
-        blurSigma,
-        'letters_left'
-      );
-      const rightFinalTextureId = this.applyCataractPostProcess(
-        'compare_right_texture',
-        'compareRightCataract',
-        width,
-        height,
-        rightNsGrade,
-        rightPscRadius,
-        rightPscDensity,
-        rightPscSoftness,
-        compareBlurSigma,
-        'letters_right'
-      );
+      this.compositeLayers(mainBackgroundTextureId, leftForegroundId, 'compareLeftComposite', backgroundAspect);
+      const leftCompositeFb = this.resources.framebuffers.get('compareLeftComposite')!;
+      this.resources.textures.set('compare_left_composite', leftCompositeFb.texture);
+
+      this.compositeLayers(rightBackgroundTextureId, rightForegroundId, 'compareRightComposite', backgroundAspect);
+      const rightCompositeFb = this.resources.framebuffers.get('compareRightComposite')!;
+      this.resources.textures.set('compare_right_composite', rightCompositeFb.texture);
 
       this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
       this.gl.viewport(0, 0, width, height);
-      this.renderSplitView(leftFinalTextureId, rightFinalTextureId, config.splitPosition);
+      this.renderSplitView('compare_left_composite', 'compare_right_composite', config.splitPosition);
       return;
     }
 
-    const processedTextureId = runForegroundDefocusBlur(
-      imageTextureId,
+    const processedForegroundId = processForegroundOverlay(
       blurSigma,
-      width,
-      height,
-      normalizeDownsample(blurDownsampleFactor)
+      blurDownsampleFactor,
+      'foregroundSharp',
+      'foreground_sharp',
+      'blurred'
     );
-    const finalTextureId = this.applyCataractPostProcess(
-      processedTextureId,
-      'mainCataract',
-      width,
-      height,
-      nsGrade,
-      pscRadius,
-      pscDensity,
-      pscSoftness,
-      blurSigma,
-      'letters_main'
-    );
+
+    this.ensureFramebuffer('mainComposite', width, height);
+    this.compositeLayers(mainBackgroundTextureId, processedForegroundId, 'mainComposite', backgroundAspect);
+    const mainCompositeFb = this.resources.framebuffers.get('mainComposite')!;
+    this.resources.textures.set('main_composite', mainCompositeFb.texture);
+
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
     this.gl.viewport(0, 0, width, height);
-    this.renderToScreen(finalTextureId);
+    this.renderToScreen('main_composite');
   }
 
   /**

@@ -1,6 +1,7 @@
 <script lang="ts">
   import {onMount} from 'svelte';
   import {base} from '$app/paths';
+  import readingCard from '../../../static/reading-card.json';
   import {loadPsf} from '../../lib/render/psf/library';
   import {backgroundRegionKey,type SceneInput} from '../../lib/render/psf/scene';
   import {PsfDisplay} from '../../lib/render/psf/display';
@@ -65,11 +66,11 @@
           rows=[...rows,{name:fixture.name,workerError,webglError,scaledError,milliseconds:result.milliseconds}];
           if(workerError>1||webglError>1||scaledError>1)throw new Error('Independent render comparison exceeded 1 sRGB byte tolerance');
         }
-        const opticalResponse=await fetch(`${base}/validation/optical-image-reference.json`);
+        const opticalResponse=await fetch(`${base}/validation/optical-image-reference.json?v=${readingCard.assetSha256}`);
         if(!opticalResponse.ok)throw new Error('Optical image fixtures unavailable');
         const opticalCases=await opticalResponse.json() as {cases:Array<SceneInput&{name:string;cardFile:string;expectedFile:string;compareDynamic:boolean}>};
         const inflate=async(file:string)=>{
-          const response=await fetch(`${base}/validation/${file}`);
+          const response=await fetch(`${base}/validation/${file}?v=${readingCard.assetSha256}`);
           if(!response.ok||!response.body)throw new Error('Compressed optical fixture unavailable');
           return new Uint8Array(await new Response(response.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
         };

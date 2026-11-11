@@ -26,8 +26,8 @@ async function setup(page, url, { split, lens, distance, card }) {
   url.searchParams.set('composition', 'gpu');
   url.searchParams.set('diagnostics', '1');
   await page.goto(url.href);
-  await button(page, 'Done').click();
   await waitForFrame(page, { backgroundReady: true });
+  if (await button(page, 'Done').count()) await button(page, 'Done').click();
   if (card !== undefined) {
     await button(page, 'Calibrate').click();
     for (const [id, value] of [['calibrate-card-size', card], ['calibrate-viewing-distance', distance]]) {
@@ -107,6 +107,8 @@ try {
         await setup(page, url, scenario);
         const bounds = await page.locator('[data-scene-state]').boundingBox();
         if (scenario.distance === .4) {
+          const initial = await page.locator(slider).inputValue();
+          if (Number(initial) !== -2.5) await drive(page, [2.5]);
           const visits = [];
           for (const value of [2.6, 2.7, 2.8, 2.9, 3, 3.1]) {
             await page.waitForTimeout(80);

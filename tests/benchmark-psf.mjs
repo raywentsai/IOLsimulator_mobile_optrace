@@ -1,3 +1,4 @@
+import readingCard from '../static/reading-card.json' with { type: 'json' };
 // Deterministic CPU benchmark. Run with --expose-gc; results are not phone timings.
 import fs from 'node:fs';
 import {gunzipSync} from 'node:zlib';
@@ -14,8 +15,8 @@ for(const extreme of [false,true]) {
     const model='aspheric_monofocal_dc_v1';
     const near=manifest.entries.find(e=>e.model===model&&e.objectVergenceD===demand);
     const infinity=manifest.entries.find(e=>e.model===model&&e.objectVergenceD===0);
-    const sampling=mobileSampling(390,622,ppm,distance,demand,28,1528/1170,Math.min(near.retinalMmPerTanTheta,infinity.retinalMmPerTanTheta));
-    const cw=Math.round(28*1528/1170*distance*demand*ppm*sampling.scaleX),ch=Math.round(28*distance*demand*ppm*sampling.scaleY);
+    const sampling=mobileSampling(390,622,ppm,distance,demand,readingCard.objectHeightMm,readingCard.objectWidthMm/readingCard.objectHeightMm,Math.min(near.retinalMmPerTanTheta,infinity.retinalMmPerTanTheta));
+    const cw=Math.round(readingCard.objectWidthMm*distance*demand*ppm*sampling.scaleX),ch=Math.round(readingCard.objectHeightMm*distance*demand*ppm*sampling.scaleY);
     const read=e=>{const bytes=gunzipSync(fs.readFileSync(`static/psf/${e.file}`));return new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));};
     const loaded=measure(()=>[read(near),read(infinity)]);
     const background=new Uint8ClampedArray(1024*1536*4);

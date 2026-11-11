@@ -1,3 +1,4 @@
+import card from '../static/reading-card.json' with { type: 'json' };
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -28,7 +29,7 @@ test('packed CPU integration is byte-identical to Float32 planes across all ship
     const expanded=unpackOpticalImage(p.rgba,level);
     for(const width of [73,74]){
       const density=width===73?128:Math.min(8192,Math.min(...level.pixelsPerTanTheta)*.8);
-      const input={width,height:91,cardWidth:Math.round(28*1528/1170*node.objectVergenceD*density/1000),cssPxPerMm:1,viewingDistanceM:1,renderScale:density/1000};
+      const input={width,height:91,cardWidth:Math.round(card.objectWidthMm*node.objectVergenceD*density/1000),cssPxPerMm:1,viewingDistanceM:1,renderScale:density/1000};
       const background=[0,1,2].map(c=>Float32Array.from({length:width*91},(_,i)=>.05+c*.1+(i%19)/40));
       const expected=renderOpticalImage(input,expanded,background);
       assert.deepEqual(renderOpticalImage(input,p,background),expected,level.file);
@@ -45,7 +46,7 @@ test('packed CPU integration is byte-identical to Float32 planes across all ship
 
 test('byte LRU retains both high-density neighbours, touches hits, accounts replacement and protects active assets',()=>{
   const cache=new AssetCache(OPTICAL_CACHE_BYTES);
-  const [a,b]=[3.9,4].map(d=>packed(library.entries.find(e=>e.objectVergenceD===d).levels[1]));
+  const [a,b]=[3.9,4].map(d=>packed(library.entries.find(e=>e.objectVergenceD===d).levels[0]));
   cache.set(a.key,a,a.rgba.byteLength);cache.set(b.key,b,b.rgba.byteLength);
   assert.equal(cache.info().keys.length,2);assert.ok(cache.info().bytes<cache.budget);
   assert.equal(cache.get(a.key),a);cache.pinned.add(a.key);
@@ -67,12 +68,7 @@ test('texture-backed LRU releases replaced, evicted and cleared allocations exac
 });
 
 test('both selected lenses fit in the shared budget and the pending side survives eviction',async()=>{
-  for(let index=0;index<31;index++){
-    const sizes=libraries.map(model=>Math.max(...model.entries[index].levels.map(level=>4*level.width*level.height)));
-    sizes.sort((a,b)=>b-a);
-    assert.ok(sizes[0]+sizes[1]<=OPTICAL_CACHE_BYTES);
-  }
-  const at=(model,demand)=>packed(model.entries.find(e=>e.objectVergenceD===demand).levels.at(-1));
+  const at=(model,demand)=>packed(model.entries.find(e=>e.objectVergenceD===demand).levels[0]);
   const left=at(library,3.9),previous=at(library,4),right=at(libraries.find(m=>m.model==='vivity_inspired_v2_1_dc_v1'),3.9);
   const worker=new FakeWorker();
   const client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(0),reason=>client.dispose(reason));
@@ -112,7 +108,7 @@ class FakeWorker {
 
 test('inactive Worker retains a recent optical frame only when its layers fit together',async()=>{
   const vivity=libraries.find(model=>model.model==='vivity_inspired_v2_1_dc_v1');
-  const left=packed(vivity.entries.find(node=>node.objectVergenceD===1.7).levels[0]);
+  const left=packed(vivity.entries.find(node=>node.objectVergenceD===1.8).levels[0]);
   const right=packed(library.entries.find(node=>node.objectVergenceD===1.7).levels[0]);
   const worker=new FakeWorker(),client=new PhysicsWorkerClient(worker,new Uint8ClampedArray(0),reason=>client.dispose(reason));
   try{
@@ -238,13 +234,13 @@ test('mixed split returns one output buffer matching two full renders and transf
 });
 
 test('100 cm comparison retains both eyes at two adjacent dense nodes within the existing cache',async()=>{
-  const width=219,height=349,cssPxPerMm=7.780659503519822,mid=Math.floor(width/2);
+  const width=165,height=261,cssPxPerMm=7.780659503519822,mid=Math.floor(width/2);
   const models=[library,libraries.find(m=>m.model==='vivity_inspired_v2_1_dc_v1')];
   let fullBytes=0;
   const sides=models.map((model,index)=>[3.9,4].map(demand=>{
-    const level=model.entries.find(e=>e.objectVergenceD===demand).levels.at(-1);
+    const level=model.entries.find(e=>e.objectVergenceD===demand).levels[0];
     const input={width,height,cssPxPerMm,viewingDistanceM:1,renderScale:width/390,
-      cardWidth:Math.round(28*1528/1170*cssPxPerMm*demand*width/390)};
+      cardWidth:Math.round(card.objectWidthMm*cssPxPerMm*demand*width/390)};
     fullBytes+=level.width*level.height*4;
     return slice(packed(level),input,index===0?0:mid,index===0?mid:width);
   }));

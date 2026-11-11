@@ -40,6 +40,12 @@ def model_fixtures(page, psfs, model):
         coverage[ry:]=alpha[:height-ry].astype('float32')
         output[:,:,:3]=encode(radiance[:,:,None]+(1-coverage[:,:,None])*bg)
         output[:,:,3]=255
+        # Exercise the real viewport crop while keeping the card raster and
+        # angular coordinates intact. The GPU background must fit its cache.
+        view_width,view_height=min(width,560),min(height,560)
+        left=(width-cw+1)//2-(view_width-cw+1)//2
+        output=output[height-view_height:,left:left+view_width]
+        width,height=view_width,view_height
         tag=f'{MODELS[model]}-{round(demand*10):02d}'
         card_name=f'optical-card-{tag}.card'
         expected_name=f'optical-scene-{tag}.ref'

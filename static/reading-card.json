@@ -1,25 +1,21 @@
 {
-  "source": "https://commons.wikimedia.org/wiki/File:ETDRS_Chart_2.svg",
-  "license": "public domain",
-  "sourceSha256": "02ca7f1655d19db1e12f18ce4a1d475e301a3754207f0ea420487bb4ccf0cf27",
-  "assetSha256": "96fbd1abc5e3810196f8eda664ebe330ec261079eccb3efff9cbbd8660e5b65c",
-  "aspect": 1.305982905982906,
-  "objectHeightMm": 28.0,
-  "cropPoints": [
-    150,
-    175,
-    1678,
-    1345
-  ],
+  "objectWidthMm": 85.6,
+  "objectHeightMm": 53.98,
+  "assetSha256": "0a765c8faa4a000a0bbecf1963739a137327d4bd67897c4d87cb94e53c5e580e",
+  "source": "Original fictional City Walk card",
+  "font": "Atkinson Hyperlegible (SIL Open Font License 1.1)",
   "letterHeightsMm": [
-    3.946798262636886,
-    3.142820804954594,
-    2.485021033653846,
-    1.9733993139022437,
-    1.5645591279380342,
-    1.242510516826923,
-    0.9867003872863248
+    4.2,
+    2.2,
+    1.6,
+    1.15,
+    1.05,
+    1.0
   ],
-  "angularRule": "2 atan(letterHeightMm * objectVergenceD / 2000); physical display size = object size * actual viewing distance / simulated object distance",
-  "status": "ETDRS-style illustrative card, not a validated acuity test; source labels are cropped out"
+  "lineWidthsMm": [
+    0.22,
+    0.38,
+    0.55,
+    0.85
+  ]
 }

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { defocusFromAccommodation, logMARFromLensCurve, sigmaFromLogMAR } from '../src/lib/optics/mapping.ts';
+import { logMARFromLensCurve, sigmaFromLogMAR } from '../src/lib/optics/mapping.ts';
 import { resolveBlurPolicy } from '../src/lib/render/blur-policy.ts';
 import { acuityIols, physicsIols } from '../src/lib/data/iol-models.ts';
 import { calculateCssPixelsPerMillimeterFromCreditCardShortEdge, calculateCreditCardShortEdgePixelsFromCssPixelsPerMillimeter, parseCalibrationSnapshot, serializeCalibrationSnapshot } from '../src/lib/optics/calibration.ts';
@@ -15,23 +15,15 @@ const curves = JSON.parse(readFileSync(curvesPath, 'utf8'));
 const REFERENCE_CSS_PX_PER_MM = 110 / 25.4;
 const REFERENCE_VIEWING_DISTANCE_M = 0.4;
 
-test('phakic curve data is deduplicated to the model curve', () => {
-  const phakicCurveIds = curves.filter((curve) => curve.type === 'phakic').map((curve) => curve.id);
-
-  assert.deepEqual(phakicCurveIds, ['phakic_young_model']);
-  assert.equal(phakicCurveIds.includes('phakic_young'), false);
-  assert.equal(phakicCurveIds.includes('phakic_presbyope'), false);
-});
-
 test('target refraction can be used directly as far-background defocus on curve mapping', () => {
-  const modelCurve = curves.find((curve) => curve.id === 'phakic_young_model');
+  const modelCurve = curves.find((curve) => curve.id === 'vivity');
   assert.ok(modelCurve, 'phakic_young_model curve must exist');
 
   const backgroundDefocus = -1.5;
   const logMAR = logMARFromLensCurve(modelCurve, backgroundDefocus);
   const sigma = sigmaFromLogMAR(logMAR);
 
-  assert.equal(logMAR, 0.51);
+  assert.equal(logMAR, 0.1);
   assert.ok(sigma > 0);
 });
 
@@ -79,6 +71,8 @@ test('credit card calibration round-trips physical scale and saved snapshot', ()
   assert.ok(Math.abs(calculateCreditCardShortEdgePixelsFromCssPixelsPerMillimeter(cssPxPerMmCal) - 270) < 1e-10);
   const snapshot = { cssPxPerMmCal, calibScale: 1 };
   assert.deepEqual(parseCalibrationSnapshot(serializeCalibrationSnapshot(snapshot)), snapshot);
+  const withDistance = { ...snapshot, viewingDistanceM: 0.6 };
+  assert.deepEqual(parseCalibrationSnapshot(serializeCalibrationSnapshot(withDistance)), withDistance);
 });
 
 test('blur policy preserves physical blur size across device px/mm calibration', () => {
@@ -139,17 +133,4 @@ test('blur policy can normalize blur for viewing-distance angular consistency', 
   assert.ok(Math.abs(nearSigmaRad - farSigmaRad) < 1e-12);
   assert.equal(nearPolicy.viewingDistanceNormalizationScale, 0.5);
   assert.equal(farPolicy.viewingDistanceNormalizationScale, 2);
-});
-
-test('presbyopia residual defocus follows near-negative convention and can yield VA below 0.2', () => {
-  const modelCurve = curves.find((curve) => curve.id === 'phakic_young_model');
-  assert.ok(modelCurve, 'phakic_young_model curve must exist');
-
-  const defocus = defocusFromAccommodation(0.25, 0.5, 0);
-  assert.equal(defocus, -3.5);
-
-  const logMAR = logMARFromLensCurve(modelCurve, defocus);
-  const vaDecimal = Math.pow(10, -logMAR);
-
-  assert.ok(vaDecimal < 0.2);
 });

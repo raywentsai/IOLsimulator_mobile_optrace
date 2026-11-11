@@ -9,7 +9,7 @@
 export interface LensCurve {
   id: string;
   label: string;
-  type: 'IOL' | 'phakic';
+  type: 'IOL';
   defocus_D: number[];
   logMAR: number[];
   manufacturer?: string;
@@ -100,34 +100,6 @@ export function logMARFromLensCurve(curve: LensCurve, defocus: number): number {
  */
 export function getIOLDefocus(sliderValue: number, targetRefraction: number): number {
   return sliderValue - targetRefraction;
-}
-
-/**
- * Calculate defocus from presbyopia parameters
- * @param objectDistance_m Object distance in meters (Infinity allowed)
- * @param accommodationCapacity_D Available accommodation capacity in diopters
- * @param targetRefraction_D Target refraction in diopters
- * @returns Defocus in diopters
- */
-export function defocusFromAccommodation(
-  objectDistance_m: number,
-  accommodationCapacity_D: number,
-  targetRefraction_D: number
-): number {
-  // Calculate accommodation demand based on object distance
-  const demand = (isFinite(objectDistance_m) && objectDistance_m > 0) 
-    ? 1 / objectDistance_m 
-    : 0;
-  
-  // Calculate accommodation that can actually be used (limited by capacity)
-  const accommodationUsed = Math.min(demand, accommodationCapacity_D);
-  
-  // Residual defocus = demand that cannot be met by accommodation.
-  const residualDefocus = demand - accommodationUsed;
-  
-  // App defocus convention: near residual defocus is negative.
-  // Keep target-refraction offset direction consistent with IOL mode (subtract).
-  return -residualDefocus - targetRefraction_D;
 }
 
 /**

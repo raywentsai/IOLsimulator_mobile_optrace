@@ -19,13 +19,6 @@ export const DEFAULT_CSS_PX_PER_MM = DEFAULT_CALIBRATION_PPI / 25.4;
 export const DEFAULT_CALIBRATION_SCALE = 1;
 
 /**
- * Book foreground sizing defaults.
- */
-export const DEFAULT_BOOK_BASELINE_WIDTH_M = 0.07;
-export const DEFAULT_BOOK_REFERENCE_VIEWING_DISTANCE_M = DEFAULT_PHONE_VIEWING_DISTANCE_M;
-export const DEFAULT_BOOK_REFERENCE_HOLD_DISTANCE_M = 0.4;
-
-/**
  * Calibration storage key.
  */
 export const CALIBRATION_STORAGE_KEY = 'iolsimulator.calibration.v2';
@@ -33,6 +26,7 @@ export const CALIBRATION_STORAGE_KEY = 'iolsimulator.calibration.v2';
 export interface CalibrationSnapshot {
   cssPxPerMmCal: number;
   calibScale: number;
+  viewingDistanceM?: number;
 }
 
 /**
@@ -109,71 +103,6 @@ export function calculateEffectiveCssPixelsPerMillimeter(
 }
 
 /**
- * Compute foreground width in meters using a direct absolute real-object model.
- *
- * Definitions:
- * W0: baseline physical width at reference viewing distance D0.
- * z0: reference hold distance used to normalize magnification.
- *
- * Equations:
- * theta0 = atan((W0/2) / D0)
- * W_actual/2 = z0 * tan(theta0)
- * W_display/2 = D * tan(atan((W_actual/2)/z))
- * W_display = 2 * D * tan(atan((W_actual/2)/z))
- */
-export function calculateForegroundWidthMeters(
-  baselineWidth_m: number,
-  viewingDistance_m: number,
-  holdDistance_m: number,
-  referenceViewingDistance_m: number = DEFAULT_BOOK_REFERENCE_VIEWING_DISTANCE_M,
-  referenceHoldDistance_m: number = DEFAULT_BOOK_REFERENCE_HOLD_DISTANCE_M
-): number {
-  if (
-    baselineWidth_m <= 0 ||
-    viewingDistance_m <= 0 ||
-    holdDistance_m <= 0 ||
-    referenceViewingDistance_m <= 0 ||
-    referenceHoldDistance_m <= 0
-  ) {
-    throw new Error('All foreground sizing inputs must be positive');
-  }
-
-  const halfBaselineWidth = baselineWidth_m * 0.5;
-  const theta0 = Math.atan(halfBaselineWidth / referenceViewingDistance_m);
-  const halfActualWidth = referenceHoldDistance_m * Math.tan(theta0);
-  const displayHalfAngle = Math.atan(halfActualWidth / holdDistance_m);
-
-  return 2 * viewingDistance_m * Math.tan(displayHalfAngle);
-}
-
-/**
- * Compute foreground width in CSS px from exact angular geometry.
- */
-export function calculateForegroundWidthCssPx(
-  baselineWidth_m: number,
-  effectiveCssPxPerMm: number,
-  viewingDistance_m: number,
-  holdDistance_m: number,
-  referenceViewingDistance_m: number = DEFAULT_BOOK_REFERENCE_VIEWING_DISTANCE_M,
-  referenceHoldDistance_m: number = DEFAULT_BOOK_REFERENCE_HOLD_DISTANCE_M
-): number {
-  if (effectiveCssPxPerMm <= 0) {
-    throw new Error('effectiveCssPxPerMm must be positive');
-  }
-
-  const foregroundWidth_m = calculateForegroundWidthMeters(
-    baselineWidth_m,
-    viewingDistance_m,
-    holdDistance_m,
-    referenceViewingDistance_m,
-    referenceHoldDistance_m
-  );
-
-  // Convert meters to millimeters for cssPx/mm scaling.
-  return foregroundWidth_m * 1000 * effectiveCssPxPerMm;
-}
-
-/**
  * Calculate pixels per degree (PPD) based on viewing distance and screen PPI.
  */
 export function calculatePPD(distance_m: number, ppi: number): number {
@@ -241,7 +170,10 @@ export function parseCalibrationSnapshot(rawValue: string | null | undefined): C
 
     return {
       cssPxPerMmCal: parsed.cssPxPerMmCal,
-      calibScale: parsed.calibScale
+      calibScale: parsed.calibScale,
+      ...(typeof parsed.viewingDistanceM === 'number' &&
+        parsed.viewingDistanceM >= MIN_VIEWING_DISTANCE_M && parsed.viewingDistanceM <= MAX_VIEWING_DISTANCE_M
+        ? {viewingDistanceM: parsed.viewingDistanceM} : {})
     };
   } catch {
     return null;

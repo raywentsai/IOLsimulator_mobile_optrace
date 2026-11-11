@@ -1,31 +1,72 @@
-"""Public-domain vector ETDRS crop reused from offline_rendering_v3.1."""
+"""Create the ID-1 reading card as font-independent SVG outlines."""
 import argparse
-import xml.etree.ElementTree as ET
+import hashlib
+import json
 from pathlib import Path
-from iol_sim.config import ROOT, sha256, write_json
 
-def export(reference: Path):
-    source=reference/'outputs/offline_rendering_v3_1/sources/ETDRS_Chart_2.svg'
-    ET.register_namespace('', 'http://www.w3.org/2000/svg')
-    ET.register_namespace('xlink','http://www.w3.org/1999/xlink')
-    root=ET.parse(source).getroot()
-    # Original SVG uses millimetres in its viewBox; v3.1 crop is in PDF points.
-    x0,y0,x1,y1=[v*25.4/72 for v in (150,175,1678,1345)]
-    root.set('viewBox',f'{x0} {y0} {x1-x0} {y1-y0}')
-    root.set('width','1528');root.set('height','1170')
-    root.set('preserveAspectRatio','none')
-    root.insert(0,ET.Element('{http://www.w3.org/2000/svg}rect',{'x':str(x0),'y':str(y0),'width':str(x1-x0),'height':str(y1-y0),'fill':'white'}))
-    dest=ROOT.parent/'static/reading-card.svg'
-    ET.ElementTree(root).write(dest,encoding='utf-8',xml_declaration=True)
-    write_json(ROOT.parent/'static/reading-card.json',{
-        'source':'https://commons.wikimedia.org/wiki/File:ETDRS_Chart_2.svg',
-        'license':'public domain', 'sourceSha256':sha256(source), 'assetSha256':sha256(dest),
-        'aspect':1528/1170, 'objectHeightMm':28.,
-        'cropPoints':[150,175,1678,1345],
-        'letterHeightsMm':[v*28/1170 for v in [164.91978454589844,131.32501220703125,103.83837890625,82.45989990234375,65.376220703125,51.919189453125,41.22998046875]],
-        'angularRule':'2 atan(letterHeightMm * objectVergenceD / 2000); physical display size = object size * actual viewing distance / simulated object distance',
-        'status':'ETDRS-style illustrative card, not a validated acuity test; source labels are cropped out'})
+from fontTools.pens.boundsPen import BoundsPen
+from fontTools.pens.svgPathPen import SVGPathPen
+from fontTools.ttLib import TTFont
 
-if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('reference',type=Path)
-    export(parser.parse_args().reference)
+PUBLIC = Path(__file__).resolve().parents[1] / 'static'
+WIDTH, HEIGHT = 85.60, 53.98
+
+
+def outline(font, text, center, baseline, cap_height):
+    glyphs, cmap, metrics = font.getGlyphSet(), font.getBestCmap(), font['hmtx'].metrics
+    names = [cmap[ord(char)] for char in text]
+    bounds = BoundsPen(glyphs)
+    glyphs[cmap[ord('H')]].draw(bounds)
+    scale = cap_height / bounds.bounds[3]
+    x = center - scale * sum(metrics[name][0] for name in names) / 2
+    paths = []
+    for name in names:
+        pen = SVGPathPen(glyphs)
+        glyphs[name].draw(pen)
+        if pen.getCommands():
+            paths.append(f'<path transform="translate({x:.5f} {baseline}) scale({scale:.8f} {-scale:.8f})" d="{pen.getCommands()}"/>')
+        x += scale * metrics[name][0]
+    return ''.join(paths)
+
+
+def main(font_dir):
+    regular, bold = (TTFont(font_dir / f'AtkinsonHyperlegible-{weight}.ttf') for weight in ('Regular', 'Bold'))
+    artwork = [
+        '<rect width="85.6" height="53.98" fill="#fff"/>',
+        '<path d="M5 14H80.6 M5 47H80.6" stroke="#000" stroke-width=".32"/>',
+        outline(bold, 'CITY WALK', WIDTH / 2, 8.5, 4.2),
+        outline(regular, 'RIVERSIDE ROUTE', WIDTH / 2, 12, 1.15),
+    ]
+    for center, number, stop, time, length in [
+        (33.3, '08', 'Park Gate', '09:45', '280 m'),
+        (52.3, '12', 'Mill Lane', '11:20', '360 m'),
+    ]:
+        artwork.extend([
+            outline(regular, 'STOP', center, 18.5, 1.0),
+            outline(bold, number, center, 25.5, 4.2),
+            outline(bold, stop, center, 31.7, 2.2),
+            outline(regular, time, center, 37.5, 1.6),
+            outline(regular, length, center, 42.7, 1.15),
+        ])
+        for index, thickness in enumerate([.22, .38, .55, .85]):
+            x = center - 3.9 + index * 2.4
+            artwork.append(f'<path d="M{x:.2f} 44.5h1.8" stroke="#000" stroke-width="{thickness}"/>')
+    artwork.append(outline(regular, 'WALKING GUIDE', WIDTH / 2, 51, 1.05))
+    svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="856" height="539.8" viewBox="0 0 {WIDTH} {HEIGHT}" fill="#000">\n'
+    data = (svg + '\n'.join(artwork) + '\n</svg>\n').encode()
+    (PUBLIC / 'reading-card.svg').write_bytes(data)
+    metadata = {
+        'objectWidthMm': WIDTH, 'objectHeightMm': HEIGHT,
+        'assetSha256': hashlib.sha256(data).hexdigest(),
+        'source': 'Original fictional City Walk card',
+        'font': 'Atkinson Hyperlegible (SIL Open Font License 1.1)',
+        'letterHeightsMm': [4.2, 2.2, 1.6, 1.15, 1.05, 1.0],
+        'lineWidthsMm': [.22, .38, .55, .85],
+    }
+    (PUBLIC / 'reading-card.json').write_bytes((json.dumps(metadata, indent=2) + '\n').encode())
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('font_dir', type=Path)
+    main(parser.parse_args().font_dir)

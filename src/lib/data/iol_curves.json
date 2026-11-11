@@ -126,43 +126,5 @@
       0.56
     ],
     "notes": "Legacy Vivity family curve pending source re-extraction. Pantanelli et al., doi:10.1097/j.jcrs.0000000000001123, names DFT015 in the introduction and DAT015 in the methods."
-  },
-  {
-    "id": "phakic_young_model",
-    "label": "Phakic (Young Adult) - model",
-    "type": "phakic",
-    "defocus_D": [
-      -4.5,
-      -4,
-      -3.5,
-      -3,
-      -2.5,
-      -2,
-      -1.5,
-      -1,
-      -0.5,
-      0,
-      0.5,
-      1,
-      1.5,
-      2
-    ],
-    "logMAR": [
-      1.33,
-      1.23,
-      1.12,
-      1,
-      0.86,
-      0.7,
-      0.51,
-      0.3,
-      0.1,
-      0,
-      0.1,
-      0.3,
-      0.51,
-      0.7
-    ],
-    "notes": "Computed with VA_rel = 1/(1+defocus^2) and logMAR = log10(1+defocus^2); base 20/20 at 0D."
   }
 ]

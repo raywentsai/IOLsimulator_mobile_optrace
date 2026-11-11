@@ -9,6 +9,7 @@ import {renderScene} from '../src/lib/render/psf/scene.ts';
 import {srgbToLinear} from '../src/lib/render/psf/convolve.ts';
 import {physicsIols} from '../src/lib/data/iol-models.ts';
 import {opticalWorkingSet} from '../src/lib/render/psf/optical-images.ts';
+import readingCard from '../static/reading-card.json' with { type: 'json' };
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const psfs=JSON.parse(fs.readFileSync('static/psf/manifest.json')).entries;
 const energy=e=>{const bytes=gunzipSync(fs.readFileSync(`static/psf/${e.file}`));return new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));};
@@ -29,6 +30,8 @@ for(const model of Object.keys(physicsIols))test(`31 optical nodes authenticate 
   assert.deepEqual(library.entries.map(e=>e.objectVergenceD),Array.from({length:31},(_,i)=>(i+10)/10));
   const card=fs.readFileSync('static/reading-card.svg','utf8').replaceAll('\r\n','\n');
   assert.equal(hash(card),library.cardSvgCanonicalSha256);
+  assert.equal(library.cardSvgCanonicalSha256,readingCard.assetSha256);
+  assert.deepEqual(library.physicalCardMm,[85.60,53.98]);
   for(const node of library.entries) {
     assert.equal(node.psfSha256,psfs.find(p=>p.model===library.model&&p.objectVergenceD===node.objectVergenceD).sha256);
     for(const level of node.levels) {
@@ -37,6 +40,9 @@ for(const model of Object.keys(physicsIols))test(`31 optical nodes authenticate 
       const {width,height,rgba}=readRgbPng(file);
       assert.equal(width,level.width);assert.equal(height,level.height);
       assert.equal(hash(rgba),level.decodedRgbaSha256);
+      const [left,right,top,bottom]=level.cardExtentTanTheta;
+      assert.ok(Math.abs(right-left-85.60*node.objectVergenceD/1000)<1e-12);
+      assert.ok(Math.abs(bottom-top-53.98*node.objectVergenceD/1000)<1e-12);
       const layer=unpackOpticalImage(rgba,level),[px,py]=level.pixelsPerTanTheta,[x0,x1,y0,y1]=level.extentTanTheta;
       assert.ok(Math.abs((x1-x0)*px-width)<1e-8);assert.ok(Math.abs((y1-y0)*py-height)<1e-8);
       assert.ok(Math.abs(layer.alpha.reduce((s,a)=>s+a,0)/(level.cardPixels[0]*level.cardPixels[1])-1)<1e-4);

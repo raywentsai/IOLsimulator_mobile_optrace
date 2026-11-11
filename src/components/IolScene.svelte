@@ -1,11 +1,12 @@
 <script lang="ts">
   import {onMount,onDestroy} from 'svelte';
   import {base} from '$app/paths';
+  import readingCard from '../../static/reading-card.json';
   import {loadSceneImage} from '../lib/render/scene-assets';
   import {AssetError,allowSpeculativeLoads,waitForAsset,type AssetProgress,type LoadedImage} from '../lib/render/asset-loading';
   import {loadBackgroundAsset} from '../lib/render/background-asset';
   import LoadingProgress from './LoadingProgress.svelte';
-  import {WebGLRenderer,type RenderConfig} from '../lib/render/gl/renderer';
+  import {WebGLRenderer} from '../lib/render/gl/renderer';
   import {resolveBlurPolicy} from '../lib/render/blur-policy';
   import {manifest,loadPsf,prefetchPsfNeighbors,cancelPsfPrefetch,psfCacheInfo,type PsfManifest} from '../lib/render/psf/library';
   import {objectVergence,mobileSampling,calibratedCssPxPerMm,type PsfEntry} from '../lib/render/psf/geometry';
@@ -56,14 +57,15 @@
   let queued=false,backgroundRevision=0,viewportRevision=0,preparedVersion=0;
   const warmFrames=new Map<number,WarmFrame>();
   let displayedGpu:WarmFrame|null=null,lastCpuKeys:string[]=[];
-  let displayedDefocus:number|null=null;
+  export let displayedDefocus:number|null=null;
   let prefetchTimer:ReturnType<typeof setTimeout>|null=null;
   let prediction:{scene:SceneConfiguration;demand:number;controller:AbortController}|null=null;
   let background:HTMLImageElement|HTMLCanvasElement,card:HTMLImageElement;
   let loadController=new AbortController();
   let backgroundTexture='',cardTexture='';
   const cardCanvas=typeof document!=='undefined'?document.createElement('canvas'):null;
-  const CARD_HEIGHT_MM=28,ASPECT=1528/1170;
+  const CARD_HEIGHT_MM=readingCard.objectHeightMm,ASPECT=readingCard.objectWidthMm/CARD_HEIGHT_MM;
+  const MAX_CARD_PIXELS=4194304;
   const NO_SIGMAS=[0,0,0,0];
   const backgroundErrorLabels={stalled:'Background download stalled',timeout:'Background download timed out',transfer:'Background download failed',
     decode:'Background image could not be decoded',native:'Browser could not load the background image',upload:'Background texture upload failed',cancelled:'Background download cancelled'};
@@ -205,7 +207,7 @@
   }
 
   const cardWidthAt=(scene:SceneConfiguration,scale:number,at:number)=>
-    Math.max(1,Math.round(CARD_HEIGHT_MM*ASPECT*scene.distance*at*scene.ppm*scale));
+    Math.max(1,Math.round(readingCard.objectWidthMm*scene.distance*at*scene.ppm*scale));
   const cardHeightAt=(scene:SceneConfiguration,scale:number,at:number)=>
     Math.max(1,Math.round(CARD_HEIGHT_MM*scene.distance*at*scene.ppm*scale));
   const backgroundKeyAt=(scene:SceneConfiguration,model:string,{width,height,scaleX,scaleY}:Grid)=>
@@ -223,7 +225,9 @@
     const demand=objectVergence(defocus),density=scene.ppm*scene.distance*1000;
     const select=(entry:PsfEntry,{width,scaleX,scaleY}:Grid,at:number,index:number)=>{
       const mid=Math.floor(width/2);
-      const visible=sides.length===2?{width,cardWidth:cardWidthAt(scene,scaleX,at),left:index===0?0:mid,right:index===0?mid:width}:undefined;
+      const cardWidth=cardWidthAt(scene,scaleX,at);
+      const visible=sides.length===2?{width,cardWidth,left:index===0?0:mid,right:index===0?mid:width}:
+        cardWidth>width?{width,cardWidth,left:0,right:width}:undefined;
       return opticalImages.select(base,entry,density*scaleX,density*scaleY,signal,visible);
     };
     const adjacent=[Math.round(demand*10-1)/10,Math.round(demand*10+1)/10].map(at=>{
@@ -247,8 +251,6 @@
       viewingDistanceM:scene.distance,renderScale:scaleX,renderScaleY:scaleY};
     const {selections}=plan;
     if(width<sides.length||!selections.every(node=>node&&gpuSampling(geometry,node)))return null;
-    if(geometry.cardWidth*cardHeightAt(scene,scaleY,at)>4194304)
-      throw new Error('Card exceeds available sampling memory; use a shorter viewing distance');
     const boundary=Math.floor(width/2);
     const regions=sides.map((side,index)=>{
       const left=index?boundary:0,right=sides.length===2&&!index?boundary:width;
@@ -455,19 +457,20 @@
         metrics.rendering=Object.fromEntries(sides.map(side=>[side.lensId,side.optical?'precomputed':'dynamic']));
       }
       opticalProgress=null;status=engine==='psf'?'Loading PSF data…':'Updating…';
-      const desiredScale=Math.min(dpr,2);
+      const physicalCardArea=readingCard.objectWidthMm*CARD_HEIGHT_MM*(ppm*distance*defocus)**2;
+      const desiredScale=Math.min(dpr,2,Math.sqrt(4000000/physicalCardArea));
       const width=sampling?.width??Math.max(1,Math.round(cssWidth*desiredScale)),height=sampling?.height??Math.max(1,Math.round(cssHeight*desiredScale));
       const scale=width/cssWidth,scaleY=height/cssHeight;
       const heightPixels=cardHeightAt(scene,scaleY,-defocus);
       const widthPixels=cardWidthAt(scene,scale,-defocus);
-      if(widthPixels*heightPixels>4194304) throw new Error('Card exceeds available sampling memory; use a shorter viewing distance');
       const rasterCard=()=>{
+        if(widthPixels*heightPixels>MAX_CARD_PIXELS)
+          throw new Error('Card exceeds available sampling memory; use a shorter viewing distance');
         cardCanvas!.width=widthPixels;cardCanvas!.height=heightPixels;
         const ctx=cardCanvas!.getContext('2d',{willReadFrequently:true})!;
         ctx.fillStyle='white';ctx.fillRect(0,0,widthPixels,heightPixels);ctx.drawImage(card,0,0,widthPixels,heightPixels);
         return ctx;
       };
-      const config:RenderConfig={width,height,blurSigma:0,nsGrade:0,pscRadius:0,pscDensity:0,pscSoftness:.2,splitView:false,splitPosition:.5};
       let drawStart=0;
       if(engine==='gaussian') {
         rasterCard();
@@ -476,7 +479,7 @@
         renderer!.updateImageTexture(cardTexture,cardCanvas!);
         const policy=(s:number)=>resolveBlurPolicy({sigmaCssRaw:s,deviceCssPxPerMm:ppm,viewingDistanceM:distance,renderPixelScale:scale}).sigmaTexelUsedFull;
         if(diagnostics){drawStart=performance.now();metrics.assetsReadyMs=drawStart-start;}
-        await renderer!.render(cardTexture,{...config,blurSigma:policy(sigma),compareBlurSigma:split?policy(compareSigma):undefined,
+        await renderer!.render(cardTexture,{width,height,splitPosition:.5,blurSigma:policy(sigma),compareBlurSigma:split?policy(compareSigma):undefined,
           backgroundBlurSigma:policy(bgSigma),compareBackgroundBlurSigma:split?policy(compareBgSigma):undefined,
           splitView:split,backgroundTextureId:backgroundTexture,backgroundNativeWidth:background.width,backgroundNativeHeight:background.height,
           foregroundScale:1,foregroundNativeWidth:widthPixels/scale,foregroundNativeHeight:heightPixels/scaleY});
@@ -540,10 +543,10 @@
     const signal=loadController.signal;
     error='';status='Loading reading card…';
       try {
-        card=await loadSceneImage(`${base}/reading-card.svg`,signal,15000,1);
+        card=await loadSceneImage(`${base}/reading-card.svg?v=${readingCard.assetSha256}`,signal,15000,1);
         if(disposed) return;
-        status='Preparing chart…';
-        // The chart becomes usable independently of the large background.
+        status='Preparing card…';
+        // The card becomes usable independently of the large background.
         renderer?.dispose();renderer=new WebGLRenderer(canvas);
         await renderer.initialize();
         if(disposed)return;
@@ -587,7 +590,7 @@
   onMount(()=>{
     disposed=false;
     const params=new URLSearchParams(window.location.search);
-    gpuRequested=params.get('composition')==='gpu';diagnostics=params.get('diagnostics')==='1';
+    gpuRequested=params.get('composition')!=='cpu';diagnostics=params.get('diagnostics')==='1';
     if(gpuRequested)gpuCanvas.addEventListener('webglcontextlost',gpuContextLost);
     const neutral=document.createElement('canvas');neutral.width=1;neutral.height=1;
     const context=neutral.getContext('2d')!;context.fillStyle='#eeeeee';context.fillRect(0,0,1,1);background=neutral;
@@ -619,8 +622,6 @@
   }
   $: matchingScene=displayedScene!==null&&displayedScene.method===configuration?.method&&
     displayedScene.lens===configuration.lens&&displayedScene.compareLens===configuration.compareLens;
-  $: physicsLabel=displayedScene?.engine==='gaussian'?'Reading chart preview':
-    gpuRequested?`optrace PSF · ${gpuVisible?'GPU':'CPU'}`:'optrace PSF';
   $: missingPrimary=$simulationMethod==='acuity'&&!$selectedLensCurve;
   $: missingCompare=$simulationMethod==='acuity'&&$splitViewEnabled&&!$selectedCompareLensCurve;
 </script>
@@ -630,10 +631,10 @@
   <canvas bind:this={gpuCanvas} class="gpu-canvas" class:visible={gpuVisible} aria-hidden="true"></canvas>
   <div class="loading-stack">
     {#if !ready&&status}<LoadingProgress label={status} detail="Controls are available while the scene loads." />{/if}
-    {#if backgroundLoading}<LoadingProgress label="Loading background" progress={backgroundProgress} detail={$simulationMethod==='physics'?'Physics-based rendering will start after the background loads.':ready?'Near chart is available. The complete scene is still loading.':'The chart loads separately.'} />{/if}
+    {#if backgroundLoading}<LoadingProgress label="Loading background" progress={backgroundProgress} detail={$simulationMethod==='physics'?'Physics-based rendering will start after the background loads.':ready?'Near card is available. The complete scene is still loading.':'The card loads separately.'} />{/if}
     {#if ready&&status}<div class="status"><LoadingProgress label={status} progress={opticalProgress} /></div>{/if}
-    {#if backgroundError}<div class="error" role="alert" data-background-error={backgroundError.code}><strong>{backgroundErrorLabels[backgroundError.code]}</strong><p>{ready?'The near chart remains available on a neutral background.':'Controls remain available. The background can be retried separately from the chart.'}</p><details><summary>Error details</summary>{backgroundError.message}</details><button on:click={()=>void startBackgroundLoad()}>Retry background</button></div>{/if}
-    {#if error}<div class="error" role="alert"><p>{error}</p><button on:click={()=>ready?retryRendering():void initializeScene()}>{ready?'Retry rendering':'Retry chart'}</button>{#if $simulationMethod==='physics'}<button on:click={()=>simulationMethod.set('acuity')}>Use Acuity-derived</button>{/if}</div>{/if}
+    {#if backgroundError}<div class="error" role="alert" data-background-error={backgroundError.code}><strong>{backgroundErrorLabels[backgroundError.code]}</strong><p>{ready?'The near card remains available on a neutral background.':'Controls remain available. The background can be retried separately from the card.'}</p><details><summary>Error details</summary>{backgroundError.message}</details><button on:click={()=>void startBackgroundLoad()}>Retry background</button></div>{/if}
+    {#if error}<div class="error" role="alert"><p>{error}</p><button on:click={()=>ready?retryRendering():void initializeScene()}>{ready?'Retry rendering':'Retry card'}</button>{#if $simulationMethod==='physics'}<button on:click={()=>simulationMethod.set('acuity')}>Use Acuity-derived</button>{/if}</div>{/if}
     {#if fallbackMessage&&!status}<div class="notice" role="status">{fallbackMessage}</div>{/if}
   </div>
   {#if ready&&!matchingScene}
@@ -641,14 +642,14 @@
   {:else if matchingScene}
     {#if missingPrimary}<div class="scene-mask" class:left={$splitViewEnabled}>Clinical defocus curve pending</div>{/if}
     {#if missingCompare}<div class="scene-mask right">Clinical defocus curve pending</div>{/if}
-    <div class="readout">
-      <span>{missingPrimary?'':$simulationMethod==='physics'?physicsLabel:`VA ~ ${$currentVADecimal.toFixed(2)} · legacy curve`}</span>
-      {#if $splitViewEnabled}<span>{missingCompare?'':$simulationMethod==='physics'?physicsLabel:`VA ~ ${$compareVADecimal.toFixed(2)} · legacy curve`}</span>{/if}
-    </div>
+    {#if $simulationMethod==='acuity'}
+      <div class="readout">
+        <span>{missingPrimary?'':`VA ~ ${$currentVADecimal.toFixed(2)} · legacy curve`}</span>
+        {#if $splitViewEnabled}<span>{missingCompare?'':`VA ~ ${$compareVADecimal.toFixed(2)} · legacy curve`}</span>{/if}
+      </div>
+    {/if}
   {/if}
-  {#if matchingScene&&displayedDefocus!==null&&(!missingPrimary||($splitViewEnabled&&!missingCompare))}
-    <span class="distance">{displayedDefocus.toFixed(1)} D / {Math.round(-100/displayedDefocus)} cm</span>
-  {/if}
+  {#if $splitViewEnabled}<div class="split-rule" aria-hidden="true"></div>{/if}
 </div>
 
 <style>
@@ -669,5 +670,5 @@
   .scene-mask{position:absolute;inset:0;display:grid;place-items:center;background:#eee;color:#374151;text-align:center;padding:.5rem;font-size:.8rem}
   .scene-mask.left{right:50%}
   .scene-mask.right{left:50%}
-  .distance{position:absolute;bottom:.5rem;right:.5rem;background:#374151aa;color:white;border-radius:5px;padding:2px 5px;font-size:.65rem}
+  .split-rule{position:absolute;inset:0 auto 0 50%;width:3px;transform:translateX(-50%);background:#fff;box-shadow:0 0 0 1px #16252b99;pointer-events:none}
 </style>

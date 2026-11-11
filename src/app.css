@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "IOLMono";
-  src: url("./lib/assets/fonts/iol-mono.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-
 body {
   margin: 0;
   padding: 0;
