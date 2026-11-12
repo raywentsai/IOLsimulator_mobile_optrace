@@ -34,8 +34,10 @@ def main(font_dir):
     artwork = [
         '<rect width="85.6" height="53.98" fill="#fff"/>',
         '<rect x=".4" y=".4" width="84.8" height="53.18" rx="3.18" fill="none" stroke="#000" stroke-width=".24"/>',
-        outline(bold, 'NORTH BANK', 27, 9.8, 3.1),
-        outline(regular, 'CREDIT', 69, 9.8, 1.6),
+        # Keep a word break at the comparison line without changing cap heights.
+        outline(bold, 'BANK OF', 31.3, 9.8, 3.1),
+        outline(bold, 'CATARACT', 56.3, 9.8, 3.1),
+        outline(regular, 'CREDIT', 76.1, 9.8, 1.6),
         # Contact chip and its etched pads. The chip sits just inside the
         # central field so it remains visible at close distances on phones.
         '<g fill="none" stroke="#000" stroke-width=".33">'
@@ -47,10 +49,11 @@ def main(font_dir):
         '<path d="M55.5 19a1.55 1.55 0 0 1 0 1.7m1.2-2.4a2.9 2.9 0 0 1 0 3.1'
         'm1.25-3.8a4.3 4.3 0 0 1 0 4.5m1.25-5.2a5.8 5.8 0 0 1 0 5.9" '
         'fill="none" stroke="#000" stroke-width=".38" stroke-linecap="round"/>',
-        outline(bold, '0000 0000 0123 4567', WIDTH / 2, 34.3, 3.3),
+        outline(bold, '0123 4567 0123 4567', WIDTH / 2, 34.3, 3.3),
         outline(regular, 'VALID THRU', 53.7, 39.3, 1.05),
         outline(bold, '09/39', 53.7, 42.8, 1.8),
-        outline(bold, 'ALEX MORGAN', 33.1, 47.1, 2.2),
+        outline(bold, 'I LOVE', 36.3, 47.1, 2.2),
+        outline(bold, 'OPTICS', 50.4, 47.1, 2.2),
         '<g fill="none" stroke="#000" stroke-width=".42">'
         '<circle cx="71.1" cy="45.5" r="3.25"/><circle cx="75.2" cy="45.5" r="3.25"/>'
         '</g>',
@@ -61,7 +64,7 @@ def main(font_dir):
     metadata = {
         'objectWidthMm': WIDTH, 'objectHeightMm': HEIGHT,
         'assetSha256': hashlib.sha256(data).hexdigest(),
-        'source': 'Original fictional North Bank credit card',
+        'source': 'Original fictional Bank of Cataract credit card',
         'font': 'Atkinson Hyperlegible (SIL Open Font License 1.1)',
         'letterHeightsMm': [3.3, 3.1, 2.2, 1.8, 1.6, 1.05],
         'lineWidthsMm': [.24, .33, .38, .42],

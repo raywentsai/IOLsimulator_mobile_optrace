@@ -8,21 +8,12 @@
 
   export let options: SheetSelectOption[] = [];
   export let value = '';
-  export let ariaLabel = 'Select option';
-  export let title = 'Select option';
-  export let disabled = false;
+  export let label: string;
 
   const dispatch = createEventDispatcher<{ change: { value: string } }>();
   let open = false;
 
   $: selectedLabel = options.find((option) => option.value === value)?.label ?? value;
-
-  function openSheet(): void {
-    if (disabled) {
-      return;
-    }
-    open = true;
-  }
 
   function closeSheet(): void {
     open = false;
@@ -38,10 +29,9 @@
 <button
   class="selector-pill"
   type="button"
-  aria-label={ariaLabel}
+  aria-label={label}
   aria-expanded={open}
-  disabled={disabled}
-  on:click={openSheet}
+  on:click={() => open = true}
 >
   <span class="selector-label">{selectedLabel}</span>
   <span class="selector-chevron" aria-hidden="true">▾</span>
@@ -49,10 +39,10 @@
 
 {#if open}
   <button class="sheet-backdrop" type="button" aria-label="Close selector" on:click={closeSheet}></button>
-  <div class="sheet-panel" role="dialog" aria-modal="true" aria-label={title}>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-label={label}>
     <div class="sheet-handle" aria-hidden="true"></div>
     <div class="sheet-header">
-      <h3>{title}</h3>
+      <h3>{label}</h3>
       <button type="button" class="sheet-done" on:click={closeSheet}>Done</button>
     </div>
     <div class="sheet-options">

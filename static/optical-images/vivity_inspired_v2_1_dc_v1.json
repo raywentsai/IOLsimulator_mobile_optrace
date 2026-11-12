@@ -14,7 +14,7 @@
     85.6,
     53.98
   ],
-  "cardSvgCanonicalSha256": "494b2286f7bad516ea7c43c062e69a7ecfca92b4e778a8a05918726f448834b5",
+  "cardSvgCanonicalSha256": "4a302d42e3ca76ec730fc668db8ebc79edb84443d696502d7e570d540764c02f",
   "assumptions": "existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y",
   "background": "independent infinity PSF; never blur background with a near node",
   "software": {
@@ -68,10 +68,10 @@
           "centroidErrorTanTheta": 1.3022843066984643e-07,
           "coverageAreaRelativeError": -3.4761109760639286e-06,
           "file": "vivity_10_16384.png",
-          "bytes": 578180,
-          "fileSha256": "bb93cebf383510095ef8d83921f586ca515530f43b5d2294cf19727a1967dc82",
-          "decodedRgbaSha256": "5f39b497eb4336d3f8ce55184dbfb030f9e02bcc2cabd66e1ef6c14fd9af445b",
-          "maxLinearQuantizationError": 0.00012210011715485525
+          "bytes": 595444,
+          "fileSha256": "e3ce3352e2dfaa926dc4a9200a5102370c2c5a962b065d17cf4e22010c4ea5a5",
+          "decodedRgbaSha256": "ff02c4731d447c536640535ffce82a8175d58e549484629b2433ffb6e5703711",
+          "maxLinearQuantizationError": 0.00012210011603974724
         }
       ]
     },
@@ -120,10 +120,10 @@
           "centroidErrorTanTheta": 8.020073055331049e-08,
           "coverageAreaRelativeError": -2.9715435763133513e-06,
           "file": "vivity_11_16384.png",
-          "bytes": 653274,
-          "fileSha256": "87254ed39821599d57d3244107244f2aabfad56177425d7afcb4579866a50a21",
-          "decodedRgbaSha256": "9b5de121fc0a8a41531be8e6ecf88b9162497e005156dbeb781c9745439efea7",
-          "maxLinearQuantizationError": 0.00012210004723811618
+          "bytes": 676356,
+          "fileSha256": "40eceddfd3affa5303ab4741464c247589e76d576b4a07ad2def8414b37a067e",
+          "decodedRgbaSha256": "860a91f264966d0a168da0c96660578cfacd26d539448c631c2634f60918096f",
+          "maxLinearQuantizationError": 0.00012210010261060056
         }
       ]
     },
@@ -173,10 +173,10 @@
           "centroidErrorTanTheta": 9.572837570733775e-08,
           "coverageAreaRelativeError": -2.030561523702623e-06,
           "file": "vivity_12_12288.png",
-          "bytes": 464336,
-          "fileSha256": "2e25aeb3fe91f5d16b180c247ea7375e88a3357b2d779f8f72c317858fcf7ca1",
-          "decodedRgbaSha256": "d7db1c548283e1103085d29feafcce4e8c118524735739b62fec2deccfe976ec",
-          "maxLinearQuantizationError": 0.00012210011780455776
+          "bytes": 481334,
+          "fileSha256": "7b65b23c1810a2a7371c4dbc2f3329d6c00d0902dfa6713759ae77855f60d99d",
+          "decodedRgbaSha256": "781668e8f06e7400654dd8702dfa6bc80dbcf78119a851f9a289d1ed344550b2",
+          "maxLinearQuantizationError": 0.00012210010033220087
         },
         {
           "width": 2173,
@@ -218,10 +218,10 @@
           "centroidErrorTanTheta": 5.547789645803747e-08,
           "coverageAreaRelativeError": -2.013596291927655e-06,
           "file": "vivity_12_16384.png",
-          "bytes": 732167,
-          "fileSha256": "dc2639a6d7f72499db91a06d6c16dc2d372015dcbde8bcaecadc4c119c765b59",
-          "decodedRgbaSha256": "d39a314c0f4c828fecb558ac5773012804ed56b375b43e62a9ac8a4b08a82abe",
-          "maxLinearQuantizationError": 0.00012210005668489288
+          "bytes": 754780,
+          "fileSha256": "01c1c9718e216d13c03f8880742fdea944daf1f272fdf84be4ef01ac42dc968c",
+          "decodedRgbaSha256": "0c2f20bd9f5054b6ad19ea34a59f20f9c9a5384563833b19ab5b7e6a9286d680",
+          "maxLinearQuantizationError": 0.00012210010986102304
         }
       ]
     },
@@ -270,10 +270,10 @@
           "centroidErrorTanTheta": 1.0855116456798606e-07,
           "coverageAreaRelativeError": -2.5034716110150512e-06,
           "file": "vivity_13_8192.png",
-          "bytes": 270214,
-          "fileSha256": "6f576a580986d3842cdbeb4cf2eaa59e1afb9bc7b8d680a406b56892e62eef9f",
-          "decodedRgbaSha256": "dae85aa2fa73790a7a98f7392ecddb946c68543a6d38ad462dcacfed81c7d51e",
-          "maxLinearQuantizationError": 0.00012210000269097243
+          "bytes": 278029,
+          "fileSha256": "c87e4e156ca3bd2024fd4cb20faf91c45ecc9188b9a55f85d45bba3d69e16e0b",
+          "decodedRgbaSha256": "31f51501f330abd943ec80fab94573e5053c26abd94e0aa2614e4e11fcbb40a7",
+          "maxLinearQuantizationError": 0.00012209999314327646
         }
       ]
     },
@@ -322,10 +322,10 @@
           "centroidErrorTanTheta": 8.680825384421308e-08,
           "coverageAreaRelativeError": -1.8074236064480331e-06,
           "file": "vivity_14_8192.png",
-          "bytes": 296312,
-          "fileSha256": "b2549d96c6c3dc00b5cc96885238b9dc8a12a83566bb8751d81641e534fe17a5",
-          "decodedRgbaSha256": "f6ac830fe8e46d74e7cda3fe7ce38adc533af218e894a873b7f914307fa32e8e",
-          "maxLinearQuantizationError": 0.00012210002409908307
+          "bytes": 307213,
+          "fileSha256": "bbbf26ba17bedf8a5a5b3a29046ff702cbe5ce550e7081cf9c3521db5a349003",
+          "decodedRgbaSha256": "f451a8bfd6f44492331376744110fb9a2ab7f94b40d4187194964f9fa958bd0c",
+          "maxLinearQuantizationError": 0.00012210005739510255
         }
       ]
     },
@@ -374,10 +374,10 @@
           "centroidErrorTanTheta": 2.6234611421518606e-08,
           "coverageAreaRelativeError": -1.3794725010063402e-06,
           "file": "vivity_15_8192.png",
-          "bytes": 323917,
-          "fileSha256": "0e5c1b33b64499bd72a45a75e82c2ecdc336cf4b3b66bd3f2e716e3bac7e497e",
-          "decodedRgbaSha256": "0eb6cb54ac2feb33b12353314bac3e794631d0c7eb22951b892fae11e4cfa7e3",
-          "maxLinearQuantizationError": 0.00012209998678014422
+          "bytes": 334458,
+          "fileSha256": "cac83b396660c1133fe94ced6af3485af98f5256c9db14d3a3e61593cfc0f21c",
+          "decodedRgbaSha256": "e4a743173b438169efa8ac9393827cb85a16c254ab18f2f57203ab5082d3ea3c",
+          "maxLinearQuantizationError": 0.00012210010961222206
         }
       ]
     },
@@ -426,10 +426,10 @@
           "centroidErrorTanTheta": 5.507353431559106e-08,
           "coverageAreaRelativeError": -1.2788314549538882e-06,
           "file": "vivity_16_8192.png",
-          "bytes": 352486,
-          "fileSha256": "8eae27f751716f41a5287ce862390cfe67d0188df48fdeacfb20ebcd0f854e48",
-          "decodedRgbaSha256": "6340db258805be8c91daa92b9a3ad6551105aaaaf8fa4fbd48997510bc108874",
-          "maxLinearQuantizationError": 0.00012210003846421227
+          "bytes": 364627,
+          "fileSha256": "1c29086f418fe88c90b81ce5c9722fdb3bd7ee8fbc9679f343aa61ed6531db10",
+          "decodedRgbaSha256": "de2d5b90c2c260cf8c36e79d6132234bbd0a98a046bf82e71c5a84a5992bc37f",
+          "maxLinearQuantizationError": 0.0001221000493563107
         }
       ]
     },
@@ -478,10 +478,10 @@
           "centroidErrorTanTheta": 1.7860930817859823e-07,
           "coverageAreaRelativeError": -1.053752124779983e-06,
           "file": "vivity_17_4096.png",
-          "bytes": 125239,
-          "fileSha256": "01781981dc3638bc209423e07d1b1d39f512071e2f836f9a365cfd8721f69778",
-          "decodedRgbaSha256": "798fc939f20055db060875dd3b5a86c75c78a3f0bba9c734aa71d382bdf67ee1",
-          "maxLinearQuantizationError": 0.00012209977076071965
+          "bytes": 129910,
+          "fileSha256": "59bdfdeb211a62a3e61da3fcae4eda2f62e30bdf3c5de14aad6997d7db94ad10",
+          "decodedRgbaSha256": "a2689b838eda6148cfe02f6c3622f6851b30143145afd44c3eb604bf675afe36",
+          "maxLinearQuantizationError": 0.00012210010713220587
         },
         {
           "width": 1438,
@@ -523,10 +523,10 @@
           "centroidErrorTanTheta": 3.6591512995282326e-08,
           "coverageAreaRelativeError": -1.1978666216716505e-06,
           "file": "vivity_17_8192.png",
-          "bytes": 380923,
-          "fileSha256": "b7fefe7224fd2e326a010b86dc4a24ec099039ef14d8bb31c5e745027dd25ddf",
-          "decodedRgbaSha256": "c9cd225d7f7ab67940a8c2da883e8476e91043f20a3d1b3f67881dccaf2afae1",
-          "maxLinearQuantizationError": 0.0001221001040947467
+          "bytes": 396317,
+          "fileSha256": "20e534e822265d7adb37fe08be19ab15079b599bc369af209566c72bb2cef419",
+          "decodedRgbaSha256": "4daca3a1b076e6778dbdb4689179d412cf3755cc604824a7cedc145e8ccd429b",
+          "maxLinearQuantizationError": 0.00012210000747381322
         }
       ]
     },
@@ -576,10 +576,10 @@
           "centroidErrorTanTheta": 2.5638681283865257e-07,
           "coverageAreaRelativeError": -1.3321533760546345e-06,
           "file": "vivity_18_4096.png",
-          "bytes": 135424,
-          "fileSha256": "e812fc159ecb6fb07dca177256815fca8023db5c6b7e4f79bad387871cf0e0ff",
-          "decodedRgbaSha256": "df63b805123ec1006a0b94c495114f306cf7e80ecda70f0a4123ba58f32a6382",
-          "maxLinearQuantizationError": 0.0001220992869463977
+          "bytes": 140327,
+          "fileSha256": "8bdc20f6281421dfccd853d31bf5f6388909927516654d0f58a6172fcc913aa5",
+          "decodedRgbaSha256": "d2720d925381f2976c96554b25d693d8d589eabf38bd02a40de760fe932719cf",
+          "maxLinearQuantizationError": 0.00012209986213107538
         },
         {
           "width": 943,
@@ -622,10 +622,10 @@
           "centroidErrorTanTheta": 1.5877611801127456e-07,
           "coverageAreaRelativeError": -1.252970016074606e-06,
           "file": "vivity_18_5120.png",
-          "bytes": 193494,
-          "fileSha256": "11aee0587567de51a7128d0dcf9d537c1ec05595140308a580e8feb509e256d1",
-          "decodedRgbaSha256": "7bc2d269b541e660560e8bf4235160493e2e6c10e80ff67236c927980220e16c",
-          "maxLinearQuantizationError": 0.00012209996902398657
+          "bytes": 200459,
+          "fileSha256": "34383b7649f305395dc62c413ea9878c5ca704055cdfaab0a04283d0f460433e",
+          "decodedRgbaSha256": "e4c823e8a008cb395148c65c968181b829d5e891602cabc9df495e481bc768ea",
+          "maxLinearQuantizationError": 0.00012209996902412534
         },
         {
           "width": 1508,
@@ -667,10 +667,10 @@
           "centroidErrorTanTheta": 1.6154038518416677e-07,
           "coverageAreaRelativeError": -1.3044406963480526e-06,
           "file": "vivity_18_8192.png",
-          "bytes": 410528,
-          "fileSha256": "28c3d02bf58a3ef1260c1a545c43f5f77f2359783b31d2626d63d256e304c940",
-          "decodedRgbaSha256": "9bd9bef1c274b2edc82bd4b4238e270299f63de3c3473af74bb99018f01ea697",
-          "maxLinearQuantizationError": 0.000122099974533052
+          "bytes": 426342,
+          "fileSha256": "f6e4b329eb8db2bb330978817c6d7cfaed5312e1a44c13208004d40a21722b83",
+          "decodedRgbaSha256": "8905aa758eb8625ddbdc6068cb8696137a6e65cfe7f8cd6508b2fc32924b52ef",
+          "maxLinearQuantizationError": 0.00012210006890844838
         }
       ]
     },
@@ -719,10 +719,10 @@
           "centroidErrorTanTheta": 1.8122043594862343e-07,
           "coverageAreaRelativeError": -1.0310327771545502e-06,
           "file": "vivity_19_4096.png",
-          "bytes": 144822,
-          "fileSha256": "4daead639f8d89ef935507304cb60dbed0c940d373052a33d734d3185ceb1a4b",
-          "decodedRgbaSha256": "db3817f309ef6c4c8ae9854aa9849d6861aeecfdb4da20033d58287f3da73bf1",
-          "maxLinearQuantizationError": 0.00012209901795723344
+          "bytes": 150619,
+          "fileSha256": "aff3ae23c06f20e2af753bf7804c73b6c439a9ff22faf28ff20cfa51333c75fb",
+          "decodedRgbaSha256": "b30dd7039c20131dff76c9278c2958fb8fcb2b1846b59a924fdf798f0b8e4b33",
+          "maxLinearQuantizationError": 0.0001221000296692254
         },
         {
           "width": 1578,
@@ -764,10 +764,10 @@
           "centroidErrorTanTheta": 3.8966930012052814e-08,
           "coverageAreaRelativeError": -9.384930019784576e-07,
           "file": "vivity_19_8192.png",
-          "bytes": 439223,
-          "fileSha256": "8d6c266089ce579ee9c8405f27f5aeff1bbfac820f0d19491bf62d28ab57771c",
-          "decodedRgbaSha256": "fcad4796a4396acd843545c48cf8dbdf116ab4a07bb61601823e18301a33a0c7",
-          "maxLinearQuantizationError": 0.00012209996314677764
+          "bytes": 458445,
+          "fileSha256": "11717404e98fc6d1e495682fd51864d93b8cd984c5cb68d9f993946734315763",
+          "decodedRgbaSha256": "a4601da6f89f2fe896b4cdddc678ab34e861bc7be4cc6ff010aacf22c4a3c611",
+          "maxLinearQuantizationError": 0.00012209996495321507
         }
       ]
     },
@@ -816,10 +816,10 @@
           "centroidErrorTanTheta": 1.9481969310729924e-07,
           "coverageAreaRelativeError": -1.0119774386252445e-06,
           "file": "vivity_20_4096.png",
-          "bytes": 156215,
-          "fileSha256": "59311a7b9ab67c51733749ce718131b5c3ed0fadbf8af2d098fbb98046886893",
-          "decodedRgbaSha256": "fc59398c05d5891d0bf296ef07adad4e7e1b9840c61f88afbc5f9f6803e6dcdd",
-          "maxLinearQuantizationError": 0.0001221001149807055
+          "bytes": 162159,
+          "fileSha256": "f571328ae9b7a7b376a0502c0c36cfe9dd81a7859d591daf556b8b473fd27806",
+          "decodedRgbaSha256": "1f8f1a89b5e0237553f2f6466de2c8412ab04c87e3a0759f6119a15d3af80597",
+          "maxLinearQuantizationError": 0.0001221000346497414
         },
         {
           "width": 1648,
@@ -861,10 +861,10 @@
           "centroidErrorTanTheta": 1.564284139119329e-07,
           "coverageAreaRelativeError": -1.0647831150123466e-06,
           "file": "vivity_20_8192.png",
-          "bytes": 473428,
-          "fileSha256": "58ab3dd40d85c1fdf91e37f94efc8292cedb43b1bd7af4fb45464325ed99dc79",
-          "decodedRgbaSha256": "86af927b7d2841fabd7efe1fd7a4cf452c4d4c72e91dd4ca54806e147fd4ff40",
-          "maxLinearQuantizationError": 0.000122100119453461
+          "bytes": 494647,
+          "fileSha256": "4ffe0d8c33ff31c5c5ba90df8e1f5602eccc0a7fbf7d0fd21ecb1170158bd599",
+          "decodedRgbaSha256": "a7d5608ccf84ac932b7f7ae35f2369f29048f9dcaa53fbc06d5d31ed7b7fab5f",
+          "maxLinearQuantizationError": 0.00012210003174717432
         }
       ]
     },
@@ -913,10 +913,10 @@
           "centroidErrorTanTheta": 1.5265163589622506e-07,
           "coverageAreaRelativeError": -7.286592510480361e-07,
           "file": "vivity_21_4096.png",
-          "bytes": 166829,
-          "fileSha256": "ec35f56f4061fb4e686cc297c3530f58fa3ece2ae9754ff2907e1d392378a791",
-          "decodedRgbaSha256": "d18f8f1f147888ed2352c3569179a7eafce669a2501a0fb9242853bbf971fac5",
-          "maxLinearQuantizationError": 0.00012209968063492393
+          "bytes": 170963,
+          "fileSha256": "2f6101f7b8564ab555c5bc14f0b128cca742a1a48d0e1748300771ce70ee3b3f",
+          "decodedRgbaSha256": "44bb05a38588bc6614c992781abe4aee48759f5565b14158a5c78d03966a5ac9",
+          "maxLinearQuantizationError": 0.00012209963910841948
         },
         {
           "width": 1719,
@@ -958,10 +958,10 @@
           "centroidErrorTanTheta": 1.0683748115856063e-07,
           "coverageAreaRelativeError": -8.042946708641807e-07,
           "file": "vivity_21_8192.png",
-          "bytes": 508514,
-          "fileSha256": "cd5f6b7cf74a70178a67e5d27eb4ed85115a03bf6ac38db047bdcd97920ed146",
-          "decodedRgbaSha256": "e00f54890a6f87bfd24926bf0c28f327e4eefbfd839bbc71b1d30f2168fd029c",
-          "maxLinearQuantizationError": 0.00012210007393567896
+          "bytes": 531952,
+          "fileSha256": "590df4c08235c9d2d000936dbbcd416156bc1ed78e6177bf1dde4ea3d12cbd1e",
+          "decodedRgbaSha256": "e17ccf98dd7920d7a1e040d746e967fa76127978a0b1e042d71231c5d5842014",
+          "maxLinearQuantizationError": 0.0001221001202843519
         }
       ]
     },
@@ -1010,10 +1010,10 @@
           "centroidErrorTanTheta": 9.618467594558876e-08,
           "coverageAreaRelativeError": -6.869040192203357e-07,
           "file": "vivity_22_4096.png",
-          "bytes": 177081,
-          "fileSha256": "db21f9bfe516caad6d7f9b06f041f2c5ec7ba7ec87f4a752376ec7f58c4eaca5",
-          "decodedRgbaSha256": "6333a479d3d0fe419d68194c10a40f7a41bb976e16357219edc7e108028e996b",
-          "maxLinearQuantizationError": 0.00012209986660616234
+          "bytes": 186227,
+          "fileSha256": "1c3eac6e9466961e3c6ea342390f0967c8a51150e2d1dbbe5113de84d49f961f",
+          "decodedRgbaSha256": "533854370ebe6c53541a245f5be028e4548e64d9216acd80fa43e788e3a434c2",
+          "maxLinearQuantizationError": 0.00012209914808103406
         },
         {
           "width": 1789,
@@ -1055,9 +1055,9 @@
           "centroidErrorTanTheta": 1.2571461492363703e-07,
           "coverageAreaRelativeError": -6.857533373372249e-07,
           "file": "vivity_22_8192.png",
-          "bytes": 544187,
-          "fileSha256": "36768d9007970060025f53f23d36c295cb1f7b48911640baf6f6985d17c16dc7",
-          "decodedRgbaSha256": "826b5ff14ec94e3f461805ac215a77332b8d8f7d593d8d4d90dddd1632e99161",
+          "bytes": 566748,
+          "fileSha256": "8631134814cff7797a9d2e431410809a452f8627eb9343edb87b181a558c0cd2",
+          "decodedRgbaSha256": "2f8149129f95a9d49f6b7260fa8d9b31a860c94f145a5be0d5a4b8542a52e2ba",
           "maxLinearQuantizationError": 0.00012210005556269462
         }
       ]
@@ -1107,10 +1107,10 @@
           "centroidErrorTanTheta": 3.3991829146792497e-07,
           "coverageAreaRelativeError": -5.672652374499876e-07,
           "file": "vivity_23_4096.png",
-          "bytes": 191291,
-          "fileSha256": "f6fecba67ab9c02e2f2defad1aadb59bc17bcb9d17d421a5a476c06ac6ab20f2",
-          "decodedRgbaSha256": "6f7368104e6be61113fa3bf165b6b5e29a6a15e6f1c47757c1c4af0374b570ae",
-          "maxLinearQuantizationError": 0.00012210005342250252
+          "bytes": 199742,
+          "fileSha256": "8cb6f1c92d5979996f04845364886ab80c7332a27710b973bfb8a424af9f2833",
+          "decodedRgbaSha256": "4c7a465d098158a4db529b8ec328685ed2b23dbc3fff9e5d0aee330f4b87faf3",
+          "maxLinearQuantizationError": 0.00012209987069178307
         },
         {
           "width": 1859,
@@ -1152,10 +1152,10 @@
           "centroidErrorTanTheta": 1.8153232583978047e-07,
           "coverageAreaRelativeError": -5.342742359637498e-07,
           "file": "vivity_23_8192.png",
-          "bytes": 583802,
-          "fileSha256": "35b2e3dad6f4aee5005ffee1e2a7ee8fe6cab829f52410378578b72a48efaf7f",
-          "decodedRgbaSha256": "fdb04c176c3c20ad42751908c2ea3787982e756b7239cc82a87fd7b4887eb359",
-          "maxLinearQuantizationError": 0.00012210002960622024
+          "bytes": 610264,
+          "fileSha256": "d746b1079dbf93f4cbdec8b65acad22876623c9eaea673135afbcfbb7e99222b",
+          "decodedRgbaSha256": "9745df886e17053ae370b2cb22bc0ba368ce0c46f860bbe5dae367f9285b1612",
+          "maxLinearQuantizationError": 0.00012209992928202684
         }
       ]
     },
@@ -1204,10 +1204,10 @@
           "centroidErrorTanTheta": 2.848648342292271e-07,
           "coverageAreaRelativeError": -5.889403097425472e-07,
           "file": "vivity_24_4096.png",
-          "bytes": 203115,
-          "fileSha256": "346e4925b90e87c06090059228cbdd6d5efb2bc24bc54601354ba16813368164",
-          "decodedRgbaSha256": "1c3544a6694dafa9c8024dd4662f9592183a6d65b92b190a35685aa555c8413a",
-          "maxLinearQuantizationError": 0.0001221000098889924
+          "bytes": 211764,
+          "fileSha256": "8dd588ff31d401480f989e8bb953494763656a4cc71b637cace1e0b673775de7",
+          "decodedRgbaSha256": "a1cc0bd9924df592128c97aae6dd3a632f0939edc21d7dc7c89c5490d841c868",
+          "maxLinearQuantizationError": 0.00012210006272495022
         },
         {
           "width": 1929,
@@ -1249,10 +1249,10 @@
           "centroidErrorTanTheta": 1.1171794575981863e-07,
           "coverageAreaRelativeError": -5.322546025032793e-07,
           "file": "vivity_24_8192.png",
-          "bytes": 619576,
-          "fileSha256": "cc705ab456cd6f59dfa8636fae861f398416f086c20d10ea0f7250b6639c7a00",
-          "decodedRgbaSha256": "a1f92639380ca2df9aa83e8d64b45d8c52b368d1149e17f5efb526e8f130a547",
-          "maxLinearQuantizationError": 0.00012209991563375276
+          "bytes": 641395,
+          "fileSha256": "1b293dba7b6b0808dd626e15d3372fb49aa4ef851dfc4736999e0e9a271f367e",
+          "decodedRgbaSha256": "c335df5b5b6c024eef740d635780267d3d5e2af4b60c8b9c384b8266d83a72ef",
+          "maxLinearQuantizationError": 0.00012210012052604746
         }
       ]
     },
@@ -1301,10 +1301,10 @@
           "centroidErrorTanTheta": 1.7764388575947825e-07,
           "coverageAreaRelativeError": -4.7633501309984894e-07,
           "file": "vivity_25_4096.png",
-          "bytes": 213985,
-          "fileSha256": "b51d8c2883d55d9f6b30a72a3888d751c1eb5fa0ee607ef03eb85a7cf2e6777b",
-          "decodedRgbaSha256": "aed8355206adbbaeb5c19ec924db712de6518df28d28da5827ced73fe7abdcc4",
-          "maxLinearQuantizationError": 0.0001220991328917398
+          "bytes": 225104,
+          "fileSha256": "1af7d1fb5e2bb152e1ba9ca5fede42126e92861d7710c954f8035d3f3dad204f",
+          "decodedRgbaSha256": "e608cb4fe8e0c3ee1388cc6029e135773abb48e9252c7983efe362bdecc129e4",
+          "maxLinearQuantizationError": 0.00012209970354803978
         },
         {
           "width": 1999,
@@ -1346,10 +1346,10 @@
           "centroidErrorTanTheta": 1.1071250735307036e-07,
           "coverageAreaRelativeError": -4.687976430384211e-07,
           "file": "vivity_25_8192.png",
-          "bytes": 657946,
-          "fileSha256": "eb38389534d11cd4dbfbf45cbe0aa2755c8558bafbbd4dc6b2c2d24fcfc4b7b6",
-          "decodedRgbaSha256": "1e564e14a76d9ca2e902bc65e4fe140a32e98f56e314efee2edbf177eac4b6e4",
-          "maxLinearQuantizationError": 0.0001221001139024569
+          "bytes": 690340,
+          "fileSha256": "9558936e4caff06b9762a376e2b3c36d9965e9f3b24e542249dda913187c1f50",
+          "decodedRgbaSha256": "4a3838429f16a2f49cfc4b9cd28faea5deadd9b7ef63e0301271f733384b2143",
+          "maxLinearQuantizationError": 0.00012210011390179076
         }
       ]
     },
@@ -1398,10 +1398,10 @@
           "centroidErrorTanTheta": 5.4995684240045217e-08,
           "coverageAreaRelativeError": -5.038609158791729e-07,
           "file": "vivity_26_4096.png",
-          "bytes": 227847,
-          "fileSha256": "47aa224bc905621376464f051a516735e581676076feb386502df9ad14c33e18",
-          "decodedRgbaSha256": "051ece3d5b925527567282f2d2788d1e660efeacea6dc06dee4c86d6aa4b2c17",
-          "maxLinearQuantizationError": 0.0001220995508585121
+          "bytes": 238767,
+          "fileSha256": "ed7cee9681f0981589d86faa84fac09a9db92d4c79017b2e739b8fb75621ab64",
+          "decodedRgbaSha256": "483a558e567c26b50bd7c1f1b8b4be45a6d91d1597fbf38b2fab79cf6284ce76",
+          "maxLinearQuantizationError": 0.00012209984768074555
         },
         {
           "width": 2069,
@@ -1443,9 +1443,9 @@
           "centroidErrorTanTheta": 1.2542239385775984e-07,
           "coverageAreaRelativeError": -4.6581448476246123e-07,
           "file": "vivity_26_8192.png",
-          "bytes": 695179,
-          "fileSha256": "3280a2c2660340f655bdad684d53301e15abe2c620bca28b5f37e93936c8dae1",
-          "decodedRgbaSha256": "379ee91ef6e7615c1e34c2bc94bea7a7b25f65ffca0aadb7afbef4e534c99911",
+          "bytes": 730784,
+          "fileSha256": "5d395892f7dacec7c057af7a6d1506787c2a19df3dde1cefcae761c8cad7de3b",
+          "decodedRgbaSha256": "cee332c7d942687d871d17d30f6e0eae4d83014bcfd3a571b1e24c284d4ffda4",
           "maxLinearQuantizationError": 0.00012210009786883802
         }
       ]
@@ -1495,10 +1495,10 @@
           "centroidErrorTanTheta": 4.707220569655042e-08,
           "coverageAreaRelativeError": -4.1206920387004686e-07,
           "file": "vivity_27_4096.png",
-          "bytes": 238919,
-          "fileSha256": "7812d20890d2c049c80ab6765c22e0c19bf93d005fbe01f3fe4cbee674383b75",
-          "decodedRgbaSha256": "945570eb6c72679343665e7ac7bf7c5ec22b589a364b82075d28a00a1793764a",
-          "maxLinearQuantizationError": 0.00012210011173663382
+          "bytes": 250132,
+          "fileSha256": "d974158699fa376b6a89c9716937d3e9bdc4103a840684f1e558f7a62e33e4d3",
+          "decodedRgbaSha256": "f8dabfb2450f9fd158a17eae8553ce30e2b841a5e664508b589bac8646b4c770",
+          "maxLinearQuantizationError": 0.0001220998039732135
         },
         {
           "width": 2139,
@@ -1540,10 +1540,10 @@
           "centroidErrorTanTheta": 3.6818947524563315e-08,
           "coverageAreaRelativeError": -4.092617184037195e-07,
           "file": "vivity_27_8192.png",
-          "bytes": 737262,
-          "fileSha256": "aba7d8cf4a5d873bb5de3efd11d97cf07b929fcd4d5318d68d79a9f93d276203",
-          "decodedRgbaSha256": "fc29d179548f8c49cbff8f342e1d3323d4de25d0262663dd690e680dba36119c",
-          "maxLinearQuantizationError": 0.00012210007518198562
+          "bytes": 770046,
+          "fileSha256": "44494324615e5b28c8657949bd3b61c07e36483edaebf982c14ea62cd7b712a2",
+          "decodedRgbaSha256": "4cb0f006eefe6edf17fcfb1fb45a152fec507be8628b320344c623f75e55332a",
+          "maxLinearQuantizationError": 0.00012210007518176358
         }
       ]
     },
@@ -1592,10 +1592,10 @@
           "centroidErrorTanTheta": 1.8969748156409428e-07,
           "coverageAreaRelativeError": -3.374607311368294e-07,
           "file": "vivity_28_4096.png",
-          "bytes": 252409,
-          "fileSha256": "45a3519e684936a4c7fd0bf05a156635f923a8cbfdd4590a51409cb810d77e97",
-          "decodedRgbaSha256": "ad035ceba9ecce9e06f1eba7dc272798d999cc80b058f8ef05672804496a7123",
-          "maxLinearQuantizationError": 0.0001220999037708781
+          "bytes": 265610,
+          "fileSha256": "6c0428d0f5e34abea71dc8e2ca170166c5059d18bfebaa42aa7ae1828b3e6816",
+          "decodedRgbaSha256": "1f2af42bd34d89589258f1215fec40c05ed032ae273dea745355425253fb1b76",
+          "maxLinearQuantizationError": 0.00012210010284097184
         },
         {
           "width": 2209,
@@ -1637,10 +1637,10 @@
           "centroidErrorTanTheta": 2.1728968752911508e-07,
           "coverageAreaRelativeError": -3.5149969679348914e-07,
           "file": "vivity_28_8192.png",
-          "bytes": 781844,
-          "fileSha256": "6be643f5c8d94609463300f11f89eab46f8334c2523247acea4d6f0d436e450e",
-          "decodedRgbaSha256": "4717ee1bcaebd3b9f64fe266171329903526bccca5868341f1cb331e5af7e33c",
-          "maxLinearQuantizationError": 0.00012210009634228136
+          "bytes": 818237,
+          "fileSha256": "7feb4ba9e822ef82bf76041c7cf5a34a5b1a6924a8b1295b94b91552aef585f0",
+          "decodedRgbaSha256": "94aea5513659b33f472b01548d8e945bb416abc5214179e8f9c296c7d6732307",
+          "maxLinearQuantizationError": 0.00012210011029456513
         }
       ]
     },
@@ -1689,10 +1689,10 @@
           "centroidErrorTanTheta": 1.9004546406848068e-07,
           "coverageAreaRelativeError": -2.9031455761607816e-07,
           "file": "vivity_29_4096.png",
-          "bytes": 267088,
-          "fileSha256": "25c3062a8fdc7b05894b9eae0ecb44d04862184be692985b493fd5b82246c27b",
-          "decodedRgbaSha256": "ec21e8d9ce0d0298c051a1a4c15ff3f963a6df7c3ce4ea4d0d60b5802f8dad34",
-          "maxLinearQuantizationError": 0.0001220999125586264
+          "bytes": 280004,
+          "fileSha256": "807cd00131b7d945521cf848bbdd34acf8ea0df929cd5a9f0c171fdf3f45035a",
+          "decodedRgbaSha256": "0781b15385bae6b833539095c90579980a0cbe612a30af330eaeebf377665301",
+          "maxLinearQuantizationError": 0.00012209991255873742
         },
         {
           "width": 2282,
@@ -1734,10 +1734,10 @@
           "centroidErrorTanTheta": 1.0890978204515438e-07,
           "coverageAreaRelativeError": -3.360156880516385e-07,
           "file": "vivity_29_8192.png",
-          "bytes": 825487,
-          "fileSha256": "7720e506834b46f2ac14549e1a646cbb616747d8946390b8a016402e92c7da4f",
-          "decodedRgbaSha256": "8a09de6c897b865f024b9cf6e75e7845d01a7b365fc5765bbafb48fc734cbcdc",
-          "maxLinearQuantizationError": 0.00012210006341994983
+          "bytes": 862948,
+          "fileSha256": "62d22b9a6168d3b1b6472e5aeb24c6c8266ede3aee71f8232a0e2761c6ffd2f2",
+          "decodedRgbaSha256": "bef3b338a6bb34c6e35b2a390a2b7081ae1733219af8105dfe468114b85088c6",
+          "maxLinearQuantizationError": 0.00012210007964952307
         }
       ]
     },
@@ -1786,10 +1786,10 @@
           "centroidErrorTanTheta": 8.069451627088463e-08,
           "coverageAreaRelativeError": -3.140575719484673e-07,
           "file": "vivity_30_4096.png",
-          "bytes": 281202,
-          "fileSha256": "51daf34b86fe2f7d0fb62283e66acfe574f85da056f6ca2ada920fad1e4f5486",
-          "decodedRgbaSha256": "3e6f245ce4b8a486a9e68ab64205b4ee8b37e457b92453dba1f5d66093881967",
-          "maxLinearQuantizationError": 0.00012209904016180495
+          "bytes": 294538,
+          "fileSha256": "29c33b23d11cb807e34c8877908eb6ac649983d01890331f8608d2e77006b9d6",
+          "decodedRgbaSha256": "a89c601ca2f1bcabd72f3b0e4375372ea506dd335a67442c8ec15f691c6c18e7",
+          "maxLinearQuantizationError": 0.0001221000746786105
         },
         {
           "width": 2352,
@@ -1831,10 +1831,10 @@
           "centroidErrorTanTheta": 1.569151016437283e-07,
           "coverageAreaRelativeError": -3.189812818327198e-07,
           "file": "vivity_30_8192.png",
-          "bytes": 866631,
-          "fileSha256": "37d20446df6483cbdbbf7a70f22b36af90faf2312dfd7f91bc896c189cd54b56",
-          "decodedRgbaSha256": "762cd58ff8ccd7b1428401ea320526bd4b3316521ff29074034b1b21517f96e2",
-          "maxLinearQuantizationError": 0.00012209999908452396
+          "bytes": 905299,
+          "fileSha256": "3015d5a317c67b073a390077e8fe0e939057e6b4dfb16989fb67e2dda06e3789",
+          "decodedRgbaSha256": "2d70e3d955f97413879970c9804a83ad464d23c5279b0f2e5f72d9336864cd87",
+          "maxLinearQuantizationError": 0.00012210002955537202
         }
       ]
     },
@@ -1883,10 +1883,10 @@
           "centroidErrorTanTheta": 1.8438263068482902e-07,
           "coverageAreaRelativeError": -3.3255534570564294e-07,
           "file": "vivity_31_4096.png",
-          "bytes": 295367,
-          "fileSha256": "9f4c2dd36a80f1072af5a60a7c5a46b9ecf5970fecef7c0ebf502a466a15b237",
-          "decodedRgbaSha256": "5523448ab3bd6cfcf8d739b863891e476d81fea4ed1b030f91ad6e9324159c94",
-          "maxLinearQuantizationError": 0.00012210005051416228
+          "bytes": 308753,
+          "fileSha256": "73b1999dedd20df9037a827e46039a50fe31037c86150a8c49ae9ef67be02443",
+          "decodedRgbaSha256": "bcf34ffc0d1389a60899b055bd05a74fa1b5752ab444553e43c817dfa7c8c698",
+          "maxLinearQuantizationError": 0.00012210005051438433
         },
         {
           "width": 2422,
@@ -1928,10 +1928,10 @@
           "centroidErrorTanTheta": 3.59837205925822e-08,
           "coverageAreaRelativeError": -3.160904119559049e-07,
           "file": "vivity_31_8192.png",
-          "bytes": 909285,
-          "fileSha256": "b21a16c7d2ec333b630d6c2bfab634e04f755f1e3c2ce22d2441347258750505",
-          "decodedRgbaSha256": "6182505958afadfa2d98cf7f052416d1c18f94bbf536fca064d0b70124255cb9",
-          "maxLinearQuantizationError": 0.00012210007196722383
+          "bytes": 954586,
+          "fileSha256": "a6bf949dc136b4c552a46f90b5cd68a693a9a077e6d288671e75a3193f6fec56",
+          "decodedRgbaSha256": "825930d4cb3a167ab933f0585303887e9374b88f7be23aa3320c8dac528cf950",
+          "maxLinearQuantizationError": 0.00012210008198321187
         }
       ]
     },
@@ -1980,10 +1980,10 @@
           "centroidErrorTanTheta": 4.898342154611705e-08,
           "coverageAreaRelativeError": -3.086410531594197e-07,
           "file": "vivity_32_4096.png",
-          "bytes": 309453,
-          "fileSha256": "b9e333c25a07cf3fa9b181eba7cc2d21debcaf2d266575fc993d0a6fd8127f0c",
-          "decodedRgbaSha256": "8ee60e2c22bb6ab965b51f926eed5f40db0288b264b9121cdaccd454af9d29aa",
-          "maxLinearQuantizationError": 0.00012209984909293417
+          "bytes": 319805,
+          "fileSha256": "d8f76ac986bf97d004cf213c12f4d965e56a83e947dfe2ccabdfb1a63cd871c7",
+          "decodedRgbaSha256": "786a5bec93e3d18211350278e71622591c7dd08f4db2f225e5ce01b8837dc531",
+          "maxLinearQuantizationError": 0.000122099965642386
         },
         {
           "width": 2492,
@@ -2025,10 +2025,10 @@
           "centroidErrorTanTheta": 3.7588396580257643e-08,
           "coverageAreaRelativeError": -3.797675798278277e-07,
           "file": "vivity_32_8192.png",
-          "bytes": 953708,
-          "fileSha256": "8ca9beb69e2fc858362d40a72970ef24f231653516d0500d408357ad50128e7b",
-          "decodedRgbaSha256": "6bce95b4796ecf13c6ecf5450793a5f1673ff687ce96dbb82e8f7bde6273f664",
-          "maxLinearQuantizationError": 0.00012210005106768238
+          "bytes": 992008,
+          "fileSha256": "c4828e79a97d30521a6fa347499f9b75718889a5585edd731c3385cfdc3ae3b8",
+          "decodedRgbaSha256": "0c4e05ebd84115b97b313a80786103abcee0cd70b3716713df1cf6715618b8ad",
+          "maxLinearQuantizationError": 0.00012210005106760155
         }
       ]
     },
@@ -2077,10 +2077,10 @@
           "centroidErrorTanTheta": 2.6257391279311597e-07,
           "coverageAreaRelativeError": -2.816104922587215e-07,
           "file": "vivity_33_4096.png",
-          "bytes": 322284,
-          "fileSha256": "4ef6cdf5560d0a44b7c759fd6ece27698066f22e72715ff3af357904055d612d",
-          "decodedRgbaSha256": "76a4b6842b36599cf5da355a9e44f91dcc67ac527d4f3870f00e20a35573de2c",
-          "maxLinearQuantizationError": 0.0001220998921362959
+          "bytes": 339192,
+          "fileSha256": "7422d712cfbc770410e99cea9f068fa185004fc5cd0e6dceebc2476cccea8189",
+          "decodedRgbaSha256": "0b03f7aaefd25e409541f9a3600d072163fdecb9caa6e858a7449fd1ce4cc09f",
+          "maxLinearQuantizationError": 0.0001220997030615123
         },
         {
           "width": 2562,
@@ -2122,10 +2122,10 @@
           "centroidErrorTanTheta": 2.1342842457571824e-07,
           "coverageAreaRelativeError": -3.0740885792468475e-07,
           "file": "vivity_33_8192.png",
-          "bytes": 980996,
-          "fileSha256": "0df8ce144caa4b8552261a66536e7c88a33d666a80387517fb1dd688a3324314",
-          "decodedRgbaSha256": "533cedb4ccb6bd413b56e465efd0df1c2893e9fd397ebd1257bf9a47c6b61b8a",
-          "maxLinearQuantizationError": 0.00012210011219038197
+          "bytes": 1046302,
+          "fileSha256": "bedbafd8873718ce37843cd9e0aa7a704d3369ddd0cc0818d8c3eafbd5f75f1e",
+          "decodedRgbaSha256": "e468d1bb2a2ad84e47b90c8aebc7acea904e1bf90fbceb8ec7582dfe0bec3020",
+          "maxLinearQuantizationError": 0.00012210005396318113
         }
       ]
     },
@@ -2174,10 +2174,10 @@
           "centroidErrorTanTheta": 3.129211033435113e-07,
           "coverageAreaRelativeError": -2.7951129266678976e-07,
           "file": "vivity_34_4096.png",
-          "bytes": 339701,
-          "fileSha256": "17d630011ae2a8b2261c880ff7a4f621cb4eee80c2af3768ba5e241d7a432213",
-          "decodedRgbaSha256": "94a6102586dddbd86ee322183e295fc5f5fe99c9f29ebdfce084fc39c1986571",
-          "maxLinearQuantizationError": 0.0001220999281383861
+          "bytes": 356797,
+          "fileSha256": "beb6149d1a69bf1432ef8aad90fac56020aad817dce6f37296079f91efc9fdd0",
+          "decodedRgbaSha256": "1f1cb260dbc5dbc5a9755e73b554deba14efe3fe9b7bc921de0b4d8dc5346328",
+          "maxLinearQuantizationError": 0.00012209992813860815
         },
         {
           "width": 2632,
@@ -2219,10 +2219,10 @@
           "centroidErrorTanTheta": 1.619486932497597e-07,
           "coverageAreaRelativeError": -3.0382319504695943e-07,
           "file": "vivity_34_8192.png",
-          "bytes": 1044444,
-          "fileSha256": "8e9209516572fbf4a80468b3dc223b7b5b8dcce005f51ea94efe886d2b990c96",
-          "decodedRgbaSha256": "704b78fd1d78ad7481e149c10856d8781659bbc4be2f3c8dc61caa2f047a2e1c",
-          "maxLinearQuantizationError": 0.00012210012008839755
+          "bytes": 1096314,
+          "fileSha256": "ae419fe804d71e0d6b1da29b5b1f6a953bc8e06463fa4206fc95d957b3f183ea",
+          "decodedRgbaSha256": "61d94d30e16e7b33af22a7a506758fd5ba7dee19e739d0387c71ac0357af1bc4",
+          "maxLinearQuantizationError": 0.00012210008876134548
         }
       ]
     },
@@ -2271,10 +2271,10 @@
           "centroidErrorTanTheta": 1.704005162670141e-07,
           "coverageAreaRelativeError": -2.545632841188805e-07,
           "file": "vivity_35_4096.png",
-          "bytes": 354747,
-          "fileSha256": "81ea2e96702f3f9df3d2cdad1292e699131fc5b396ed598bc25deaf615c57def",
-          "decodedRgbaSha256": "335efbec60353577dfb7ea9ac9b05527adab27cc03cecd5daabb52fa728b67fb",
-          "maxLinearQuantizationError": 0.0001220997589740369
+          "bytes": 372468,
+          "fileSha256": "359e36c124a6074a4254f039faa8e0f167ffa423caf7dbe5d684394230784964",
+          "decodedRgbaSha256": "1b2586ae86e692c4aa7d1fe22fcc9decfd75f8469ec9a8a191af22d03bc204c8",
+          "maxLinearQuantizationError": 0.00012210001058410302
         },
         {
           "width": 2702,
@@ -2316,10 +2316,10 @@
           "centroidErrorTanTheta": 2.209415724715917e-07,
           "coverageAreaRelativeError": -2.8908360816259915e-07,
           "file": "vivity_35_8192.png",
-          "bytes": 1093545,
-          "fileSha256": "717a8b5225e25dd3b7dcdff7f609bd0c4c609de6bcb9aae4f024614914ebb1be",
-          "decodedRgbaSha256": "b0eaed223dda4d306b580d2671a4c74cff74b466261bab15c548bb11ac49b0b6",
-          "maxLinearQuantizationError": 0.0001220999912946441
+          "bytes": 1147598,
+          "fileSha256": "791d7652bb4e801c71290c3a6ab6cb72ad135956d169b0c55cf6433d7a678cb5",
+          "decodedRgbaSha256": "3515929918cce105c7d6b459e29e515f52415f4f0c95a14459a81a63fc32d220",
+          "maxLinearQuantizationError": 0.0001221000062336941
         }
       ]
     },
@@ -2368,10 +2368,10 @@
           "centroidErrorTanTheta": 1.0410246881549347e-07,
           "coverageAreaRelativeError": -2.0906056641400994e-07,
           "file": "vivity_36_4096.png",
-          "bytes": 370786,
-          "fileSha256": "e979ab3ed08ffb977858b831ba8dcff57f60946f10e2a2a17cf5b8c1a730ddca",
-          "decodedRgbaSha256": "2452fc5fe3aa9df09c504798fe0912320becfc7d80ac1273d9d63d0d12d9054a",
-          "maxLinearQuantizationError": 0.00012209992725986663
+          "bytes": 389810,
+          "fileSha256": "a2b526f1a2694759f7c340e7b9cda55523f41b4d291390a2dbf95cea23a848b8",
+          "decodedRgbaSha256": "3ed139040f0740fd461ad26f2ebaf2b727028481ab284d9c1626a6d18e31826a",
+          "maxLinearQuantizationError": 0.00012209992725997765
         },
         {
           "width": 2772,
@@ -2413,10 +2413,10 @@
           "centroidErrorTanTheta": 1.616674175170592e-07,
           "coverageAreaRelativeError": -2.399942373720876e-07,
           "file": "vivity_36_8192.png",
-          "bytes": 1145845,
-          "fileSha256": "c42abe95aaa3851b74031719244f1099d6fc9f8937a444e4632be53a1fec3a39",
-          "decodedRgbaSha256": "52c72d65f73a8cf14ac4b1ba55b696a0df6d54845fc2bce567d96f5314d08e5a",
-          "maxLinearQuantizationError": 0.00012210010456403797
+          "bytes": 1212667,
+          "fileSha256": "b9ca80a45e273719ae0123eed38df64ac723d431e4ccf6561135d86ce8808714",
+          "decodedRgbaSha256": "5f5bd87174b724ed84d0a168e78d20b59bf7a794edf374c2b8f718c7e057ed59",
+          "maxLinearQuantizationError": 0.00012210010436741747
         }
       ]
     },
@@ -2465,10 +2465,10 @@
           "centroidErrorTanTheta": 5.866491226462898e-08,
           "coverageAreaRelativeError": -2.2533855537076874e-07,
           "file": "vivity_37_4096.png",
-          "bytes": 385835,
-          "fileSha256": "cc651abe6e5c455c4aa10cf0c0f1b66917e30a6ff1ac441d136911e9b512b4f4",
-          "decodedRgbaSha256": "cc6e98275d6e5acce6dd4c2a184c88a86fd586b48595edca079f14f48a4ddafb",
-          "maxLinearQuantizationError": 0.00012210008977631137
+          "bytes": 394821,
+          "fileSha256": "0ee2a0aeb091df21aacf4d9373e50726e03059c2dd288db88e5f1c7236ca31ee",
+          "decodedRgbaSha256": "d38717ef9d075f42b9ec4e0898a7dd07888970d47935603dd0d80a311e3dd290",
+          "maxLinearQuantizationError": 0.00012210008977608933
         },
         {
           "width": 2843,
@@ -2510,10 +2510,10 @@
           "centroidErrorTanTheta": 1.741666276865377e-07,
           "coverageAreaRelativeError": -1.8165090165389586e-07,
           "file": "vivity_37_8192.png",
-          "bytes": 1201568,
-          "fileSha256": "488eb8192ddcd2d9c8104d69a257edb694224a464979870b926e2c91cf03a295",
-          "decodedRgbaSha256": "98399088d85cef316a799e21a462228c08cf8c50b5ebb5d51313d90a58b0b56b",
-          "maxLinearQuantizationError": 0.00012210001488732747
+          "bytes": 1260874,
+          "fileSha256": "e8412e3b3f4f7249c92ddec30f60e39606e58faa31394aa9a895caf12a696747",
+          "decodedRgbaSha256": "bb4c71bca8b557baff8837ed63d7da25d08924813dfb97a1d40d07deb774755f",
+          "maxLinearQuantizationError": 0.00012210006771740112
         }
       ]
     },
@@ -2562,10 +2562,10 @@
           "centroidErrorTanTheta": 9.927756296715569e-08,
           "coverageAreaRelativeError": -1.9970258058332746e-07,
           "file": "vivity_38_4096.png",
-          "bytes": 400446,
-          "fileSha256": "577758d30c79ddbdc3026baf6cc0be4e49ae6cbea0d5a4c3fac7ec30151d8b23",
-          "decodedRgbaSha256": "5a2a3923cd7ab2a382ec22b597fa6619adc2d06f020c0b99f46f6446369dbbbc",
-          "maxLinearQuantizationError": 0.00012209959141817883
+          "bytes": 422086,
+          "fileSha256": "cc0227b26bc1a99f28e6533ed00006df46b42107634dbd5d8ab56e1953097719",
+          "decodedRgbaSha256": "89f343ad4bda3ea5573c2074cb20583f6d2bbfe6c6c5311c691b57eff3ed625e",
+          "maxLinearQuantizationError": 0.0001221001080822237
         },
         {
           "width": 2913,
@@ -2607,10 +2607,10 @@
           "centroidErrorTanTheta": 1.7186528140841464e-07,
           "coverageAreaRelativeError": -1.9379153670673332e-07,
           "file": "vivity_38_8192.png",
-          "bytes": 1249863,
-          "fileSha256": "3d49272ae3972247e6e5d4d4b9f68ab59466fa8e047350ea11b9da367ba6603c",
-          "decodedRgbaSha256": "430ef29bb91a1c1f255dd3b11e94dd6a82eca41b068c9c78592586c9903d9dca",
-          "maxLinearQuantizationError": 0.0001221001090340179
+          "bytes": 1303530,
+          "fileSha256": "5d7e89ab9056f207ec2f9c76eb063ea94f7ed165f8b0936ee9e61f0104a9f722",
+          "decodedRgbaSha256": "cd4b8335e4231c0e536c27018df3bc62cf8c7c2dfd01d10420cf32613899fedf",
+          "maxLinearQuantizationError": 0.00012210000583934288
         }
       ]
     },
@@ -2659,10 +2659,10 @@
           "centroidErrorTanTheta": 5.5248895740605584e-08,
           "coverageAreaRelativeError": -1.7553095832401056e-07,
           "file": "vivity_39_4096.png",
-          "bytes": 409066,
-          "fileSha256": "a169bac98905ce26fc3fbf84bd5f88d116d242e920b431c2c19e04c260eaae28",
-          "decodedRgbaSha256": "f8c06372239de11a367407c87811daee3cee6bf20315fcc292ab07ed49c1b053",
-          "maxLinearQuantizationError": 0.00012209995106093885
+          "bytes": 439942,
+          "fileSha256": "fa449b86bf54373c2c9c987fac8e49264b8e98deb686a857548a503f5b6e9901",
+          "decodedRgbaSha256": "509986363b9c67b5cc73e40314454aa6948df1dbddda033f6f3cdbb29a927946",
+          "maxLinearQuantizationError": 0.0001220999510611609
         },
         {
           "width": 2983,
@@ -2704,10 +2704,10 @@
           "centroidErrorTanTheta": 2.0184815309329819e-07,
           "coverageAreaRelativeError": -1.7500273441495295e-07,
           "file": "vivity_39_8192.png",
-          "bytes": 1292675,
-          "fileSha256": "897bb809d7a0a50425b15da27d76ea7c11bd2db233995f99268ef33a52ed27f0",
-          "decodedRgbaSha256": "3c9bed324f9c55bede13a8cc28012e74e963090cd9597686c1a9fef4b368064e",
-          "maxLinearQuantizationError": 0.00012210012057978226
+          "bytes": 1368954,
+          "fileSha256": "e30119887a61225f3bf30159753fdb8a7419abba3d22445f838e6edf583fe965",
+          "decodedRgbaSha256": "cccaa69d206a8efce71c19818818df9c262d3021ce4cfe925d0eb0b42df41014",
+          "maxLinearQuantizationError": 0.0001221000958845364
         }
       ]
     },
@@ -2756,9 +2756,9 @@
           "centroidErrorTanTheta": 3.002580635220294e-07,
           "coverageAreaRelativeError": -1.767413867481693e-07,
           "file": "vivity_40_4096.png",
-          "bytes": 433804,
-          "fileSha256": "8f3316bbb60acc6da4c6d18dbb0d0cd8cded956169a7f23a2f5bd582802f755e",
-          "decodedRgbaSha256": "86c9d05919aa4747e35542aeb8c9f41cc9fcac8ac7befa23b9b49d53a3cc90f5",
+          "bytes": 457336,
+          "fileSha256": "295d969758e1352a3484edf6d41dd8e7fd3773d9e04b00f1c73589871a74f863",
+          "decodedRgbaSha256": "d647095d9017bfd86731274c6fc9c00a2726ace79426257c47806270cf8f3683",
           "maxLinearQuantizationError": 0.0001220998030977416
         },
         {
@@ -2801,10 +2801,10 @@
           "centroidErrorTanTheta": 9.996918832880451e-08,
           "coverageAreaRelativeError": -1.5502293304603398e-07,
           "file": "vivity_40_8192.png",
-          "bytes": 1322866,
-          "fileSha256": "dac5c16b50b83e8f40d2e5838f6db9dae3852d7bf07fe8ce335150b52256f0f0",
-          "decodedRgbaSha256": "389f3689e97a414dc316ade9bc1df39089b3c2ae78e9b2eadd47b7e285a1ad85",
-          "maxLinearQuantizationError": 0.00012209993561761227
+          "bytes": 1407350,
+          "fileSha256": "329503967fad0bb706651f929fe6d0746656995e2a226754d9249d6e6ee9f3dd",
+          "decodedRgbaSha256": "c3d71267c4c66fb2ef700289ab30b6312998d9bc208e8c75cc89519b83a7222a",
+          "maxLinearQuantizationError": 0.000122099935617762
         }
       ]
     }

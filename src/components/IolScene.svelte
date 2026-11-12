@@ -57,7 +57,7 @@
   let queued=false,backgroundRevision=0,viewportRevision=0,preparedVersion=0;
   const warmFrames=new Map<number,WarmFrame>();
   let displayedGpu:WarmFrame|null=null,lastCpuKeys:string[]=[];
-  export let displayedDefocus:number|null=null;
+  let displayedDefocus:number|null=null;
   let prefetchTimer:ReturnType<typeof setTimeout>|null=null;
   let prediction:{scene:SceneConfiguration;demand:number;controller:AbortController}|null=null;
   let background:HTMLImageElement|HTMLCanvasElement,card:HTMLImageElement;
@@ -643,9 +643,22 @@
     {#if missingPrimary}<div class="scene-mask" class:left={$splitViewEnabled}>Clinical defocus curve pending</div>{/if}
     {#if missingCompare}<div class="scene-mask right">Clinical defocus curve pending</div>{/if}
     {#if $simulationMethod==='acuity'}
-      <div class="readout">
-        <span>{missingPrimary?'':`VA ~ ${$currentVADecimal.toFixed(2)} · legacy curve`}</span>
-        {#if $splitViewEnabled}<span>{missingCompare?'':`VA ~ ${$compareVADecimal.toFixed(2)} · legacy curve`}</span>{/if}
+      <div class="readout" class:dual={$splitViewEnabled}>
+        <div>
+          {#if !missingPrimary}<span class="badge">VA ≈ {$currentVADecimal.toFixed(2)} · legacy curve</span>{/if}
+        </div>
+        {#if $splitViewEnabled && !missingCompare}
+          <div><span class="badge">VA ≈ {$compareVADecimal.toFixed(2)} · legacy curve</span></div>
+        {/if}
+      </div>
+    {:else if displayedScene?.engine==='psf'}
+      <div class="readout"><div><span class="badge">optrace PSF</span></div></div>
+    {/if}
+    {#if displayedDefocus!==null}
+      {@const distanceCm = -100 / displayedDefocus}
+      <div class="distance-badges">
+        <span class="badge">{distanceCm <= 45 ? 'Near' : distanceCm <= 75 ? 'Middle' : 'Far'}</span>
+        <span class="badge">−{Math.abs(displayedDefocus).toFixed(1)} D / {Math.round(distanceCm)} cm</span>
       </div>
     {/if}
   {/if}
@@ -665,8 +678,30 @@
   .error{color:#991b1b}.error p{margin:.35rem 0}.error details{font-size:.7rem;margin:.4rem 0}
   .error button{color:#1d4ed8;background:#eff6ff;border:1px solid #bfdbfe;border-radius:.4rem;padding:.35rem .55rem;margin:.35rem .4rem 0 0;cursor:pointer}
   .notice{color:#4b5563}
-  .readout{position:absolute;inset:.5rem .5rem auto;display:flex;gap:1rem;font-size:.7rem;pointer-events:none}
-  .readout span{flex:1;color:white;text-shadow:0 1px 3px black}
+  .readout,.distance-badges {
+    position: absolute;
+    inset-inline: 0;
+    pointer-events: none;
+  }
+  .readout { top: .5rem; display: grid; }
+  .readout.dual { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .readout > div { padding-inline: .5rem; }
+  .distance-badges {
+    bottom: .5rem;
+    display: flex;
+    justify-content: space-between;
+    padding-inline: .5rem;
+  }
+  .badge {
+    display: inline-block;
+    padding: .2rem .42rem;
+    border-radius: .4rem;
+    background: #111827b8;
+    color: #f9fafb;
+    font-size: 1rem;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
   .scene-mask{position:absolute;inset:0;display:grid;place-items:center;background:#eee;color:#374151;text-align:center;padding:.5rem;font-size:.8rem}
   .scene-mask.left{right:50%}
   .scene-mask.right{left:50%}

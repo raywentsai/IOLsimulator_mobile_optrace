@@ -19,7 +19,6 @@
   let panel: Panel | null = null;
   let cardShortEdgePx = 180;
   let viewingDraft = 0.4;
-  let displayedDefocus: number | null = null;
 
   const acuityOptions = Object.entries(acuityIols).map(([value, {label}]) => ({value, label}));
   const physicsOptions = Object.entries(physicsIols).map(([value, {label}]) => ({value, label}));
@@ -38,7 +37,6 @@
   $: selection = $simulationMethod === 'physics' ? $physicsSelection : $acuitySelection;
   $: cardPpm = calculateCssPixelsPerMillimeterFromCreditCardShortEdge(cardShortEdgePx);
   $: calibrationErrors = validateDisplayParams(viewingDraft, calculatePPIFromPixelsPerMillimeter(cardPpm)).errors;
-  $: shownDistance = Math.round(-100 / (displayedDefocus ?? $masterDefocus));
 
   function closePanel() {
     if (panel === 'about') {
@@ -98,28 +96,25 @@
 
   <div class="selectors" class:dual={$splitViewEnabled}>
     <div>
-      {#if $splitViewEnabled}<span class="side-label">Left</span>{/if}
-      <SheetSelect {options} value={selection.primary} ariaLabel="Primary IOL" title="Primary IOL"
+      <SheetSelect {options} value={selection.primary} label="Primary IOL"
         on:change={event => selectIol('primary', event.detail.value)} />
     </div>
     {#if $splitViewEnabled}
       <div>
-        <span class="side-label">Right</span>
-        <SheetSelect {options} value={selection.compare} ariaLabel="Comparison IOL" title="Comparison IOL"
+        <SheetSelect {options} value={selection.compare} label="Comparison IOL"
           on:change={event => selectIol('compare', event.detail.value)} />
       </div>
     {/if}
   </div>
 
   <main class="scene-area">
-    <IolScene bind:displayedDefocus />
+    <IolScene />
   </main>
 
   <section class="controls" aria-label="Simulated object distance">
-    <div class="distance-heading"><span>Object distance</span><output>{shownDistance} cm</output></div>
     <div class="distance-adjust">
       <DistanceStep direction={-1} disabled={panel !== null || $masterDefocus <= -4} step={stepDistance} />
-      <input class="range" type="range" aria-label="Object distance" aria-valuetext={`${Math.round(-100 / $masterDefocus)} cm`}
+      <input class="range object-slider" type="range" aria-label="Object distance" aria-valuetext={`${Math.round(-100 / $masterDefocus)} cm`}
         min="-4" max="-1" step="0.1" bind:value={$masterDefocus} />
       <DistanceStep direction={1} disabled={panel !== null || $masterDefocus >= -1} step={stepDistance} />
     </div>
@@ -188,8 +183,8 @@
   .top-bar,.selectors,.controls,.actions{padding-inline:clamp(.65rem,3vw,1.25rem)}
   .top-bar{padding-block:calc(env(safe-area-inset-top,0px) + .32rem) .24rem}
   .methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.2rem;padding:.16rem;border:1px solid var(--line);border-radius:.65rem;background:#f8fafc}
-  .methods button,.actions button{min-height:44px;border-radius:.52rem;font-size:.82rem;font-weight:650;touch-action:manipulation}
-  .methods button{padding-inline:.2rem;line-height:1.15}
+  .methods button{min-height:44px;border-radius:.52rem;font-size:.82rem;font-weight:650;padding-inline:.2rem;line-height:1.15}
+  .methods button,.actions button{touch-action:manipulation}
   button{cursor:pointer;color:inherit}
   button:focus-visible,.range:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
   button:disabled{cursor:default;opacity:.45}
@@ -197,14 +192,57 @@
   .selectors{display:grid;grid-template-columns:minmax(0,1fr);align-items:end;gap:.42rem;padding-block:.12rem .38rem}
   .selectors.dual{grid-template-columns:repeat(2,minmax(0,1fr))}
   .selectors>div{min-width:0}
-  .side-label{display:block;color:var(--muted);font-size:.69rem;font-weight:650;margin-bottom:.1rem}
   .scene-area{overflow:hidden;background:#edf0ed}
   .controls{padding-block:.18rem .26rem;border-top:1px solid var(--line)}
-  .distance-heading{display:flex;justify-content:center;align-items:baseline;gap:.45rem;font-size:.8rem;color:var(--muted);font-weight:600}
-  output{min-width:3.1em;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:700}
   .distance-adjust{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:.62rem;align-items:center}
   .range{width:100%;height:44px;accent-color:var(--accent);margin:0}
-  .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.25rem;padding-bottom:env(safe-area-inset-bottom,0px);border-top:1px solid var(--line)}
+  .object-slider {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+  }
+  .object-slider::-webkit-slider-runnable-track {
+    height: .32rem;
+    border-radius: 999px;
+    background: #d1d5db;
+  }
+  .object-slider::-moz-range-track {
+    height: .32rem;
+    border-radius: 999px;
+    background: #d1d5db;
+  }
+  .object-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 2rem;
+    height: 2rem;
+    margin-top: -.84rem;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: #2563eb;
+    box-shadow: 0 2px 6px #2563eb59;
+  }
+  .object-slider::-moz-range-thumb {
+    box-sizing: border-box;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: #2563eb;
+    box-shadow: 0 2px 6px #2563eb59;
+  }
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .25rem;
+    padding-block: .2rem calc(env(safe-area-inset-bottom, 0px) + .25rem);
+    border-top: 1px solid var(--line);
+  }
+  .actions button {
+    min-height: 3.35rem;
+    border-radius: .7rem;
+    font-size: .9rem;
+    font-weight: 600;
+  }
   button[aria-pressed="true"]{background:var(--active);color:var(--accent)}
   .overlay{position:fixed;inset:0;z-index:60;display:grid;align-items:end;justify-items:center}
   .backdrop{position:absolute;inset:0;background:#13242c80}

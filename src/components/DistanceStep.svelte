@@ -6,7 +6,7 @@
   export let step: (direction: -1 | 1) => void;
 
   const HOLD_DELAY_MS = 350;
-  const REPEAT_INTERVAL_MS = 160;
+  const REPEAT_INTERVAL_MS = 320;
   let timer: ReturnType<typeof setTimeout> | undefined;
   let pointer: number | undefined;
   let repeated = false;

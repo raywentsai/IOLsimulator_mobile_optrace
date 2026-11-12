@@ -39,6 +39,7 @@ MINIMUM_DENSITIES = {
 # where the credit card artwork passes the dense-reference convergence gate.
 LEVEL_OVERRIDES = {
     ('spherical_monofocal_dc_v1', 17): [(4096, 2010), (5120, 3005), (8192, None)],
+    ('spherical_monofocal_dc_v1', 18): [(4096, 2010), (5120, 3005), (8192, None)],
     ('vivity_inspired_v2_1_dc_v1', 12): [(12288, 7100), (16384, None)],
     ('vivity_inspired_v2_1_dc_v1', 18): [(4096, 2010), (5120, 3005), (8192, None)],
 }

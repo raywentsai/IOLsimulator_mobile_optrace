@@ -13,7 +13,7 @@
     85.6,
     53.98
   ],
-  "cardSvgCanonicalSha256": "494b2286f7bad516ea7c43c062e69a7ecfca92b4e778a8a05918726f448834b5",
+  "cardSvgCanonicalSha256": "4a302d42e3ca76ec730fc668db8ebc79edb84443d696502d7e570d540764c02f",
   "assumptions": "existing frozen IOL model and PSFs; on-axis shift-invariant scalar-Y",
   "background": "independent infinity PSF; never blur background with a near node",
   "software": {
@@ -67,10 +67,10 @@
           "centroidErrorTanTheta": 6.283299571384175e-08,
           "coverageAreaRelativeError": -3.6144303222629404e-06,
           "file": "spherical_10_8192.png",
-          "bytes": 173896,
-          "fileSha256": "f34fe3c01c4758b62da3e190092bc16cd5666c56dedf71c7dbd6f7a2cd7be426",
-          "decodedRgbaSha256": "c9ef7990c0a375ca9d1395acd56d9746cd07bf3cf4c8a09f392ed53fdd016b98",
-          "maxLinearQuantizationError": 0.00012210003206824215
+          "bytes": 180014,
+          "fileSha256": "9bdecb63b51c88603ae1c9a5435ced7f9911cfdb09bfe6403fa1f8a08b8def66",
+          "decodedRgbaSha256": "cd9b64f709d0f794e71414f66ce229974716109556b5fdfdd9dd5f1e99ba346d",
+          "maxLinearQuantizationError": 0.00012209994940574838
         }
       ]
     },
@@ -119,10 +119,10 @@
           "centroidErrorTanTheta": 1.3494978917698852e-07,
           "coverageAreaRelativeError": -3.209679595994608e-06,
           "file": "spherical_11_8192.png",
-          "bytes": 196280,
-          "fileSha256": "d874ad51286a7643a63c816b56f5072e0ce6f1ce848bbe2b0274d290864d40ab",
-          "decodedRgbaSha256": "81f3f341cf020ddd87ed1ec233bb53c7f3443cc2dafd48b8d3571e92a8ef2bd0",
-          "maxLinearQuantizationError": 0.00012210010190646806
+          "bytes": 204142,
+          "fileSha256": "b1636aada6703e24134ed7e9b3a99f3abc2109f7ff4882662a6b0d14d1162863",
+          "decodedRgbaSha256": "0e97fd6b3f052d9e7dedd3ad4cb4d6f05cf8ada3427a692fafcb77f1b2e2a6fe",
+          "maxLinearQuantizationError": 0.0001221000957794642
         }
       ]
     },
@@ -171,10 +171,10 @@
           "centroidErrorTanTheta": 6.795267388096014e-08,
           "coverageAreaRelativeError": -2.339903049985992e-06,
           "file": "spherical_12_8192.png",
-          "bytes": 220399,
-          "fileSha256": "996bda6bcbff840547fab1287ccd2ea760c7f73eadd9bbbf9c315e9223a5ff9b",
-          "decodedRgbaSha256": "0c2688c4d942921f3d0830fc673daa998a70f34e3b7448f5fdfddc92ecc7c684",
-          "maxLinearQuantizationError": 0.00012210000503420915
+          "bytes": 229236,
+          "fileSha256": "03c76793c380d34507a196f0a3464ee8da317af9f27e95108876c9cb0887b5ba",
+          "decodedRgbaSha256": "00606d8e017b0850c828c073246cb0fd69dc1bd552f135db641b600f6d8f38eb",
+          "maxLinearQuantizationError": 0.0001221000014951512
         }
       ]
     },
@@ -223,10 +223,10 @@
           "centroidErrorTanTheta": 9.556530261271042e-08,
           "coverageAreaRelativeError": -2.1192893046029226e-06,
           "file": "spherical_13_8192.png",
-          "bytes": 244807,
-          "fileSha256": "8d6a9c255a8eb703afddcb95ee563bb0d09de63079d1fb03001d796eb08808a1",
-          "decodedRgbaSha256": "2050204645720e01be60f83d91b05235b66519723964455734079b0886a723cc",
-          "maxLinearQuantizationError": 0.00012209982835564848
+          "bytes": 253450,
+          "fileSha256": "2d370dd8339b5c6ca3a393da733b3cb3ab5680637c2af631c6b9badcef1b32d3",
+          "decodedRgbaSha256": "3f2a9b43956b29aa75b5cf9f5b762a64f1a0f0973bd8fa47bfcc16a321392a0c",
+          "maxLinearQuantizationError": 0.000122099812767723
         }
       ]
     },
@@ -275,10 +275,10 @@
           "centroidErrorTanTheta": 3.422970118978115e-08,
           "coverageAreaRelativeError": -1.75559927995117e-06,
           "file": "spherical_14_8192.png",
-          "bytes": 269013,
-          "fileSha256": "b70c8df9088050d55afab65051613e474f76a106ae064ad257f6505ff92e819b",
-          "decodedRgbaSha256": "93b3d0c7b832b02974b35987b4d31078fd9a2452cce6defc6e9bf578d7526898",
-          "maxLinearQuantizationError": 0.0001221001109012361
+          "bytes": 280714,
+          "fileSha256": "431a41af09da3357f0aa7f24fafd0fe23902dff245ea5c92f556267878140f8b",
+          "decodedRgbaSha256": "e3362c13eb3e0c36992a6bd813342cd67d4a411c582cae3138b19ef8fd198bff",
+          "maxLinearQuantizationError": 0.0001221000679846318
         }
       ]
     },
@@ -327,10 +327,10 @@
           "centroidErrorTanTheta": 2.2762480471839194e-07,
           "coverageAreaRelativeError": -1.8367291220178217e-06,
           "file": "spherical_15_8192.png",
-          "bytes": 295306,
-          "fileSha256": "cd520aa587819570e3dbe56c5b47da95740a737c18f46d730dc5898d46c8439a",
-          "decodedRgbaSha256": "8d7efb193885bea49a57ce3620ad408dc1062a5b53d4b76a9ae1f8e94efa2edb",
-          "maxLinearQuantizationError": 0.00012209999645945713
+          "bytes": 307405,
+          "fileSha256": "f5b592e9052809109b021a5d7ec05660bff792bf8e3823e6385d5af2c20393d9",
+          "decodedRgbaSha256": "02ba2c03f70e6e7e7bfc72b7fff0b612e33a840a832b519de62ac2cd1ddd6402",
+          "maxLinearQuantizationError": 0.00012210004723411938
         }
       ]
     },
@@ -379,10 +379,10 @@
           "centroidErrorTanTheta": 6.204635413109224e-08,
           "coverageAreaRelativeError": -1.4223925822731687e-06,
           "file": "spherical_16_8192.png",
-          "bytes": 325618,
-          "fileSha256": "43a5400fc49831d40bd4b4c57f41b2ef244f5715100f80ae3cea0ccbb481db5e",
-          "decodedRgbaSha256": "ba3841f68ede0634ab80dec3b6036ffdc108258acbc93b8d179710985e681189",
-          "maxLinearQuantizationError": 0.0001220999534939926
+          "bytes": 335683,
+          "fileSha256": "4a1c16acee6f5875a8072ab9b73028fc86d0063783e845bd04c235c6dcbeaca0",
+          "decodedRgbaSha256": "8d17da9a4940b983f604c86c0b7673dde0a305d0942c13ff006812c798d9454a",
+          "maxLinearQuantizationError": 0.00012209986963294616
         }
       ]
     },
@@ -432,10 +432,10 @@
           "centroidErrorTanTheta": 6.931963843348576e-08,
           "coverageAreaRelativeError": -1.0352270097824245e-06,
           "file": "spherical_17_4096.png",
-          "bytes": 115854,
-          "fileSha256": "ad3c73aceaab8e32deb2f846814a6af8b5ed827bbc86299ffad7b667cbea5d8a",
-          "decodedRgbaSha256": "1f983015e5485df7795552da89d2aae95b52c164a12ce3cb535f83d0150177a5",
-          "maxLinearQuantizationError": 0.00012209960205245007
+          "bytes": 120559,
+          "fileSha256": "bf3ed71771efe01ec8c5c97b92a3f80d868edcabc6b8f5b42a21eee9fbe8eed1",
+          "decodedRgbaSha256": "0d556695ec29a444d6695018df5f9fa353b87f7cb13cd366d3373f32bcb15782",
+          "maxLinearQuantizationError": 0.00012209969129040044
         },
         {
           "width": 899,
@@ -478,10 +478,10 @@
           "centroidErrorTanTheta": 7.367765871774321e-08,
           "coverageAreaRelativeError": -1.1409727245226264e-06,
           "file": "spherical_17_5120.png",
-          "bytes": 165315,
-          "fileSha256": "09e9e02a07dbb49edc8f8a6af4aa7fc44e9307371fd8e64634bbe8a1686612a3",
-          "decodedRgbaSha256": "7b72d213e018ebb85450101bdd970bd1455678d95d177f9ef581d4b93be5922c",
-          "maxLinearQuantizationError": 0.0001220993401608644
+          "bytes": 172895,
+          "fileSha256": "b8662deee6f3eea477a680d6e9d778accd51e8d4d55df4ef35273bb1dbe9cbd7",
+          "decodedRgbaSha256": "70b32007f478da185c8e12043012138d060c24807e52cce9f83e23c4eb7870b4",
+          "maxLinearQuantizationError": 0.00012210003956680815
         },
         {
           "width": 1438,
@@ -523,10 +523,10 @@
           "centroidErrorTanTheta": 3.4789441427239e-08,
           "coverageAreaRelativeError": -1.190238633097529e-06,
           "file": "spherical_17_8192.png",
-          "bytes": 352719,
-          "fileSha256": "98611abccea8ba97103a8e28f4de3559db4bdd5b658d2d47a399165a5f0bd785",
-          "decodedRgbaSha256": "6a36c63a43b2735cbad9fce3102737793776623483f847f17a8906a711d35107",
-          "maxLinearQuantizationError": 0.00012210005989277128
+          "bytes": 366610,
+          "fileSha256": "c26c24026830bee343001430129730331fc228dfe275dafd9bf10e9f7f5bef82",
+          "decodedRgbaSha256": "09905b5ce74ff950f944f07a50bbfe4c66743cfa7864f064140af4fbb1267fef",
+          "maxLinearQuantizationError": 0.00012210005135793178
         }
       ]
     },
@@ -568,6 +568,7 @@
             -1.4727009173263852e-06,
             -0.04857842509734833
           ],
+          "maxOutputDensity": 2010,
           "coverageCentroidTanTheta": [
             -1.6080213203373643e-06,
             -0.04857827892788927
@@ -575,10 +576,56 @@
           "centroidErrorTanTheta": 1.9919117007088568e-07,
           "coverageAreaRelativeError": -1.1240651844879324e-06,
           "file": "spherical_18_4096.png",
-          "bytes": 126126,
-          "fileSha256": "9e79b4808ca7fd0574920ae0014c4117aaacd678565852946fadf5c611bc3123",
-          "decodedRgbaSha256": "49c94e329b7da53ca02584367445fe1cde95e921ab3949d845ad49d3ba62de82",
-          "maxLinearQuantizationError": 0.0001220991449293184
+          "bytes": 131460,
+          "fileSha256": "7de3098f5fd22f05fa8f2b506fcb56e6734e8fca011b565682f10ed101f92383",
+          "decodedRgbaSha256": "27b0db6befb036396bf864c5f2733bc6f9705486848f7102896a47b56da74fb0",
+          "maxLinearQuantizationError": 0.00012209999502843516
+        },
+        {
+          "width": 943,
+          "height": 651,
+          "density": 5120,
+          "pixelsPerTanTheta": [
+            5120.716510903427,
+            5115.063192128772
+          ],
+          "extentTanTheta": [
+            -0.09207695817490494,
+            0.09207695817490494,
+            -0.11221757746478873,
+            0.015053577464788732
+          ],
+          "cardPixels": [
+            789,
+            497
+          ],
+          "cardExtentTanTheta": [
+            -0.07704,
+            0.07704,
+            -0.097164,
+            0
+          ],
+          "kernelPixels": [
+            155,
+            155
+          ],
+          "kernelEnergy": 1.0000000000000002,
+          "expectedCoverageCentroidTanTheta": [
+            -1.593722569166541e-06,
+            -0.048578538778781516
+          ],
+          "maxOutputDensity": 3005,
+          "coverageCentroidTanTheta": [
+            -1.5786339600349795e-06,
+            -0.048578210630428366
+          ],
+          "centroidErrorTanTheta": 3.2849506510845283e-07,
+          "coverageAreaRelativeError": -1.2050183803014036e-06,
+          "file": "spherical_18_5120.png",
+          "bytes": 186685,
+          "fileSha256": "fbf5691779c8bc1c9e466024ed513743259ffa5ab8a4facf1abcd8a073530352",
+          "decodedRgbaSha256": "be8bb94e0da340da3be5bca1990eabc37f6386075b09e766f96ae80a7001860e",
+          "maxLinearQuantizationError": 0.0001221001029632074
         },
         {
           "width": 1508,
@@ -620,10 +667,10 @@
           "centroidErrorTanTheta": 1.7661074044712633e-07,
           "coverageAreaRelativeError": -1.179247450133758e-06,
           "file": "spherical_18_8192.png",
-          "bytes": 381520,
-          "fileSha256": "1204734f3ed1b9c721772235e95e5a2ddae23fb00d55c7103f4d78ecda498e58",
-          "decodedRgbaSha256": "777dc51c17944b34e7b9d6988ea1f9b501c2231e00cfa29a141294e8aad0d036",
-          "maxLinearQuantizationError": 0.00012210008554636165
+          "bytes": 397707,
+          "fileSha256": "2e19ced519c699f672368e3c6b79334e113dc943f6e8f70e8d89ff0369a693b2",
+          "decodedRgbaSha256": "dd951628766ec2d15a6a63fffe52ce2fee9883b4b5e6467c67393e42c329a58b",
+          "maxLinearQuantizationError": 0.0001221000329756812
         }
       ]
     },
@@ -672,10 +719,10 @@
           "centroidErrorTanTheta": 2.936216675666869e-08,
           "coverageAreaRelativeError": -1.048493111888149e-06,
           "file": "spherical_19_8192.png",
-          "bytes": 409687,
-          "fileSha256": "01164e71760ef03fe09b8b47a9e6e097facea5f687d111a7e42eb31d4a3031ad",
-          "decodedRgbaSha256": "0e68a3448bad137d2a075fb3d8b7c61b12d760759ac933048505375548f15519",
-          "maxLinearQuantizationError": 0.00012210007459330258
+          "bytes": 428798,
+          "fileSha256": "5e752904a474e0bf0b7f6305d438bf344f584904b5bec4a0618c30968d52d2c6",
+          "decodedRgbaSha256": "3b3269f6daa9f5372e00a8a082e88afd886d397ff862affcc44bc7ac6a31c4de",
+          "maxLinearQuantizationError": 0.00012210007459321042
         }
       ]
     },
@@ -724,10 +771,10 @@
           "centroidErrorTanTheta": 1.558351072858668e-07,
           "coverageAreaRelativeError": -8.95332064154708e-07,
           "file": "spherical_20_4096.png",
-          "bytes": 145912,
-          "fileSha256": "f976baaa9f01edfc819606e870431a6bd34ef76105ae2cdd40d74ba4d9fe6145",
-          "decodedRgbaSha256": "638740edc19e3336da258787e3ab71c5b1d0427afb1e68303ebe619eaecd1f2d",
-          "maxLinearQuantizationError": 0.0001220996673813035
+          "bytes": 152375,
+          "fileSha256": "2fe02c6960ea6cc79d53c940e5539dca7e59b154d6483c4c6730a793e9965f1e",
+          "decodedRgbaSha256": "9aa20bd9907507b2f1c6c054402a77dcf6c04979238329c5e1e1ebf364213b4d",
+          "maxLinearQuantizationError": 0.00012209955864894706
         },
         {
           "width": 1648,
@@ -769,10 +816,10 @@
           "centroidErrorTanTheta": 6.035598441079135e-08,
           "coverageAreaRelativeError": -8.643973954391981e-07,
           "file": "spherical_20_8192.png",
-          "bytes": 442881,
-          "fileSha256": "9e8d2dbae13c2c85ef9c665437d65af81f4b8d3c595f3b82210d2098f0734fdc",
-          "decodedRgbaSha256": "c9d0b6240bf3fb91b5c4de111db7c4bc0e35a981f4e7d886bd14d4599ac44015",
-          "maxLinearQuantizationError": 0.0001221000211727441
+          "bytes": 462747,
+          "fileSha256": "35c5197e72b5743fb2b10e835724993049905bbdd4d1fc97b3b470edc254467f",
+          "decodedRgbaSha256": "cd1e994b01612d610ff43cfc1838df72b803f40ece84c537123774dcfd0983e5",
+          "maxLinearQuantizationError": 0.00012210000508483532
         }
       ]
     },
@@ -821,10 +868,10 @@
           "centroidErrorTanTheta": 1.354743287538954e-07,
           "coverageAreaRelativeError": -7.272291051574342e-07,
           "file": "spherical_21_4096.png",
-          "bytes": 156974,
-          "fileSha256": "20d213810dca619d0fb78e2383c00f0a91d19d949a79233a7481ae63a317bf43",
-          "decodedRgbaSha256": "f5b897b2a76870a92b0dce26f30cba29087914d93bb9cc37cd44e68d8cee5bda",
-          "maxLinearQuantizationError": 0.0001220999153931368
+          "bytes": 161076,
+          "fileSha256": "30cda1b84e4da8c8e2c6030de1d6f116654c8b2ff293e86d3799d6feb0eab26d",
+          "decodedRgbaSha256": "6586312d85f49e7ab75ba0c3d6e1678994890e9d8e8e5e619cd56984321ac171",
+          "maxLinearQuantizationError": 0.00012209987958355928
         },
         {
           "width": 1719,
@@ -866,10 +913,10 @@
           "centroidErrorTanTheta": 4.8273763745481265e-09,
           "coverageAreaRelativeError": -7.88590670097733e-07,
           "file": "spherical_21_8192.png",
-          "bytes": 476226,
-          "fileSha256": "793b4ea36ba941ce2de29b7f6cb3f8690f92989048a89d35f2160b08453d5ba3",
-          "decodedRgbaSha256": "6c14c0fb7a4e3814014e975b6d94efc51028ac8558e82a48c81a35b3e8d9c058",
-          "maxLinearQuantizationError": 0.00012209999473578037
+          "bytes": 498034,
+          "fileSha256": "8037834471c9a2f6d92738aa2e889bab59545f09a461d3fdd5f0d15a39b7095b",
+          "decodedRgbaSha256": "04b8191e4054b8dbe3c7c83327753e9e1dc05fe1c2d55f50fc70fe5ceb8f2fc9",
+          "maxLinearQuantizationError": 0.00012210001985379915
         }
       ]
     },
@@ -918,9 +965,9 @@
           "centroidErrorTanTheta": 1.0247482401700782e-07,
           "coverageAreaRelativeError": -7.416477928456899e-07,
           "file": "spherical_22_4096.png",
-          "bytes": 165811,
-          "fileSha256": "ce51667b4604d9c98f7e88277c0282f5533f1e47be7a7ade99e7e868c837b8ba",
-          "decodedRgbaSha256": "76f959a8108401badd1ee73b858cc024aa9ba3988d372d2b46a4b949c9c2f2aa",
+          "bytes": 174018,
+          "fileSha256": "6dc61ac18b208ffabff3261cdc245d9f9ceae8c091aa2dcd0a2933c3ebc125b8",
+          "decodedRgbaSha256": "4a6a0edcd437f4a9a250f702cc5b5f199d0d66fcc449ce9000c4f68ad1c7c65f",
           "maxLinearQuantizationError": 0.0001221000959415343
         },
         {
@@ -963,10 +1010,10 @@
           "centroidErrorTanTheta": 6.881208069531536e-08,
           "coverageAreaRelativeError": -6.748554546298635e-07,
           "file": "spherical_22_8192.png",
-          "bytes": 507771,
-          "fileSha256": "939db42bacfb1b3d18e4a88d3465a3a15cd0ddbc9dfbd19420b16d9b2c2b9523",
-          "decodedRgbaSha256": "5e56cfca85fe221147d81c81e567cef373b89ba660321646e42c98aeb70b07e9",
-          "maxLinearQuantizationError": 0.0001221000387158222
+          "bytes": 531322,
+          "fileSha256": "deb9edfc2fcda2eb021da3353d1c5af3d56a2f15e160c394f856ceb7b33e3872",
+          "decodedRgbaSha256": "4e1f978b8c9aeb6969eb4925ef60b52b52164bab82342b7c6a2a0304f92e3ced",
+          "maxLinearQuantizationError": 0.00012210012073599064
         }
       ]
     },
@@ -1015,10 +1062,10 @@
           "centroidErrorTanTheta": 3.3921372684534634e-07,
           "coverageAreaRelativeError": -5.630985462357074e-07,
           "file": "spherical_23_4096.png",
-          "bytes": 178558,
-          "fileSha256": "62643367ba5c2f9cb6b19c937766e50daa4c0caac743d4d2a0435e1d6d3fe053",
-          "decodedRgbaSha256": "e241a7b3165a407c3a71bafc9827992e67b9eb430a83f0585eaa700973b2fb84",
-          "maxLinearQuantizationError": 0.00012210009088298168
+          "bytes": 186687,
+          "fileSha256": "0f0b7b60e7ec3120cc648a5e7a8680946993ae58d3eff29923f3129135554e48",
+          "decodedRgbaSha256": "cc9c88ca7245de115cab82a081239287f136f0c40b0687d1b1335939c9b61991",
+          "maxLinearQuantizationError": 0.00012210009088275964
         },
         {
           "width": 1859,
@@ -1060,10 +1107,10 @@
           "centroidErrorTanTheta": 5.604529317189131e-08,
           "coverageAreaRelativeError": -6.340133660298619e-07,
           "file": "spherical_23_8192.png",
-          "bytes": 545138,
-          "fileSha256": "0362377820f67f91fcdceca89cae9b1229e6d94ca394fe130ef77acc533a2535",
-          "decodedRgbaSha256": "918370960a5a999e2e59434b26a127c4033b131fbff6968896d1f726826c1124",
-          "maxLinearQuantizationError": 0.0001221001103089859
+          "bytes": 568734,
+          "fileSha256": "dc8d26cbf99e8fc47c11e6772886dd07722c493e04adb517303e7a9d5db13c9a",
+          "decodedRgbaSha256": "9455991c9e1bb7c16c1f4788ad2333b711a95fefe9600f086b87ed5b63a90c57",
+          "maxLinearQuantizationError": 0.00012210011030864675
         }
       ]
     },
@@ -1112,10 +1159,10 @@
           "centroidErrorTanTheta": 1.7498361750465367e-07,
           "coverageAreaRelativeError": -6.578414043501013e-07,
           "file": "spherical_24_4096.png",
-          "bytes": 190166,
-          "fileSha256": "e440dbd31ec0ff03d2be2e72a5419aa4c28014d881073f0fcc69292cb765c215",
-          "decodedRgbaSha256": "52e6f59cbb972472adc31e89638b2d7002945929acf6a1074e09eed8897104b5",
-          "maxLinearQuantizationError": 0.00012209948525965242
+          "bytes": 199055,
+          "fileSha256": "93bab78040ca4c45e77bcf596417758f615fb68212b9c867831408b0b2948b24",
+          "decodedRgbaSha256": "7e97d63843d6fb436c7138c5bb2588f34313fcdf02252c10d853d920fea0dc9c",
+          "maxLinearQuantizationError": 0.00012210006656965255
         },
         {
           "width": 1929,
@@ -1157,10 +1204,10 @@
           "centroidErrorTanTheta": 1.6063181524279114e-07,
           "coverageAreaRelativeError": -5.425113074331023e-07,
           "file": "spherical_24_8192.png",
-          "bytes": 580277,
-          "fileSha256": "66ff56581ebaa77de6a738db5f873d3f21a4c2878f4c097d31255bdee53c1a23",
-          "decodedRgbaSha256": "451682b5cae05238f5e78b177bae06bd8324cf6065b84aa828c8b5dd52e3a17d",
-          "maxLinearQuantizationError": 0.0001220999856963445
+          "bytes": 602113,
+          "fileSha256": "c72f1609ebc91a4648035e9f6a946327e9ddd2e0933c922d2d919522fe6ca3d9",
+          "decodedRgbaSha256": "9da6af4ea47460aa0435834d9156f407ad870fd7cb1a989f4d99e51a32ed14fa",
+          "maxLinearQuantizationError": 0.0001220999702779002
         }
       ]
     },
@@ -1209,10 +1256,10 @@
           "centroidErrorTanTheta": 2.4870861371726856e-07,
           "coverageAreaRelativeError": -5.76536564489416e-07,
           "file": "spherical_25_4096.png",
-          "bytes": 200600,
-          "fileSha256": "35cedd69cc88ddcbfba56346b494018a45e5aedd2430b2c83eb2fbaaa1ca508b",
-          "decodedRgbaSha256": "7984b71fff6499f8bb4bde41d11e2ffa6b23d33c9508d66928141e45dcf10824",
-          "maxLinearQuantizationError": 0.00012209958598836674
+          "bytes": 211230,
+          "fileSha256": "a109e09a84c865cd782a708bd2bf04ac462d13c081e5e801c973ac8103eb8ac1",
+          "decodedRgbaSha256": "0f8b7a38e4255084ee045448b8a6456d20f7f134268a669ccf4c4447ded9136f",
+          "maxLinearQuantizationError": 0.0001220998798191486
         },
         {
           "width": 1999,
@@ -1254,10 +1301,10 @@
           "centroidErrorTanTheta": 2.184463792663038e-09,
           "coverageAreaRelativeError": -6.115025679154229e-07,
           "file": "spherical_25_8192.png",
-          "bytes": 612521,
-          "fileSha256": "23d2cde7f6c840d3acfda8b73415ab758d9f7571cd96198ea908110c5f09c522",
-          "decodedRgbaSha256": "7ce2fc630d0ff492d6d98c468c4a8d554e5e576ded378d489936f36ab8417a29",
-          "maxLinearQuantizationError": 0.00012209993923306683
+          "bytes": 644600,
+          "fileSha256": "008de7427035442b705e2bb330f57d9b4494ff5381c3b62504baa7c8f6f6edac",
+          "decodedRgbaSha256": "0bcaecf6603c271592bc2090a4c5d9b7c3048537bb5da57154379d61eeb22401",
+          "maxLinearQuantizationError": 0.0001221000367449543
         }
       ]
     },
@@ -1306,10 +1353,10 @@
           "centroidErrorTanTheta": 2.8486817936552626e-07,
           "coverageAreaRelativeError": -3.7533447150295274e-07,
           "file": "spherical_26_4096.png",
-          "bytes": 213865,
-          "fileSha256": "8a0c22ec9cc0275fc217aedc34a0e833c9afcf025637263768bea19212e201a6",
-          "decodedRgbaSha256": "609e725351d4800c4f46b409b81521f62829bf68888f3a3fb9b0935c108945b5",
-          "maxLinearQuantizationError": 0.0001220998559532411
+          "bytes": 223219,
+          "fileSha256": "01b0c78cfbd1de30c213c819a3356f760f54b8d902d512a793049aa64d313359",
+          "decodedRgbaSha256": "63ea3ecf87dea8824158a26cc21e41e46a7b4c984690080418336f7da1d9dce1",
+          "maxLinearQuantizationError": 0.0001220998559530919
         },
         {
           "width": 2069,
@@ -1351,10 +1398,10 @@
           "centroidErrorTanTheta": 5.498338773145407e-08,
           "coverageAreaRelativeError": -3.3908126162440766e-07,
           "file": "spherical_26_8192.png",
-          "bytes": 649517,
-          "fileSha256": "1bb0b735c083702f3a205ebfecc6cb5099b765bbb2a871b58e6e66da6cdae184",
-          "decodedRgbaSha256": "d977a63a7b402534019a9d36392cb0f573787d2c17e3705b34f49b98c259bee8",
-          "maxLinearQuantizationError": 0.00012210009600555072
+          "bytes": 679329,
+          "fileSha256": "68082062e860e0c42a6f91e6319e3ca2d80c236ae0c420c3da93e09e5f96c07f",
+          "decodedRgbaSha256": "ec3612fb52ae22994dd55df832dad121f5008d143879e42f3c20552cb28e41e9",
+          "maxLinearQuantizationError": 0.00012210009600566174
         }
       ]
     },
@@ -1403,10 +1450,10 @@
           "centroidErrorTanTheta": 8.942832557890772e-08,
           "coverageAreaRelativeError": -5.200537958049978e-07,
           "file": "spherical_27_4096.png",
-          "bytes": 222312,
-          "fileSha256": "7bf4647b7ac366703e3d8a6461161f0387a4eaab15776bad630830479d939f02",
-          "decodedRgbaSha256": "e310b72540b542767dcee044be2ef7a23730aecba236c8e41f5034a11a51b20e",
-          "maxLinearQuantizationError": 0.00012209963740583696
+          "bytes": 233140,
+          "fileSha256": "93b0d682b041adcfe5a5dfbd66051455e0a486729a0129047b8c3f279e9ebf1a",
+          "decodedRgbaSha256": "0c0e74519f28cce86ff57900aef1e562d2885ffa67159a6b25b55c9bd734c013",
+          "maxLinearQuantizationError": 0.00012210000831280876
         },
         {
           "width": 2139,
@@ -1448,10 +1495,10 @@
           "centroidErrorTanTheta": 1.6474178469714966e-07,
           "coverageAreaRelativeError": -5.349141413146796e-07,
           "file": "spherical_27_8192.png",
-          "bytes": 683964,
-          "fileSha256": "888952db191532ed585ba04f4e2413ebe240a817c6b8f9f7adb0c5f1b34faea0",
-          "decodedRgbaSha256": "61e8a47cfdeea1c4b59e2df7752fcc913886546e470ea394802cdb2fe20cb152",
-          "maxLinearQuantizationError": 0.0001221001075764061
+          "bytes": 716650,
+          "fileSha256": "5e360836264c179ed5c5cf3bf1eb6e3ac0890471091411fb1d869ad6fb0e2755",
+          "decodedRgbaSha256": "47692bbe8998bb47be018be6b2afd4a577c92e70106957b6c06fc2e828057669",
+          "maxLinearQuantizationError": 0.00012210010522550885
         }
       ]
     },
@@ -1500,10 +1547,10 @@
           "centroidErrorTanTheta": 1.5980278956487716e-07,
           "coverageAreaRelativeError": -4.6441024426080446e-07,
           "file": "spherical_28_4096.png",
-          "bytes": 233495,
-          "fileSha256": "ff7bc33c3022e5c816bf34307dce9006778e4ad1d4f2b2503b46200f8659b85e",
-          "decodedRgbaSha256": "cb661153287a0b8348e1a71d05adfb6ff22d620b749fc0c4554f54a9eb5757fe",
-          "maxLinearQuantizationError": 0.00012209998941004052
+          "bytes": 247722,
+          "fileSha256": "2819ddf7bc983a78a1b335338fddf155ed2e755da4641a90ee745f64d60dc211",
+          "decodedRgbaSha256": "9303b03e0419a142b11a4f21a679e6c8e86fc946d60ea7c90571df33580216ff",
+          "maxLinearQuantizationError": 0.0001220998518655092
         },
         {
           "width": 2209,
@@ -1545,10 +1592,10 @@
           "centroidErrorTanTheta": 1.073183374538464e-07,
           "coverageAreaRelativeError": -4.395253497824214e-07,
           "file": "spherical_28_8192.png",
-          "bytes": 723622,
-          "fileSha256": "30531993b506a7f8e41fc491a5f1df02c2a1bdc8ee910c588952f916142410c2",
-          "decodedRgbaSha256": "67962e429e0e634d313e37b52dc70ef548fc93494b49361b472dd3a5ea9ac5bd",
-          "maxLinearQuantizationError": 0.00012209999629719803
+          "bytes": 760012,
+          "fileSha256": "d002a15d8eff2365a65e783bcc14b6058b2148ce96189665283d8cbe33f63d6a",
+          "decodedRgbaSha256": "029eff3a2d5839e61de5067646f5a2cc59d2f2abcf177e33d61d8a81b51013f8",
+          "maxLinearQuantizationError": 0.00012209998162460156
         }
       ]
     },
@@ -1597,10 +1644,10 @@
           "centroidErrorTanTheta": 1.576385356491031e-07,
           "coverageAreaRelativeError": -3.6635824185449195e-07,
           "file": "spherical_29_4096.png",
-          "bytes": 249340,
-          "fileSha256": "842f467d63bc87245834bbb12251c0b970b6ada26927f50dcc3188fb387d44a9",
-          "decodedRgbaSha256": "3b4ea33f2883393989b79828aa0a1c8763390df61abc85f7a301844c49a31a7c",
-          "maxLinearQuantizationError": 0.00012210009912905218
+          "bytes": 260387,
+          "fileSha256": "0ed2be013d5acc18f93c4d4301fbee51ed878934002c04fd4c27edb7672e3da9",
+          "decodedRgbaSha256": "951c228f5797584f0b5c5f78066cc710bb5c19eea759c6d94e2dc7c95d66b306",
+          "maxLinearQuantizationError": 0.00012210009912860809
         },
         {
           "width": 2280,
@@ -1642,10 +1689,10 @@
           "centroidErrorTanTheta": 1.4034421508306922e-07,
           "coverageAreaRelativeError": -3.8911515731765434e-07,
           "file": "spherical_29_8192.png",
-          "bytes": 761317,
-          "fileSha256": "0cb2f9b017d096848cb63facb2642c5fc45b5157211ffa70700f64a154f98e72",
-          "decodedRgbaSha256": "5c309a8dc1579383e62daa941d5c6919c82590fd72c6d3d35fe3dda4be0ad473",
-          "maxLinearQuantizationError": 0.00012210002093648864
+          "bytes": 798466,
+          "fileSha256": "b5a97f20ea0bc8716d6c10f16475f27c44fcb99b133fe7260e5113a2cc46c987",
+          "decodedRgbaSha256": "bd92709e293c37878a6a89eb41f5bc0a934dd393b75bc6b49b53cf6ddcae2f21",
+          "maxLinearQuantizationError": 0.00012210005564294857
         }
       ]
     },
@@ -1694,10 +1741,10 @@
           "centroidErrorTanTheta": 3.4767001062983827e-07,
           "coverageAreaRelativeError": -3.68326160238297e-07,
           "file": "spherical_30_4096.png",
-          "bytes": 262296,
-          "fileSha256": "c1c369c18236ff32ed07f99486e81be605fbf71208326310419209356d5cfe3e",
-          "decodedRgbaSha256": "291c509b4fbf032c75d363ec7fd11668853eb1f5f9002fec0b32799e51f44228",
-          "maxLinearQuantizationError": 0.0001221000915546666
+          "bytes": 273544,
+          "fileSha256": "cda5e1d4781f65c124f75a1aaba249537d66ff1840a690187d76443dc4f740e4",
+          "decodedRgbaSha256": "0559c1cc9b5b048829dbbffdc89d41aa55248f373755765a465a5f4336f83bdd",
+          "maxLinearQuantizationError": 0.00012210009155522172
         },
         {
           "width": 2350,
@@ -1739,10 +1786,10 @@
           "centroidErrorTanTheta": 1.686446037886238e-08,
           "coverageAreaRelativeError": -3.7819442366693323e-07,
           "file": "spherical_30_8192.png",
-          "bytes": 800835,
-          "fileSha256": "88e5b57623b58bb8af2c00e746943d9ad7f270bb209e8cc092a92bf4a9253668",
-          "decodedRgbaSha256": "89a2b66d9fe239f6e7c94780233c1490144b246a6437543dc5126c6e8bab6861",
-          "maxLinearQuantizationError": 0.00012210009361834917
+          "bytes": 834979,
+          "fileSha256": "0fa63527dc996fe0ea854a6688d468a2226af34206d6053d3a6f16cb34aff9b5",
+          "decodedRgbaSha256": "58937650f25ac7ec28afd09fbf29204e59146de23a1b5ba97137d9b78bdfb6ab",
+          "maxLinearQuantizationError": 0.00012210010923030534
         }
       ]
     },
@@ -1791,10 +1838,10 @@
           "centroidErrorTanTheta": 1.0914992831450631e-07,
           "coverageAreaRelativeError": -3.0271063522491204e-07,
           "file": "spherical_31_4096.png",
-          "bytes": 273302,
-          "fileSha256": "13e1eb67c0e69153ace12f0dbab9136a97facea59eb678d72a57cbe1c0b92460",
-          "decodedRgbaSha256": "8d102c0ddbfdab789303bf0a695e0b152a321078e7869644ba31d4877d1e6307",
-          "maxLinearQuantizationError": 0.0001221001058107074
+          "bytes": 286934,
+          "fileSha256": "4d4cad25ded352bc1a53020cc8594278efc0178f7c122042e3900e97e3f735e2",
+          "decodedRgbaSha256": "1c2d8420c2ed9c8e229aeb4a7d901cedd7704940c7e686f5ef83de59fddf0601",
+          "maxLinearQuantizationError": 0.00012209994208167707
         },
         {
           "width": 2422,
@@ -1836,9 +1883,9 @@
           "centroidErrorTanTheta": 1.3219856060631576e-07,
           "coverageAreaRelativeError": -3.282162236439845e-07,
           "file": "spherical_31_8192.png",
-          "bytes": 837945,
-          "fileSha256": "430590877925bf29d0b732b9d1f66c2eac0a1de07b9cb4ea4f3b05df9073d415",
-          "decodedRgbaSha256": "a6dafc856f4a9416261e3d9c7f08351505db0b35246ef0ebb60dff3d350620e6",
+          "bytes": 878348,
+          "fileSha256": "e94a20fc16c143ea12d1ce1c91c51a12a3ae02b7685d269645ab4cb0b84bfe81",
+          "decodedRgbaSha256": "47d6ff1b04c0c78e96f2a71cea14b52e1944ce2d290d2a3194eefe5844684c12",
           "maxLinearQuantizationError": 0.00012209999685341977
         }
       ]
@@ -1888,10 +1935,10 @@
           "centroidErrorTanTheta": 4.775515123106236e-08,
           "coverageAreaRelativeError": -3.446081877633844e-07,
           "file": "spherical_32_4096.png",
-          "bytes": 287298,
-          "fileSha256": "d41c927546727cb12eb32892f58c3605d5e0dd5087308796639df5e9857e1cf2",
-          "decodedRgbaSha256": "2eef7bb42df63452ccf326a41249c388b5140d4ec86c3a7fb54624bd3f1c1d9d",
-          "maxLinearQuantizationError": 0.0001221001069278138
+          "bytes": 298304,
+          "fileSha256": "9008da588ef7e58e01670551fc5c1707735f2bdde509dc7c6e7005b7359f6ce2",
+          "decodedRgbaSha256": "66fae6fcb9554fa1e5fdf373fc213eea75b6b0e8dc0b66fbb9be5e1b42d66c63",
+          "maxLinearQuantizationError": 0.00012209963745291041
         },
         {
           "width": 2492,
@@ -1933,10 +1980,10 @@
           "centroidErrorTanTheta": 1.302102608675588e-07,
           "coverageAreaRelativeError": -3.335463737430544e-07,
           "file": "spherical_32_8192.png",
-          "bytes": 875708,
-          "fileSha256": "1d267b6da548fbffad0ea277902034cdc94b75010fc90ed2ef539999ab3832da",
-          "decodedRgbaSha256": "0fca3c05ed8f3edbcb2e482d7f373ec09f46037da702fa7058eb9ad727a6581f",
-          "maxLinearQuantizationError": 0.0001221001168957292
+          "bytes": 911709,
+          "fileSha256": "caab4ec2b52560e272378ac571934de679949c652ccfa1cabb4d829aa2b16103",
+          "decodedRgbaSha256": "0f2bb7b3fd46e9d890801614dc4da04dd4651d363a60a0218d0f9b0a54cce5b3",
+          "maxLinearQuantizationError": 0.00012210011689561817
         }
       ]
     },
@@ -1985,10 +2032,10 @@
           "centroidErrorTanTheta": 2.271905008418768e-07,
           "coverageAreaRelativeError": -3.9292470122020973e-07,
           "file": "spherical_33_4096.png",
-          "bytes": 298375,
-          "fileSha256": "49534d2fcb8a124e6f867ccfd223fe8aac23e0933da825a0d7e1e006dfdb50b6",
-          "decodedRgbaSha256": "f78421bbad12fe22ee9172ef114eef203622992698db6f6ce7221f7d4ca4c072",
-          "maxLinearQuantizationError": 0.00012210003809043357
+          "bytes": 314192,
+          "fileSha256": "f1e528b0f0785fdbd6e8d6469aa5d2677f087a7c64122d572e34529644a9586e",
+          "decodedRgbaSha256": "8cafa6c7100c0637a976642e0719e552654e49db0889217c243d0723c7bc22ca",
+          "maxLinearQuantizationError": 0.00012210006887503067
         },
         {
           "width": 2562,
@@ -2030,10 +2077,10 @@
           "centroidErrorTanTheta": 5.767450500085997e-08,
           "coverageAreaRelativeError": -3.479868271316633e-07,
           "file": "spherical_33_8192.png",
-          "bytes": 900249,
-          "fileSha256": "6bc18a0dbe79816cd173810c5c4423804e1424959d0f15f084a3644b5ce8542e",
-          "decodedRgbaSha256": "f6f80312b161f5c966effa9cdad2e6117fcf47bcf49a41651f79ce3ab98a5236",
-          "maxLinearQuantizationError": 0.00012210010576352293
+          "bytes": 961968,
+          "fileSha256": "daf34c7af271368e43cb1efa96c2daca996c77317e14a907a1870e4b25fdda0c",
+          "decodedRgbaSha256": "ff2a9eed61dd47e66d635fde727850d5fa13955c1b0a36a4605dd9c9c9c9cde4",
+          "maxLinearQuantizationError": 0.0001221000687536833
         }
       ]
     },
@@ -2082,10 +2129,10 @@
           "centroidErrorTanTheta": 1.219186007115863e-07,
           "coverageAreaRelativeError": -3.1710637871107394e-07,
           "file": "spherical_34_4096.png",
-          "bytes": 313571,
-          "fileSha256": "7674acd60c2aee96d6744197a018665ce664091e30c28a1b7dc80259772ddd04",
-          "decodedRgbaSha256": "9fbeadb25ee309d1144e9047612ccb3e80af55ce1bbcfefa284c42251124af97",
-          "maxLinearQuantizationError": 0.0001220999570418213
+          "bytes": 328797,
+          "fileSha256": "00efea8167b29dc62ef008b49a9dc5f39ea0c412da220eafd1a51e81cd8b8fde",
+          "decodedRgbaSha256": "401a6d8fd05b63cc30df2caaaaa7d7c965a32dbda28f9067552928bbfd3eb5a5",
+          "maxLinearQuantizationError": 0.00012209999347223555
         },
         {
           "width": 2632,
@@ -2127,10 +2174,10 @@
           "centroidErrorTanTheta": 1.5844724320785008e-07,
           "coverageAreaRelativeError": -3.4628211154075217e-07,
           "file": "spherical_34_8192.png",
-          "bytes": 954517,
-          "fileSha256": "2b038d91eb0b58dfb1b34d2fb52e95f73bee226beadc2c60a0a2a63978850ecd",
-          "decodedRgbaSha256": "20d1ed5cc73b00c0e48baeaaa67d4dba13d2bd7dbdd41c4db025dc093b8f652b",
-          "maxLinearQuantizationError": 0.00012210010570101737
+          "bytes": 1004881,
+          "fileSha256": "98505f5973e702b0fe60a70cf90ddf0c0f82ceff0c5f96a86df66962cad4d215",
+          "decodedRgbaSha256": "52815b7ff914b3cfcc559a6f3ff60482b8cfd1dfa786475a654603641582fc4f",
+          "maxLinearQuantizationError": 0.00012210012124080905
         }
       ]
     },
@@ -2179,10 +2226,10 @@
           "centroidErrorTanTheta": 2.735094210150804e-07,
           "coverageAreaRelativeError": -2.424779564913493e-07,
           "file": "spherical_35_4096.png",
-          "bytes": 327556,
-          "fileSha256": "1b592d874d9a4aa55b0f60df80b4dd59f0a9e2e8fb3174476f791ad070bcec59",
-          "decodedRgbaSha256": "332c24ccea098681719abe41921b04a53673729277dc9d2e44f78193c416c899",
-          "maxLinearQuantizationError": 0.00012210007299184866
+          "bytes": 344281,
+          "fileSha256": "d62b1db0818ee54d841e5a9ebcf63e4659672d96a14e97b37268f645c17f0de8",
+          "decodedRgbaSha256": "77d1a0ca4eeb9ac702877298706794dc2d32ef21b102ef308429b0431af3220b",
+          "maxLinearQuantizationError": 0.00012210009186053306
         },
         {
           "width": 2702,
@@ -2224,10 +2271,10 @@
           "centroidErrorTanTheta": 1.7592206106490095e-07,
           "coverageAreaRelativeError": -2.3354252798313269e-07,
           "file": "spherical_35_8192.png",
-          "bytes": 1000974,
-          "fileSha256": "84ccca0898dc9e9eac9d357fffa57f6fefc03a695f8c179fe90119af55776513",
-          "decodedRgbaSha256": "71638966203efa6c511a0680158ba7b2c924c87d1664aa7e6fc39f59a45000ee",
-          "maxLinearQuantizationError": 0.0001221001207890593
+          "bytes": 1052671,
+          "fileSha256": "7ef902b49c6f8e89e8aa714e6d1a9283ec0998a1467a3e9db82dbcc63f43892f",
+          "decodedRgbaSha256": "a5d0b75218c52ad2aa818b235a236579b747d56b421806f467405ec9af4269cd",
+          "maxLinearQuantizationError": 0.00012209988152145357
         }
       ]
     },
@@ -2276,10 +2323,10 @@
           "centroidErrorTanTheta": 1.197094073408469e-07,
           "coverageAreaRelativeError": -2.6059642688203155e-07,
           "file": "spherical_36_4096.png",
-          "bytes": 343671,
-          "fileSha256": "07b5c1e75fa9e5cac615b1dab57add75e6538ccb9180d3ba5c3292b2733b16b1",
-          "decodedRgbaSha256": "acbf44da5278cd735f5957b6e5c25e5e0f9209e3fd0101aa282a883eeeb747bb",
-          "maxLinearQuantizationError": 0.00012209997278522788
+          "bytes": 361364,
+          "fileSha256": "3964e6c1869a37f076cc8f61641248badccb719d90d897bc0619a375d98896d0",
+          "decodedRgbaSha256": "c0517b23f79c88d32e3ae72f5ba0aa17c83d8c5b75f18925f2ea0d6c768f0623",
+          "maxLinearQuantizationError": 0.00012209959452957886
         },
         {
           "width": 2772,
@@ -2321,10 +2368,10 @@
           "centroidErrorTanTheta": 1.5907773651204437e-07,
           "coverageAreaRelativeError": -2.3683401950691518e-07,
           "file": "spherical_36_8192.png",
-          "bytes": 1050069,
-          "fileSha256": "b777c5a30af173e61f1a3ea8ec132cf18bada1703626b602c1febcc1feab1129",
-          "decodedRgbaSha256": "0df91ac8f60fc2b6b156a50178e5bb54146f9ea8483927ee5f5d089d410c2cc3",
-          "maxLinearQuantizationError": 0.0001221000724529464
+          "bytes": 1111560,
+          "fileSha256": "aadf32719791e75d79442bf3f2c57f72e6968962f2af33918217d03f976e4b8a",
+          "decodedRgbaSha256": "4cb8ba3545da75d351d9179473f2974e5ab62373cea17ec5747c6449a796c2e9",
+          "maxLinearQuantizationError": 0.00012210007245272436
         }
       ]
     },
@@ -2373,10 +2420,10 @@
           "centroidErrorTanTheta": 2.852424503489611e-07,
           "coverageAreaRelativeError": -1.795342932098265e-07,
           "file": "spherical_37_4096.png",
-          "bytes": 356851,
-          "fileSha256": "ab7b0b66b4b31a7994d80f072b6dccfac3c6b9b691e1f807eb67d0000f0788f1",
-          "decodedRgbaSha256": "6ce3049c5e800b0238dd0abd5e07d9e80d7424423e4fdada2f81e12ea8747deb",
-          "maxLinearQuantizationError": 0.00012209984228106485
+          "bytes": 365533,
+          "fileSha256": "c14bb520e8b591d2f0cd336271fab1471bc2620ddf544c505f81bfce142d3fa0",
+          "decodedRgbaSha256": "3db24efd79f1a9e19d2b71646dba3327174a1bdb60ba127222606357a0dbb2ea",
+          "maxLinearQuantizationError": 0.00012209991905165474
         },
         {
           "width": 2843,
@@ -2418,10 +2465,10 @@
           "centroidErrorTanTheta": 1.9701782758663676e-07,
           "coverageAreaRelativeError": -1.9781426574549954e-07,
           "file": "spherical_37_8192.png",
-          "bytes": 1099335,
-          "fileSha256": "adad8472be34200dc486c45ebc68f2014153d094a0d1e2f95e4f23eda972a1b9",
-          "decodedRgbaSha256": "ba3b2fa74e1db72bde60cbb14241feb3a284b3c92df47428ca713c9d9b4957c1",
-          "maxLinearQuantizationError": 0.00012210011694191447
+          "bytes": 1155308,
+          "fileSha256": "f14c3d92ebb1364884c800f2715c4e8c8c4c9e0ca4c8c069eb46885587a4f109",
+          "decodedRgbaSha256": "3dcd8a66ed470e93fc1f79152e66d8edc1f4752695f56f703c2e0bc6ef61b6d7",
+          "maxLinearQuantizationError": 0.00012210010166469054
         }
       ]
     },
@@ -2470,10 +2517,10 @@
           "centroidErrorTanTheta": 1.2842038834321564e-07,
           "coverageAreaRelativeError": -2.8220266301559604e-07,
           "file": "spherical_38_4096.png",
-          "bytes": 368805,
-          "fileSha256": "f7189aa59282c42688e361239dd1e70c11c047df17c8d002e42219ab6ed83807",
-          "decodedRgbaSha256": "084315bc34773243e5f74d400c93d13c0c4e1503b04dd3b2aca9914f25fd5dd9",
-          "maxLinearQuantizationError": 0.00012210001005075188
+          "bytes": 389919,
+          "fileSha256": "c13dfdce6f162f9c555b106455c614ae1a5b35eb0d8d8c21429176f0ae5b7d00",
+          "decodedRgbaSha256": "432177789bfe8407b696b81b7edb8769d53e322a64426eecac6231e9702ba142",
+          "maxLinearQuantizationError": 0.0001221000186468757
         },
         {
           "width": 2913,
@@ -2515,10 +2562,10 @@
           "centroidErrorTanTheta": 5.575127825714917e-08,
           "coverageAreaRelativeError": -2.54661605358919e-07,
           "file": "spherical_38_8192.png",
-          "bytes": 1141167,
-          "fileSha256": "138f1a384c96290f1644610ade7f1ce320cd40bf21eb5b996768c752f6bc3d81",
-          "decodedRgbaSha256": "35662b62ab36863e81a42645eee129d351d3f7e583268913d550e29cb32df8e9",
-          "maxLinearQuantizationError": 0.00012210005786617018
+          "bytes": 1190983,
+          "fileSha256": "1682f2a410b3f2af49b28fb28805c00c2c5bca4a63abc5a4a3d4352d4de45af5",
+          "decodedRgbaSha256": "1be164d16c88ae75bef4171ab50873744164b236fb70250851978988dd374386",
+          "maxLinearQuantizationError": 0.0001221000001480066
         }
       ]
     },
@@ -2567,10 +2614,10 @@
           "centroidErrorTanTheta": 2.7366565650926147e-07,
           "coverageAreaRelativeError": -1.7490924286711618e-07,
           "file": "spherical_39_4096.png",
-          "bytes": 376754,
-          "fileSha256": "5a8ca5fc88fc8994b8f106d55ad6e7b61533fd78a9007a8390ba327216e7fae8",
-          "decodedRgbaSha256": "456a4b22bdb5d0bbd65b37ed46ae306d1c3ca7b7f710d3a0a664fef9201685bf",
-          "maxLinearQuantizationError": 0.0001220999660360711
+          "bytes": 405032,
+          "fileSha256": "e654c5754211b7a192a133c547f2caecbc7e625351795e3b2c3617753f015447",
+          "decodedRgbaSha256": "6404ef12fb88a43d9fe774be36fe02ae630d272ddb2327b3580a5e345b87f60c",
+          "maxLinearQuantizationError": 0.00012210007671475953
         },
         {
           "width": 2983,
@@ -2612,10 +2659,10 @@
           "centroidErrorTanTheta": 5.053202918688587e-08,
           "coverageAreaRelativeError": -2.0776722153836857e-07,
           "file": "spherical_39_8192.png",
-          "bytes": 1177155,
-          "fileSha256": "fe81129a09df4429c4be1b83b7e73948d6aa865a96cc1339d1c73fb0e77a893f",
-          "decodedRgbaSha256": "39f6f35fab59cb703cc5681f3b863bb9ff8e28cae0f5e14ef0c5d946dad9a54a",
-          "maxLinearQuantizationError": 0.00012209996448264704
+          "bytes": 1248947,
+          "fileSha256": "86ee26c4ac4bb061420746d73bb3c615b818f314d457417e5ccbd6d0646d5538",
+          "decodedRgbaSha256": "73907f6741ff364752729e3bdfb4d0922bdc6bbddf6ddc449d8557d3df253740",
+          "maxLinearQuantizationError": 0.00012210007655644173
         }
       ]
     },
@@ -2664,10 +2711,10 @@
           "centroidErrorTanTheta": 1.1114688425949495e-07,
           "coverageAreaRelativeError": -1.6649550926839396e-07,
           "file": "spherical_40_4096.png",
-          "bytes": 398425,
-          "fileSha256": "2f905dcb991ea19d229836fe26aea0cf5c72025bd4ffcfe0e65725c244059276",
-          "decodedRgbaSha256": "86b9093999c4616b571c3edd0848d8592f68416042ee635848d5deeedcefe7d8",
-          "maxLinearQuantizationError": 0.00012210006377211258
+          "bytes": 422037,
+          "fileSha256": "1c979a1cc1c7432120676f069956abfb2805656782c4687f2c09f88d5b30d0e8",
+          "decodedRgbaSha256": "7345c8058ba76b3f5b45c5df9ee2a2d0017165b44fd6c56aff9b089464431fd6",
+          "maxLinearQuantizationError": 0.00012210006377144644
         },
         {
           "width": 3053,
@@ -2709,10 +2756,10 @@
           "centroidErrorTanTheta": 1.3110371053526737e-07,
           "coverageAreaRelativeError": -1.621096956672119e-07,
           "file": "spherical_40_8192.png",
-          "bytes": 1210564,
-          "fileSha256": "61d2454cb45a6a106f1199ee0a032cac2a8ba674f1ae564050f34404981d55c0",
-          "decodedRgbaSha256": "831a91d17ea6dcf55dff8861ac8395526b7274a8f8acae0bcbabfa68a8dec085",
-          "maxLinearQuantizationError": 0.00012210009634205932
+          "bytes": 1285135,
+          "fileSha256": "bf5be3e287a7b53df90b77484dc20652e92dd35e6e946bd87c9d5a841e3f675d",
+          "decodedRgbaSha256": "fce9ea2975891dcf0c0c54dfd65edd92554e06e45c60224259b7b49daeabc830",
+          "maxLinearQuantizationError": 0.00012210008742608147
         }
       ]
     }
