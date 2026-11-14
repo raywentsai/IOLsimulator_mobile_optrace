@@ -1,6 +1,5 @@
-import type { LensCurve } from '../optics/mapping.js';
-import { validateLensCurve } from '../optics/mapping.js';
-import iolCurvesData from './iol_curves.json';
+import { validateLensCurve, type LensCurve } from '../optics/mapping.ts';
+import iolCurvesData from './iol_curves.json' with { type: 'json' };
 
 /**
  * Load and validate IOL curves data.

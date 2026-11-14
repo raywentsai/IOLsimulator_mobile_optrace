@@ -4,6 +4,14 @@
 
 const MAX_UNIFORM_TAPS = 32;
 
+// One half of a symmetric, normalized discrete Gaussian.
+export function gaussianHalfKernel(sigma: number, radius = Math.ceil(4 * sigma)): number[] {
+  if (sigma === 0) return [1];
+  const weights = Array.from({ length: radius + 1 }, (_, i) => Math.exp(-0.5 * (i / sigma) ** 2));
+  const sum = weights.reduce((total, weight, i) => total + weight * (i === 0 ? 1 : 2), 0);
+  return weights.map(weight => weight / sum);
+}
+
 /**
  * Gaussian kernel data structure.
  */
@@ -19,20 +27,7 @@ function generateLinearSamplingKernel(sigma: number, maxPairs: number = 30): Gau
   // clamp large sigmas for performance
   const radius = Math.min(Math.ceil(4 * clampedSigma), maxPairs * 2);
   // radius = 4 to match SciPy’s default from the original Leung's work
-  const gaussian = (x: number) => Math.exp(-0.5 * (x * x) / (clampedSigma * clampedSigma));
-
-  const fullWeights: number[] = [];
-  for (let i = 0; i <= radius; i++) {
-    fullWeights.push(gaussian(i));
-  }
-
-  let sum = fullWeights[0];
-  for (let i = 1; i < fullWeights.length; i++) {
-    sum += 2 * fullWeights[i];
-  }
-  for (let i = 0; i < fullWeights.length; i++) {
-    fullWeights[i] /= sum;
-  }
+  const fullWeights = gaussianHalfKernel(clampedSigma, radius);
 
   const weights: number[] = [fullWeights[0]];
   const offsets: number[] = [0];

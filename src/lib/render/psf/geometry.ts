@@ -1,3 +1,5 @@
+import { calculateEffectiveCssPixelsPerMillimeter } from '../../optics/calibration.ts';
+
 export interface PsfEntry {
   model: string;
   objectVergenceD: number;
@@ -30,9 +32,7 @@ export function pixelsPerRetinalMm(entry: PsfEntry, cssPxPerMm: number, viewingD
 export interface Kernel { data: Float64Array; width: number; height: number }
 
 export function calibratedCssPxPerMm(cssPxPerMmAtCalibration:number,calibrationScale:number,currentScale:number):number {
-  if(![cssPxPerMmAtCalibration,calibrationScale,currentScale].every(x=>Number.isFinite(x)&&x>0)) throw new Error('Invalid display calibration');
-  // A CSS pixel occupies more physical space when pinch zoom increases.
-  return cssPxPerMmAtCalibration*calibrationScale/currentScale;
+  return calculateEffectiveCssPixelsPerMillimeter(cssPxPerMmAtCalibration,currentScale,calibrationScale);
 }
 
 export function mobileSampling(cssWidth:number,cssHeight:number,ppm:number,distanceM:number,vergence:number,cardHeightMm:number,aspect:number,minProjectionMm:number):{width:number;height:number;scaleX:number;scaleY:number} {

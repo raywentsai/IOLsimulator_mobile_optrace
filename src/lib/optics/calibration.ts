@@ -16,7 +16,6 @@ export const MIN_VIEWING_DISTANCE_M = 0.2;
 export const MAX_VIEWING_DISTANCE_M = 1.0;
 export const DEFAULT_CALIBRATION_PPI = 170; // match original research setup
 export const DEFAULT_CSS_PX_PER_MM = DEFAULT_CALIBRATION_PPI / 25.4;
-export const DEFAULT_CALIBRATION_SCALE = 1;
 
 /**
  * Calibration storage key.
@@ -26,6 +25,7 @@ export const CALIBRATION_STORAGE_KEY = 'iolsimulator.calibration.v2';
 export interface CalibrationSnapshot {
   cssPxPerMmCal: number;
   calibScale: number;
+  devicePixelRatio?: number;
   viewingDistanceM?: number;
 }
 
@@ -93,13 +93,17 @@ export function calculateCreditCardShortEdgePixelsFromCssPixelsPerMillimeter(pix
 export function calculateEffectiveCssPixelsPerMillimeter(
   cssPxPerMmCal: number,
   currentScale: number,
-  calibScale: number
+  calibScale: number,
+  currentDpr = 1,
+  calibratedDpr = currentDpr
 ): number {
-  if (cssPxPerMmCal <= 0 || currentScale <= 0 || calibScale <= 0) {
+  if (![cssPxPerMmCal, currentScale, calibScale, currentDpr, calibratedDpr].every(
+    value => Number.isFinite(value) && value > 0
+  )) {
     throw new Error('Calibration and scale inputs must be positive');
   }
 
-  return cssPxPerMmCal * (currentScale / calibScale);
+  return (cssPxPerMmCal * calibScale / currentScale) * (calibratedDpr / currentDpr);
 }
 
 /**
@@ -171,6 +175,8 @@ export function parseCalibrationSnapshot(rawValue: string | null | undefined): C
     return {
       cssPxPerMmCal: parsed.cssPxPerMmCal,
       calibScale: parsed.calibScale,
+      ...(typeof parsed.devicePixelRatio === 'number' && Number.isFinite(parsed.devicePixelRatio) &&
+        parsed.devicePixelRatio > 0 ? {devicePixelRatio: parsed.devicePixelRatio} : {}),
       ...(typeof parsed.viewingDistanceM === 'number' &&
         parsed.viewingDistanceM >= MIN_VIEWING_DISTANCE_M && parsed.viewingDistanceM <= MAX_VIEWING_DISTANCE_M
         ? {viewingDistanceM: parsed.viewingDistanceM} : {})

@@ -1,3 +1,5 @@
+import { sigmaPixelsToArcmin } from './angular-scale.ts';
+
 /**
  * Visual acuity mapping utilities for converting between logMAR, defocus, 
  * and blur sigma values.
@@ -14,7 +16,7 @@ export interface LensCurve {
   logMAR: number[];
   manufacturer?: string;
   model?: string;
-  notes?: string;
+  source: { url: string; figure: string; subjects: number };
 }
 
 /**
@@ -51,6 +53,11 @@ export function sigmaFromLogMAR(
   return kSigma * sigmaRefPx;
 }
 
+// Preserve the simulator's existing reference display and provisional fit.
+export function provisionalSigmaArcmin(logMAR: number): number {
+  return sigmaPixelsToArcmin(sigmaFromLogMAR(logMAR), 1, 170 / 25.4);
+}
+
 /**
  * Linear interpolation function for VA curves
  * @param x Array of x values (defocus)
@@ -62,14 +69,13 @@ export function interpolateVA(
   x: number[], 
   y: number[], 
   xq: number
-): number {
+): number | null {
   if (x.length !== y.length || x.length === 0) {
     throw new Error('Invalid interpolation data');
   }
   
-  // Boundary extrapolation
-  if (xq <= x[0]) return y[0];
-  if (xq >= x[x.length - 1]) return y[y.length - 1];
+  if (!Number.isFinite(xq) || xq < x[0] || xq > x[x.length - 1]) return null;
+  if (xq === x[0]) return y[0];
   
   // Find interpolation interval
   let i = 0;
@@ -88,7 +94,7 @@ export function interpolateVA(
  * @param defocus Defocus in diopters
  * @returns logMAR value
  */
-export function logMARFromLensCurve(curve: LensCurve, defocus: number): number {
+export function logMARFromLensCurve(curve: LensCurve, defocus: number): number | null {
   return interpolateVA(curve.defocus_D, curve.logMAR, defocus);
 }
 
@@ -118,7 +124,7 @@ export function validateLensCurve(curve: LensCurve): {
   }
   
   if (!Array.isArray(curve.defocus_D) || !Array.isArray(curve.logMAR)) {
-    errors.push('Defocus and logMAR must be arrays');
+    return { valid: false, errors: ['Defocus and logMAR must be arrays'] };
   }
   
   if (curve.defocus_D.length !== curve.logMAR.length) {
@@ -136,9 +142,8 @@ export function validateLensCurve(curve: LensCurve): {
     }
   }
   
-  // Check non-negative logMAR
-  if (curve.logMAR.some(val => val < 0)) {
-    errors.push('logMAR values must be non-negative');
+  if (!curve.defocus_D.every(Number.isFinite) || !curve.logMAR.every(Number.isFinite)) {
+    errors.push('Defocus and logMAR must be finite');
   }
   
   return {

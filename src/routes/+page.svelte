@@ -1,24 +1,18 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { base } from '$app/paths';
+  import CardCalibration from '../components/CardCalibration.svelte';
   import DistanceStep from '../components/DistanceStep.svelte';
   import IolScene from '../components/IolScene.svelte';
   import SheetSelect from '../components/SheetSelect.svelte';
   import {
     simulationMethod, acuitySelection, physicsSelection, splitViewEnabled, masterDefocus,
-    targetRefraction, compareTargetRefraction, cssPxPerMmCal, calibrationScale,
-    currentViewportScale, effectiveCssPxPerMm, viewingDistance, hasCalibration
+    targetRefraction, compareTargetRefraction, primaryAcuity, comparisonAcuity
   } from '../lib/stores/app';
   import { acuityIols, physicsIols, type AcuityIolId, type PhysicsIolId } from '../lib/data/iol-models';
-  import {
-    MIN_VIEWING_DISTANCE_M, MAX_VIEWING_DISTANCE_M, calculatePPIFromPixelsPerMillimeter,
-    calculateCssPixelsPerMillimeterFromCreditCardShortEdge,
-    calculateCreditCardShortEdgePixelsFromCssPixelsPerMillimeter, validateDisplayParams
-  } from '../lib/optics/calibration';
-
   type Panel = 'about' | 'settings' | 'calibrate';
   let panel: Panel | null = null;
-  let cardShortEdgePx = 180;
-  let viewingDraft = 0.4;
+  let calibrationSaveDisabled = true;
 
   const acuityOptions = Object.entries(acuityIols).map(([value, {label}]) => ({value, label}));
   const physicsOptions = Object.entries(physicsIols).map(([value, {label}]) => ({value, label}));
@@ -35,8 +29,6 @@
 
   $: options = $simulationMethod === 'physics' ? physicsOptions : acuityOptions;
   $: selection = $simulationMethod === 'physics' ? $physicsSelection : $acuitySelection;
-  $: cardPpm = calculateCssPixelsPerMillimeterFromCreditCardShortEdge(cardShortEdgePx);
-  $: calibrationErrors = validateDisplayParams(viewingDraft, calculatePPIFromPixelsPerMillimeter(cardPpm)).errors;
 
   function closePanel() {
     if (panel === 'about') {
@@ -47,23 +39,6 @@
 
   function focusPanelButton(node: HTMLButtonElement) {
     node.focus({ preventScroll: true });
-  }
-
-  function openCalibration() {
-    cardShortEdgePx = Math.round(calculateCreditCardShortEdgePixelsFromCssPixelsPerMillimeter($effectiveCssPxPerMm));
-    viewingDraft = $viewingDistance;
-    panel = 'calibrate';
-  }
-
-  function saveCalibration() {
-    if (calibrationErrors.length) return;
-    const scale = window.visualViewport?.scale ?? 1;
-    cssPxPerMmCal.set(cardPpm);
-    calibrationScale.set(scale);
-    currentViewportScale.set(scale);
-    viewingDistance.set(viewingDraft);
-    hasCalibration.set(true);
-    panel = null;
   }
 
   function selectIol(side: 'primary' | 'compare', id: string) {
@@ -121,7 +96,7 @@
   </section>
 
   <nav class="actions" aria-label="Simulator controls">
-    <button type="button" on:click={openCalibration}>Calibrate</button>
+    <button type="button" on:click={() => panel = 'calibrate'}>Calibrate</button>
     <button type="button" aria-pressed={$splitViewEnabled} on:click={() => splitViewEnabled.update(value => !value)}>Compare</button>
     <button type="button" on:click={() => panel = 'settings'}>Settings</button>
   </nav>
@@ -135,21 +110,13 @@
       <header class="panel-header">
         <h2>{titles[panel]}</h2>
         {#if panel === 'calibrate'}
-          <button type="button" use:focusPanelButton disabled={calibrationErrors.length > 0} on:click={saveCalibration}>Done</button>
+          <button type="submit" form="screen-calibration" disabled={calibrationSaveDisabled}>Done</button>
         {:else}
           <button type="button" use:focusPanelButton on:click={closePanel}>{panel === 'about' ? 'Start' : 'Done'}</button>
         {/if}
       </header>
       {#if panel === 'calibrate'}
-        <p>Match this line to the short edge of a credit card, then set the distance from your eyes to the screen.</p>
-        <div class="card-stage"><div class="card-guide" style:width={`${cardShortEdgePx}px`}></div></div>
-        <label for="calibrate-card-size">Match the card edge <span>53.98 mm</span></label>
-        <input id="calibrate-card-size" class="range" type="range" min="107" max="420" step="1" bind:value={cardShortEdgePx} />
-        <label for="calibrate-viewing-distance">Eye-to-screen distance <span>{Math.round(viewingDraft * 100)} cm</span></label>
-        <input id="calibrate-viewing-distance" class="range" type="range" min={MIN_VIEWING_DISTANCE_M} max={MAX_VIEWING_DISTANCE_M}
-          step="0.01" bind:value={viewingDraft} />
-        {#each calibrationErrors as error}<p class="calibration-error">{error}</p>{/each}
-        <p class="note">Keep this distance, avoid browser zoom, and make sure you can focus on the screen. Use consistent brightness and room lighting when comparing lenses.</p>
+        <CardCalibration bind:saveDisabled={calibrationSaveDisabled} onSaved={closePanel} />
       {:else if panel === 'settings'}
         {#if $simulationMethod === 'acuity'}
           <label for="target-refraction-left">{$splitViewEnabled ? 'Left target refraction' : 'Target refraction'} <span>{$targetRefraction.toFixed(2)} D</span></label>
@@ -158,10 +125,18 @@
             <label for="target-refraction-right">Right target refraction <span>{$compareTargetRefraction.toFixed(2)} D</span></label>
             <input id="target-refraction-right" class="range" type="range" min="-3" max=".5" step=".25" bind:value={$compareTargetRefraction} />
           {/if}
-          <p class="note">The Vivity curve uses legacy samples. Clinical curves for SN60AT and SN60WF are pending.</p>
+          <p class="note">Binocular, distance-corrected cohort means. The Gaussian mapping is provisional.</p>
+          <div class="papers">
+            {#each [$primaryAcuity.curve, $splitViewEnabled ? $comparisonAcuity.curve : undefined] as curve, i}
+              {#if curve && (i === 0 || curve !== $primaryAcuity.curve)}
+                <a href={curve.source.url} target="_blank" rel="noreferrer">{curve.model} · {curve.source.figure} · n={curve.source.subjects}</a>
+              {/if}
+            {/each}
+          </div>
         {:else}
           <p class="note">Physics-based rendering uses fixed distance-corrected optical models.</p>
         {/if}
+        <a class="about-link" href={`${base}/acuity-calibration/`}>Gaussian / Acuity Calibration</a>
         <button type="button" class="about-link" on:click={() => panel = 'about'}>About the simulation</button>
       {:else}
         <p>Compare how intraocular lenses render near objects and distant scenes on a calibrated screen.</p>
@@ -253,11 +228,8 @@
   .panel .note{color:var(--muted);font-size:.81rem}
   .panel label{display:flex;justify-content:space-between;font-weight:650;font-size:.84rem;margin:.7rem 0 .2rem}
   .panel label span{color:var(--muted);font-variant-numeric:tabular-nums}
-  .card-stage{display:grid;place-items:center;min-height:50px;overflow:hidden;background:#f1f5f9;border-radius:.55rem}
-  .card-guide{height:20px;border:solid var(--accent);border-width:0 2px 2px;max-width:none}
-  .calibration-error{color:#a22626}
   .papers{display:grid;gap:.5rem;font-size:.82rem;color:var(--accent)}
   .papers a,.about-link{text-decoration:underline;text-underline-offset:.15em}
-  .about-link{min-height:44px;font-size:.82rem;color:var(--accent)}
+  .about-link{display:flex;align-items:center;min-height:44px;font-size:.82rem;color:var(--accent)}
   @media(min-width:720px){.panel{border-radius:1rem;margin-bottom:1rem}.scene-area{border-inline:1px solid var(--line)}}
 </style>
