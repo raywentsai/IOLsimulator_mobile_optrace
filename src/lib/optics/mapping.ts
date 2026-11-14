@@ -58,44 +58,22 @@ export function provisionalSigmaArcmin(logMAR: number): number {
   return sigmaPixelsToArcmin(sigmaFromLogMAR(logMAR), 1, 170 / 25.4);
 }
 
-/**
- * Linear interpolation function for VA curves
- * @param x Array of x values (defocus)
- * @param y Array of y values (logMAR)
- * @param xq Query x value
- * @returns Interpolated y value
- */
-export function interpolateVA(
-  x: number[], 
-  y: number[], 
-  xq: number
-): number | null {
-  if (x.length !== y.length || x.length === 0) {
-    throw new Error('Invalid interpolation data');
+/** Evaluate a validated clinical curve at the effective defocus in diopters. */
+export function evaluateLensCurve(curve: LensCurve, defocus: number) {
+  const { defocus_D: nodes, logMAR: values } = curve;
+  if (!Number.isFinite(defocus) || defocus < -4 || defocus > nodes[nodes.length - 1]) return null;
+  const [edge, adjacent] = nodes;
+  if (defocus < edge) {
+    // Continue the near-end slope in angular MAR without allowing acuity to improve.
+    const edgeMAR = 10 ** values[0];
+    const slope = Math.max(0, (edgeMAR - 10 ** values[1]) / (adjacent - edge));
+    return { logMAR: Math.log10(edgeMAR + (edge - defocus) * slope), method: 'extrapolated' } as const;
   }
-  
-  if (!Number.isFinite(xq) || xq < x[0] || xq > x[x.length - 1]) return null;
-  if (xq === x[0]) return y[0];
-  
-  // Find interpolation interval
-  let i = 0;
-  while (i < x.length - 1 && xq > x[i + 1]) {
-    i++;
-  }
-  
-  // Linear interpolation
-  const t = (xq - x[i]) / (x[i + 1] - x[i]);
-  return y[i] * (1 - t) + y[i + 1] * t;
-}
-
-/**
- * Get logMAR from IOL curve at specific defocus
- * @param curve IOL curve data
- * @param defocus Defocus in diopters
- * @returns logMAR value
- */
-export function logMARFromLensCurve(curve: LensCurve, defocus: number): number | null {
-  return interpolateVA(curve.defocus_D, curve.logMAR, defocus);
+  const right = nodes.findIndex(node => node >= defocus);
+  if (nodes[right] === defocus) return { logMAR: values[right], method: 'measured' } as const;
+  const left = right - 1;
+  const weight = (defocus - nodes[left]) / (nodes[right] - nodes[left]);
+  return { logMAR: values[left] * (1 - weight) + values[right] * weight, method: 'interpolated' } as const;
 }
 
 /**

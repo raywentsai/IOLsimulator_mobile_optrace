@@ -40,7 +40,7 @@
   let host:HTMLDivElement,canvas:HTMLCanvasElement,gpuCanvas:HTMLCanvasElement;
   let renderer:WebGLRenderer|null=null;
   let psfDisplay:PsfDisplay|null=null;
-  let gpuDisplay:GpuDisplay|null=null,gpuRequested=false,gpuDisabled=false,gpuVisible=false;
+  let gpuDisplay:GpuDisplay|null=null,gpuDisabled=false,gpuVisible=false;
   let nextGpuPaint:Promise<void>|null=null,gpuPaintId=0;
   let worker:PhysicsWorkerClient|null=null;
   let observer:ResizeObserver;
@@ -402,7 +402,7 @@
           }else await Promise.all(sides.map(loadSide));
         };
         let cpuSelections=selections;
-        const candidate=gpuRequested&&!gpuDisabled?gpuFrame(scene,library,sides,grid,opticalPlan,-defocus):null;
+        const candidate=gpuDisabled?null:gpuFrame(scene,library,sides,grid,opticalPlan,-defocus);
         if(candidate){
           try{
             const {frame:warm,regions}=candidate;
@@ -594,8 +594,8 @@
   onMount(()=>{
     disposed=false;
     const params=new URLSearchParams(window.location.search);
-    gpuRequested=params.get('composition')!=='cpu';diagnostics=params.get('diagnostics')==='1';
-    if(gpuRequested)gpuCanvas.addEventListener('webglcontextlost',gpuContextLost);
+    diagnostics=params.get('diagnostics')==='1';
+    gpuCanvas.addEventListener('webglcontextlost',gpuContextLost);
     const neutral=document.createElement('canvas');neutral.width=1;neutral.height=1;
     const context=neutral.getContext('2d')!;context.fillStyle='#eeeeee';context.fillRect(0,0,1,1);background=neutral;
     void startBackgroundLoad();
@@ -622,8 +622,8 @@
     displayedScene.lens===configuration.lens&&displayedScene.compareLens===configuration.compareLens;
   function acuityLabel(side:FrameAcuity['primary']):string {
     if(!side.curve)return 'Clinical defocus curve pending';
-    if(side.near===null||side.far===null)return 'Outside measured defocus range';
-    return `VA ≈ ${(10 ** -side.near).toFixed(2)} · binocular`;
+    if(side.near===null||side.far===null)return 'Outside supported defocus range';
+    return `VA ≈ ${(10 ** -side.near.logMAR).toFixed(2)} · ${side.near.method}`;
   }
 </script>
 

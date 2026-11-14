@@ -1,5 +1,7 @@
 # Phase 9B WebGL2 光學合成
 
+本頁記錄 Phase 9B 的驗收方式。現行正式首頁直接使用優化後的 WebGL2 路徑，數值驗證頁也會自動測試可用的 GPU。 [現行設定](phase13-acuity-calibration.md#渲染與驗證)
+
 以 `ff4059c` 為 CPU 基準。公開站以 `?composition=gpu` 開啟 GPU 驗收路徑，Physics 標籤會顯示 GPU 或 CPU。`validation?composition=gpu` 可執行數值驗證。實體手機尚未量測，因此一般入口使用 CPU。Gaussian 與 CPU Physics 共用原有 WebGL1 畫布，GPU 使用獨立的 WebGL2 畫布。[Phase 6 的原型驗收條件](phase6-rendering-performance-audit.md)
 
 ## 取樣、排程與資產

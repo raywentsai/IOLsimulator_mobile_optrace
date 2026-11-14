@@ -23,10 +23,8 @@
     const client=new PhysicsWorkerClient(new Worker(new URL('../../lib/render/psf/worker.ts',import.meta.url),{type:'module'}),
       new Uint8ClampedArray(0),reason=>client.dispose(reason));
     let gpu:GpuDisplay|null=null,gpuError=0,gpuCases=0;
-    if(new URLSearchParams(window.location.search).get('composition')==='gpu'){
-      try{gpu=new GpuDisplay(document.createElement('canvas'));gpuState='Running WebGL2 optical comparison…';}
-      catch{gpuState='WebGL2 unavailable. CPU validation continues.';}
-    }
+    try{gpu=new GpuDisplay(document.createElement('canvas'));gpuState='Running WebGL2 optical comparison…';}
+    catch{gpuState='WebGL2 unavailable. CPU validation continues.';}
     const images=new OpticalImageLoader({
       getOptical:key=>client.getOptical(key),
       registerOptical:async layer=>{if(gpu)await gpu.registerOptical(layer);return client.registerOptical(layer);}

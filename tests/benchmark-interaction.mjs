@@ -23,6 +23,7 @@ async function waitForFrame(page, fields) {
 
 async function setup(page, url, { split, lens, distance, card }) {
   url = new URL(url);
+  // Older comparison builds need the GPU opt-in.
   url.searchParams.set('composition', 'gpu');
   url.searchParams.set('diagnostics', '1');
   await page.goto(url.href);
@@ -103,8 +104,8 @@ const reports = [];
 try {
   for (const [version, url] of [['before', baseline], ['after', candidate]]) {
     for (const scenario of [
-      { name: '40 cm single', split: false, lens: 'zcb00', distance: .4, groups: [[2.4, 2.5, 2.6]] },
-      { name: '40 cm split', split: true, lens: 'zcb00', distance: .4, groups: [[2.4, 2.5, 2.6]] },
+      { name: '40 cm single', split: false, lens: 'zcb00', distance: .4, card: 361, groups: [[2.4, 2.5, 2.6]] },
+      { name: '40 cm split', split: true, lens: 'zcb00', distance: .4, card: 361, groups: [[2.4, 2.5, 2.6]] },
       { name: '100 cm split', split: true, lens: 'zcb00', distance: 1, card: 420, groups: [[1.4, 1.5], [3, 3.1], [3.9, 4]] },
       { name: '20 cm single', split: false, lens: 'vivity', distance: .2, card: 270, groups: [[1.7, 1.8]] }
     ]) {

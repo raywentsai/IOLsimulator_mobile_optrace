@@ -125,7 +125,7 @@
             <label for="target-refraction-right">Right target refraction <span>{$compareTargetRefraction.toFixed(2)} D</span></label>
             <input id="target-refraction-right" class="range" type="range" min="-3" max=".5" step=".25" bind:value={$compareTargetRefraction} />
           {/if}
-          <p class="note">Binocular, distance-corrected cohort means. The Gaussian mapping is provisional.</p>
+          <p class="note">Distance-corrected cohort means. Near-range extrapolations are labelled on the image. The Gaussian mapping is provisional.</p>
           <div class="papers">
             {#each [$primaryAcuity.curve, $splitViewEnabled ? $comparisonAcuity.curve : undefined] as curve, i}
               {#if curve && (i === 0 || curve !== $primaryAcuity.curve)}

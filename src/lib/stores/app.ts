@@ -1,10 +1,10 @@
 import { derived, writable } from 'svelte/store';
-import { getIOLDefocus, logMARFromLensCurve, provisionalSigmaArcmin } from '../optics/mapping';
+import { evaluateLensCurve, getIOLDefocus, provisionalSigmaArcmin } from '../optics/mapping';
 import { loadIOLCurves } from '../data/loader';
 import { acuityIols, type AcuityIolId, type PhysicsIolId } from '../data/iol-models';
 
-// UI defocus is negative for a finite object. Default object distance is 50 cm.
-export const masterDefocus = writable(-2);
+// 30 cm rounds to the nearest supported 0.1 D object-distance step.
+export const masterDefocus = writable(-3.3);
 export const splitViewEnabled = writable(false);
 export type SimulationMethod = 'acuity' | 'physics';
 export const simulationMethod = writable<SimulationMethod>('physics');
@@ -24,14 +24,14 @@ const selectedCompareLensCurve = derived(acuitySelection, ({ compare }) => curve
 
 function acuityMetrics(curveStore: typeof selectedLensCurve, refractionStore: typeof targetRefraction) {
   return derived([curveStore, masterDefocus, refractionStore], ([curve, defocus, refraction]) => {
-    const near = curve ? logMARFromLensCurve(curve, getIOLDefocus(defocus, refraction)) : null;
-    const far = curve ? logMARFromLensCurve(curve, getIOLDefocus(0, refraction)) : null;
+    const near = curve ? evaluateLensCurve(curve, getIOLDefocus(defocus, refraction)) : null;
+    const far = curve ? evaluateLensCurve(curve, getIOLDefocus(0, refraction)) : null;
     return {
       curve,
       near,
       far,
-      nearSigmaArcmin: near === null ? 0 : provisionalSigmaArcmin(near),
-      farSigmaArcmin: far === null ? 0 : provisionalSigmaArcmin(far)
+      nearSigmaArcmin: near === null ? 0 : provisionalSigmaArcmin(near.logMAR),
+      farSigmaArcmin: far === null ? 0 : provisionalSigmaArcmin(far.logMAR)
     };
   });
 }

@@ -11,7 +11,7 @@ export const CREDIT_CARD_SHORT_EDGE_MM = 53.98;
 /**
  * Display defaults.
  */
-export const DEFAULT_PHONE_VIEWING_DISTANCE_M = 0.4;
+export const DEFAULT_PHONE_VIEWING_DISTANCE_M = 0.3;
 export const MIN_VIEWING_DISTANCE_M = 0.2;
 export const MAX_VIEWING_DISTANCE_M = 1.0;
 export const DEFAULT_CALIBRATION_PPI = 170; // match original research setup

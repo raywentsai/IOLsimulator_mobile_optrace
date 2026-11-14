@@ -43,4 +43,16 @@ Vivity 與 SN60WF 的多國隨機試驗採相近的 4 m 明視流程，範圍同
 
 `d` 為模擬物距（m），近物查詢 `−1/d − R`，遠景查詢 `0 − R`，其中 `R` 是 target refraction。負的 R 把近物移向曲線中心，同時把無限遠移到正 defocus 端。光學無限遠以臨床圖表已標示的 0 D 為參考。原先遠景查詢單獨使用 R，本版將兩者統一。曲線內做 logMAR 線性插值，decimal VA 是 `10^(−logMAR)`。負的實測 logMAR 完整保留。
 
-超過來源範圍時，相應的畫面欄會顯示「Outside measured defocus range」。R=0 時，SN60WF 與 DFT015 可用至 40 cm，SN60AT 可用至 25 cm。單畫面和分割畫面各自查詢鏡片與屈光設定。標示的 VA 是研究族群平均曲線的換算，Gaussian 模糊仍採暫定模型。
+## 近端外插至 −4 D
+
+SN60WF 與 DFT015 在 −2.5 D 結束實測。從每款鏡片的 −2.5 D、−2.0 D 兩個實測點求最小解析角（MAR，arcmin）對近端 defocus 幅度的斜率。在固定瞳孔的幾何近似下，散焦造成的角模糊直徑隨 defocus 幅度增大。相關視覺實驗提供採用 MAR 作線性座標的依據，兩款鏡片各自的近端斜率取自上表。 [Smith 等，誘發散焦與視力實驗](https://pubmed.ncbi.nlm.nih.gov/2771329/) · [Ravikumar 等，角模糊直徑模型](https://pmc.ncbi.nlm.nih.gov/articles/PMC3580841/)
+
+設近端界線為 `D₀ = −2.5 D`，鄰點為 `D₁ = −2.0 D`。將兩點的 logMAR 以 `Mᵢ = 10^(logMARᵢ)` 轉成 MAR。對 `−4 ≤ D < D₀`，使用 `M(D) = M₀ + (D₀ − D) × max(0, (M₀ − M₁)/(D₁ − D₀))`，再以 `log10(M(D))` 換回 logMAR。零斜率下限避免近端外插推估視力反而改善。原始實測點保存在上表與 JSON，外插值由查詢當下計算。
+
+| 有效 defocus | SN60WF 外插 logMAR / decimal VA | DFT015 外插 logMAR / decimal VA |
+| ---: | ---: | ---: |
+| −3.0 D | 0.656 / 0.22 | 0.485 / 0.33 |
+| −3.5 D | 0.748 / 0.18 | 0.580 / 0.26 |
+| −4.0 D | 0.823 / 0.15 | 0.658 / 0.22 |
+
+SN60AT 在 −4 D 有實測資料。圖上 VA 標籤以 `measured` 標示實測節點、`interpolated` 標示實測點間的內插、`extrapolated` 標示估計的近端延伸。外插是研究族群平均曲線的模型推估，尚無所選 FDA 試驗在此區間的資料可直接驗證。超過有效 defocus 的支援範圍時，對應畫面欄位顯示「Outside supported defocus range」。每欄獨立套用自己的鏡片和 target refraction。
