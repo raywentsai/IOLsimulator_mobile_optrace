@@ -141,8 +141,9 @@
         <button type="button" class="about-link" on:click={() => panel = 'about'}>About the simulation</button>
       {:else}
         <p>Compare how intraocular lenses render near objects and distant scenes on a calibrated screen.</p>
-        <p><strong>Physics-based</strong> uses optrace point-spread functions.</p>
+        <p><strong>Physics-based</strong> uses geometric ray tracing through models of the eye and implanted lens to simulate retinal images. It draws on the open-source optrace project and its published research.</p>
         <div class="papers">
+          <a href="https://github.com/drocheam/optrace" target="_blank" rel="noreferrer">optrace · Open-source ray tracer</a>
           <a href="https://doi.org/10.1167/tvst.13.8.33" target="_blank" rel="noreferrer">Mendroch et al. · Functional Design Analysis (2024)</a>
           <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12758424/" target="_blank" rel="noreferrer">Mendroch et al. · Polychromatic Virtual Retinal Imaging (2025)</a>
         </div>

@@ -9,7 +9,7 @@ export const splitViewEnabled = writable(false);
 export type SimulationMethod = 'acuity' | 'physics';
 export const simulationMethod = writable<SimulationMethod>('physics');
 export const acuitySelection = writable<{ primary: AcuityIolId; compare: AcuityIolId }>({
-  primary: 'acrysof_iq_vivity', compare: 'sn60wf'
+  primary: 'sn60wf', compare: 'acrysof_iq_vivity'
 });
 export const physicsSelection = writable<{ primary: PhysicsIolId; compare: PhysicsIolId }>({
   primary: 'aspheric_monofocal_dc_v1', compare: 'vivity_inspired_v2_1_dc_v1'
