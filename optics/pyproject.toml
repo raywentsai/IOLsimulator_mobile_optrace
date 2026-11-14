@@ -9,6 +9,9 @@ dependencies = [
   "pillow>=11,<13",
   "pymupdf>=1.26,<2",
 ]
+
+[project.optional-dependencies]
+calibration = ["matplotlib>=3.10,<4"]
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

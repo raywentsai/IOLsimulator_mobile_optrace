@@ -1,4 +1,4 @@
-import { sigmaPixelsToArcmin } from './angular-scale.ts';
+import calibration from '../data/gaussian-calibration.json' with { type: 'json' };
 
 /**
  * Visual acuity mapping utilities for converting between logMAR, defocus, 
@@ -19,43 +19,10 @@ export interface LensCurve {
   source: { url: string; figure: string; subjects: number };
 }
 
-/**
- * Leung-style empirical mapping from logMAR loss to Gaussian sigma (reference pixels).
- *
- * x = max(0, logMAR_target - logMAR_base)
- * sigma_ref(px) = exp((x + 0.04533908) / 0.4001204)
- * sigma_app(px) = kSigma * sigma_ref(px)
- *
- * NOTE: This function returns sigma in reference pixel units. Convert to the
- * render pass pixel grid (texels) before applying WebGL blur.
- */
-export function sigmaFromLogMAR(
-  logMARTarget: number,
-  logMARBase: number = 0.0,
-  kSigma: number = 1.0
-): number {
-  const NO_BLUR_DEADBAND_LOGMAR = 0.02;
-
-  if (!Number.isFinite(logMARTarget) || !Number.isFinite(logMARBase) || !Number.isFinite(kSigma)) {
-    throw new Error('logMARTarget, logMARBase, and kSigma must be finite numbers');
-  }
-
-  if (kSigma < 0) {
-    throw new Error('kSigma must be non-negative');
-  }
-
-  const x = Math.max(0, logMARTarget - logMARBase);
-  if (x <= NO_BLUR_DEADBAND_LOGMAR) {
-    return 0;
-  }
-
-  const sigmaRefPx = Math.exp((x + 0.04533908) / 0.4001204);
-  return kSigma * sigmaRefPx;
-}
-
-// Preserve the simulator's existing reference display and provisional fit.
-export function provisionalSigmaArcmin(logMAR: number): number {
-  return sigmaPixelsToArcmin(sigmaFromLogMAR(logMAR), 1, 170 / 25.4);
+/** Added angular Gaussian sigma per axis for a reference 0.0 logMAR observer. */
+export function calibratedSigmaArcmin(targetLogMAR: number): number {
+  const loss = Math.max(0, targetLogMAR - calibration.baselineLogMAR);
+  return calibration.coefficients.scaleArcmin * Math.expm1(Math.LN10 * loss);
 }
 
 /** Evaluate a validated clinical curve at the effective defocus in diopters. */

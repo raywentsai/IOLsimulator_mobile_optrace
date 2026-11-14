@@ -479,14 +479,17 @@
         if(canvas.width!==width) canvas.width=width;
         if(canvas.height!==height) canvas.height=height;
         renderer!.updateImageTexture(cardTexture,cardCanvas!);
-        const sigmaPx=(arcmin=0)=>angularSigmaPixels(arcmin,distance,ppm*scale);
+        const sigmaPx=(arcmin=0)=>[
+          angularSigmaPixels(arcmin,distance,ppm*scale),
+          angularSigmaPixels(arcmin,distance,ppm*scaleY)
+        ] as const;
+        const primary={near:sigmaPx(acuity?.primary.nearSigmaArcmin),far:sigmaPx(acuity?.primary.farSigmaArcmin)};
+        const comparison=split?{near:sigmaPx(acuity?.comparison?.nearSigmaArcmin),
+          far:sigmaPx(acuity?.comparison?.farSigmaArcmin)}:undefined;
+        if(diagnostics)metrics.gaussian={primary,comparison};
         if(diagnostics){drawStart=performance.now();metrics.assetsReadyMs=drawStart-start;}
-        await renderer!.render(cardTexture,{width,height,splitPosition:.5,blurSigma:sigmaPx(acuity?.primary.nearSigmaArcmin),
-          compareBlurSigma:split?sigmaPx(acuity?.comparison?.nearSigmaArcmin):undefined,
-          backgroundBlurSigma:sigmaPx(acuity?.primary.farSigmaArcmin),
-          compareBackgroundBlurSigma:split?sigmaPx(acuity?.comparison?.farSigmaArcmin):undefined,
-          splitView:split,backgroundTextureId:backgroundTexture,backgroundNativeWidth:background.width,backgroundNativeHeight:background.height,
-          foregroundScale:1,foregroundNativeWidth:widthPixels/scale,foregroundNativeHeight:heightPixels/scaleY});
+        renderer!.render(cardTexture,{width,height,cardWidth:widthPixels,cardHeight:heightPixels,
+          primary,comparison,backgroundTextureId:backgroundTexture,backgroundAspect:background.width/background.height});
       } else {
         const loadStarted=performance.now();
         const empty=new Float32Array(0);
@@ -551,17 +554,28 @@
         if(disposed) return;
         status='Preparing card…';
         // The card becomes usable independently of the large background.
-        renderer?.dispose();renderer=new WebGLRenderer(canvas);
-        await renderer.initialize();
-        if(disposed)return;
-        backgroundTexture=await renderer.loadImageTexture(background);
-        // The first Gaussian frame uploads the actual sampled card; avoid
-        // uploading its much larger native SVG raster during initialization.
-        cardCanvas!.width=1;cardCanvas!.height=1;
-        cardTexture=await renderer.loadImageTexture(cardCanvas!);
+        installSceneTextures();
         observer=new ResizeObserver(resizeScene);observer.observe(host);
         ready=true;installBackground();
       }catch(e){loadController.abort();if(!disposed){error=String(e);status='';}}
+  }
+
+  function installSceneTextures():void {
+    renderer?.dispose();renderer=new WebGLRenderer(canvas);
+    renderer.initialize();
+    backgroundTexture=renderer.loadImageTexture(background);
+    // The first Gaussian frame uploads the card at its display sampling size.
+    cardCanvas!.width=1;cardCanvas!.height=1;
+    cardTexture=renderer.loadImageTexture(cardCanvas!);
+  }
+
+  function restoreSceneContext():void {
+    if(!ready||disposed)return;
+    try{
+      psfDisplay?.dispose();psfDisplay=null;
+      installSceneTextures();
+      retryRendering();
+    }catch(cause){error=String(cause);}
   }
 
   function installBackground():void {
@@ -596,17 +610,22 @@
     const params=new URLSearchParams(window.location.search);
     diagnostics=params.get('diagnostics')==='1';
     gpuCanvas.addEventListener('webglcontextlost',gpuContextLost);
+    canvas.addEventListener('webglcontextlost',keepSceneContext);
+    canvas.addEventListener('webglcontextrestored',restoreSceneContext);
     const neutral=document.createElement('canvas');neutral.width=1;neutral.height=1;
     const context=neutral.getContext('2d')!;context.fillStyle='#eeeeee';context.fillRect(0,0,1,1);background=neutral;
     void startBackgroundLoad();
     void initializeScene();
   });
+  function keepSceneContext(event:Event):void {event.preventDefault();}
   function resizeScene():void {viewportRevision++;}
   onDestroy(()=>{
     disposed=true;loadController.abort();backgroundController.abort();renderController.abort();pendingBackground?.release();backgroundAssetHandle?.release();
     prediction?.controller.abort();cancelPsfPrefetch();opticalImages.cancel();
     if(prefetchTimer!==null)clearTimeout(prefetchTimer);if(gpuPaintId)cancelAnimationFrame(gpuPaintId);
     gpuCanvas?.removeEventListener('webglcontextlost',gpuContextLost);
+    canvas?.removeEventListener('webglcontextlost',keepSceneContext);
+    canvas?.removeEventListener('webglcontextrestored',restoreSceneContext);
     observer?.disconnect();resetWorker('Scene disposed');gpuDisplay?.dispose();psfDisplay?.dispose();renderer?.dispose();
   });
   $: if(ready) {

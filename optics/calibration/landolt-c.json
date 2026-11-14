@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "sigmaUnit": "arcmin",
+  "sessions": [
+    {
+      "id": "phase13b-pilot",
+      "observerId": "pilot-01",
+      "protocol": "landolt-encoded-v1",
+      "protocolRevision": "e7ce76b",
+      "viewingDistanceCm": 30,
+      "baselineLogMAR": 0.0,
+      "baselineSource": "assumed",
+      "visionCorrection": null,
+      "ambientLighting": null,
+      "endpoint": "first loss of clear gap-direction recognition",
+      "display": {
+        "calibration": "ISO ID-1 credit-card short edge (53.98 mm)",
+        "device": null,
+        "cssPxPerMm": null,
+        "devicePixelRatio": null,
+        "viewportZoom": null,
+        "luminance": null
+      },
+      "measurements": [
+        { "logMAR": 0.2, "sigmaArcmin": 0.5 },
+        { "logMAR": 0.3, "sigmaArcmin": 2.0 },
+        { "logMAR": 0.4, "sigmaArcmin": 3.25 },
+        { "logMAR": 0.5, "sigmaArcmin": 4.75 },
+        { "logMAR": 0.6, "sigmaArcmin": 6.0 },
+        { "logMAR": 0.7, "sigmaArcmin": 8.25 },
+        { "logMAR": 0.8, "sigmaArcmin": 10.75 }
+      ]
+    }
+  ]
+}

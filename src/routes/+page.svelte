@@ -10,6 +10,7 @@
     targetRefraction, compareTargetRefraction, primaryAcuity, comparisonAcuity
   } from '../lib/stores/app';
   import { acuityIols, physicsIols, type AcuityIolId, type PhysicsIolId } from '../lib/data/iol-models';
+  import { clinicalCurves } from '../lib/data/loader';
   type Panel = 'about' | 'settings' | 'calibrate';
   let panel: Panel | null = null;
   let calibrationSaveDisabled = true;
@@ -125,7 +126,7 @@
             <label for="target-refraction-right">Right target refraction <span>{$compareTargetRefraction.toFixed(2)} D</span></label>
             <input id="target-refraction-right" class="range" type="range" min="-3" max=".5" step=".25" bind:value={$compareTargetRefraction} />
           {/if}
-          <p class="note">Distance-corrected cohort means. Near-range extrapolations are labelled on the image. The Gaussian mapping is provisional.</p>
+          <p class="note">Distance-corrected cohort means. Near-range extrapolations are labelled on the image.</p>
           <div class="papers">
             {#each [$primaryAcuity.curve, $splitViewEnabled ? $comparisonAcuity.curve : undefined] as curve, i}
               {#if curve && (i === 0 || curve !== $primaryAcuity.curve)}
@@ -140,12 +141,19 @@
         <button type="button" class="about-link" on:click={() => panel = 'about'}>About the simulation</button>
       {:else}
         <p>Compare how intraocular lenses render near objects and distant scenes on a calibrated screen.</p>
-        <p><strong>Physics-based</strong> uses optrace point-spread functions. <strong>Acuity-derived</strong> estimates blur from clinical defocus curves.</p>
-        <p class="note">Tap Calibrate with a credit card ready. Choose a lens, adjust the object distance, then tap Compare for a split view.</p>
+        <p><strong>Physics-based</strong> uses optrace point-spread functions.</p>
         <div class="papers">
           <a href="https://doi.org/10.1167/tvst.13.8.33" target="_blank" rel="noreferrer">Mendroch et al. · Functional Design Analysis (2024)</a>
           <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12758424/" target="_blank" rel="noreferrer">Mendroch et al. · Polychromatic Virtual Retinal Imaging (2025)</a>
         </div>
+        <p><strong>Acuity-derived</strong> estimates visual acuity at each object distance from clinical defocus curves for commercial IOLs. It converts acuity to equivalent on-screen blur using Gaussian calibration informed by Leung et al. (2026) and this project's initial Landolt C measurements.</p>
+        <div class="papers">
+          <a href="https://doi.org/10.1080/10447318.2026.2664698" target="_blank" rel="noreferrer">Leung et al. · Screen-Based Acuity Loss Simulation (2026)</a>
+          {#each clinicalCurves as curve}
+            <a href={curve.source.url} target="_blank" rel="noreferrer">{curve.model} · FDA {curve.source.figure} · n={curve.source.subjects}</a>
+          {/each}
+        </div>
+        <p class="note">Tap Calibrate with a credit card ready. Choose a lens, adjust the object distance, then tap Compare for a split view.</p>
       {/if}
     </section>
   </div>

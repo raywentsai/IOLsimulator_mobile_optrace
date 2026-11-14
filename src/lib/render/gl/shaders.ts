@@ -21,25 +21,26 @@ void main() {
 // ========== Fragment Shaders ==========
 
 /**
- * Simple texture copy shader (passthrough)
+ * Centered cover projection onto the display sample grid.
  */
-export const copyFragmentShader = `
-precision mediump float;
+export const coverFragmentShader = `
+precision highp float;
 uniform sampler2D u_image;
+uniform vec2 u_scale;
 varying vec2 v_texCoord;
 
 void main() {
-  gl_FragColor = texture2D(u_image, v_texCoord);
+  gl_FragColor = texture2D(u_image, (v_texCoord - 0.5) * u_scale + 0.5);
 }
 `;
 
 /**
- * Horizontal Gaussian blur shader with optimized linear sampling
+ * Separable Gaussian with pairwise linear texture sampling
  */
-export const horizontalBlurFragmentShader = `
-precision mediump float;
+const blurFragmentShader = `
+precision highp float;
 uniform sampler2D u_image;
-uniform vec2 u_texelSize;          // 1/width, 1/height
+uniform vec2 u_texelStep;
 uniform float u_weights[32];       // Gaussian weights (MAX_TAPS = 32)
 uniform float u_offsets[32];       // Sample offsets
 uniform int u_tapCount;            // Number of taps to use
@@ -52,40 +53,8 @@ void main() {
     if (i >= u_tapCount) break;
     
     float offset = u_offsets[i];
-    vec2 sampleCoord1 = v_texCoord + vec2(offset * u_texelSize.x, 0.0);
-    vec2 sampleCoord2 = v_texCoord - vec2(offset * u_texelSize.x, 0.0);
-    
-    vec4 sample1 = texture2D(u_image, sampleCoord1);
-    vec4 sample2 = texture2D(u_image, sampleCoord2);
-    
-    color += (sample1 + sample2) * u_weights[i];
-  }
-  
-  gl_FragColor = color;
-}
-`;
-
-/**
- * Vertical Gaussian blur shader with optimized linear sampling
- */
-export const verticalBlurFragmentShader = `
-precision mediump float;
-uniform sampler2D u_image;
-uniform vec2 u_texelSize;          // 1/width, 1/height
-uniform float u_weights[32];       // Gaussian weights (MAX_TAPS = 32)
-uniform float u_offsets[32];       // Sample offsets
-uniform int u_tapCount;            // Number of taps to use
-varying vec2 v_texCoord;
-
-void main() {
-  vec4 color = texture2D(u_image, v_texCoord) * u_weights[0];
-  
-  for (int i = 1; i < 32; i++) {
-    if (i >= u_tapCount) break;
-    
-    float offset = u_offsets[i];
-    vec2 sampleCoord1 = v_texCoord + vec2(0.0, offset * u_texelSize.y);
-    vec2 sampleCoord2 = v_texCoord - vec2(0.0, offset * u_texelSize.y);
+    vec2 sampleCoord1 = v_texCoord + offset * u_texelStep;
+    vec2 sampleCoord2 = v_texCoord - offset * u_texelStep;
     
     vec4 sample1 = texture2D(u_image, sampleCoord1);
     vec4 sample2 = texture2D(u_image, sampleCoord2);
@@ -102,7 +71,7 @@ void main() {
  * Foreground is centered horizontally and anchored to the canvas bottom edge.
  */
 export const positionedForegroundFragmentShader = `
-precision mediump float;
+precision highp float;
 uniform sampler2D u_image;
 uniform vec2 u_foregroundSize; // normalized size (0-1) relative to output
 varying vec2 v_texCoord;
@@ -134,29 +103,15 @@ void main() {
  * Composite foreground over background using foreground alpha.
  */
 export const compositeFragmentShader = `
-precision mediump float;
+precision highp float;
 uniform sampler2D u_backgroundImage;
 uniform sampler2D u_foregroundImage;
-uniform float u_backgroundAspect;
-uniform float u_viewAspect;
 varying vec2 v_texCoord;
 
-vec2 coverUv(vec2 uv, float srcAspect, float dstAspect) {
-  if (dstAspect > srcAspect) {
-    float yScale = srcAspect / dstAspect;
-    return vec2(uv.x, (uv.y - 0.5) * yScale + 0.5);
-  }
-
-  float xScale = dstAspect / srcAspect;
-  return vec2((uv.x - 0.5) * xScale + 0.5, uv.y);
-}
-
 void main() {
-  vec2 bgUv = coverUv(v_texCoord, u_backgroundAspect, u_viewAspect);
-  vec4 bg = texture2D(u_backgroundImage, clamp(bgUv, 0.0, 1.0));
+  vec4 bg = texture2D(u_backgroundImage, v_texCoord);
   vec4 fg = texture2D(u_foregroundImage, v_texCoord);
-  vec3 rgb = mix(bg.rgb, fg.rgb, fg.a);
-  gl_FragColor = vec4(rgb, 1.0);
+  gl_FragColor = vec4(fg.rgb + bg.rgb * (1.0 - fg.a), 1.0);
 }
 `;
 
@@ -165,7 +120,7 @@ void main() {
  * Shows original on left, processed on right with divider
  */
 export const splitViewFragmentShader = `
-precision mediump float;
+precision highp float;
 uniform sampler2D u_originalImage;
 uniform sampler2D u_processedImage;
 uniform float u_splitPosition;     // 0-1, position of the split
@@ -193,58 +148,31 @@ void main() {
 // ========== Shader Program Definitions ==========
 
 /**
- * Shader program configuration
- */
-export interface ShaderProgram {
-  vertex: string;
-  fragment: string;
-  uniforms: string[];
-  attributes: string[];
-}
-
-/**
  * Predefined shader programs
  */
 export const shaderPrograms = {
-  copy: {
+  cover: {
     vertex: vertexShader,
-    fragment: copyFragmentShader,
-    uniforms: ['u_image'],
-    attributes: ['a_position', 'a_texCoord']
+    fragment: coverFragmentShader
   },
 
-  horizontalBlur: {
+  blur: {
     vertex: vertexShader,
-    fragment: horizontalBlurFragmentShader,
-    uniforms: ['u_image', 'u_texelSize', 'u_weights[0]', 'u_offsets[0]', 'u_tapCount'],
-    attributes: ['a_position', 'a_texCoord']
-  },
-
-  verticalBlur: {
-    vertex: vertexShader,
-    fragment: verticalBlurFragmentShader,
-    uniforms: ['u_image', 'u_texelSize', 'u_weights[0]', 'u_offsets[0]', 'u_tapCount'],
-    attributes: ['a_position', 'a_texCoord']
+    fragment: blurFragmentShader
   },
 
   positionedForeground: {
     vertex: vertexShader,
-    fragment: positionedForegroundFragmentShader,
-    uniforms: ['u_image', 'u_foregroundSize'],
-    attributes: ['a_position', 'a_texCoord']
+    fragment: positionedForegroundFragmentShader
   },
 
   composite: {
     vertex: vertexShader,
-    fragment: compositeFragmentShader,
-    uniforms: ['u_backgroundImage', 'u_foregroundImage', 'u_backgroundAspect', 'u_viewAspect'],
-    attributes: ['a_position', 'a_texCoord']
+    fragment: compositeFragmentShader
   },
 
   splitView: {
     vertex: vertexShader,
-    fragment: splitViewFragmentShader,
-    uniforms: ['u_originalImage', 'u_processedImage', 'u_splitPosition', 'u_dividerWidth'],
-    attributes: ['a_position', 'a_texCoord']
+    fragment: splitViewFragmentShader
   }
 } as const;

@@ -188,14 +188,21 @@ dependencies = [
     { name = "scipy" },
 ]
 
+[package.optional-dependencies]
+calibration = [
+    { name = "matplotlib" },
+]
+
 [package.metadata]
 requires-dist = [
+    { name = "matplotlib", marker = "extra == 'calibration'", specifier = ">=3.10,<4" },
     { name = "numpy", specifier = ">=2,<3" },
     { name = "optrace", git = "https://github.com/drocheam/optrace.git?rev=adad608acedb08c2d99688613fa01034865c9d47" },
     { name = "pillow", specifier = ">=11,<13" },
     { name = "pymupdf", specifier = ">=1.26,<2" },
     { name = "scipy", specifier = ">=1.14,<2" },
 ]
+provides-extras = ["calibration"]
 
 [[package]]
 name = "kiwisolver"

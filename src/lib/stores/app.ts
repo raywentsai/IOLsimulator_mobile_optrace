@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store';
-import { evaluateLensCurve, getIOLDefocus, provisionalSigmaArcmin } from '../optics/mapping';
-import { loadIOLCurves } from '../data/loader';
+import { calibratedSigmaArcmin, evaluateLensCurve, getIOLDefocus } from '../optics/mapping';
+import { clinicalCurves } from '../data/loader';
 import { acuityIols, type AcuityIolId, type PhysicsIolId } from '../data/iol-models';
 
 // 30 cm rounds to the nearest supported 0.1 D object-distance step.
@@ -17,8 +17,7 @@ export const physicsSelection = writable<{ primary: PhysicsIolId; compare: Physi
 export const targetRefraction = writable(0);
 export const compareTargetRefraction = writable(0);
 
-const curves = loadIOLCurves();
-const curveFor = (id: AcuityIolId) => curves.find(curve => curve.id === acuityIols[id].curveId);
+const curveFor = (id: AcuityIolId) => clinicalCurves.find(curve => curve.id === acuityIols[id].curveId);
 const selectedLensCurve = derived(acuitySelection, ({ primary }) => curveFor(primary));
 const selectedCompareLensCurve = derived(acuitySelection, ({ compare }) => curveFor(compare));
 
@@ -30,8 +29,8 @@ function acuityMetrics(curveStore: typeof selectedLensCurve, refractionStore: ty
       curve,
       near,
       far,
-      nearSigmaArcmin: near === null ? 0 : provisionalSigmaArcmin(near.logMAR),
-      farSigmaArcmin: far === null ? 0 : provisionalSigmaArcmin(far.logMAR)
+      nearSigmaArcmin: near === null ? 0 : calibratedSigmaArcmin(near.logMAR),
+      farSigmaArcmin: far === null ? 0 : calibratedSigmaArcmin(far.logMAR)
     };
   });
 }

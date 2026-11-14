@@ -55,4 +55,4 @@ SN60WF 與 DFT015 在 −2.5 D 結束實測。從每款鏡片的 −2.5 D、−2
 | −3.5 D | 0.748 / 0.18 | 0.580 / 0.26 |
 | −4.0 D | 0.823 / 0.15 | 0.658 / 0.22 |
 
-SN60AT 在 −4 D 有實測資料。圖上 VA 標籤以 `measured` 標示實測節點、`interpolated` 標示實測點間的內插、`extrapolated` 標示估計的近端延伸。外插是研究族群平均曲線的模型推估，尚無所選 FDA 試驗在此區間的資料可直接驗證。超過有效 defocus 的支援範圍時，對應畫面欄位顯示「Outside supported defocus range」。每欄獨立套用自己的鏡片和 target refraction。
+SN60AT 在 −4 D 有實測資料。圖上 VA 標籤以 `measured` 標示實測節點、`interpolated` 標示實測點間的內插、`extrapolated` 標示估計的近端延伸。外插是研究族群平均曲線的模型推估，尚無所選 FDA 試驗在此區間的資料可直接驗證。超過有效 defocus 的支援範圍時，對應畫面欄位顯示「Outside supported defocus range」。每欄獨立套用自己的鏡片和 target refraction。查到的臨床 logMAR 再換算成螢幕上的角度 Gaussian σ。 [Phase 13B 的 VA 至 σ 校準](phase13b-gaussian-calibration.md)

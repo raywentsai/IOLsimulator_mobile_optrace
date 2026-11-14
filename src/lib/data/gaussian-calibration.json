@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "form": "anchored-mar",
+  "baselineLogMAR": 0.0,
+  "coefficients": {
+    "scaleArcmin": 2.042217051
+  },
+  "observedLossLogMAR": [
+    0.2,
+    0.8
+  ]
+}
